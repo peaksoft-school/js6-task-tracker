@@ -9,6 +9,6 @@ const UserAvatar = () => {
 export default UserAvatar;
 
 const StyledAvatarUser = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 `;

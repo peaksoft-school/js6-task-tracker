@@ -7,6 +7,7 @@ const UserName = () => {
 
 export default UserName;
 
-const StyledUserName = styled.h2`
-  font-weight: 500;
+const StyledUserName = styled.h3`
+  font-weight: 400;
+  display: inline;
 `;
