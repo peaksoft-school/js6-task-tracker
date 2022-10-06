@@ -1,7 +1,6 @@
 import * as React from "react"
 import { styled } from "@mui/material/styles"
 
-import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
 
 const CssTextField = styled(TextField)({
@@ -28,25 +27,12 @@ const CssTextField = styled(TextField)({
 })
 
 export default function Input({ label, type, ...other }) {
-   const [state, setState] = React.useState("")
    return (
-      <Box
-         component="form"
-         noValidate
-         sx={{
-            display: "grid",
-            gridTemplateColumns: { sm: "1fr 1fr" },
-            gap: 2,
-         }}
-      >
-         <CssTextField
-            onChange={(e) => setState(e.target.value)}
-            error={state.length > 10}
-            {...other}
-            label={label}
-            type={type}
-            id="custom-css-outlined-input"
-         />
-      </Box>
+      <CssTextField
+         {...other}
+         label={label}
+         type={type}
+         id="custom-css-outlined-input"
+      />
    )
 }
