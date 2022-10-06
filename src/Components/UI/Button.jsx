@@ -18,7 +18,12 @@ const Button = styled.button`
   padding: 0 50px;
   height: 42px;
   border-radius: 24px;
-
   color: #ffffff;
   font-family: "Nunito", sans-serif;
+  &:hover {
+    background-color: #005688;
+  }
+  &:active {
+    background-color: #57aee0;
+  }
 `;
