@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-const Btn = ({ title, onClick, color }) => {
+const Button = ({ children, onClick, color, activeColor }) => {
   return (
-    <Button onClick={onClick} color={color}>
-      {title}
-    </Button>
+    <StyledButton onClick={onClick} color={color}>
+      {children}
+    </StyledButton>
   );
 };
 
-export default Btn;
+export default Button;
 
-const Button = styled.button`
+const StyledButton = styled.button`
   background-color: ${(props) => (props.color ? props.color : "#0079BF")};
   border: none;
   font-size: 18px;
@@ -21,9 +21,11 @@ const Button = styled.button`
   color: #ffffff;
   font-family: "Nunito", sans-serif;
   &:hover {
-    background-color: #005688;
+    background-color: ${(props) =>
+      props.hoverColor ? props.hoverColor : "#005688"};
   }
   &:active {
-    background-color: #57aee0;
+    background-color: ${(props) =>
+      props.activeColor ? props.activeColor : "#57AEE0"};
   }
 `;

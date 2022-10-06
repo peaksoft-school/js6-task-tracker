@@ -1,9 +1,12 @@
 import "./App.css";
-import Btn from "./Components/UI/Button";
+import Button from "./Components/UI/Button";
+
 function App() {
   return (
     <div className="App">
-      <Btn color="#0079BF" title="Sign up" />
+      <Button hoverColor="#005688" activeColor="#57AEE0" color="#0079BF">
+        Sign up
+      </Button>
     </div>
   );
 }
