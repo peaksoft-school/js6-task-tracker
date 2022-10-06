@@ -4,8 +4,7 @@ import UserAvatar from "./UserAvatar";
 import UserName from "./UserName";
 import arrowSvg from "../../assets/icons/arrow.svg";
 
-const NotificationItem = ({ avatar, date, title }) => {
-  
+const NotificationItem = () => {
   return (
     <StyledNotificationItem>
       <div>
@@ -13,7 +12,7 @@ const NotificationItem = ({ avatar, date, title }) => {
         <UserAvatar />
         <UserName />
       </div>
-      <span>Moved to list Done</span>
+      <NotificationText>Moved to list Done</NotificationText>
       <DateAdded>Sep 15 at 13:23 PM</DateAdded>
       <StyledArrowIcon src={arrowSvg} />
     </StyledNotificationItem>
@@ -40,14 +39,13 @@ const StyledNotificationItem = styled.div`
     justify-content: space-between;
     width: 215px;
   }
-
-  span {
-    font-weight: 500;
-    font-size: 19px;
-    color: #111111;
-  }
 `;
 
+const NotificationText = styled.span`
+  font-weight: 500;
+  font-size: 19px;
+  color: #111111;
+`;
 const DateAdded = styled.p`
   color: #919191;
   font-size: 17px;
