@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import threePoint from "../../assets/icons/threePoint.svg"
-import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB.jsx"
-import EditIcon from "../../assets/icons/Icon Shape.svg"
+import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
+import EditIcon from "../../assets/icons/Icon Shape (1).svg"
 import CustomIcons from "./CustomIcons"
 
 const TaskCard = () => {
