@@ -5,6 +5,7 @@ import UserName from "./UserName";
 import arrowSvg from "../../assets/icons/arrow.svg";
 
 const NotificationItem = ({ avatar, date, title }) => {
+  
   return (
     <StyledNotificationItem>
       <div>
