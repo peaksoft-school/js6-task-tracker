@@ -1,13 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-const Table = ({ data }) => {
-   const columns = [
-      { field: "id", header: "№" },
-      { field: "Name", header: "Name" },
-      { field: "Lead", header: "Lead" },
-      { field: "Action", header: "Action" },
-   ]
+function Table({ data, columns }) {
    return (
       <Div>
          <ReTable>
@@ -17,6 +11,7 @@ const Table = ({ data }) => {
                      <th>{head.header}</th>
                   ))}
                </tr>
+               <p>Guest workspace</p>
             </thead>
             <tbody>
                {data.map((row) => (
@@ -39,11 +34,13 @@ const Div = styled.div`
    top: 84px;
    background: #ffff;
    border-radius: 8px;
-   border: 1px solid black;
+   p {
+      font-size: 16px;
+      color: #919191;
+   }
 `
 const ReTable = styled.table`
    th {
-      position: relative;
       width: 1320px;
       height: 18px;
       padding-bottom: 8px;
@@ -51,8 +48,8 @@ const ReTable = styled.table`
    }
    td {
       position: relative;
+      left: 150px;
       width: 1320px;
       height: 54px;
-      left: 20px;
    }
 `
