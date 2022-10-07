@@ -20,15 +20,15 @@ export default Button;
 const StyledButton = styled.button`
   background-color: ${(props) => (props.color ? props.color : "#0079BF")};
   border: none;
-  width: ${(props) => props.fullWidth && props.fullWidth };
+  width: ${(props) => props.fullWidth && props.fullWidth};
   font-size: 18px;
   height: 42px;
   border-radius: 24px;
   color: #ffffff;
   font-family: "Nunito", sans-serif;
   &:hover {
-    background-color: ${(props) =>
-      props.hoverColor ? props.hoverColor : "#005688"};
+    transition: 0.5s;
+    background-color: ${(props) => (props.hover ? props.hover : "#005688")};
   }
   &:active {
     background-color: ${(props) => (props.active ? props.active : "#57AEE0")};

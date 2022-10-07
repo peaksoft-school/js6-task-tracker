@@ -9,7 +9,7 @@ const GrayButton = ({ archived, children, onClick, iconButton, fullWidth }) => {
       icon={iconButton}
       onClick={onClick}
     >
-      <IconButton src={iconButton} /> {children}
+      <Icon src={iconButton} /> {children}
     </StyledGrayButton>
   );
 };
@@ -30,7 +30,7 @@ const StyledGrayButton = styled.div`
   color: ${(props) => props.archived && "white"};
 `;
 
-const IconButton = styled.img`
+const Icon = styled.img`
   margin: 0 17px;
   width: 25px;
   height: 25px;
