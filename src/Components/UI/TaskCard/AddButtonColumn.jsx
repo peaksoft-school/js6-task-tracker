@@ -1,13 +1,13 @@
 import React from "react"
 import styled from "styled-components"
 
-const AddButtonColumn = () => {
-   return <StyledAddButtonColumn>+ Add a column</StyledAddButtonColumn>
+const AddButton = ({ children, click }) => {
+   return <StyledAddButton onClick={click}>{children}</StyledAddButton>
 }
 
-export default AddButtonColumn
+export default AddButton
 
-const StyledAddButtonColumn = styled.button`
+const StyledAddButton = styled.button`
    border: none;
    width: 280px;
    height: 44px;

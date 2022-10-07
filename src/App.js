@@ -1,8 +1,8 @@
-import TaskCard from "./Components/UI /TaskCard/TaskCard"
+import TaskCard from "./Components/UI/TaskCard/TaskCard"
 
 function App() {
    return (
-      <div className="App">
+      <div>
          <TaskCard />
       </div>
    )

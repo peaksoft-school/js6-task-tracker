@@ -20,3 +20,9 @@ export const Labels = [
       text: "Хорошего всем настроения, друзья",
    },
 ]
+
+export const Columns = [
+   {
+      titleColumn: "Придумать что-то чтобы измениь мир",
+   },
+]
