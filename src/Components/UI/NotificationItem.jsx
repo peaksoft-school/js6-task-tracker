@@ -3,19 +3,33 @@ import styled from "styled-components";
 import UserAvatar from "./UserAvatar";
 import UserName from "./UserName";
 import arrowSvg from "../../assets/icons/arrow.svg";
+import png from "../../assets/images/Rectangle.png";
 
-const NotificationItem = () => {
+const NotificationItem = ({
+  titleBoard,
+  nameColumn,
+  backgroundImage,
+  notificationText,
+  userAvatar,
+  userName,
+}) => {
   return (
-    <StyledNotificationItem>
-      <div>
-        <BlueIcon />
-        <UserAvatar />
-        <UserName />
-      </div>
-      <NotificationText>Moved to list Done</NotificationText>
-      <DateAdded>Sep 15 at 13:23 PM</DateAdded>
-      <StyledArrowIcon src={arrowSvg} />
-    </StyledNotificationItem>
+    <>
+      <NotificationBoard backgroundImage={png}>
+        <TitleBoard>{titleBoard}</TitleBoard>
+        <p>{nameColumn}</p>
+      </NotificationBoard>
+      <StyledNotificationItem>
+        <div>
+          <BlueIcon />
+          <UserAvatar />
+          <UserName />
+        </div>
+        <NotificationText>Moved to list Done</NotificationText>
+        <DateAdded>Sep 15 at 13:23 PM</DateAdded>
+        <StyledArrowIcon src={arrowSvg} />
+      </StyledNotificationItem>
+    </>
   );
 };
 
@@ -39,6 +53,28 @@ const StyledNotificationItem = styled.div`
     justify-content: space-between;
     width: 215px;
   }
+`;
+
+const NotificationBoard = styled.div`
+  background-image: url(${(props) => props.backgroundImage});
+  background-color: ${(props) => !props.backgroundImage && "gray"};
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 350px;
+  height: 150px;
+  border-radius: 18px;
+  font-family: "Nunito", sans-serif;
+  padding: 2px 10px 5px 20px;
+  text-align: left;
+  color: white;
+  p {
+    font-size: 20px;
+    margin-top: 0;
+  }
+`;
+
+const TitleBoard = styled.h3`
+  margin-bottom: 0;
 `;
 
 const NotificationText = styled.span`
