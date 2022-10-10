@@ -32,16 +32,6 @@ export default function SnackBar({ status, text, description }) {
                </StyleOfText>
             </Alert>
          </Snackbar>
-
-         {/* <Error severity="error">
-        <h1>Error</h1> <span>Error description</span>
-      </Error>
-      <Warning severity="warning">
-        <h1>Warning</h1> <span>Warning description</span>
-      </Warning>
-      <Success severity="success">
-        <h1>Avatar removed</h1> <span>We'we deleted your avatar</span>
-      </Success>  */}
       </Stack>
    )
 }
