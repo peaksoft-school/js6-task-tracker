@@ -11,14 +11,17 @@ function Table({ data, columns }) {
                      <th>{head.header}</th>
                   ))}
                </tr>
-               <p>Guest workspace</p>
             </thead>
             <tbody>
                {data.map((row) => (
                   <tr>
-                     {columns.map((col) => (
-                        <td>{row[col.field]}</td>
-                     ))}
+                     {columns.map((col) =>
+                        col?.action ? (
+                           col?.action(row)
+                        ) : (
+                           <td>{row[col.field]}</td>
+                        )
+                     )}
                   </tr>
                ))}
             </tbody>
@@ -34,10 +37,6 @@ const Div = styled.div`
    top: 84px;
    background: #ffff;
    border-radius: 8px;
-   p {
-      font-size: 16px;
-      color: #919191;
-   }
 `
 const ReTable = styled.table`
    th {
@@ -48,7 +47,8 @@ const ReTable = styled.table`
    }
    td {
       position: relative;
-      left: 150px;
+      left: 115px;
+      top: 40px;
       width: 1320px;
       height: 54px;
    }
