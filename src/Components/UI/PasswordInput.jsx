@@ -3,13 +3,13 @@ import React, { useState } from "react"
 import {
    IconButton,
    FormControl,
-   InputLabel,
    OutlinedInput,
+   InputLabel,
 } from "@mui/material"
 import styled from "styled-components"
 import { HidePassword, ShowPassword } from "../../assets/icons/index"
 
-function PasswordInput() {
+function PasswordInput({ label, error }) {
    const [inputViewOnOff, setInputViewOnOff] = useState(false)
 
    function handleViewOnOff() {
@@ -17,17 +17,17 @@ function PasswordInput() {
    }
    return (
       <FormControl1>
-         <InputLabel size="small">Password</InputLabel>
+         <InputLabel size="small">{label}</InputLabel>
          <OutlinedInput1
             size="small"
-            error={false}
+            error={error}
+            label={label}
             type={inputViewOnOff ? "password" : "text"}
             endAdornment={
                <IconButton onClick={() => handleViewOnOff()}>
                   {inputViewOnOff ? <HidePassword /> : <ShowPassword />}
                </IconButton>
             }
-            label="Password"
          />
       </FormControl1>
    )
@@ -38,9 +38,12 @@ const OutlinedInput1 = styled(OutlinedInput)`
 `
 const FormControl1 = styled(FormControl)({
    width: "321px",
-
+   "&MuiInputBase-input": {
+      background: "white",
+   },
    "& label.Mui-focused": {
       color: "#919191",
+      background: "white",
    },
    "& .MuiOutlinedInput-root": {
       "& fieldset": {
