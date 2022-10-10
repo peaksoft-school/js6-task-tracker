@@ -1,11 +1,7 @@
-import Input from "./Components/UI/Input"
+import "./App.css"
 
 function App() {
-   return (
-      <div>
-         <Input label="Name" />
-      </div>
-   )
+   return <div>alo</div>
 }
 
 export default App
