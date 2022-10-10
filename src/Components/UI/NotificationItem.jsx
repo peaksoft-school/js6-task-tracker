@@ -1,11 +1,19 @@
 import React from "react"
 import styled from "styled-components"
-import UserAvatar from "./UserAvatar"
 import UserName from "./UserName"
 import arrowSvg from "../../assets/icons/arrow.svg"
 import png from "../../assets/images/Rectangle.png"
+import UserAvatar from "./UserAvatar"
 
-const NotificationItem = ({ titleBoard, nameColumn }) => {
+const NotificationItem = ({
+   titleBoard,
+   nameColumn,
+   userAvatar,
+   userName,
+   notificationText,
+   dateAdded,
+   click,
+}) => {
    return (
       <>
          <NotificationBoard backgroundImage={png}>
@@ -15,12 +23,14 @@ const NotificationItem = ({ titleBoard, nameColumn }) => {
          <StyledNotificationItem>
             <div>
                <BlueIcon />
-               <UserAvatar />
-               <UserName />
+               <UserAvatar userAvatar={userAvatar} />
+               <UserName userName={userName} />
             </div>
-            <NotificationText>Moved to list Done</NotificationText>
-            <DateAdded>Sep 15 at 13:23 PM</DateAdded>
-            <StyledArrowIcon src={arrowSvg} />
+            <NotificationText>
+               {notificationText}Moved to list Done
+            </NotificationText>
+            <DateAdded>{dateAdded} Sep 15 at 13:23 PM</DateAdded>
+            <StyledArrowIcon onClick={click} src={arrowSvg} />
          </StyledNotificationItem>
       </>
    )
