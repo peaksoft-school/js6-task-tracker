@@ -1,11 +1,11 @@
 import SnackBar from "./Components/UI/SnackBar"
-import { ERROR } from "./utilits/constants/general"
+import { SUCCESS } from "./utilits/constants/general"
 
 function App() {
    return (
       <div>
          <SnackBar
-            status={ERROR}
+            status={SUCCESS}
             text="Error"
             description="Error description"
          />
