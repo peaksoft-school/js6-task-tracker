@@ -1,5 +1,15 @@
+import SnackBar from "./Components/UI/SnackBar"
+
 function App() {
-   return <div className="App">Test</div>
+   return (
+      <div>
+         <SnackBar
+            status="error"
+            text="Error"
+            description="Error description"
+         />
+      </div>
+   )
 }
 
 export default App
