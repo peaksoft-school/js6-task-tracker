@@ -1,11 +1,5 @@
-import TaskCard from "./Components/UI/TaskCard/TaskCard"
-
 function App() {
-   return (
-      <div>
-         <TaskCard />
-      </div>
-   )
+   return <div>alo</div>
 }
 
 export default App
