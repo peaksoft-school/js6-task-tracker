@@ -1,5 +1,12 @@
+import NotificationItem from "./Components/UI/NotificationItem"
+
 function App() {
-   return <div>alo</div>
+   return (
+      <div>
+         alo
+         <NotificationItem />
+      </div>
+   )
 }
 
 export default App
