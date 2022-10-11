@@ -40,7 +40,6 @@ const Div = styled.div`
 `
 const ReTable = styled.table`
    th {
-      width: 1320px;
       height: 18px;
       padding-bottom: 8px;
       border-bottom: 1px solid #d7d7d7;

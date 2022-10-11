@@ -10,11 +10,7 @@ const columns = [
       header: "Lead",
       action: (row) => (
          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-               style={{ borderRadius: 50, width: 30, height: 30 }}
-               src={row.Lead}
-               alt="test"
-            />
+            <img style={{ width: 30, height: 30 }} src={row.Lead} alt="test" />
             <span>Almaz Almazov</span>
          </div>
       ),
