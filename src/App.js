@@ -1,3 +1,4 @@
+import CommentSection from "./Components/UI/CommentSection"
 import SnackBar from "./Components/UI/SnackBar"
 import { SUCCESS } from "./utilits/constants/general"
 
@@ -9,6 +10,7 @@ function App() {
             text="Error"
             description="Error description"
          />
+         <CommentSection />
       </div>
    )
 }
