@@ -9,7 +9,7 @@ import {
 import styled from "styled-components"
 import { HidePassword, ShowPassword } from "../../assets/icons/index"
 
-function PasswordInput({ label, error }) {
+function PasswordInput({ label, error, value, setValue }) {
    const [inputViewOnOff, setInputViewOnOff] = useState(false)
 
    function handleViewOnOff() {
@@ -19,6 +19,8 @@ function PasswordInput({ label, error }) {
       <FormControl1>
          <InputLabel size="small">{label}</InputLabel>
          <OutlinedInput1
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             size="small"
             error={error}
             label={label}
@@ -34,18 +36,15 @@ function PasswordInput({ label, error }) {
 }
 
 const OutlinedInput1 = styled(OutlinedInput)`
-   color: #757575 !important;
+   color: #111 !important;
 `
 const FormControl1 = styled(FormControl)({
-   width: "321px",
-   "&MuiInputBase-input": {
-      background: "white",
-   },
    "& label.Mui-focused": {
       color: "#919191",
       background: "white",
    },
    "& .MuiOutlinedInput-root": {
+      width: "321px",
       "& fieldset": {
          borderColor: "#BDBDBD",
       },
