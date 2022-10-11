@@ -1,5 +1,5 @@
 import fullStar from "../../assets/star.svg"
-import emptyStar from "../../assets/Vector.svg"
+import emptyStar from "../../assets/starEmpty.svg"
 import Avatarka from "../../assets/png-transparent-hook-clothes-hanger-animal-monkey-mammal-animals-drawer.png"
 
 export const tableData = [

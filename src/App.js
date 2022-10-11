@@ -9,8 +9,12 @@ const columns = [
    {
       header: "Lead",
       action: (row) => (
-         <div style={{ display: "flex", alignItems: "center" }}>
-            <img style={{ width: 30, height: 30 }} src={row.Lead} alt="test" />
+         <div style={{ alignItems: "center", display: "flex", paddingTop: 60 }}>
+            <img
+               style={{ width: 35, height: 25, borderRadius: 50 }}
+               src={row.Lead}
+               alt="test"
+            />
             <span>Almaz Almazov</span>
          </div>
       ),

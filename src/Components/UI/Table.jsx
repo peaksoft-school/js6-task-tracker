@@ -46,7 +46,7 @@ const ReTable = styled.table`
    }
    td {
       position: relative;
-      left: 115px;
+      left: 130px;
       top: 40px;
       width: 1320px;
       height: 54px;
