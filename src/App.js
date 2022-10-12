@@ -1,10 +1,10 @@
 import React from "react"
-import PasswordInput from "./Components/UI/PasswordInput"
+import { TextArea } from "./Components/UI/TextArea"
 
 function App() {
    return (
-      <div className="App">
-         <PasswordInput label="Password" type="password" size="small" />
+      <div>
+         <TextArea width="839px" height="88px" description="description" />
       </div>
    )
 }
