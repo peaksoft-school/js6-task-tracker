@@ -7,22 +7,19 @@ const CommentSection = ({ comment, dateAdded, userAvatar, userName }) => {
    return (
       <ContainerComments>
          <Comment>
+            <UserAvatar userAvatar={userAvatar} />
             <div>
-               <UserAvatar userAvatar={userAvatar} />
                <UserName userName={userName} />
-            </div>
+               <p>{comment} I will do it only in a week,after the vacation</p>
 
-            <p>{comment} I will do it only in a week,after the vacation</p>
-            <p>{dateAdded} 12 sep ,2021 / 6:30pm</p>
-         </Comment>
-         <Comment>
-            <div>
-               <UserAvatar userAvatar={userAvatar} />
-               <UserName userName={userName} />
+               <div>
+                  <p>{dateAdded} 12 sep ,2021 / 6:30pm</p>
+                  <div>
+                     <span>Edit</span>
+                     <span>Delete</span>
+                  </div>
+               </div>
             </div>
-
-            <p>{comment} I will do it only in a week,after the vacation</p>
-            <p>{dateAdded} 12 sep ,2021 / 6:30pm</p>
          </Comment>
       </ContainerComments>
    )
@@ -31,12 +28,13 @@ const CommentSection = ({ comment, dateAdded, userAvatar, userName }) => {
 export default CommentSection
 
 const ContainerComments = styled.div`
-   width: 365px;
+   width: 385px;
    background: #f4f5f7;
    padding: 15px;
 `
 
 const Comment = styled.div`
+   display: flex;
    width: 360px;
    border-bottom: 1px solid #e4e4e4;
    font-weight: 300;
@@ -44,10 +42,35 @@ const Comment = styled.div`
    font-size: 17px;
    color: #919191;
    margin: 10px;
+   img {
+      margin-right: 10px;
+   }
+   h3 {
+      margin: 3px 0 3px 0;
+   }
    div {
       display: flex;
-      height: 60px;
-      align-items: center;
-      gap: 20px;
+      flex-direction: column;
+      p {
+         margin-left: 14px;
+         font-size: 16px;
+         margin: 10px 2px 10px 2px;
+      }
+      div {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         p {
+            font-size: 16px;
+            margin-right: 30px;
+         }
+         span {
+            margin-left: 10px;
+            cursor: pointer;
+            &:hover {
+               text-decoration: underline;
+            }
+         }
+      }
    }
 `
