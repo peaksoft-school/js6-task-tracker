@@ -1,14 +1,10 @@
-import SnackBar from "./Components/UI/SnackBar"
-import { SUCCESS } from "./utilits/constants/general"
+import React from "react"
+import PasswordInput from "./Components/UI/PasswordInput"
 
 function App() {
    return (
-      <div>
-         <SnackBar
-            status={SUCCESS}
-            text="Error"
-            description="Error description"
-         />
+      <div className="App">
+         <PasswordInput label="Password" type="password" size="small" />
       </div>
    )
 }
