@@ -3,7 +3,14 @@ import styled from "styled-components"
 import UserAvatar from "./UserAvatar"
 import UserName from "./UserName"
 
-const CommentSection = ({ comment, dateAdded, userAvatar, userName }) => {
+const CommentSection = ({
+   comment,
+   dateAdded,
+   userAvatar,
+   userName,
+   editHandle,
+   deleteHandle,
+}) => {
    return (
       <ContainerComments>
          <Comment>
@@ -13,10 +20,10 @@ const CommentSection = ({ comment, dateAdded, userAvatar, userName }) => {
                <p>{comment} I will do it only in a week,after the vacation</p>
 
                <div>
-                  <p>{dateAdded} 12 sep ,2021 / 6:30pm</p>
+                  <span>{dateAdded} 12 sep ,2021 / 6:30pm</span>
                   <div>
-                     <span>Edit</span>
-                     <span>Delete</span>
+                     <p onClick={editHandle}>Edit</p>
+                     <p onClick={deleteHandle}>Delete</p>
                   </div>
                </div>
             </div>
@@ -60,11 +67,11 @@ const Comment = styled.div`
          display: flex;
          flex-direction: row;
          align-items: center;
-         p {
+         span {
             font-size: 16px;
             margin-right: 30px;
          }
-         span {
+         p {
             margin-left: 10px;
             cursor: pointer;
             &:hover {
