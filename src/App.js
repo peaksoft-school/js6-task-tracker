@@ -1,12 +1,7 @@
 import React from "react"
-import PasswordInput from "./Components/UI/PasswordInput"
 
 function App() {
-   return (
-      <div className="App">
-         <PasswordInput label="Password" type="password" size="small" />
-      </div>
-   )
+   return <div className="App">test</div>
 }
 
 export default App
