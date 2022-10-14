@@ -34,6 +34,7 @@ function PasswordInput({ label, error, value, setValue }) {
       </FormControl1>
    )
 }
+export default PasswordInput
 
 const OutlinedInput1 = styled(OutlinedInput)`
    color: #111 !important;
@@ -56,4 +57,3 @@ const FormControl1 = styled(FormControl)({
       },
    },
 })
-export default PasswordInput
