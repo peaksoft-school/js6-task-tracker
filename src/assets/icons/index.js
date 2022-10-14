@@ -1,2 +1,5 @@
 export { ReactComponent as HidePassword } from "./HidePassword.svg"
 export { ReactComponent as ShowPassword } from "./ShowPassword.svg"
+export { ReactComponent as IconStartDefault } from "./favourite-default.svg"
+export { ReactComponent as IconStartHover } from "./favourite-hover.svg"
+export { ReactComponent as IconStartActive } from "./favourite-active.svg"
