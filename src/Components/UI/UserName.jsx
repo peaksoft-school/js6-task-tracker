@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 
-const UserName = () => {
-   return <StyledUserName>Nazira Nazirova</StyledUserName>
+const UserName = ({ userName }) => {
+   return <StyledUserName>Nazira Nazirova{userName}</StyledUserName>
 }
 
 export default UserName
