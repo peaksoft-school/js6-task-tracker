@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import UserName from "./UserName"
-import arrowSvg from "../../assets/icons/arrow.svg"
 import png from "../../assets/images/Rectangle.png"
 import UserAvatar from "./UserAvatar"
 
