@@ -1,9 +1,10 @@
-import Input from "./Components/UI/Input"
+import React from "react"
+import DateTimePicker from "./Components/UI/DateTimePicker"
 
 function App() {
    return (
-      <div>
-         <Input label="Name" />
+      <div className="App">
+         <DateTimePicker />
       </div>
    )
 }
