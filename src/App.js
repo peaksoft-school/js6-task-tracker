@@ -1,11 +1,7 @@
-import Input from "./Components/UI/Input"
+import React from "react"
 
 function App() {
-   return (
-      <div>
-         <Input label="Name" />
-      </div>
-   )
+   return <div className="App">test</div>
 }
 
 export default App
