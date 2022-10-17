@@ -5,6 +5,7 @@ import boardsIcon from "../../assets/icons/boards.svg"
 import issues from "../../assets/icons/issues.svg"
 import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
+import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 
 export const Labels = [
    {
@@ -60,5 +61,23 @@ export const SideBarItems = [
       title: "Workspaces",
       icon: workspacesIcon,
       plusIcon,
+   },
+]
+
+export const Workspaces = [
+   {
+      title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+   {
+      title: "LMS",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+   {
+      title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
    },
 ]
