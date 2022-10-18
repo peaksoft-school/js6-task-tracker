@@ -38,26 +38,31 @@ export const Columns = [
 
 export const SideBarItems = [
    {
+      id: 1,
       title: "Boards",
       icon: boardsIcon,
       plusIcon,
       arrowDown,
    },
    {
+      id: 2,
       title: "All issues",
       icon: issues,
       amount: 267,
    },
    {
+      id: 3,
       title: "Participants",
       icon: peopleIcon,
       amount: 7,
    },
    {
+      id: 5,
       title: "Setting",
       icon: settingIcon,
    },
    {
+      id: 6,
       title: "Workspaces",
       icon: workspacesIcon,
       plusIcon,
@@ -66,17 +71,26 @@ export const SideBarItems = [
 
 export const Workspaces = [
    {
+      id: 1,
       title: "Accounting",
       icon: iconWorkspaces,
       arrowDown,
    },
    {
+      id: 2,
       title: "LMS",
       icon: iconWorkspaces,
       arrowDown,
    },
    {
+      id: 3,
       title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+   {
+      id: 4,
+      title: "LMS",
       icon: iconWorkspaces,
       arrowDown,
    },
