@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { SideBarItems, Workspaces } from "../utilits/constants/Constants"
-import IconButton from "./UI/IconButton"
+import SvgGenerator from "../Components/UI/SvgGenerator"
+import IconButton from "../Components/UI/IconButton"
 import arrowDown from "../assets/icons/arrowDown.svg"
 import showSideBarIcon from "../assets/icons/showSideBar.svg"
 import arrowRight from "../assets/icons/arrowRight.svg"
-import CustomIcons from "./UI/TaskCard/CustomIcons"
+import CustomIcons from "../Components/UI/TaskCard/CustomIcons"
 import BlueIconWorkspaces from "../assets/icons/BlueIconWorkspaces.svg"
 
 const SideBar = ({ nameWorkspaces }) => {
@@ -41,34 +42,46 @@ const SideBar = ({ nameWorkspaces }) => {
          <ul>
             {SideBarItems.map((item, index) => {
                return (
-                  <li key={item.id}>
-                     <SideBarItem
+                  <SideBarItem stateSideBar={showSideBar} key={item.id}>
+                     <SideBarTitleBlock
                         onClick={() => onClickSideBarItem(index)}
                         active={activeIndex === index}
                      >
-                        <CustomIcons src={item.icon} />
+                        <SvgGenerator
+                           id={item.id}
+                           activeColor={activeIndex === index}
+                        />
                         {showSideBar ? (
                            <Title>
                               <span>{item.title}</span>
-                              {item.plusIcon && (
-                                 <CustomIcons src={item.plusIcon} />
+                              {item.id === 1 && (
+                                 <SvgGenerator
+                                    activeColor={activeIndex === index}
+                                    id="plus"
+                                 />
                               )}
-                              {item.arrowDown && (
-                                 <CustomIcons src={item.arrowDown} />
+                              {item.id === 1 && (
+                                 <SvgGenerator
+                                    activeColor={activeIndex === index}
+                                    id="arrowDown"
+                                 />
                               )}
                               {item.amount && <span>({item.amount})</span>}
                            </Title>
                         ) : (
                            ""
                         )}
-                     </SideBarItem>
-                  </li>
+                     </SideBarTitleBlock>
+                  </SideBarItem>
                )
             })}
             {Workspaces.map((item) => {
                return (
-                  <li key={item.id}>
-                     <SideBarItem>
+                  <SideBarItem stateSideBar={showSideBar} key={item.id}>
+                     <SideBarTitleBlock
+                        stateSideBar={showSideBar}
+                        workspacesHover
+                     >
                         <CustomIcons src={item.icon} />
                         {showSideBar ? (
                            <Title>
@@ -79,8 +92,8 @@ const SideBar = ({ nameWorkspaces }) => {
                         ) : (
                            ""
                         )}
-                     </SideBarItem>
-                  </li>
+                     </SideBarTitleBlock>
+                  </SideBarItem>
                )
             })}
             <ShowMoreText>
@@ -98,14 +111,9 @@ const StyledContainerSideBar = styled.div`
    display: flex;
    flex-direction: column;
    width: ${(props) => (props.stateSideBar ? "190px" : "60px")};
-   transition: 0.1s;
    background-color: white;
    height: 800px;
-   p {
-      width: 130px;
-      font-size: 18px;
-      margin-left: 15px;
-   }
+   transition: transform 0.35s ease-in-out;
    ul {
       padding: 0;
       display: flex;
@@ -114,89 +122,105 @@ const StyledContainerSideBar = styled.div`
       height: 500px;
       position: relative;
       padding-left: 20px;
-      img {
-         width: 25px;
-         height: 25px;
-      }
    }
-   li {
-      display: flex;
-      width: 100%;
-      justify-content: center;
-      text-align: center;
-      list-style: none;
-      align-items: center;
-      cursor: pointer;
-      span {
-         text-align: start;
-         margin-left: 10px;
-      }
-      &:first-child {
-         border-top: 2px solid #e0e0e0;
-         padding-top: 15px;
-      }
-      &:nth-child(2) {
-         margin-top: 20px;
-         border-top: 2px solid #e0e0e0;
-         padding-top: 15px;
-      }
-      &:nth-child(4) {
-         margin-bottom: 20px;
-         border-bottom: 2px solid #e0e0e0;
-         padding-bottom: 15px;
-      }
-      &:last-child {
-         margin: 15px 0 8px 0;
-      }
+   img {
+      width: 25px;
+      height: 25px;
    }
 `
+
 const HeaderSideBar = styled.div`
    width: 100%;
    height: 40px;
    display: flex;
    align-items: center;
+   justify-content: space-between;
+   p {
+      width: 60px;
+      font-size: 18px;
+      margin-left: 25px;
+      margin-right: 70px;
+   }
    img {
-      width: 25px;
-      height: 25px;
       margin-left: 32px;
-      &:nth-child(2) {
-         width: 26px;
-         height: 26px;
-      }
    }
 `
 
-const SideBarItem = styled.div`
+const SideBarItem = styled.li`
+   display: flex;
+   width: ${(props) => (props.stateSideBar ? "215px" : "55px")};
+   justify-content: center;
+   text-align: center;
+   list-style: none;
+   align-items: center;
+   cursor: pointer;
+   span {
+      text-align: start;
+      margin-left: 10px;
+   }
+   &:first-child {
+      border-top: 2px solid #e0e0e0;
+      padding-top: 15px;
+   }
+   &:nth-child(2) {
+      margin-top: 20px;
+      border-top: 2px solid #e0e0e0;
+      padding-top: 15px;
+   }
+   &:nth-child(4) {
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 15px;
+   }
+   &:last-child {
+      margin: 15px 0 8px 0;
+   }
+`
+
+const SideBarTitleBlock = styled.div`
    width: 100%;
    padding: 0 0 0 20px;
    margin-left: -36px;
    height: 37px;
    display: flex;
    justify-content: center;
-   align-items: center;
    transition: 0.2s;
+   align-items: center;
    background-color: ${(props) => props.active && "rgba(58, 104, 131, 0.6)"};
    color: ${(props) => (props.active ? "white" : "black")};
    border-top-right-radius: ${(props) => (props.active ? "20px" : "")};
    border-bottom-right-radius: ${(props) => (props.active ? "20px" : "")};
+   svg {
+      margin-top: 5px;
+   }
+   &:hover {
+      width: ${(props) =>
+         !props.stateSideBar && props.workspacesHover && "140px"};
+      background-color: ${(props) =>
+         !props.stateSideBar && props.workspacesHover && "#e2e8ea"};
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+   }
 `
 const Title = styled.div`
-   width: 140px;
+   width: 160px;
    height: 30px;
    display: flex;
    align-items: center;
-   justify-content: space-between;
+   span {
+      width: 155px;
+   }
 `
 const ShowMoreText = styled.span`
    display: flex;
    height: 30px;
    align-items: center;
-   margin-left: 5px;
+   margin-left: 3px;
    color: #909090;
 `
 
 const ShowSideBarButton = styled.img`
-   background-color: #e7e3e3;
+   background-color: #fcf9f9;
    padding: 7px;
    border-radius: 8px;
    cursor: pointer;

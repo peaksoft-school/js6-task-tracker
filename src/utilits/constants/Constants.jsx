@@ -1,8 +1,3 @@
-import peopleIcon from "../../assets/icons/peopleDark.svg"
-import settingIcon from "../../assets/icons/settings.svg"
-import workspacesIcon from "../../assets/icons/workspaces.svg"
-import boardsIcon from "../../assets/icons/boards.svg"
-import issues from "../../assets/icons/issues.svg"
 import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
@@ -40,31 +35,25 @@ export const SideBarItems = [
    {
       id: 1,
       title: "Boards",
-      icon: boardsIcon,
       plusIcon,
-      arrowDown,
    },
    {
       id: 2,
       title: "All issues",
-      icon: issues,
       amount: 267,
    },
    {
       id: 3,
       title: "Participants",
-      icon: peopleIcon,
       amount: 7,
    },
    {
       id: 5,
       title: "Setting",
-      icon: settingIcon,
    },
    {
       id: 6,
       title: "Workspaces",
-      icon: workspacesIcon,
       plusIcon,
    },
 ]
