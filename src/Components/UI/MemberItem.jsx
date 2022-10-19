@@ -3,8 +3,6 @@ import React from "react"
 import GrayButton from "./GrayButtons"
 import memberIcon from "../../assets/icons/MemberIcon.svg"
 import UserAvatar from "./UserAvatar"
-import UserName from "./UserName"
-import UserGmail from "./UserGmail"
 
 const MemberItem = ({ userGmail, photoUser, userName }) => {
    return (
@@ -15,8 +13,8 @@ const MemberItem = ({ userGmail, photoUser, userName }) => {
          <StyledMemberItem>
             <UserAvatar userAvatar={photoUser} />
             <div>
-               <UserName userName={userName} />
-               <UserGmail userGmail={userGmail} />
+               <p>{userName}Nazira</p>
+               <span>{userGmail}nazira@gmail.com</span>
             </div>
          </StyledMemberItem>
       </>
@@ -30,8 +28,16 @@ const StyledMemberItem = styled.div`
    align-items: center;
    width: 310px;
    height: 60px;
-   p,
-   h3 {
-      margin: 0 0 0 20px;
+   div {
+      height: 40px;
+      margin-left: 20px;
+      font-weight: 600;
+      font-size: 16px;
+      p {
+         margin: 0;
+      }
+      span {
+         color: gray;
+      }
    }
 `

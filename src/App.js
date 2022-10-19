@@ -1,12 +1,7 @@
 import React from "react"
-import MemberItem from "./Components/UI/MemberItem"
 
 function App() {
-   return (
-      <div className="App">
-         <MemberItem />
-      </div>
-   )
+   return <div className="App">Test</div>
 }
 
 export default App
