@@ -12,6 +12,7 @@ import BlueIconWorkspaces from "../assets/icons/BlueIconWorkspaces.svg"
 const SideBar = ({ nameWorkspaces }) => {
    const [activeIndex, setActiveIndex] = useState(0)
    const [showSideBar, setSideBar] = useState(true)
+   const [dropDown, setDropDown] = useState(false)
 
    const onClickSideBarItem = (index) => {
       setActiveIndex(index)
@@ -20,6 +21,8 @@ const SideBar = ({ nameWorkspaces }) => {
    const showSideBarHandler = () => {
       setSideBar(!showSideBar)
    }
+
+   console.log(dropDown)
 
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
@@ -77,25 +80,29 @@ const SideBar = ({ nameWorkspaces }) => {
             })}
             {Workspaces.map((item) => {
                return (
-                  <SideBarItem stateSideBar={showSideBar} key={item.id}>
+                  <SideBarItem
+                     onMouseEnter={() => setDropDown(true)}
+                     stateSideBar={showSideBar}
+                     key={item.id}
+                  >
                      <SideBarTitleBlock
                         stateSideBar={showSideBar}
                         workspacesHover
                      >
                         <CustomIcons src={item.icon} />
-                        {showSideBar ? (
+                        {showSideBar && (
                            <Title>
                               <span>{item.title}</span>
 
                               <CustomIcons src={item.arrowDown} />
                            </Title>
-                        ) : (
-                           ""
                         )}
+                        <Accounting>test</Accounting>
                      </SideBarTitleBlock>
                   </SideBarItem>
                )
             })}
+
             <ShowMoreText>
                <IconButton iconSvg={arrowDown} />
                {showSideBar && "Show More"}
@@ -225,4 +232,11 @@ const ShowSideBarButton = styled.img`
    border-radius: 8px;
    cursor: pointer;
    margin-left: 27px;
+`
+const Accounting = styled.div`
+   width: 230px;
+   height: 100px;
+   border: 1px solid black;
+   position: absolute;
+   left: 220px;
 `
