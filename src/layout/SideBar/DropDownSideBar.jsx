@@ -15,7 +15,7 @@ const DropDownSideBar = ({
          <DropDownBlock onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             {SubMenuItems.map((item) => {
                return (
-                  <li onClick={() => onClickSubMenuItems}>
+                  <li key={item.title} onClick={() => onClickSubMenuItems}>
                      <SvgGenerator color="white" id={item.iconId} />
                      <span>{item.title}</span>
                      <SvgGenerator color="white" id={item.iconPlus} />

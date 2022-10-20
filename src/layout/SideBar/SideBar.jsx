@@ -257,7 +257,7 @@ const ShowMoreText = styled.span`
    color: #909090;
 `
 const ShowSideBarButton = styled.img`
-   background-color: #fcf9f9;
+   background-color: #f8f8f8;
    padding: 7px;
    border-radius: 8px;
    cursor: pointer;
