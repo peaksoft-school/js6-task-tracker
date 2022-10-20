@@ -84,3 +84,21 @@ export const Workspaces = [
       arrowDown,
    },
 ]
+
+export const SubMenuItems = [
+   {
+      iconId: 1,
+      title: "Boards",
+      iconPlus: "plus",
+      iconArrowDown: "arrowDown",
+   },
+   {
+      iconId: 3,
+      title: "Paricipants",
+      amount: 7,
+   },
+   {
+      iconId: 5,
+      title: "Setting",
+   },
+]

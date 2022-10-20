@@ -1,9 +1,18 @@
 import React from "react"
 import styled from "styled-components"
 
-const CustomIcons = ({ position, src, top, right, edit, click }) => {
+const CustomIcons = ({
+   position,
+   src,
+   top,
+   right,
+   edit,
+   click,
+   onMouseEnter,
+}) => {
    return (
       <StyledCustomIcon
+         onMouseEnter={onMouseEnter}
          onClick={click}
          src={src}
          position={position}

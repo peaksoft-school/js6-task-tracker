@@ -1,18 +1,24 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { SideBarItems, Workspaces } from "../utilits/constants/Constants"
-import SvgGenerator from "../Components/UI/SvgGenerator"
-import IconButton from "../Components/UI/IconButton"
-import arrowDown from "../assets/icons/arrowDown.svg"
-import showSideBarIcon from "../assets/icons/showSideBar.svg"
-import arrowRight from "../assets/icons/arrowRight.svg"
-import CustomIcons from "../Components/UI/TaskCard/CustomIcons"
-import BlueIconWorkspaces from "../assets/icons/BlueIconWorkspaces.svg"
+import { SideBarItems, Workspaces } from "../../utilits/constants/Constants"
+import SvgGenerator from "../../Components/UI/SvgGenerator"
+import IconButton from "../../Components/UI/IconButton"
+import arrowDown from "../../assets/icons/arrowDown.svg"
+import showSideBarIcon from "../../assets/icons/showSideBar.svg"
+import arrowRight from "../../assets/icons/arrowRight.svg"
+import CustomIcons from "../../Components/UI/TaskCard/CustomIcons"
+import BlueIconWorkspaces from "../../assets/icons/BlueIconWorkspaces.svg"
+import SubMenu from "./SubMenu"
+import DropDownSideBar from "./DropDownSideBar"
 
 const SideBar = ({ nameWorkspaces }) => {
    const [activeIndex, setActiveIndex] = useState(0)
-   const [showSideBar, setSideBar] = useState(true)
-   const [dropDown, setDropDown] = useState(false)
+   const [showSideBar, setSideBar] = useState(false)
+   const [DropDown, setDropDown] = useState({
+      id: 0,
+      stateDropDown: true,
+   })
+   const [showSubMenu, setShowSubMenu] = useState(0)
 
    const onClickSideBarItem = (index) => {
       setActiveIndex(index)
@@ -22,7 +28,14 @@ const SideBar = ({ nameWorkspaces }) => {
       setSideBar(!showSideBar)
    }
 
-   console.log(dropDown)
+   const onMouseHandler = (id, state) => {
+      setTimeout(() => {
+         setDropDown({
+            id,
+            stateDropDown: state,
+         })
+      }, 120)
+   }
 
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
@@ -80,26 +93,52 @@ const SideBar = ({ nameWorkspaces }) => {
             })}
             {Workspaces.map((item) => {
                return (
-                  <SideBarItem
-                     onMouseEnter={() => setDropDown(true)}
+                  <WorkspacesItem
                      stateSideBar={showSideBar}
                      key={item.id}
+                     workspacesHover
                   >
                      <SideBarTitleBlock
                         stateSideBar={showSideBar}
                         workspacesHover
                      >
-                        <CustomIcons src={item.icon} />
+                        <CustomIcons
+                           onMouseEnter={() => onMouseHandler(item.id, true)}
+                           onMouse={() => onMouseHandler(item.id, false)}
+                           src={item.icon}
+                        />
                         {showSideBar && (
                            <Title>
                               <span>{item.title}</span>
 
-                              <CustomIcons src={item.arrowDown} />
+                              <CustomIcons
+                                 src={item.arrowDown}
+                                 click={() =>
+                                    setShowSubMenu(
+                                       showSubMenu === 0 ? item.id : 0
+                                    )
+                                 }
+                              />
                            </Title>
                         )}
-                        <Accounting>test</Accounting>
+                        {!showSideBar &&
+                           DropDown.id === item.id &&
+                           DropDown.stateDropDown && (
+                              <DropDownSideBar
+                                 state={DropDown.stateDropDown}
+                                 setStateDropDown={setDropDown}
+                                 nameWorkspaces={item.title}
+                                 onMouseEnter={() =>
+                                    onMouseHandler(item.id, true)
+                                 }
+                                 onMouseLeave={() =>
+                                    onMouseHandler(item.id, false)
+                                 }
+                              />
+                           )}
                      </SideBarTitleBlock>
-                  </SideBarItem>
+                     {showSideBar && showSubMenu === item.id && <SubMenu />}
+                  </WorkspacesItem>
                )
             })}
 
@@ -117,7 +156,7 @@ export default SideBar
 const StyledContainerSideBar = styled.div`
    display: flex;
    flex-direction: column;
-   width: ${(props) => (props.stateSideBar ? "190px" : "60px")};
+   width: ${(props) => (props.stateSideBar ? "250px" : "90px")};
    background-color: white;
    height: 800px;
    transition: transform 0.35s ease-in-out;
@@ -128,14 +167,12 @@ const StyledContainerSideBar = styled.div`
       width: 100%;
       height: 500px;
       position: relative;
-      padding-left: 20px;
    }
    img {
       width: 25px;
       height: 25px;
    }
 `
-
 const HeaderSideBar = styled.div`
    width: 100%;
    height: 40px;
@@ -149,13 +186,12 @@ const HeaderSideBar = styled.div`
       margin-right: 70px;
    }
    img {
-      margin-left: 32px;
+      margin-left: 33px;
    }
 `
-
 const SideBarItem = styled.li`
    display: flex;
-   width: ${(props) => (props.stateSideBar ? "215px" : "55px")};
+   width: ${(props) => (props.stateSideBar ? "100%" : "100%")};
    justify-content: center;
    text-align: center;
    list-style: none;
@@ -183,16 +219,16 @@ const SideBarItem = styled.li`
       margin: 15px 0 8px 0;
    }
 `
-
 const SideBarTitleBlock = styled.div`
    width: 100%;
-   padding: 0 0 0 20px;
-   margin-left: -36px;
+   padding: 0 0 0 30px;
+   margin-left: -8px;
    height: 37px;
    display: flex;
    justify-content: center;
    transition: 0.2s;
    align-items: center;
+   padding-right: 25px;
    background-color: ${(props) => props.active && "rgba(58, 104, 131, 0.6)"};
    color: ${(props) => (props.active ? "white" : "black")};
    border-top-right-radius: ${(props) => (props.active ? "20px" : "")};
@@ -200,13 +236,8 @@ const SideBarTitleBlock = styled.div`
    svg {
       margin-top: 5px;
    }
-   &:hover {
-      width: ${(props) =>
-         !props.stateSideBar && props.workspacesHover && "140px"};
-      background-color: ${(props) =>
-         !props.stateSideBar && props.workspacesHover && "#e2e8ea"};
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
+   img {
+      position: relative;
    }
 `
 const Title = styled.div`
@@ -222,21 +253,37 @@ const ShowMoreText = styled.span`
    display: flex;
    height: 30px;
    align-items: center;
-   margin-left: 3px;
+   margin-left: 24px;
    color: #909090;
 `
-
 const ShowSideBarButton = styled.img`
    background-color: #fcf9f9;
    padding: 7px;
    border-radius: 8px;
    cursor: pointer;
-   margin-left: 27px;
+   margin-left: 20px;
 `
-const Accounting = styled.div`
-   width: 230px;
-   height: 100px;
-   border: 1px solid black;
-   position: absolute;
-   left: 220px;
+const WorkspacesItem = styled.div`
+   display: flex;
+   flex-wrap: wrap;
+   width: 100%;
+   justify-content: center;
+   cursor: pointer;
+   margin-left: -8px;
+   padding-right: 9px;
+   position: relative;
+   &:hover {
+      transition: 0.3s;
+      background-color: ${(props) =>
+         !props.stateSideBar && props.workspacesHover && "#e2e8ea"} !important;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+   }
+   span {
+      text-align: start;
+      margin-left: 10px;
+   }
+   img {
+      margin-left: 15px;
+   }
 `

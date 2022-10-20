@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-const SvgGenerator = ({ id, activeColor }) => {
+const SvgGenerator = ({ id, activeColor, color }) => {
    let svg
    if (id === 1) {
       svg = (
@@ -183,7 +183,11 @@ const SvgGenerator = ({ id, activeColor }) => {
          </svg>
       )
    }
-   return <Icon activeColor={activeColor}>{svg}</Icon>
+   return (
+      <Icon color={color} activeColor={activeColor}>
+         {svg}
+      </Icon>
+   )
 }
 
 export default SvgGenerator
@@ -192,12 +196,15 @@ const Icon = styled.div`
    svg {
       path {
          fill: ${(props) => (props.activeColor ? "white" : "#919191")};
+         fill: ${(props) => props.color && "white"};
       }
       rect {
          fill: ${(props) => (props.activeColor ? "white" : "#919191")};
+         fill: ${(props) => props.color && "white"};
       }
       line {
          stroke: ${(props) => (props.activeColor ? "#3A688399" : "white")};
+         stroke: ${(props) => props.color && "white"};
       }
    }
 `
