@@ -1,37 +1,53 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { SelectIcon } from "../../assets/icons/index"
+import { SelectIconOpen, SelectIconClose } from "../../assets/icons/index"
 
-function ReminderSelect({ selected, setSelected, options }) {
+function ReminderSelect({ selected, setSelected, label, options }) {
    const [isActive, setIsActive] = useState(false)
 
+   function handleListOnOff() {
+      setIsActive((prevState) => !prevState)
+   }
    return (
-      <DropDown>
-         <DropBtn onClick={() => setIsActive(!isActive)}>
-            {selected}
-            <div>
-               <SelectIcon />
-            </div>
-         </DropBtn>
-         {isActive && (
-            <DropDownContent>
-               {options.map((option) => (
-                  <SelectItems
-                     onClick={() => {
-                        setSelected(option)
-                        setIsActive(false)
-                     }}
-                  >
-                     {option}
-                  </SelectItems>
-               ))}
-            </DropDownContent>
-         )}
-      </DropDown>
+      <div>
+         <TitleSelect>{label}</TitleSelect>
+         <DropDown>
+            <DropBtn onClick={() => setIsActive(!isActive)}>
+               {selected}
+               <div onClick={() => handleListOnOff()}>
+                  {isActive ? <SelectIconClose /> : <SelectIconOpen />}
+               </div>
+            </DropBtn>
+            {isActive && (
+               <DropDownContent>
+                  {options.map((option) => (
+                     <SelectItems
+                        onClick={() => {
+                           setSelected(option)
+                           setIsActive(false)
+                        }}
+                     >
+                        {option}
+                     </SelectItems>
+                  ))}
+               </DropDownContent>
+            )}
+         </DropDown>
+      </div>
    )
 }
 
 export default ReminderSelect
+
+const TitleSelect = styled.label`
+   padding: 0 3px;
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 18px;
+
+   color: #919191;
+`
 
 const DropDown = styled.div`
    position: relative;
@@ -71,7 +87,7 @@ const DropDownContent = styled.div`
    border-top-right-radius: 0;
    overflow-y: auto;
    &::-webkit-scrollbar {
-      width: 26px;
+      width: 28px;
    }
    &::-webkit-scrollbar-track {
       background: transparent;
@@ -79,7 +95,7 @@ const DropDownContent = styled.div`
    &::-webkit-scrollbar-thumb {
       background-color: #d9d9d9;
       border-radius: 16px;
-      border: 9px solid white;
+      border: 10px solid white;
    }
 `
 
@@ -89,9 +105,6 @@ const SelectItems = styled.div`
    width: 100%;
    height: 36px;
    :hover {
-      background: #f2f2f2;
-   }
-   :focus {
       background: #f2f2f2;
    }
 `
