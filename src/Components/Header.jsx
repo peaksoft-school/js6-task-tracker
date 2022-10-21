@@ -5,10 +5,10 @@ import TaskTracker from "../assets/svg/TaskTracker.svg"
 import arrow from "../assets/svg/arrow.svg"
 import Input from "./UI/Input"
 import { ReactComponent as SearchIcon } from "../assets/svg/SearchIcon.svg"
-import Notification from "../assets/svg/NotificationIcon.svg"
+import NotificationIcon from "../assets/svg/NotificationIcon.svg"
 import Avatar from "./UI/Avatar"
 
-function Header({ props }) {
+function Header({ items, Notifications }) {
    return (
       <ParentDiv>
          <div>
@@ -16,7 +16,7 @@ function Header({ props }) {
          </div>
          <div>
             <Ptext>
-               Favourites ({props}) <img src={arrow} alt="" />
+               Favourites ({items}) <img src={arrow} alt="" />
             </Ptext>
          </div>
          <ContainerInput>
@@ -32,8 +32,8 @@ function Header({ props }) {
             />
          </ContainerInput>
          <NotificationIconContainer>
-            <img src={Notification} alt="" />
-            {[].length !== 0 && <span>{[].length}</span>}
+            <img src={NotificationIcon} alt="" />
+            <span>{Notifications}</span>
          </NotificationIconContainer>
          <ContainerAvatar>
             <Avatar />
