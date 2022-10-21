@@ -7,7 +7,8 @@ const SubMenu = ({ nameWorkspaces }) => {
       <ContainerSubMenu>
          {nameWorkspaces}
          <li>
-            <SvgGenerator id={1} /> <span>Boards</span>
+            <SvgGenerator id={1} />
+            <span>Boards</span>
          </li>
          <li>
             <SvgGenerator id={3} />
