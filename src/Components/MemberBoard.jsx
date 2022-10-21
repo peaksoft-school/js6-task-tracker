@@ -10,13 +10,48 @@ function MemberBoard({ memberedItems, titleBoard, discription, boardIcon }) {
                <span>{memberedItems}8</span>
             </div>
          </Container>
-         <div>
+         <BoardContainer>
             <Board>
                <img src={boardIcon} alt="" />
                <p>{titleBoard}</p>
                <span>{discription}</span>
             </Board>
-         </div>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+            <Board>
+               <img src={boardIcon} alt="" />
+               <p>{titleBoard}</p>
+               <span>{discription}</span>
+            </Board>
+         </BoardContainer>
       </>
    )
 }
@@ -52,20 +87,23 @@ const Board = styled.div`
    width: 146px;
    height: 66px;
    display: flex;
+   position: relative;
+   top: 16px;
+   padding-bottom: 16px;
    p {
       font-size: 18px;
       color: black;
       position: absolute;
-      left: 90px;
-      top: 18px;
+      left: 80px;
+      bottom: 30px;
       font-weight: 500;
    }
    span {
       font-size: 16px;
       color: gray;
       position: absolute;
-      left: 90px;
-      top: 60px;
+      left: 80px;
+      top: 35px;
    }
    img {
       display: flex;
@@ -77,4 +115,11 @@ const Board = styled.div`
       background: #0079bf;
       border-radius: 10px;
    }
+`
+const BoardContainer = styled.div`
+   height: 330px;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   padding-right: 249px;
 `
