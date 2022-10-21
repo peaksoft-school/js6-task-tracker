@@ -21,6 +21,7 @@ const SideBar = ({ nameWorkspaces }) => {
    const [showSubMenu, setShowSubMenu] = useState(0)
 
    const onClickSideBarItem = (index) => {
+      console.log(index)
       setActiveIndex(index)
    }
 
@@ -94,6 +95,9 @@ const SideBar = ({ nameWorkspaces }) => {
             {Workspaces.map((item) => {
                return (
                   <WorkspacesItem
+                     onClick={() =>
+                        setShowSubMenu(showSubMenu === 0 ? item.id : 0)
+                     }
                      stateSideBar={showSideBar}
                      key={item.id}
                      workspacesHover
@@ -111,14 +115,7 @@ const SideBar = ({ nameWorkspaces }) => {
                            <Title>
                               <span>{item.title}</span>
 
-                              <CustomIcons
-                                 src={item.arrowDown}
-                                 click={() =>
-                                    setShowSubMenu(
-                                       showSubMenu === 0 ? item.id : 0
-                                    )
-                                 }
-                              />
+                              <CustomIcons src={item.arrowDown} />
                            </Title>
                         )}
                         {!showSideBar &&
