@@ -161,7 +161,7 @@ const StyledContainerSideBar = styled.div`
    width: ${(props) => (props.stateSideBar ? "250px" : "90px")};
    background-color: white;
    height: 800px;
-   transition: transform 0.35s ease-in-out;
+   transition: all 0.35s ease-out;
    ul {
       padding: 0;
       display: flex;
