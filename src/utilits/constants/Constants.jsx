@@ -1,3 +1,7 @@
+import plusIcon from "../../assets/icons/plus.svg"
+import arrowDown from "../../assets/icons/arrowDown.svg"
+import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
+
 export const Labels = [
    {
       id: 0,
@@ -24,5 +28,77 @@ export const Labels = [
 export const Columns = [
    {
       titleColumn: "Придумать что-то чтобы измениь мир",
+   },
+]
+
+export const SideBarItems = [
+   {
+      id: 1,
+      title: "Boards",
+      plusIcon,
+   },
+   {
+      id: 2,
+      title: "All issues",
+      amount: 267,
+   },
+   {
+      id: 3,
+      title: "Participants",
+      amount: 7,
+   },
+   {
+      id: 5,
+      title: "Setting",
+   },
+   {
+      id: 6,
+      title: "Workspaces",
+      plusIcon,
+   },
+]
+
+export const Workspaces = [
+   {
+      id: 1,
+      title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+   {
+      id: 2,
+      title: "LMS",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+   {
+      id: 3,
+      title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+   {
+      id: 4,
+      title: "LMS",
+      icon: iconWorkspaces,
+      arrowDown,
+   },
+]
+
+export const SubMenuItems = [
+   {
+      iconId: 1,
+      title: "Boards",
+      iconPlus: "plus",
+      iconArrowDown: "arrowDown",
+   },
+   {
+      iconId: 3,
+      title: "Paricipants",
+      amount: 7,
+   },
+   {
+      iconId: 5,
+      title: "Setting",
    },
 ]
