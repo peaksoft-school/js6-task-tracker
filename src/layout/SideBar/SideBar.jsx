@@ -29,6 +29,7 @@ const SideBar = ({ nameWorkspaces }) => {
 
    const onClickSideBarItem = (index) => {
       setActiveIndex(index)
+      setShowSubMenu({})
    }
 
    const showSideBarHandler = () => {
@@ -44,17 +45,52 @@ const SideBar = ({ nameWorkspaces }) => {
       }, 120)
    }
 
+   const renderHeaderSideBar = () =>
+      showSideBar ? (
+         <>
+            <IconButton iconSvg={arrowRight} />
+            <p>{nameWorkspaces}LMS</p>
+         </>
+      ) : (
+         <CustomIcons src={BlueIconWorkspaces} />
+      )
+
+   const renderSVGs = (item, index) =>
+      item.id === 1 && (
+         <>
+            <SvgGenerator activeColor={activeIndex === index} id="plus" />
+            <SvgGenerator activeColor={activeIndex === index} id="arrowDown" />
+         </>
+      )
+
+   const renderSideBar = (item) => {
+      if (showSideBar) {
+         return (
+            <Title onClick={showSubMenuHandler(item)}>
+               <span>{item.title}</span>
+               <CustomIcons src={item.arrowDown} />
+            </Title>
+         )
+      }
+      if (!showSideBar && DropDown.id === item.id && DropDown.stateDropDown) {
+         return (
+            <DropDownSideBar
+               state={DropDown.stateDropDown}
+               setStateDropDown={setDropDown}
+               nameWorkspaces={item.title}
+               onMouseEnter={() => onMouseHandler(item.id, true)}
+               onMouseLeave={() => onMouseHandler(item.id, false)}
+            />
+         )
+      }
+
+      return null
+   }
+
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
          <HeaderSideBar>
-            {showSideBar ? (
-               <>
-                  <IconButton iconSvg={arrowRight} />
-                  <p>{nameWorkspaces}LMS</p>
-               </>
-            ) : (
-               <CustomIcons src={BlueIconWorkspaces} />
-            )}
+            {renderHeaderSideBar()}
             <ShowSideBarButton
                onClick={showSideBarHandler}
                src={showSideBarIcon}
@@ -77,23 +113,10 @@ const SideBar = ({ nameWorkspaces }) => {
                         {showSideBar ? (
                            <Title>
                               <span>{item.title}</span>
-                              {item.id === 1 && (
-                                 <SvgGenerator
-                                    activeColor={activeIndex === index}
-                                    id="plus"
-                                 />
-                              )}
-                              {item.id === 1 && (
-                                 <SvgGenerator
-                                    activeColor={activeIndex === index}
-                                    id="arrowDown"
-                                 />
-                              )}
+                              {renderSVGs(item, index)}
                               {item.amount && <span>({item.amount})</span>}
                            </Title>
-                        ) : (
-                           ""
-                        )}
+                        ) : null}
                      </SideBarTitleBlock>
                   </SideBarItem>
                )
@@ -114,28 +137,7 @@ const SideBar = ({ nameWorkspaces }) => {
                            onMouse={() => onMouseHandler(item.id, false)}
                            src={item.icon}
                         />
-                        {showSideBar && (
-                           <Title onClick={showSubMenuHandler(item)}>
-                              <span>{item.title}</span>
-
-                              <CustomIcons src={item.arrowDown} />
-                           </Title>
-                        )}
-                        {!showSideBar &&
-                           DropDown.id === item.id &&
-                           DropDown.stateDropDown && (
-                              <DropDownSideBar
-                                 state={DropDown.stateDropDown}
-                                 setStateDropDown={setDropDown}
-                                 nameWorkspaces={item.title}
-                                 onMouseEnter={() =>
-                                    onMouseHandler(item.id, true)
-                                 }
-                                 onMouseLeave={() =>
-                                    onMouseHandler(item.id, false)
-                                 }
-                              />
-                           )}
+                        {renderSideBar(item)}
                      </SideBarTitleBlock>
                      {showSideBar && showSubMenu[item.id] && <SubMenu />}
                   </WorkspacesItem>
