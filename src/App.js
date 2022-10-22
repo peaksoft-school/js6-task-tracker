@@ -1,11 +1,10 @@
 import React from "react"
-import MemberBoard from "./Components/MemberBoard"
-import Ava from "./assets/svg/Frame 15 (1).svg"
+import CreateBoard from "./Components/UI/CreateBoard"
 
 function App() {
    return (
       <div className="App">
-         <MemberBoard titleBoard="LMS" discription="System" boardIcon={Ava} />
+         <CreateBoard />
       </div>
    )
 }
