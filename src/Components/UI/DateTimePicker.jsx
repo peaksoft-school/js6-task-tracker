@@ -14,14 +14,12 @@ export default function DateTimePicker({ getDateTimeValue }) {
    const [value, setValue] = React.useState(dayjs("2022-04-07"))
    const [timeValue, setTimeValue] = React.useState("")
    const [dueDate, setDueDate] = React.useState(dayjs("2022-04-07"))
-   const [startDate, setStartDate] = React.useState(dayjs("2022-04-07"))
+   const [startDate, setStartDate] = React.useState(dayjs("2022-04-08"))
    const [reminder, setRemainder] = React.useState("None")
-   const dueDatefocusHandler = () => {
-      setDueDate(value)
-   }
-   const startDateFocusHandler = () => {
-      setStartDate(value)
-   }
+   const startDateRef = React.useRef()
+   const dueDateRef = React.useRef()
+   const timeValueRef = React.useRef()
+
    const reminderChangeHandler = (event) => {
       setRemainder(event.target.value)
    }
@@ -34,6 +32,21 @@ export default function DateTimePicker({ getDateTimeValue }) {
       }
       getDateTimeValue(dateData)
    }
+   const calendarChangeHandler = (newValue) => {
+      if (value !== startDate) {
+         setValue(newValue)
+         setStartDate(newValue)
+         dueDateRef.current.focus()
+      } else {
+         setValue(newValue)
+         setDueDate(newValue)
+         timeValueRef.current.focus()
+      }
+   }
+
+   React.useEffect(() => {
+      startDateRef.current.focus()
+   }, [])
    return (
       <DateStyeled>
          <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -41,31 +54,32 @@ export default function DateTimePicker({ getDateTimeValue }) {
                displayStaticWrapperAs="desktop"
                label="Week picker"
                value={value}
-               onChange={(newValue) => {
-                  setValue(newValue)
-               }}
+               onChange={(newValue) => calendarChangeHandler(newValue)}
                renderInput={(params) => <TextField {...params} />}
                inputFormat="‘Week of’ MMM d"
             />
          </LocalizationProvider>
          <label htmlFor="startDate">Start date</label>
          <input
+            ref={startDateRef}
             type="text"
             name="startDate"
             value={startDate.$d.toLocaleDateString()}
-            onFocus={startDateFocusHandler}
+            // onFocus={startDateFocusHandler}
             readOnly
          />
          <label htmlFor="dueDate">Due date</label>
          <DueDateBlock>
             <input
+               ref={dueDateRef}
                type="text"
                name="dueDate"
                value={dueDate.$d.toLocaleDateString()}
-               onFocus={dueDatefocusHandler}
+               // onFocus={dueDatefocusHandler}
                readOnly
             />
             <Time
+               ref={timeValueRef}
                type="time"
                onChange={(newValue) => {
                   setTimeValue(newValue)
@@ -113,6 +127,10 @@ const DateStyeled = styled.div`
       font-weight: 600;
       font-size: 16px;
       font-family: "Nunito", sans-serif;
+      outline: none;
+      &:focus {
+         border: 2px solid #1976d2;
+      }
    }
 `
 const Calendar = styled(StaticDatePicker)`
