@@ -1,12 +1,7 @@
 import React from "react"
-import Sidebar from "./layout/SideBar/SideBar"
 
 function App() {
-   return (
-      <div className="App">
-         <Sidebar />
-      </div>
-   )
+   return <div className="App">Test</div>
 }
 
 export default App
