@@ -10,6 +10,7 @@ import CustomIcons from "../../Components/UI/TaskCard/CustomIcons"
 import BlueIconWorkspaces from "../../assets/icons/BlueIconWorkspaces.svg"
 import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
+import SubMenuBoards from "./SubMenuBoards"
 
 const SideBar = ({ nameWorkspaces }) => {
    const [activeIndex, setActiveIndex] = useState(0)
@@ -19,11 +20,20 @@ const SideBar = ({ nameWorkspaces }) => {
       stateDropDown: true,
    })
    const [showSubMenu, setShowSubMenu] = useState({})
-
+   const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
    const showSubMenuHandler = (item) => {
       return () => {
          setActiveIndex(null)
+         setShowSubMenuBoards({})
          setShowSubMenu((prevState) => ({ [item.id]: !prevState[item.id] }))
+      }
+   }
+   const showSubMenuBoardsHandler = (item) => {
+      return () => {
+         setShowSubMenu({})
+         setShowSubMenuBoards((prevState) => ({
+            [item.id]: !prevState[item.id],
+         }))
       }
    }
 
@@ -59,16 +69,22 @@ const SideBar = ({ nameWorkspaces }) => {
       item.id === 1 && (
          <>
             <SvgGenerator activeColor={activeIndex === index} id="plus" />
-            <SvgGenerator activeColor={activeIndex === index} id="arrowDown" />
+            <SvgGenerator
+               click={showSubMenuBoardsHandler(item)}
+               activeColor={activeIndex === index}
+               id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
+            />
          </>
       )
 
    const renderSideBar = (item) => {
       if (showSideBar) {
          return (
-            <Title onClick={showSubMenuHandler(item)}>
+            <Title>
                <span>{item.title}</span>
-               <CustomIcons src={item.arrowDown} />
+               <CustomIcons
+                  src={showSubMenu[item.id] ? item.arrowUp : item.arrowDown}
+               />
             </Title>
          )
       }
@@ -118,6 +134,9 @@ const SideBar = ({ nameWorkspaces }) => {
                            </Title>
                         ) : null}
                      </SideBarTitleBlock>
+                     {activeIndex === 0 &&
+                        showSideBar &&
+                        showSubMenuBoards[item.id] && <SubMenuBoards />}
                   </SideBarItem>
                )
             })}
@@ -129,6 +148,7 @@ const SideBar = ({ nameWorkspaces }) => {
                      workspacesHover
                   >
                      <SideBarTitleBlock
+                        onClick={showSubMenuHandler(item)}
                         stateSideBar={showSideBar}
                         workspacesHover
                      >
@@ -167,7 +187,6 @@ const StyledContainerSideBar = styled.div`
       display: flex;
       flex-direction: column;
       width: 100%;
-      height: 500px;
       position: relative;
    }
    img {
@@ -206,6 +225,7 @@ const SideBarItem = styled.li`
    &:first-child {
       border-top: 2px solid #e0e0e0;
       padding-top: 15px;
+      flex-direction: column;
    }
    &:nth-child(2) {
       margin-top: 20px;
