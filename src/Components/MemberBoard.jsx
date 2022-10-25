@@ -16,41 +16,6 @@ function MemberBoard({ memberedItems, titleBoard, discription, boardIcon }) {
                <p>{titleBoard}</p>
                <span>{discription}</span>
             </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
          </BoardContainer>
       </>
    )
