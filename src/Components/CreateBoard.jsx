@@ -3,7 +3,7 @@ import styled from "styled-components"
 import Board1 from "../assets/svg/Board.svg"
 import Board2 from "../assets/svg/Board2.svg"
 import Board3 from "../assets/svg/Board3.svg"
-// import Galochka from "../assets/svg/Galochka.svg"
+import Galochka from "../assets/svg/Galochka.svg"
 
 function CreateBoard() {
    const [boardActive, setBoardActive] = useState(false)
@@ -11,10 +11,14 @@ function CreateBoard() {
    const showBoard = () => {
       setBoardActive(!boardActive)
    }
-
    const ChooseColor = () => {
-      setChoose(Choose)
+      setChoose(!Choose)
    }
+   let svg
+   if (Choose === true) {
+      svg = <img src={Galochka} alt="galochka" />
+   }
+
    return (
       <div>
          <Button onClick={showBoard} type="button">
@@ -43,29 +47,49 @@ function CreateBoard() {
 
                   <Colors>
                      <span
+                        id={1}
                         onClick={ChooseColor}
                         style={{ background: "#CBCBCB" }}
-                     />
+                     >
+                        {svg}
+                     </span>
+
                      <span
+                        id={2}
                         onClick={ChooseColor}
                         style={{ background: "#B04632" }}
-                     />
+                     >
+                        {svg}
+                     </span>
                      <span
+                        id={3}
                         onClick={ChooseColor}
                         style={{ background: "#385f38" }}
-                     />
+                     >
+                        {svg}
+                     </span>
+
                      <span
+                        id={4}
                         onClick={ChooseColor}
                         style={{ background: "#D29034" }}
-                     />
+                     >
+                        {svg}
+                     </span>
                      <span
+                        id={5}
                         onClick={ChooseColor}
                         style={{ background: "#89609E" }}
-                     />
+                     >
+                        {svg}
+                     </span>
                      <span
+                        id={6}
                         onClick={ChooseColor}
                         style={{ background: "#005C92" }}
-                     />
+                     >
+                        {svg}
+                     </span>
                   </Colors>
                   <BtnContainer>
                      <button type="button">Cancel</button>

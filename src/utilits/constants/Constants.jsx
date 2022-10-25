@@ -26,3 +26,26 @@ export const Columns = [
       titleColumn: "Придумать что-то чтобы измениь мир",
    },
 ]
+
+// export const BoardColors = [
+//    {
+//       id: 0,
+//       color: "#B04632",
+//    },
+//    {
+//       id: 1,
+//       color: "#385f38",
+//    },
+//    {
+//       id: 2,
+//       color: "#D29034",
+//    },
+//    {
+//       id: 3,
+//       color: "#89609E",
+//    },
+//    {
+//       id: 4,
+//       color: "#005C92",
+//    },
+// ]
