@@ -48,6 +48,9 @@ const SideBar = ({ nameWorkspaces }) => {
    }
 
    const onMouseOverHandler = (id) => {
+      if (showSideBar) {
+         return
+      }
       setTimeout(() => {
          setDropDown({
             id,
