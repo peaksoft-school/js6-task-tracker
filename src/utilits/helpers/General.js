@@ -3,6 +3,7 @@ export const LocalStorage = {
       return localStorage.setItem(key, JSON.stringify(value))
    },
    getData(key) {
+      console.log(key)
       return JSON.parse(localStorage.getItem(key))
    },
    clearData() {

@@ -4,8 +4,15 @@ import { styled } from "@mui/material/styles"
 import TextField from "@mui/material/TextField"
 
 const CssTextField = styled(TextField)({
+   "& .MuiInputBase-input": {
+      width: "290px",
+      height: "5px",
+   },
    "& label.Mui-focused": {
       color: "#919191",
+   },
+   "& label": {
+      fontSize: "16px",
    },
    "& .MuiInput-underline:after": {
       borderBottomColor: "green",
@@ -26,13 +33,6 @@ const CssTextField = styled(TextField)({
    },
 })
 
-export default function Input({ label, type, ...other }) {
-   return (
-      <CssTextField
-         {...other}
-         label={label}
-         type={type}
-         id="custom-css-outlined-input"
-      />
-   )
+export default function Input({ label, type, id, ...other }) {
+   return <CssTextField {...other} label={label} type={type} id={id} />
 }

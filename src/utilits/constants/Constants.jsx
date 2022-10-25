@@ -103,4 +103,4 @@ export const SubMenuItems = [
    },
 ]
 
-export const LOCAL_STORAGE_USER_KEY = "TASK-TRACKER-USER-KEY"
+export const USER_KEY = "TASK-TRACKER-USER-KEY"
