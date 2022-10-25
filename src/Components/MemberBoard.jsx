@@ -1,5 +1,5 @@
-import React from "react"
 import styled from "styled-components"
+import { BoardMap } from "../utilits/constants/general"
 
 function MemberBoard({ memberedItems, titleBoard, discription, boardIcon }) {
    return (
@@ -11,46 +11,13 @@ function MemberBoard({ memberedItems, titleBoard, discription, boardIcon }) {
             </div>
          </Container>
          <BoardContainer>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
+            {BoardMap.map(() => (
+               <Board>
+                  <img src={boardIcon} alt="" />
+                  <p>{titleBoard}</p>
+                  <span>{discription}</span>
+               </Board>
+            ))}
          </BoardContainer>
       </>
    )
