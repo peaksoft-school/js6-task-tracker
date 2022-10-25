@@ -18,6 +18,7 @@ const SideBar = ({ nameWorkspaces }) => {
    const [DropDown, setDropDown] = useState({
       id: 0,
       stateDropDown: false,
+      isMenuHovered: false,
    })
    const [showSubMenu, setShowSubMenu] = useState({})
    const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
@@ -46,21 +47,41 @@ const SideBar = ({ nameWorkspaces }) => {
       setSideBar(!showSideBar)
    }
 
-   const onMouseHandler = (id, state) => {
+   const onMouseOverHandler = (id) => {
+      setTimeout(() => {
+         setDropDown({
+            id,
+            stateDropDown: true,
+            isMenuHovered: true,
+         })
+      }, 250)
+   }
+
+   const onMouseLeaveFormMenuHandler = (id) => {
+      setTimeout(() => {
+         setDropDown({
+            id,
+            stateDropDown: false,
+            isMenuHovered: false,
+         })
+      }, 150)
+   }
+
+   const onMouseLeaveFromContainerHandler = (id) => {
       setTimeout(() => {
          setDropDown((prevState) => {
-            if (prevState.stateDropDown) {
+            if (prevState.isMenuHovered) {
                return {
                   id,
-                  stateDropDown: false,
+                  stateDropDown: true,
                }
             }
             return {
                id,
-               stateDropDown: state,
+               stateDropDown: false,
             }
          })
-      }, 120)
+      }, 150)
    }
 
    const renderHeaderSideBar = () =>
@@ -102,8 +123,7 @@ const SideBar = ({ nameWorkspaces }) => {
                state={DropDown.stateDropDown}
                setStateDropDown={setDropDown}
                nameWorkspaces={item.title}
-               onMouseEnter={() => onMouseHandler(item.id, true)}
-               onMouseLeave={() => onMouseHandler(item.id, false)}
+               onMouseLeave={() => onMouseLeaveFromContainerHandler(item.id)}
             />
          )
       }
@@ -154,12 +174,12 @@ const SideBar = ({ nameWorkspaces }) => {
                      stateSideBar={showSideBar}
                      key={item.id}
                      workspacesHover
+                     onMouseEnter={() => onMouseOverHandler(item.id)}
+                     onMouseLeave={() => onMouseLeaveFormMenuHandler(item.id)}
                   >
                      <SideBarTitleBlock
-                        onMouseEnter={() => onMouseHandler(item.id, true)}
                         onClick={showSubMenuHandler(item)}
                         stateSideBar={showSideBar}
-                        onMouseLeave={() => onMouseHandler(item.id, false)}
                         workspacesHover
                      >
                         <CustomIcons src={item.icon} />

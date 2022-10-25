@@ -32,8 +32,8 @@ export default DropDownSideBar
 
 const DropDownContainer = styled.div`
    position: absolute;
-   left: 65px;
-   top: 0;
+   left: 60px;
+   top: 5px;
    width: 140px;
    height: 50px;
    color: white;
@@ -41,9 +41,10 @@ const DropDownContainer = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
-   z-index: 100;
+   z-index: 1;
    p {
-      width: 140px;
+      width: 97px;
+      font-size: 12px;
       padding: 4px 0 4px 0;
       text-align: center;
       background-color: #222222;
@@ -59,7 +60,7 @@ const DropDownBlock = styled.div`
    background-color: #222222;
    border-radius: 15px;
    padding: 15px;
-   z-index: 10000300;
+   z-index: 1;
    li {
       display: flex;
       height: 30px;
