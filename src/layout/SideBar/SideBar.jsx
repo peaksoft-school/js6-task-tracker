@@ -17,7 +17,7 @@ const SideBar = ({ nameWorkspaces }) => {
    const [showSideBar, setSideBar] = useState(false)
    const [DropDown, setDropDown] = useState({
       id: 0,
-      stateDropDown: true,
+      stateDropDown: false,
    })
    const [showSubMenu, setShowSubMenu] = useState({})
    const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
@@ -48,9 +48,17 @@ const SideBar = ({ nameWorkspaces }) => {
 
    const onMouseHandler = (id, state) => {
       setTimeout(() => {
-         setDropDown({
-            id,
-            stateDropDown: state,
+         setDropDown((prevState) => {
+            if (prevState.stateDropDown) {
+               return {
+                  id,
+                  stateDropDown: false,
+               }
+            }
+            return {
+               id,
+               stateDropDown: state,
+            }
          })
       }, 120)
    }
@@ -148,15 +156,13 @@ const SideBar = ({ nameWorkspaces }) => {
                      workspacesHover
                   >
                      <SideBarTitleBlock
+                        onMouseEnter={() => onMouseHandler(item.id, true)}
                         onClick={showSubMenuHandler(item)}
                         stateSideBar={showSideBar}
+                        onMouseLeave={() => onMouseHandler(item.id, false)}
                         workspacesHover
                      >
-                        <CustomIcons
-                           onMouseEnter={() => onMouseHandler(item.id, true)}
-                           onMouse={() => onMouseHandler(item.id, false)}
-                           src={item.icon}
-                        />
+                        <CustomIcons src={item.icon} />
                         {renderSideBar(item)}
                      </SideBarTitleBlock>
                      {showSideBar && showSubMenu[item.id] && <SubMenu />}
