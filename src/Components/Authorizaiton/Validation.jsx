@@ -21,7 +21,7 @@ export const validationSchema = yup.object({
       .string()
       .min(5, "Минимум 5 символов")
       .matches(passwordRules, {
-         message: "Пароль должен содержать одну заглавную букву,и цифру",
+         message: "Бир ар кыйыныраак пароль тап акя",
       })
       .required("Обязательное поле"),
    confirmPassword: yup

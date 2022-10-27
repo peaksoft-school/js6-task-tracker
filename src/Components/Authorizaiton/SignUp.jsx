@@ -44,62 +44,73 @@ const SignUp = () => {
          <ContainerForm>
             <Form onSubmit={formik.handleSubmit}>
                <Title>Sign in</Title>
-               <Input
-                  id="firstName"
-                  value={formik.values.firstName}
-                  type="text"
-                  label="Name"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-               />
-               {formik.touched.firstName && formik.errors.firstName && (
-                  <ErrorText>{formik.errors.firstName}</ErrorText>
-               )}
-               <Input
-                  name="lastName"
-                  value={formik.values.lastName}
-                  type="text"
-                  label="Surname"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-               />
-               {formik.touched.lastName && formik.errors.lastName && (
-                  <ErrorText>{formik.errors.lastName}</ErrorText>
-               )}
-               <Input
-                  id="email"
-                  value={formik.values.email}
-                  type="email"
-                  label="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-               />
-               {formik.touched.email && formik.errors.email && (
-                  <ErrorText>{formik.errors.email}</ErrorText>
-               )}
-               <PasswordInput
-                  id="password"
-                  label="Password"
-                  value={formik.values.password}
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-               />
-               {formik.touched.password && formik.errors.password && (
-                  <ErrorText>{formik.errors.password}</ErrorText>
-               )}
-               <PasswordInput
-                  id="confirmPassword"
-                  label="confirmPassword"
-                  value={formik.values.confirmPassword}
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-               />
-               {formik.touched.confirmPassword &&
-                  formik.errors.confirmPassword && (
-                     <ErrorText>{formik.errors.confirmPassword}</ErrorText>
+               <ContainerInputErrorText>
+                  <Input
+                     id="firstName"
+                     value={formik.values.firstName}
+                     type="text"
+                     label="Name"
+                     onChange={formik.handleChange}
+                     onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.firstName && formik.errors.firstName && (
+                     <ErrorText>{formik.errors.firstName}</ErrorText>
                   )}
+               </ContainerInputErrorText>
+               <ContainerInputErrorText>
+                  <Input
+                     name="lastName"
+                     value={formik.values.lastName}
+                     type="text"
+                     label="Surname"
+                     onChange={formik.handleChange}
+                     onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.lastName && formik.errors.lastName && (
+                     <ErrorText>{formik.errors.lastName}</ErrorText>
+                  )}
+               </ContainerInputErrorText>
+               <ContainerInputErrorText>
+                  <Input
+                     id="email"
+                     value={formik.values.email}
+                     type="email"
+                     label="email"
+                     onChange={formik.handleChange}
+                     onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.email && formik.errors.email && (
+                     <ErrorText>{formik.errors.email}</ErrorText>
+                  )}
+               </ContainerInputErrorText>
+               <ContainerInputErrorText>
+                  <PasswordInput
+                     id="password"
+                     label="Password"
+                     value={formik.values.password}
+                     type="text"
+                     onChange={formik.handleChange}
+                     onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.password && formik.errors.password && (
+                     <ErrorText>{formik.errors.password}</ErrorText>
+                  )}
+               </ContainerInputErrorText>
+               <ContainerInputErrorText>
+                  <PasswordInput
+                     id="confirmPassword"
+                     label="confirmPassword"
+                     value={formik.values.confirmPassword}
+                     type="text"
+                     onChange={formik.handleChange}
+                     onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.confirmPassword &&
+                     formik.errors.confirmPassword && (
+                        <ErrorText>{formik.errors.confirmPassword}</ErrorText>
+                     )}
+               </ContainerInputErrorText>
+
                <Button disabled={!isValid} type="submit" fullWidth="180px">
                   Sign Up
                </Button>
@@ -128,10 +139,14 @@ const LogoTaskTracker = styled.img`
 `
 const Form = styled.form`
    width: 400px;
-   height: 500px;
+   height: 550px;
    display: flex;
    justify-content: center;
    align-items: center;
+`
+const ContainerInputErrorText = styled.div`
+   height: 60px;
+   width: 320px;
 `
 const ContainerForm = styled.div`
    width: 420px;
@@ -158,5 +173,6 @@ const ErrorText = styled.p`
    color: red;
    margin: 0;
    text-align: start;
-   width: 300px;
+   font-size: 16px;
+   margin-left: 5px;
 `

@@ -5,8 +5,7 @@ import TextField from "@mui/material/TextField"
 
 const CssTextField = styled(TextField)({
    "& .MuiInputBase-input": {
-      width: "290px",
-      height: "5px",
+      width: "100%",
    },
    "& label.Mui-focused": {
       color: "#919191",
@@ -32,5 +31,14 @@ const CssTextField = styled(TextField)({
 })
 
 export default function Input({ label, type, id, ...other }) {
-   return <CssTextField {...other} label={label} type={type} id={id} />
+   return (
+      <CssTextField
+         {...other}
+         fullWidth
+         size="small"
+         label={label}
+         type={type}
+         id={id}
+      />
+   )
 }
