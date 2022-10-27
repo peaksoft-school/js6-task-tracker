@@ -1,13 +1,14 @@
-import React from "react"
 import { useSelector } from "react-redux"
-import { Navigate, Outlet } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
-const PrivateRoute = ({ ROLES }) => {
-   const { role, isAuth } = useSelector((state) => state.auth)
-
-   const RegisteredUser = isAuth && role && ROLES.includes(role)
-   if (!RegisteredUser) return <Navigate to="/" />
-   return <Outlet />
+const PrivateRoute = ({ ROLES, COMPONENT }) => {
+   const navigate = useNavigate()
+   const { jwt, role } = useSelector((state) => state.auth.userInfo)
+   const RegisteredUser = jwt && role && ROLES.includes(role)
+   if (!RegisteredUser) {
+      return navigate("/")
+   }
+   return COMPONENT
 }
 
 export default PrivateRoute

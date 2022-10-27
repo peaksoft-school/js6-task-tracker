@@ -1,35 +1,54 @@
+/* eslint-disable no-param-reassign */
 import axios from "axios"
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { LocalStorage } from "../utilits/helpers/General"
+import { USER_KEY } from "../utilits/constants/Constants"
 
-export const signUp = createAsyncThunk("signup", async (userInfo) => {
-   let data
-   try {
-      const response = axios.post(
-         "http://18.192.179.151/api/public/registration",
-         { ...userInfo }
-      )
-      data = response.json()
-   } catch (error) {
-      console.log(error)
+export const signUp = createAsyncThunk(
+   "'authorization/signup",
+   async (userInfo) => {
+      try {
+         const response = await axios.post(
+            "http://18.192.179.151/api/public/registration",
+            { ...userInfo }
+         )
+
+         LocalStorage.saveData(USER_KEY, response.data)
+
+         return response
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
-   return data
+)
+
+export const logout = createAsyncThunk("logout", async () => {
+   LocalStorage.removeData(USER_KEY)
 })
 
-const initialState = {
-   isAuth: true,
-   token: "test",
-   role: "USER",
-   firstName: "Kamchybek",
-   lastName: "Kuzobaev",
+const UserInfoInLocalStorage = LocalStorage.getData(USER_KEY)
+
+const initState = {
+   userInfo: {
+      jwt: null,
+      role: null,
+      email: null,
+   },
 }
 
 export const AuthSlice = createSlice({
    name: "auth",
-   initialState,
+   initialState: UserInfoInLocalStorage
+      ? { ...initState, userInfo: UserInfoInLocalStorage }
+      : initState,
    reducers: {},
    extraReducers: {
-      [signUp.fulfilled]: (state, action) => {
-         console.log(action.payload, "payload")
+      [signUp.fulfilled]: (state, actions) => {
+         const responseUserInfo = actions.payload.data
+         state.userInfo = responseUserInfo
+      },
+      [logout.fulfilled]: (state) => {
+         state.userInfo = initState
       },
    },
 })

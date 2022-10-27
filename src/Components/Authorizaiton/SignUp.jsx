@@ -1,19 +1,21 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useFormik } from "formik"
-import { useDispatch } from "react-redux"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import Input from "../UI/Input"
 import PasswordInput from "../UI/PasswordInput"
 import logoTaskTracker from "../../assets/images/LogoTaskTracker.png"
 import imageLogin from "../../assets/images/ImageLogin.png"
 import Button from "../UI/Button"
-import { LocalStorage } from "../../utilits/helpers/General"
-import { USER_KEY } from "../../utilits/constants/Constants"
 import { signUp as fetchSignUp } from "../../store/AuthSlice"
+import { PATH_IN_ROLES } from "../../utilits/constants/general"
+import { validationSchema } from "./Validation"
 
 const SignUp = () => {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const { role } = useSelector((state) => state.auth.userInfo)
 
    const formik = useFormik({
       initialValues: {
@@ -21,13 +23,20 @@ const SignUp = () => {
          lastName: "",
          email: "",
          password: "",
-         repeatPassword: "",
+         confirmPassword: "",
       },
+      validationSchema,
       onSubmit: (values) => {
          dispatch(fetchSignUp(values))
-         LocalStorage.saveData(USER_KEY, values)
       },
    })
+
+   const { isValid } = formik
+   useEffect(() => {
+      if (PATH_IN_ROLES[role]) {
+         navigate(`${PATH_IN_ROLES[role].path}`)
+      }
+   }, [role])
 
    return (
       <LoginContainer>
@@ -41,36 +50,57 @@ const SignUp = () => {
                   type="text"
                   label="Name"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                />
+               {formik.touched.firstName && formik.errors.firstName && (
+                  <ErrorText>{formik.errors.firstName}</ErrorText>
+               )}
                <Input
                   name="lastName"
                   value={formik.values.lastName}
                   type="text"
                   label="Surname"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                />
+               {formik.touched.lastName && formik.errors.lastName && (
+                  <ErrorText>{formik.errors.lastName}</ErrorText>
+               )}
                <Input
                   id="email"
                   value={formik.values.email}
                   type="email"
                   label="email"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                />
+               {formik.touched.email && formik.errors.email && (
+                  <ErrorText>{formik.errors.email}</ErrorText>
+               )}
                <PasswordInput
                   id="password"
                   label="Password"
                   value={formik.values.password}
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                />
+               {formik.touched.password && formik.errors.password && (
+                  <ErrorText>{formik.errors.password}</ErrorText>
+               )}
                <PasswordInput
-                  id="repeatPassword"
-                  label="repeatPassword"
-                  value={formik.values.repeatPassword}
+                  id="confirmPassword"
+                  label="confirmPassword"
+                  value={formik.values.confirmPassword}
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                />
-               <Button type="submit" fullWidth="180px">
+               {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword && (
+                     <ErrorText>{formik.errors.confirmPassword}</ErrorText>
+                  )}
+               <Button disabled={!isValid} type="submit" fullWidth="180px">
                   Sign Up
                </Button>
                <p>
@@ -123,4 +153,10 @@ const BackgroundImage = styled.img`
 `
 const Title = styled.h2`
    font-weight: 500;
+`
+const ErrorText = styled.p`
+   color: red;
+   margin: 0;
+   text-align: start;
+   width: 300px;
 `

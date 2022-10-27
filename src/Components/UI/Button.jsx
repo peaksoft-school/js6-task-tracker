@@ -1,7 +1,15 @@
 import React from "react"
 import styled from "styled-components"
 
-const Button = ({ children, onClick, hover, color, active, fullWidth }) => {
+const Button = ({
+   children,
+   onClick,
+   hover,
+   color,
+   active,
+   fullWidth,
+   disabled,
+}) => {
    return (
       <StyledButton
          fullWidth={fullWidth}
@@ -9,6 +17,7 @@ const Button = ({ children, onClick, hover, color, active, fullWidth }) => {
          hover={hover}
          onClick={onClick}
          color={color}
+         disabled={disabled}
       >
          {children}
       </StyledButton>
@@ -32,5 +41,9 @@ const StyledButton = styled.button`
    }
    &:active {
       background-color: ${(props) => (props.active ? props.active : "#57AEE0")};
+   }
+   &:disabled {
+      background-color: ${(props) => props.disabled && "gray"};
+      cursor: ${(props) => props.disabled && "not-allowed"};
    }
 `

@@ -9,7 +9,7 @@ import {
 import styled from "styled-components"
 import { HidePassword, ShowPassword } from "../../assets/icons/index"
 
-function PasswordInput({ id, label, error, value, onChange }) {
+function PasswordInput({ id, label, error, value, onChange, onBlur }) {
    const [inputViewOnOff, setInputViewOnOff] = useState(false)
 
    function handleViewOnOff() {
@@ -29,6 +29,7 @@ function PasswordInput({ id, label, error, value, onChange }) {
             id={id}
             value={value}
             onChange={onChange}
+            onBlur={onBlur}
             size="small"
             error={error}
             label={label}
