@@ -1,6 +1,7 @@
 import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
+import arrowUp from "../../assets/icons/ArrowUp.svg"
 
 export const Labels = [
    {
@@ -64,24 +65,46 @@ export const Workspaces = [
       title: "Accounting",
       icon: iconWorkspaces,
       arrowDown,
+      arrowUp,
    },
    {
       id: 2,
       title: "LMS",
       icon: iconWorkspaces,
       arrowDown,
+      arrowUp,
+      boards: [
+         {
+            id: 1,
+            title: "Title",
+         },
+         {
+            id: 2,
+            title: "Title",
+         },
+         {
+            id: 3,
+            title: "Title",
+         },
+         {
+            id: 4,
+            title: "Title",
+         },
+      ],
    },
    {
       id: 3,
       title: "Accounting",
       icon: iconWorkspaces,
       arrowDown,
+      arrowUp,
    },
    {
       id: 4,
       title: "LMS",
       icon: iconWorkspaces,
       arrowDown,
+      arrowUp,
    },
 ]
 

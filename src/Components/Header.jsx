@@ -5,10 +5,10 @@ import TaskTracker from "../assets/svg/TaskTracker.svg"
 import arrow from "../assets/svg/arrow.svg"
 import Input from "./UI/Input"
 import { ReactComponent as SearchIcon } from "../assets/svg/SearchIcon.svg"
-import Notification from "../assets/svg/NotificationIcon.svg"
+import NotificationIcon from "../assets/svg/NotificationIcon.svg"
 import Avatar from "./UI/Avatar"
 
-function Header({ props }) {
+function Header({ items, Notifications }) {
    return (
       <ParentDiv>
          <div>
@@ -16,7 +16,7 @@ function Header({ props }) {
          </div>
          <div>
             <Ptext>
-               Favourites ({props}) <img src={arrow} alt="" />
+               Favourites ({items}) <img src={arrow} alt="" />
             </Ptext>
          </div>
          <ContainerInput>
@@ -32,8 +32,8 @@ function Header({ props }) {
             />
          </ContainerInput>
          <NotificationIconContainer>
-            <img src={Notification} alt="" />
-            {[].length !== 0 && <span>{[].length}</span>}
+            <img src={NotificationIcon} alt="" />
+            <span>{Notifications}</span>
          </NotificationIconContainer>
          <ContainerAvatar>
             <Avatar />
@@ -44,6 +44,7 @@ function Header({ props }) {
 
 export default Header
 const ParentDiv = styled.div`
+   position: relative;
    display: flex;
    height: 68px;
    align-items: center;
@@ -67,9 +68,8 @@ const Ptext = styled.p`
 `
 const ContainerInput = styled.div`
    position: absolute;
-   left: 870px;
-   top: 16px;
-   padding: 6px 16px;
+   right: 153px;
+   padding: 3px 13px;
    Input {
       width: 444px;
       height: 5px;
@@ -80,14 +80,14 @@ const NotificationIconContainer = styled.div`
    width: 37px;
    height: 27px;
    left: 1410px;
-   top: 30px;
+   top: 23px;
    cursor: pointer;
    span {
       background-color: #d91212;
       border-radius: 8px;
       font-size: 12px;
       color: white;
-      padding: 1px 5px 0px;
+      padding: 0px 5px 0px;
       font-weight: 500;
       align-items: center;
       position: absolute;
@@ -98,7 +98,7 @@ const NotificationIconContainer = styled.div`
 const ContainerAvatar = styled.div`
    position: absolute;
    left: 1450px;
-   top: 18px;
+   top: 13px;
    img {
       width: 32px;
       height: 32px;
