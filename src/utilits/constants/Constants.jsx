@@ -9,6 +9,10 @@ import BackImg8 from "../../assets/boardimg/Rectangle 62.svg"
 import BackImg9 from "../../assets/boardimg/Rectangle 63.svg"
 import BackImg10 from "../../assets/boardimg/Rectangle 64.svg"
 import BackImg11 from "../../assets/boardimg/Rectangle 65.svg"
+import plusIcon from "../../assets/icons/plus.svg"
+import arrowDown from "../../assets/icons/arrowDown.svg"
+import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
+import arrowUp from "../../assets/icons/ArrowUp.svg"
 
 export const Labels = [
    {
@@ -72,4 +76,97 @@ export const MORECOLLORS = [
    "#0079BF",
    "#CD5A91",
    "#2A2A2A",
+]
+export const SideBarItems = [
+   {
+      id: 1,
+      title: "Boards",
+      plusIcon,
+   },
+   {
+      id: 2,
+      title: "All issues",
+      amount: 267,
+   },
+   {
+      id: 3,
+      title: "Participants",
+      amount: 7,
+   },
+   {
+      id: 5,
+      title: "Setting",
+   },
+   {
+      id: 6,
+      title: "Workspaces",
+      plusIcon,
+   },
+]
+
+export const Workspaces = [
+   {
+      id: 1,
+      title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
+      arrowUp,
+   },
+   {
+      id: 2,
+      title: "LMS",
+      icon: iconWorkspaces,
+      arrowDown,
+      arrowUp,
+      boards: [
+         {
+            id: 1,
+            title: "Title",
+         },
+         {
+            id: 2,
+            title: "Title",
+         },
+         {
+            id: 3,
+            title: "Title",
+         },
+         {
+            id: 4,
+            title: "Title",
+         },
+      ],
+   },
+   {
+      id: 3,
+      title: "Accounting",
+      icon: iconWorkspaces,
+      arrowDown,
+      arrowUp,
+   },
+   {
+      id: 4,
+      title: "LMS",
+      icon: iconWorkspaces,
+      arrowDown,
+      arrowUp,
+   },
+]
+
+export const SubMenuItems = [
+   {
+      iconId: 1,
+      title: "Boards",
+      iconPlus: "plus",
+      iconArrowDown: "arrowDown",
+   },
+   {
+      iconId: 3,
+      title: "Paricipants",
+      amount: 7,
+   },
+   {
+      iconId: 5,
+      title: "Setting",
+   },
 ]
