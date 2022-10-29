@@ -2,7 +2,6 @@ import React from "react"
 import { InputAdornment } from "@mui/material"
 import styled from "styled-components"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
-import arrow from "../assets/svg/arrow.svg"
 import Input from "./UI/Input"
 import { ReactComponent as SearchIcon } from "../assets/svg/SearchIcon.svg"
 import NotificationIcon from "../assets/svg/NotificationIcon.svg"
@@ -15,9 +14,7 @@ function Header({ items, Notifications }) {
             <Logo src={TaskTracker} alt="" />
          </div>
          <div>
-            <Ptext>
-               Favourites ({items}) <img src={arrow} alt="" />
-            </Ptext>
+            <Ptext>{items}</Ptext>
          </div>
          <ContainerInput>
             <Input
@@ -64,7 +61,7 @@ const Ptext = styled.p`
    font-size: 16px;
    color: #3e3e3e;
    font-weight: 500;
-   padding: 10px 79px 10px;
+   padding-left: 79px;
 `
 const ContainerInput = styled.div`
    position: absolute;
