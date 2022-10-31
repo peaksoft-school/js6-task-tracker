@@ -8,7 +8,7 @@ const getShowedImages = (array) => {
    return array.slice(0, 8)
 }
 
-function UsersCountry({ images = [] }) {
+function UsersCountry({ images = [], openListUsers }) {
    const renderedImages = getShowedImages(images)
 
    const renderRestIcon = () => {
@@ -20,7 +20,7 @@ function UsersCountry({ images = [] }) {
 
       return (
          <CountOfRestUsers index={lastIndex} x={(lastIndex + 1) * 25 - 25}>
-            <span>+{restUsersCount}</span>
+            <span onClick={openListUsers}>+{restUsersCount}</span>
          </CountOfRestUsers>
       )
    }
