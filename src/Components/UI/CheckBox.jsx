@@ -3,14 +3,12 @@ import icon from "../../assets/icons/CheckBox.svg"
 
 function CheckBox({ checked, onChange, ...other }) {
    return (
-      <div>
          <Input
             {...other}
             type="Checkbox"
             onChange={onChange}
             checked={checked}
          />
-      </div>
    )
 }
 
