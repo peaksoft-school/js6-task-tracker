@@ -8,11 +8,11 @@ import { BackImage, COLORS, MORECOLLORS } from "../utilits/constants/Constants"
 
 function CreateBoard() {
    const [boardActive, setBoardActive] = useState(false)
-   const [Choose, setChoose] = useState(false)
-   const [Background, setBackground] = useState(false)
-   const [ColorsOfBack, setColorsOfBack] = useState(false)
+   const [chooseItem, setChooseItem] = useState(false)
+   const [background, setBackground] = useState(false)
+   const [colorsOfBack, setColorsOfBack] = useState(false)
    const showBackground = () => {
-      setBackground(!Background)
+      setBackground(!background)
    }
    const showBoard = () => {
       setBoardActive(!boardActive)
@@ -20,7 +20,7 @@ function CreateBoard() {
       setColorsOfBack(false)
    }
    const ChooseColor = (i) => {
-      setChoose(i)
+      setChooseItem(i)
    }
    const CloseBoard = () => {
       setBoardActive(false)
@@ -28,7 +28,7 @@ function CreateBoard() {
       setColorsOfBack(false)
    }
    const showColorsOfBack = () => {
-      setColorsOfBack(!ColorsOfBack)
+      setColorsOfBack(!colorsOfBack)
    }
    return (
       <div>
@@ -36,7 +36,7 @@ function CreateBoard() {
             Create new board
          </Button>
 
-         <div>
+         <Container>
             {boardActive && (
                <Board>
                   <h1>Create new board</h1>
@@ -62,7 +62,7 @@ function CreateBoard() {
                            style={{ background: color }}
                            onClick={() => ChooseColor(index)}
                         >
-                           {Choose === index && (
+                           {chooseItem === index && (
                               <img src={Galochka} alt="galochka" />
                            )}
                         </span>
@@ -76,7 +76,7 @@ function CreateBoard() {
                   </BtnContainer>
                </Board>
             )}
-            {Background && (
+            {background && (
                <BackgroundContainer>
                   <h1>Photo</h1>
                   <div>
@@ -86,7 +86,7 @@ function CreateBoard() {
                   </div>
                </BackgroundContainer>
             )}
-            {ColorsOfBack && (
+            {colorsOfBack && (
                <ColorsContainer>
                   <h1>Colors</h1>
                   <div>
@@ -96,7 +96,7 @@ function CreateBoard() {
                   </div>
                </ColorsContainer>
             )}
-         </div>
+         </Container>
       </div>
    )
 }
@@ -117,13 +117,16 @@ const Button = styled.button`
    font-size: 14px;
    cursor: pointer;
 `
+const Container = styled.div`
+   margin: 0 auto;
+`
 const Board = styled.div`
    width: 477px;
    height: 363px;
    border-radius: 10px;
    background-color: white;
-   border: 1px solid black;
-   text-align: center;
+   align-items: center;
+   margin: 0 auto;
    h1 {
       width: 135px;
       height: 20px;
@@ -140,6 +143,8 @@ const Board = styled.div`
       height: 32px;
       border-radius: 8px;
       border: 1px solid #d0d0d0;
+      align-items: center;
+      margin-left: 17px;
    }
    h3 {
       font-size: 16px;
@@ -182,6 +187,7 @@ const ImgContainer = styled.p`
       height: 62px;
       border-radius: 8px;
       background-repeat: no-repeat;
+      cursor: pointer;
    }
 `
 const Colors = styled.div`
@@ -193,6 +199,7 @@ const Colors = styled.div`
    }
    img {
       padding-top: 8px;
+      padding-left: 20px;
    }
 `
 const BtnContainer = styled.div`
@@ -231,8 +238,8 @@ const BackgroundContainer = styled.div`
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.18);
    border-radius: 10px;
    position: absolute;
-   left: 500px;
-   top: 50px;
+   right: 100px;
+   top: 60px;
    h1 {
       font-size: 16px;
       font-weight: 400;
@@ -245,6 +252,7 @@ const BackgroundContainer = styled.div`
    }
    img {
       padding-top: 8px;
+      cursor: pointer;
    }
    span {
       width: 123px;
@@ -256,9 +264,9 @@ const ColorsContainer = styled.div`
    height: 204px;
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.18);
    border-radius: 10px;
-   position: absolute;
+   /* position: absolute;
    left: 820px;
-   top: 50px;
+   top: 50px; */
    h1 {
       font-size: 16px;
       font-weight: 400;
@@ -268,6 +276,7 @@ const ColorsContainer = styled.div`
       width: 79px;
       height: 40px;
       border-radius: 8px;
+      cursor: pointer;
    }
    div {
       display: flex;

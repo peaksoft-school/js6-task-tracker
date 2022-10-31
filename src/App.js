@@ -1,11 +1,10 @@
 import React from "react"
-
-import SideBar from "./layout/SideBar/SideBar"
+import CreateBoard from "./Components/CreateBoard"
 
 function App() {
    return (
       <div className="App">
-         <SideBar />
+         <CreateBoard />
       </div>
    )
 }
