@@ -21,7 +21,7 @@ function FavouritesWallpaper({ listBoard }) {
             <img src={openMenuIcon} alt="Icon" />
          </OpenMenu>
 
-         {open ? null : (
+         {open && (
             <ReusableDropDown showState width="351px">
                <Container>
                   <h3>Favourites </h3>
