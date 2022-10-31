@@ -1,10 +1,17 @@
 import React from "react"
-import CreateBoard from "./Components/CreateBoard"
+import Assignee from "./Components/Assignee"
 
+const assigneeMembers = [
+   {
+      id: 1,
+      userName: "Daniel",
+      userEmail: "zadrot105217@gmail.com",
+   },
+]
 function App() {
    return (
       <div className="App">
-         <CreateBoard />
+         <Assignee assigneeMembers={assigneeMembers} />
       </div>
    )
 }
