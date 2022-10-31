@@ -2,20 +2,23 @@ import * as React from "react"
 import styled from "styled-components"
 import dayjs from "dayjs"
 import isBetweenPlugin from "dayjs/plugin/isBetween"
+// import Badge from "@mui/material/Badge"
 import TextField from "@mui/material/TextField"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker"
+import { PickersDay } from "@mui/x-date-pickers/PickersDay"
 import FormControl from "@mui/material/FormControl"
 import Button from "./Button"
 
 dayjs.extend(isBetweenPlugin)
 export default function DateTimePicker({ getDateTimeValue }) {
-   const [value, setValue] = React.useState(dayjs("2022-04-07"))
+   const [value, setValue] = React.useState(dayjs(new Date()))
    const [timeValue, setTimeValue] = React.useState("")
-   const [dueDate, setDueDate] = React.useState(dayjs("2022-04-07"))
-   const [startDate, setStartDate] = React.useState(dayjs("2022-04-08"))
+   const [dueDate, setDueDate] = React.useState(dayjs(new Date()))
+   const [startDate, setStartDate] = React.useState(dayjs(new Date()))
    const [reminder, setRemainder] = React.useState("None")
+   const [highlightedDays, setHighlightedDays] = React.useState([])
    const startDateRef = React.useRef()
    const dueDateRef = React.useRef()
    const timeValueRef = React.useRef()
@@ -36,10 +39,12 @@ export default function DateTimePicker({ getDateTimeValue }) {
       if (value !== startDate) {
          setValue(newValue)
          setStartDate(newValue)
+         setHighlightedDays([newValue.$D])
          dueDateRef.current.focus()
       } else {
          setValue(newValue)
          setDueDate(newValue)
+         setHighlightedDays((state) => [...state, newValue.$D])
          timeValueRef.current.focus()
       }
    }
@@ -57,6 +62,19 @@ export default function DateTimePicker({ getDateTimeValue }) {
                onChange={(newValue) => calendarChangeHandler(newValue)}
                renderInput={(params) => <TextField {...params} />}
                inputFormat="‘Week of’ MMM d"
+               renderDay={(day, _value, DayComponentProps) => {
+                  let selectedMuiClass = " "
+                  if (highlightedDays.includes(day.$D)) {
+                     selectedMuiClass = "Mui-selected"
+                  }
+
+                  return (
+                     <PickersDay
+                        className={selectedMuiClass}
+                        {...DayComponentProps}
+                     />
+                  )
+               }}
             />
          </LocalizationProvider>
          <label htmlFor="startDate">Start date</label>
@@ -65,7 +83,6 @@ export default function DateTimePicker({ getDateTimeValue }) {
             type="text"
             name="startDate"
             value={startDate.$d.toLocaleDateString()}
-            // onFocus={startDateFocusHandler}
             readOnly
          />
          <label htmlFor="dueDate">Due date</label>
@@ -75,7 +92,6 @@ export default function DateTimePicker({ getDateTimeValue }) {
                type="text"
                name="dueDate"
                value={dueDate.$d.toLocaleDateString()}
-               // onFocus={dueDatefocusHandler}
                readOnly
             />
             <Time
@@ -92,8 +108,8 @@ export default function DateTimePicker({ getDateTimeValue }) {
             </label>
             <Select value={reminder} onChange={reminderChangeHandler}>
                <option value="None">None</option>
-               <option value="5">5 min.before</option>
-               <option value="15">15 min.before</option>
+               <option value="5">5 min. before</option>
+               <option value="15">15 min. before</option>
                <option value="60">1 hour before</option>
             </Select>
          </FormControl>
