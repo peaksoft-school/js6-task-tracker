@@ -12,7 +12,7 @@ import { PATH_IN_ROLES } from "../../utilits/constants/general"
 const Login = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { role } = useSelector((state) => state.auth.userInfo)
+   const { role, errorText } = useSelector((state) => state.auth.userInfo)
 
    const formik = useFormik({
       initialValues: {
@@ -25,6 +25,9 @@ const Login = () => {
    })
 
    useEffect(() => {
+      if (errorText) {
+         return
+      }
       if (PATH_IN_ROLES[role]) {
          navigate(`${PATH_IN_ROLES[role].path}`)
       }
@@ -60,7 +63,7 @@ const Login = () => {
                <ErrorText>{formik.errors.password}</ErrorText>
             )}
          </ContainerInputErrorText>
-
+         <ErrorText>{errorText}</ErrorText>
          <Button type="submit" fullWidth="180px">
             Log in
          </Button>
@@ -74,8 +77,8 @@ const Login = () => {
 export default Login
 
 const Form = styled.form`
-   width: 400px;
-   height: 550px;
+   width: 25vw;
+   height: 40vh;
    display: flex;
    justify-content: center;
    align-items: center;

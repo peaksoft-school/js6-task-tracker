@@ -1,19 +1,20 @@
+/* eslint-disable import/extensions */
+/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { LocalStorage } from "../utilits/helpers/General"
 import { USER_KEY } from "../utilits/constants/Constants"
-// eslint-disable-next-line import/extensions
 import { signUpRequest, loginRequest } from "../api/auth.js"
 
 export const signUp = createAsyncThunk(
    "authorization/signup",
    async (userInfo) => {
       try {
-         const response = await signUpRequest(userInfo)
+         const { data } = await signUpRequest(userInfo)
 
-         LocalStorage.saveData(USER_KEY, response.data)
+         LocalStorage.saveData(USER_KEY, data)
 
-         return response
+         return data
       } catch (error) {
          return console.log(error.message)
       }
@@ -24,10 +25,10 @@ export const login = createAsyncThunk(
    "authorizaiton/login",
    async (userData) => {
       try {
-         const response = await loginRequest(userData)
+         const { data } = await loginRequest(userData)
+         if (data) LocalStorage.saveData(USER_KEY, data)
 
-         LocalStorage.saveData(USER_KEY, response.data)
-         return response.data
+         return data
       } catch (error) {
          return console.log(error.message)
       }
@@ -56,7 +57,7 @@ export const AuthSlice = createSlice({
    reducers: {},
    extraReducers: {
       [signUp.fulfilled]: (state, actions) => {
-         const responseUserInfo = actions.payload.data
+         const responseUserInfo = actions.payload
          state.userInfo = responseUserInfo
       },
       [logout.fulfilled]: (state) => {
