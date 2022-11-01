@@ -1,23 +1,17 @@
 import styled from "styled-components"
 import React from "react"
-import GrayButton from "./GrayButtons"
-import memberIcon from "../../assets/icons/MemberIcon.svg"
+
 import UserAvatar from "./UserAvatar"
 
 const MemberItem = ({ userGmail, photoUser, userName }) => {
    return (
-      <>
-         <GrayButton fullWidth="168px" iconButton={memberIcon}>
-            Members
-         </GrayButton>
-         <StyledMemberItem>
-            <UserAvatar userAvatar={photoUser} />
-            <div>
-               <p>{userName}Nazira</p>
-               <span>{userGmail}nazira@gmail.com</span>
-            </div>
-         </StyledMemberItem>
-      </>
+      <StyledMemberItem>
+         <UserAvatar userAvatar={photoUser} />
+         <div>
+            <p>{userName}Nazira</p>
+            <span>{userGmail}nazira@gmail.com</span>
+         </div>
+      </StyledMemberItem>
    )
 }
 

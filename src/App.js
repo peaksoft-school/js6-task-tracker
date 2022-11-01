@@ -1,14 +1,14 @@
 import React from "react"
-import Assignee from "./Components/Assignee"
+import Assignee from "./Components/UI/Assignee"
 
-const assigneeMembers = [
-   {
-      id: 1,
-      userName: "Daniel",
-      userEmail: "zadrot105217@gmail.com",
-   },
-]
 function App() {
+   const assigneeMembers = [
+      {
+         id: 1,
+         userName: "Daniel",
+         userEmail: "zadrot105217@gmail.com",
+      },
+   ]
    return (
       <div className="App">
          <Assignee assigneeMembers={assigneeMembers} />

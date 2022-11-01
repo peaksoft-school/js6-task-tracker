@@ -1,16 +1,19 @@
-import React from "react"
 import styled from "styled-components"
-import ReusableDropDown from "./UI/ReusableDropDown"
-import CustomIcons from "./UI/TaskCard/CustomIcons"
-import searchIcon from "../assets/svg/SearchIcon.svg"
-import MemberItem from "./UI/MemberItem"
-import userAvatar from "../assets/images/avatarPhotoo.jpg"
+import ReusableDropDown from "./ReusableDropDown"
+import CustomIcons from "./TaskCard/CustomIcons"
+import searchIcon from "../../assets/svg/SearchIcon.svg"
+import MemberItem from "./MemberItem"
+import photoAvatar from "../../assets/images/avatarPhotoo.jpg"
+import CheckBox from "./CheckBox"
 
 const Assignee = ({ assigneeMembers }) => {
    return (
-      <ReusableDropDown width="300px">
+      <ReusableDropDown showState width="300px">
          <ContainerInput>
             <input placeholder="Search" />
+            <div>
+               <CheckBox checked />
+            </div>
             <CustomIcons
                top="3px"
                right="10px"
@@ -25,7 +28,7 @@ const Assignee = ({ assigneeMembers }) => {
                      key={item.id}
                      userName={item.userName}
                      userEmail={item.userEmail}
-                     photoUser={userAvatar}
+                     photoUser={photoAvatar}
                   />
                )
             })}
@@ -34,6 +37,7 @@ const Assignee = ({ assigneeMembers }) => {
    )
 }
 export default Assignee
+
 const ContainerInput = styled.div`
    position: relative;
    margin: 20px 20px 5px 20px;
