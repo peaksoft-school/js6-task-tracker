@@ -4,6 +4,7 @@ import Board2 from "../assets/svg/Board2.svg"
 import Board3 from "../assets/svg/Board3.svg"
 import Board1 from "../assets/svg/Board.svg"
 import Galochka from "../assets/svg/Galochka.svg"
+import Modal from "./UI/Modal"
 import { BackImage, COLORS, MORECOLLORS } from "../utilits/constants/Constants"
 
 function CreateBoard() {
@@ -11,8 +12,13 @@ function CreateBoard() {
    const [chooseItem, setChooseItem] = useState(false)
    const [background, setBackground] = useState(false)
    const [colorsOfBack, setColorsOfBack] = useState(false)
+
    const showBackground = () => {
-      setBackground(!background)
+      setBackground(true)
+   }
+   const closeModalsOfClickBack = () => {
+      setBackground(false)
+      setColorsOfBack(false)
    }
    const showBoard = () => {
       setBoardActive(!boardActive)
@@ -31,14 +37,14 @@ function CreateBoard() {
       setColorsOfBack(!colorsOfBack)
    }
    return (
-      <div>
+      <Container>
          <Button onClick={showBoard} type="button">
             Create new board
          </Button>
 
-         <Container>
-            {boardActive && (
-               <Board>
+         <div onClick={closeModalsOfClickBack}>
+            <Modal fullWidth="29.8rem" isOpen={boardActive}>
+               <Board onClick={(e) => e.stopPropagation()}>
                   <h1>Create new board</h1>
                   <input placeholder="Board title*" />
                   <h3>Add background</h3>
@@ -75,35 +81,37 @@ function CreateBoard() {
                      <button type="button">Create board</button>
                   </BtnContainer>
                </Board>
-            )}
-            {background && (
-               <BackgroundContainer>
-                  <h1>Photo</h1>
-                  <div>
-                     {BackImage.map((img) => (
-                        <img src={img} alt="img" />
-                     ))}
-                  </div>
-               </BackgroundContainer>
-            )}
-            {colorsOfBack && (
-               <ColorsContainer>
-                  <h1>Colors</h1>
-                  <div>
-                     {MORECOLLORS.map((color) => (
-                        <span style={{ background: color }} />
-                     ))}
-                  </div>
-               </ColorsContainer>
-            )}
-         </Container>
-      </div>
+
+               {background && (
+                  <BackgroundContainer>
+                     <h1>Photo</h1>
+                     <div>
+                        {BackImage.map((img) => (
+                           <img src={img} alt="img" />
+                        ))}
+                     </div>
+                  </BackgroundContainer>
+               )}
+               {colorsOfBack && (
+                  <ColorsContainer>
+                     <h1>Colors</h1>
+                     <div>
+                        {MORECOLLORS.map((color) => (
+                           <span style={{ background: color }} />
+                        ))}
+                     </div>
+                  </ColorsContainer>
+               )}
+            </Modal>
+         </div>
+      </Container>
    )
 }
 
 export default CreateBoard
 
 const Button = styled.button`
+   font-size: 1rem !important;
    display: flex;
    flex-direction: row;
    justify-content: center;
@@ -116,22 +124,22 @@ const Button = styled.button`
    color: white;
    font-size: 14px;
    cursor: pointer;
+   margin-top: 5px;
+   margin-left: 5px;
 `
 const Container = styled.div`
-   margin: 0 auto;
+   height: 100vh;
+   width: 100vw;
+   position: fixed;
+   margin-top: -8px;
+   margin-left: -8px;
 `
 const Board = styled.div`
-   width: 477px;
-   height: 363px;
-   border-radius: 10px;
-   background-color: white;
-   align-items: center;
-   margin: 0 auto;
    h1 {
       width: 135px;
       height: 20px;
       font-weight: 400;
-      font-size: 16px;
+      font-size: 1rem;
       color: black;
       padding: 8px 171px;
    }
@@ -238,8 +246,9 @@ const BackgroundContainer = styled.div`
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.18);
    border-radius: 10px;
    position: absolute;
-   right: 100px;
-   top: 60px;
+   right: -280px;
+   background: #ffffff;
+   top: 100px;
    h1 {
       font-size: 16px;
       font-weight: 400;
@@ -264,9 +273,10 @@ const ColorsContainer = styled.div`
    height: 204px;
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.18);
    border-radius: 10px;
-   /* position: absolute;
-   left: 820px;
-   top: 50px; */
+   background: #ffffff;
+   position: absolute;
+   left: 60px;
+   top: 80px;
    h1 {
       font-size: 16px;
       font-weight: 400;
