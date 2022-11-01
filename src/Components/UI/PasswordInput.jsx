@@ -16,12 +16,6 @@ function PasswordInput({ id, label, error, value, onChange, onBlur }) {
       setInputViewOnOff((prevState) => !prevState)
    }
 
-   if (HidePassword) {
-      setTimeout(() => {
-         setInputViewOnOff(false)
-      }, 400)
-   }
-
    return (
       <FormControl1>
          <InputLabel size="small">{label}</InputLabel>

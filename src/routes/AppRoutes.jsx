@@ -1,15 +1,21 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
 import { PATH_IN_ROLES } from "../utilits/constants/general"
-import SignUp from "../Components/Authorizaiton/SignUp"
 import PrivateRoute from "./PrivateRoute"
 import UserRoutes from "./UserRoutes"
 import AdminRoutes from "./AdminRoutes"
+import AuthorizationPages from "../pages/AuthorizationPages"
+import SignUp from "../Components/Authorizaiton/SignUp"
+import Login from "../Components/Authorizaiton/Login"
 
 const AppRoutes = () => {
    return (
       <Routes>
-         <Route path="/" element={<SignUp />} />
+         <Route path="/" element={<AuthorizationPages />}>
+            <Route path="/" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+         </Route>
+
          <Route
             path={PATH_IN_ROLES.ADMIN.path}
             element={

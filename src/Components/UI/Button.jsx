@@ -9,9 +9,11 @@ const Button = ({
    active,
    fullWidth,
    disabled,
+   type,
 }) => {
    return (
       <StyledButton
+         type={type}
          fullWidth={fullWidth}
          active={active}
          hover={hover}

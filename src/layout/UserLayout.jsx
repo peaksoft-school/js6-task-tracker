@@ -13,9 +13,11 @@ const UserLayout = () => {
       <>
          <Header />
          <SideBar />
-         <button type="submit" onClick={logoutHandler}>
-            LOGOUT
-         </button>
+         <div>
+            <button type="submit" onClick={logoutHandler}>
+               LOGOUT
+            </button>
+         </div>
       </>
    )
 }

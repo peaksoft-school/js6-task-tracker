@@ -1,103 +1,86 @@
 import React from "react"
-import { InputAdornment } from "@mui/material"
 import styled from "styled-components"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
-import { ReactComponent as SearchIcon } from "../assets/svg/SearchIcon.svg"
+import searchIcon from "../assets/svg/SearchIcon.svg"
 import NotificationIcon from "../assets/svg/NotificationIcon.svg"
-import Avatar from "./UI/Avatar"
+import UserAvatar from "./UI/UserAvatar"
+import avatarPhoto from "../assets/svg/userAvatar.svg"
 
-function Header({ items, Notifications }) {
+function Header({ notificationQuantity }) {
    return (
       <ParentDiv>
          <div>
             <Logo src={TaskTracker} alt="" />
          </div>
-         <div>
-            <Ptext>{items}</Ptext>
-         </div>
-         <ContainerInput>
-            <Input
-               placeholder="Search"
-               InputProps={{
-                  startAdornment: (
-                     <InputAdornment position="start">
-                        <SearchIcon />
-                     </InputAdornment>
-                  ),
-               }}
-            />
-         </ContainerInput>
-         <NotificationIconContainer>
-            <img src={NotificationIcon} alt="" />
-            <span>{Notifications}</span>
-         </NotificationIconContainer>
-         <ContainerAvatar>
-            <Avatar />
-         </ContainerAvatar>
+
+         <RightBlock>
+            <ContainerInput>
+               <Input placeholder="Search" />
+               <SearchIcon src={searchIcon} />
+            </ContainerInput>
+
+            <NotificationIconContainer>
+               <img src={NotificationIcon} alt="" />
+               <span>{notificationQuantity}15</span>
+            </NotificationIconContainer>
+            <UserAvatar src={avatarPhoto} />
+         </RightBlock>
       </ParentDiv>
    )
 }
 
 export default Header
-const ParentDiv = styled.div`
-   position: relative;
+
+const ParentDiv = styled.header`
    display: flex;
-   height: 68px;
    align-items: center;
-   width: 1540px;
-   margin-top: -7px;
+   justify-content: space-between;
+   width: 100vw;
+   height: 68px;
    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
-   margin-left: -8px;
 `
-const Logo = styled.img`
-   width: 163px;
-   height: 36px;
-   padding: 16px 40px 16px;
-`
-const Ptext = styled.p`
-   width: 124px;
-   height: 25px;
-   font-size: 16px;
-   color: #3e3e3e;
-   font-weight: 500;
-   padding-left: 79px;
+const RightBlock = styled.div`
+   width: 38vw;
+   display: flex;
+   justify-content: space-between;
+   height: 20vh;
+   align-items: center;
+   margin-right: 2.5rem;
 `
 const ContainerInput = styled.div`
-   position: absolute;
-   right: 153px;
-   padding: 3px 13px;
+   position: relative;
+   width: 30vw;
    Input {
-      width: 444px;
-      height: 5px;
+      padding-left: 40px;
    }
+`
+const SearchIcon = styled.img`
+   position: absolute;
+   top: 12px;
+   left: 19px;
+`
+const Logo = styled.img`
+   padding: 1rem 2.1rem 1rem;
 `
 const NotificationIconContainer = styled.div`
-   position: absolute;
-   width: 37px;
-   height: 27px;
-   left: 1410px;
-   top: 23px;
+   width: 2vw;
+   height: 4vh;
+   margin: 2rem;
    cursor: pointer;
-   span {
-      background-color: #d91212;
-      border-radius: 8px;
-      font-size: 12px;
-      color: white;
-      padding: 0px 5px 0px;
-      font-weight: 500;
-      align-items: center;
-      position: absolute;
-      left: 12px;
-      bottom: 15px;
-   }
-`
-const ContainerAvatar = styled.div`
-   position: absolute;
-   left: 1450px;
-   top: 13px;
+   position: relative;
    img {
-      width: 32px;
-      height: 32px;
+      margin-top: 0.7rem;
+   }
+   span {
+      position: absolute;
+      font-size: 1rem;
+      top: 0;
+      right: 1px;
+      padding: 0 4px 0 4px;
+      border-radius: 12px;
+      width: 20px;
+      background-color: #d91212;
+      color: white;
    }
 `

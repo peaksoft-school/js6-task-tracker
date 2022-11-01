@@ -3,6 +3,8 @@ import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
 
+export const GLOBAL_URL = "http://18.192.179.151"
+
 export const Labels = [
    {
       id: 0,
