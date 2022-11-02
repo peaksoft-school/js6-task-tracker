@@ -14,7 +14,8 @@ function CreateBoard() {
    const [colorsOfBack, setColorsOfBack] = useState(false)
 
    const showBackground = () => {
-      setBackground(true)
+      setBackground(!background)
+      setColorsOfBack(false)
    }
    const closeModalsOfClickBack = () => {
       setBackground(false)
@@ -35,6 +36,7 @@ function CreateBoard() {
    }
    const showColorsOfBack = () => {
       setColorsOfBack(!colorsOfBack)
+      setBackground(false)
    }
    return (
       <Container>
@@ -83,7 +85,7 @@ function CreateBoard() {
                </Board>
 
                {background && (
-                  <BackgroundContainer>
+                  <BackgroundContainer onClick={(e) => e.stopPropagation()}>
                      <h1>Photo</h1>
                      <div>
                         {BackImage.map((img) => (
@@ -93,7 +95,7 @@ function CreateBoard() {
                   </BackgroundContainer>
                )}
                {colorsOfBack && (
-                  <ColorsContainer>
+                  <ColorsContainer onClick={(e) => e.stopPropagation()}>
                      <h1>Colors</h1>
                      <div>
                         {MORECOLLORS.map((color) => (
@@ -116,67 +118,67 @@ const Button = styled.button`
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   width: 154px;
-   height: 34px;
+   width: 20vh;
+   height: 5vh;
    background: #0079bf;
    border-radius: 24px;
    border: none;
    color: white;
-   font-size: 14px;
+   font-size: 0.8rem;
    cursor: pointer;
-   margin-top: 5px;
-   margin-left: 5px;
+   margin-top: 0.3rem;
+   margin-left: 0.3rem;
 `
 const Container = styled.div`
    height: 100vh;
    width: 100vw;
    position: fixed;
-   margin-top: -8px;
-   margin-left: -8px;
+   margin-top: 0.4rem;
+   margin-left: 0.4rem;
 `
 const Board = styled.div`
    h1 {
-      width: 135px;
-      height: 20px;
+      width: 118vw;
+      height: 4vh;
       font-weight: 400;
       font-size: 1rem;
       color: black;
       padding: 8px 171px;
    }
    input {
-      padding-left: 20px;
+      padding-left: 1.25rem;
       outline: none;
       box-sizing: border-box;
-      width: 437px;
-      height: 32px;
+      width: 29vw;
+      height: 4.5vh;
       border-radius: 8px;
       border: 1px solid #d0d0d0;
       align-items: center;
-      margin-left: 17px;
+      margin-left: 1.1rem;
    }
    h3 {
-      font-size: 16px;
+      font-size: 1rem;
       color: #919191;
-      padding: 0px 335px 0px 20px;
+      padding: 0rem 20rem 0rem 1.4rem;
       font-weight: 400;
    }
    div {
-      margin-top: -10px;
+      margin-top: -0.6rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-left: 23px;
-      padding-right: 23px;
+      padding-left: 1.7rem;
+      padding-right: 1.7rem;
       height: 18px;
       p {
          color: #919191;
-         font-size: 14px;
+         font-size: 0.8rem;
          font-weight: 400;
       }
       span {
          color: #919191;
          text-decoration-line: underline;
-         font-size: 14px;
+         font-size: 0.8rem;
          font-weight: 400;
          cursor: pointer;
       }
@@ -186,71 +188,71 @@ const ImgContainer = styled.p`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   padding-left: 30px;
-   padding-right: 23px;
-   padding-bottom: 8px;
-   padding-top: 10px;
+   padding-left: 1.8rem;
+   padding-right: 0.9rem;
+   padding-bottom: 0.5rem;
+   padding-top: 0.6rem;
    div {
-      width: 135px;
-      height: 62px;
+      width: 8.4vw;
+      height: 9vh;
       border-radius: 8px;
       background-repeat: no-repeat;
       cursor: pointer;
    }
 `
 const Colors = styled.div`
-   padding-top: 25px;
+   padding-top: 1.6rem;
    span {
-      width: 59px;
-      height: 31px;
+      width: 4vw;
+      height: 4.3vh;
       border-radius: 8px;
    }
    img {
-      padding-top: 8px;
-      padding-left: 20px;
+      padding-top: 0.5rem;
+      padding-left: 1.4rem;
    }
 `
 const BtnContainer = styled.div`
    display: flex;
-   padding-top: 40px;
-   width: 216px;
-   height: 34px;
+   padding-top: 2.5rem;
+   width: 14vw;
+   height: 3.7vh;
    justify-content: space-around;
-   margin-left: 215px;
+   margin-left: 13.4rem;
    button:first-child {
       background: #f0f0f0;
-      border-radius: 24px;
+      border-radius: 1.5rem;
       color: #919191;
-      font-size: 14px;
+      font-size: 0.9rem;
       font-weight: 400;
-      width: 78px;
-      height: 34px;
+      width: 5vw;
+      height: 4.5vh;
       cursor: pointer;
       border: none;
    }
    button:last-child {
       background: #0079bf;
-      border-radius: 24px;
-      width: 122px;
-      height: 34px;
+      border-radius: 1.5rem;
+      width: 7.6vw;
+      height: 4.8vh;
       color: #ffffff;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 0.9rem;
       border: none;
       cursor: pointer;
    }
 `
 const BackgroundContainer = styled.div`
-   width: 293px;
-   height: 480px;
+   width: 19vw;
+   height: 66vh;
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.18);
-   border-radius: 10px;
+   border-radius: 0.6rem;
    position: absolute;
-   right: -280px;
+   right: -17.5rem;
    background: #ffffff;
-   top: 100px;
+   top: 5rem;
    h1 {
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: 400;
       text-align: center;
    }
@@ -260,37 +262,37 @@ const BackgroundContainer = styled.div`
       flex-wrap: wrap;
    }
    img {
-      padding-top: 8px;
+      padding-top: 0.5rem;
       cursor: pointer;
    }
    span {
-      width: 123px;
-      height: 62px;
+      width: 7.6vw;
+      height: 6.8vh;
    }
 `
 const ColorsContainer = styled.div`
-   width: 293px;
-   height: 204px;
+   width: 19vw;
+   height: 28vh;
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.18);
    border-radius: 10px;
    background: #ffffff;
    position: absolute;
-   left: 60px;
-   top: 80px;
+   right: -12.5rem;
+   top: 13.1rem;
    h1 {
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: 400;
       text-align: center;
    }
    span {
-      width: 79px;
-      height: 40px;
+      width: 4.9vw;
+      height: 5.4vh;
       border-radius: 8px;
       cursor: pointer;
    }
    div {
       display: flex;
-      padding-left: 20px;
+      padding-left: 1.4rem;
       gap: 10px;
       flex-wrap: wrap;
    }
