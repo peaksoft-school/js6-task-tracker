@@ -125,7 +125,7 @@ export default SignUp
 
 const Form = styled.form`
    width: 30vw;
-   height: 56vh;
+   height: 61vh;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -133,7 +133,7 @@ const Form = styled.form`
 const ContainerInputErrorText = styled.div`
    height: 65px;
    width: 320px;
-   margin: 0.05rem;
+   margin: 0.04rem;
 `
 
 const ErrorText = styled.p`

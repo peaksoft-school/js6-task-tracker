@@ -11,7 +11,7 @@ export const signUp = createAsyncThunk(
    async (userInfo) => {
       try {
          const { data } = await signUpRequest(userInfo)
-
+         console.log(data)
          localStorageHelpers.saveData(USER_KEY, data)
 
          return data
