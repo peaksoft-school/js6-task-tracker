@@ -1,19 +1,16 @@
 import styled from "styled-components"
-import ReusableDropDown from "./ReusableDropDown"
-import CustomIcons from "./TaskCard/CustomIcons"
-import searchIcon from "../../assets/svg/SearchIcon.svg"
-import MemberItem from "./MemberItem"
-import photoAvatar from "../../assets/images/avatarPhotoo.jpg"
-import CheckBox from "./CheckBox"
+import ReusableDropDown from "./UI/ReusableDropDown"
+import CustomIcons from "./UI/TaskCard/CustomIcons"
+import searchIcon from "../assets/svg/SearchIcon.svg"
+import MemberItem from "./UI/MemberItem"
+import photoAvatar from "../assets/images/avatarPhotoo.jpg"
 
 const Assignee = ({ assigneeMembers }) => {
    return (
       <ReusableDropDown showState width="300px">
          <ContainerInput>
             <input placeholder="Search" />
-            <div>
-               <CheckBox checked />
-            </div>
+
             <CustomIcons
                top="3px"
                right="10px"
@@ -22,6 +19,7 @@ const Assignee = ({ assigneeMembers }) => {
             />
          </ContainerInput>
          <ContainerMembers>
+            <input type="Checkbox" />
             {assigneeMembers.map((item) => {
                return (
                   <MemberItem
@@ -57,6 +55,12 @@ const ContainerInput = styled.div`
 `
 const ContainerMembers = styled.div`
    padding: 0 20px 0 20px;
+   display: flex;
+   input {
+      width: 1.6rem;
+      height: 1.6rem;
+      margin-top: 1rem;
+   }
    div {
       margin-left: 20px;
       p,
