@@ -9,12 +9,14 @@ const Button = ({
    active,
    fullWidth,
    disabled,
+   fullHeight,
    type,
 }) => {
    return (
       <StyledButton
          type={type}
          fullWidth={fullWidth}
+         fullHeight={fullHeight}
          active={active}
          hover={hover}
          onClick={onClick}
@@ -32,8 +34,8 @@ const StyledButton = styled.button`
    background-color: ${(props) => (props.color ? props.color : "#0079BF")};
    border: none;
    width: ${(props) => props.fullWidth && props.fullWidth};
+   height: ${(props) => props.fullHeight && props.fullHeight};
    font-size: 18px;
-   height: 42px;
    border-radius: 24px;
    color: #ffffff;
    font-family: "Nunito", sans-serif;

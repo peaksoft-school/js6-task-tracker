@@ -25,9 +25,6 @@ const Login = () => {
    })
 
    useEffect(() => {
-      if (errorText) {
-         return
-      }
       if (PATH_IN_ROLES[role]) {
          navigate(`${PATH_IN_ROLES[role].path}`)
       }
@@ -77,7 +74,7 @@ const Login = () => {
 export default Login
 
 const Form = styled.form`
-   width: 25vw;
+   width: 60vw;
    height: 40vh;
    display: flex;
    justify-content: center;

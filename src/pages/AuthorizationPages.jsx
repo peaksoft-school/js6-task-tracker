@@ -30,7 +30,7 @@ const LogoTaskTracker = styled.img`
    margin: 15px 0 0 30px;
 `
 const ContainerForm = styled.div`
-   width: 30vw;
+   width: 37vw;
    height: 100vh;
    display: flex;
    align-items: center;
@@ -45,5 +45,5 @@ const ContainerForm = styled.div`
 const BackgroundImage = styled.img`
    width: 38vw;
    height: 100vh;
-   margin-right: 70px;
+   margin-right: 5rem;
 `
