@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useFormik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import Input from "../UI/Input"
 import PasswordInput from "../UI/PasswordInput"
@@ -32,8 +32,6 @@ const Login = () => {
 
    return (
       <Form onSubmit={formik.handleSubmit}>
-         <Title>Sign in</Title>
-
          <ContainerInputErrorText>
             <Input
                id="email"
@@ -61,12 +59,9 @@ const Login = () => {
             )}
          </ContainerInputErrorText>
          <ErrorText>{errorText}</ErrorText>
-         <Button type="submit" fullWidth="180px">
+         <Button fullHeight="2.8rem" type="submit" fullWidth="180px">
             Log in
          </Button>
-         <p>
-            Not a member ?<Link to="/">Sign up now</Link>
-         </p>
       </Form>
    )
 }
@@ -75,19 +70,16 @@ export default Login
 
 const Form = styled.form`
    width: 60vw;
-   height: 40vh;
+   height: 28vh;
    display: flex;
    justify-content: center;
    align-items: center;
 `
 const ContainerInputErrorText = styled.div`
-   height: 60px;
+   height: 43px;
    width: 320px;
 `
 
-const Title = styled.h2`
-   font-weight: 500;
-`
 const ErrorText = styled.p`
    color: red;
    margin: 0;

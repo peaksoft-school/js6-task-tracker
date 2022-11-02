@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { LocalStorage } from "../utilits/helpers/General"
+import { localStorageHelpers } from "../utilits/helpers/localStorageHelpers"
 import { USER_KEY } from "../utilits/constants/Constants"
 import { signUpRequest, loginRequest } from "../api/auth.js"
 
@@ -12,7 +12,7 @@ export const signUp = createAsyncThunk(
       try {
          const { data } = await signUpRequest(userInfo)
 
-         LocalStorage.saveData(USER_KEY, data)
+         localStorageHelpers.saveData(USER_KEY, data)
 
          return data
       } catch (error) {
@@ -26,7 +26,7 @@ export const login = createAsyncThunk(
    async (userData) => {
       try {
          const { data } = await loginRequest(userData)
-         if (data) LocalStorage.saveData(USER_KEY, data)
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
 
          return data
       } catch (error) {
@@ -36,10 +36,10 @@ export const login = createAsyncThunk(
 )
 
 export const logout = createAsyncThunk("logout", async () => {
-   LocalStorage.removeData(USER_KEY)
+   localStorageHelpers.removeData(USER_KEY)
 })
 
-const UserInfoInLocalStorage = LocalStorage.getData(USER_KEY)
+const UserInfoInLocalStorage = localStorageHelpers.getData(USER_KEY)
 
 const initState = {
    userInfo: {

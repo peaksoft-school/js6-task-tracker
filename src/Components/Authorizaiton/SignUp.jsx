@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { useFormik } from "formik"
 import Input from "../UI/Input"
@@ -9,10 +10,6 @@ import Button from "../UI/Button"
 import { signUp as fetchSignUp } from "../../store/AuthSlice"
 import { PATH_IN_ROLES } from "../../utilits/constants/general"
 import { validationSchema } from "./Validation"
-import googleIcon from "../../assets/svg/googleIcon.svg"
-import CustomIcons from "../UI/TaskCard/CustomIcons"
-import arrowDownIcon from "../../assets/icons/arrowDown.svg"
-import img from "../../assets/icons/BlueIconWorkspaces.svg"
 
 const SignUp = () => {
    const dispatch = useDispatch()
@@ -42,15 +39,6 @@ const SignUp = () => {
 
    return (
       <Form onSubmit={formik.handleSubmit}>
-         <Title>Sign in</Title>
-         <SignUpGoogleBlock>
-            <CustomIcons src={img} />
-            <p>Register with google example@gmail.com</p>
-
-            <CustomIcons src={arrowDownIcon} />
-            <CustomIcons src={googleIcon} />
-         </SignUpGoogleBlock>
-         <TextOr>or</TextOr>
          <ContainerInputErrorText>
             <Input
                id="firstName"
@@ -117,18 +105,18 @@ const SignUp = () => {
                   <ErrorText>{formik.errors.confirmPassword}</ErrorText>
                )}
          </ContainerInputErrorText>
-
+         <QualificationText>
+            Creating an account means you re okay with our <br />
+            <a>Terms of Service,Privacy Policy.</a>
+         </QualificationText>
          <Button
             fullWidth="11rem"
-            fullHeight="2.3rem"
+            fullHeight="2.8rem"
             disabled={!isValid}
             type="submit"
          >
             Sign Up
          </Button>
-         <p>
-            You already have an account? <Link to="/login">Log in</Link>
-         </p>
       </Form>
    )
 }
@@ -136,25 +124,18 @@ const SignUp = () => {
 export default SignUp
 
 const Form = styled.form`
-   width: 60vw;
-   height: 85vh;
+   width: 30vw;
+   height: 56vh;
    display: flex;
    justify-content: center;
    align-items: center;
 `
 const ContainerInputErrorText = styled.div`
-   height: 60px;
+   height: 65px;
    width: 320px;
    margin: 0.05rem;
 `
-const TextOr = styled.p`
-   margin: 0;
-   font-size: 1.4rem;
-   color: #919191;
-`
-const Title = styled.h2`
-   font-weight: 500;
-`
+
 const ErrorText = styled.p`
    color: red;
    margin: 0;
@@ -162,23 +143,14 @@ const ErrorText = styled.p`
    font-size: 16px;
    margin-left: 5px;
 `
-const SignUpGoogleBlock = styled.div`
-   display: flex;
-   align-items: center;
-   justify-content: space-around;
-   width: 23vw;
-   height: 6vh;
-   background-color: #f0f0f0;
-   border-radius: 8px;
-   padding: 0.4rem 1rem 0.4rem 1rem;
-   img {
-      width: 4vw;
-      height: 4vh;
-   }
-   p {
-      font-size: 1rem;
-      margin: 0;
-      color: #919191;
-      margin-left: 0.6rem;
+
+const QualificationText = styled.p`
+   width: 28vw;
+   padding: 0 0 8px 40px;
+   font-size: 0.9rem;
+   a {
+      color: #2679bf;
+      margin-left: 4px;
+      text-decoration: underline;
    }
 `
