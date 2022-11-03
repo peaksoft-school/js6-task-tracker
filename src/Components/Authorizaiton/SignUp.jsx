@@ -1,20 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useFormik } from "formik"
 import Input from "../UI/Input"
 import PasswordInput from "../UI/PasswordInput"
 import Button from "../UI/Button"
 import { signUp as fetchSignUp } from "../../store/AuthSlice"
-import { PATH_IN_ROLES } from "../../utilits/constants/general"
 import { validationSchema } from "./Validation"
 
 const SignUp = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { role } = useSelector((state) => state.auth.userInfo)
 
    const formik = useFormik({
       initialValues: {
@@ -25,17 +23,12 @@ const SignUp = () => {
          confirmPassword: "",
       },
       validationSchema,
-      onSubmit: (values) => {
-         return dispatch(fetchSignUp(values))
+      onSubmit: (userInfo) => {
+         return dispatch(fetchSignUp({ userInfo, navigate }))
       },
    })
 
    const { isValid } = formik
-   useEffect(() => {
-      if (PATH_IN_ROLES[role]) {
-         navigate(`${PATH_IN_ROLES[role].path}`)
-      }
-   }, [role])
 
    return (
       <Form onSubmit={formik.handleSubmit}>
@@ -111,7 +104,7 @@ const SignUp = () => {
          </QualificationText>
          <Button
             fullWidth="11rem"
-            fullHeight="2.8rem"
+            fullHeight="2.6rem"
             disabled={!isValid}
             type="submit"
          >
@@ -135,7 +128,6 @@ const ContainerInputErrorText = styled.div`
    width: 320px;
    margin: 0.04rem;
 `
-
 const ErrorText = styled.p`
    color: red;
    margin: 0;
@@ -143,14 +135,13 @@ const ErrorText = styled.p`
    font-size: 16px;
    margin-left: 5px;
 `
-
 const QualificationText = styled.p`
-   width: 28vw;
-   padding: 0 0 8px 40px;
+   width: 310px;
    font-size: 0.9rem;
+   margin: 0 0 8px 0;
+   text-align: left;
    a {
       color: #2679bf;
-      margin-left: 4px;
       text-decoration: underline;
    }
 `
