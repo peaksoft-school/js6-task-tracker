@@ -7,6 +7,7 @@ import googleIcon from "../assets/svg/googleIcon.svg"
 import CustomIcons from "../Components/UI/TaskCard/CustomIcons"
 import arrowDownIcon from "../assets/icons/arrowDown.svg"
 import img from "../assets/icons/BlueIconWorkspaces.svg"
+import footballPhoto from "../assets/images/footballImages.png"
 
 const AuthorizationPages = () => {
    const { pathname } = useLocation()
@@ -37,6 +38,7 @@ const AuthorizationPages = () => {
             </NavigationText>
          </ContainerForm>
          <BackgroundImage src={imageLogin} alt="Task Tracker" />
+         <FootballPhoto src={footballPhoto} />
       </AuthorizationContainer>
    )
 }
@@ -108,4 +110,11 @@ const NavigationText = styled.p`
       color: #2679bf;
       margin-left: 4px;
    }
+`
+const FootballPhoto = styled.img`
+   width: 6vw;
+   height: 100vh;
+   position: absolute;
+   top: 0;
+   right: 0;
 `
