@@ -117,7 +117,7 @@ const SignUp = () => {
 export default SignUp
 
 const Form = styled.form`
-   width: 30vw;
+   width: 60vw;
    height: 61vh;
    display: flex;
    justify-content: center;
