@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 
-const UserAvatar = ({ userAvatar }) => {
-   return <StyledAvatarUser src={userAvatar} />
+const UserAvatar = ({ src }) => {
+   return <StyledAvatarUser src={src} />
 }
 
 export default UserAvatar

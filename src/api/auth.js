@@ -1,0 +1,13 @@
+import axios from "axios"
+
+export const axiosInstance = axios.create({
+   baseURL: "http://ec2-18-192-205-204.eu-central-1.compute.amazonaws.com",
+})
+
+export const signUpRequest = (userInfo) => {
+   return axiosInstance.post("/api/public/registration", userInfo)
+}
+
+export const loginRequest = (userData) => {
+   return axiosInstance.post("/api/public/login", userData)
+}
