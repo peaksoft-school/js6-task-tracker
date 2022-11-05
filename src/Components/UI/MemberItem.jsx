@@ -8,8 +8,8 @@ const MemberItem = ({ userGmail, photoUser, userName }) => {
       <StyledMemberItem>
          <UserAvatar userAvatar={photoUser} />
          <div>
-            <p>{userName}Nazira</p>
-            <span>{userGmail}nazira@gmail.com</span>
+            <p>{userName}</p>
+            <span>{userGmail}</span>
          </div>
       </StyledMemberItem>
    )
