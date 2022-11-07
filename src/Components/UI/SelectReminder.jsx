@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { CloseSelectIcon, DefaultSelectIcon } from "../../assets/icons/index"
 
-function Select({ list, reminder, setReminder }) {
+function SelectReminder({ list, reminder, setReminder }) {
    const [open, setOpen] = useState(false)
 
    return (
@@ -29,7 +29,7 @@ function Select({ list, reminder, setReminder }) {
    )
 }
 
-export default Select
+export default SelectReminder
 const AllBox = styled.div`
    width: 247px;
    height: 32px;
