@@ -1,16 +1,23 @@
 import React from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
 import imageLogin from "../assets/images/ImageLogin.png"
 import googleIcon from "../assets/svg/googleIcon.svg"
 import CustomIcons from "../Components/UI/TaskCard/CustomIcons"
 import arrowDownIcon from "../assets/icons/arrowDown.svg"
 import img from "../assets/icons/BlueIconWorkspaces.svg"
+import { authWithGoogle } from "../store/AuthSlice"
 
 const AuthorizationPages = () => {
+   const dispatch = useDispatch()
    const { pathname } = useLocation()
    const IamInRegistration = pathname === "/"
+
+   const authWithGoogleHandler = () => {
+      dispatch(authWithGoogle())
+   }
 
    return (
       <AuthorizationContainer>
@@ -18,7 +25,7 @@ const AuthorizationPages = () => {
 
          <ContainerForm>
             <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
-            <SignUpGoogleBlock>
+            <SignUpGoogleBlock onClick={authWithGoogleHandler}>
                <CustomIcons src={img} />
                <p>Register with google example@gmail.com</p>
 

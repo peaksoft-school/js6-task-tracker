@@ -3,10 +3,16 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
+import { signInWithPopup } from "firebase/auth"
 import { localStorageHelpers } from "../utilits/helpers/localStorageHelpers"
 import { USER_KEY } from "../utilits/constants/Constants"
-import { signUpRequest, loginRequest } from "../api/auth.js"
+import {
+   signUpRequest,
+   loginRequest,
+   authWithGoogleQuery,
+} from "../api/auth.js"
 import { PATH_IN_ROLES } from "../utilits/constants/general"
+import { auth, provider } from "../firebase/firebase"
 
 // РЕГИСТРАЦИЯ
 export const signUp = createAsyncThunk(
@@ -41,6 +47,21 @@ export const login = createAsyncThunk(
    }
 )
 
+// РЕГИСТРАЦИЯ ЧЕРЕЗ GOOGLE
+
+export const authWithGoogle = createAsyncThunk(
+   "authorization/withGoogle",
+   async ({ rejectWithValue }) => {
+      try {
+         const { user } = await signInWithPopup(auth, provider)
+         const response = await authWithGoogleQuery(user.accessToken)
+         return response
+      } catch (error) {
+         return rejectWithValue(error.message)
+      }
+   }
+)
+
 export const logout = createAsyncThunk("logout", async () => {
    localStorageHelpers.removeData(USER_KEY)
 })
@@ -66,7 +87,7 @@ export const AuthSlice = createSlice({
          const responseUserInfo = actions.payload
          state.userInfo = responseUserInfo
          state.loading = false
-         toast.success(`Кош келдиңиз ${responseUserInfo.firstName}`)
+         toast.success(`Welcome ${responseUserInfo.firstName}`)
       },
       [signUp.rejected]: (state, actions) => {
          toast.error(actions.payload.response.data.message)
@@ -74,15 +95,20 @@ export const AuthSlice = createSlice({
       },
       [logout.fulfilled]: (state) => {
          state.userInfo = initState
-         toast.warn("Вы вышли из аккаунта")
       },
       [login.fulfilled]: (state, actions) => {
          const responseUserData = actions.payload
          state.userInfo = responseUserData
-         toast.success(`Кош келдиңиз ${responseUserData.firstName}`)
+         toast.success(`Welcome ${responseUserData.firstName}`)
       },
       [login.rejected]: (state, actions) => {
          toast.error(actions.payload.response.data.message)
+      },
+      [authWithGoogle.fulfilled]: (state, actions) => {
+         state.userInfo = actions.payload
+      },
+      [authWithGoogle.rejected]: (state, actions) => {
+         toast.error(actions.payload)
       },
    },
 })
