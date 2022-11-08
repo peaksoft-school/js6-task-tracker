@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import styled from "styled-components"
 import Board2 from "../assets/svg/Board2.svg"
 import Board3 from "../assets/svg/Board3.svg"
@@ -7,12 +7,16 @@ import Galochka from "../assets/svg/Galochka.svg"
 import Modal from "./UI/Modal"
 import { BackImage, COLORS, MORECOLLORS } from "../utilits/constants/Constants"
 
-function CreateBoard() {
+const BackgroundImg = [Board1, Board2, Board3]
+
+function CreateBoard({ getData }) {
    const [boardActive, setBoardActive] = useState(false)
    const [chooseItem, setChooseItem] = useState(false)
    const [background, setBackground] = useState(false)
    const [colorsOfBack, setColorsOfBack] = useState(false)
+   const [elemData, setElemData] = useState("")
 
+   const backRef = useRef()
    const showBackground = () => {
       setBackground(!background)
       setColorsOfBack(false)
@@ -23,8 +27,6 @@ function CreateBoard() {
    }
    const showBoard = () => {
       setBoardActive(!boardActive)
-      setBackground(false)
-      setColorsOfBack(false)
    }
    const ChooseColor = (i) => {
       setChooseItem(i)
@@ -38,6 +40,26 @@ function CreateBoard() {
       setColorsOfBack(!colorsOfBack)
       setBackground(false)
    }
+   const [isChecked, setIsChecked] = useState(false)
+
+   const getIndex = (i) => {
+      setIsChecked(i)
+      setElemData(backRef)
+   }
+   const [isCheckedBackImg, setIsCheckedBackImg] = useState(null)
+   const chooseImg = (i) => {
+      setIsCheckedBackImg(i)
+      setElemData(backRef)
+   }
+   const [isCheckedColors, setIsCheckedColors] = useState(null)
+   const chooseBackColor = (i) => {
+      setIsCheckedColors(i)
+      setElemData(backRef)
+   }
+
+   const seendingData = () => {
+      getData(elemData)
+   }
    return (
       <Container>
          <Button onClick={showBoard} type="button">
@@ -48,16 +70,28 @@ function CreateBoard() {
             <Modal fullWidth="29.8rem" isOpen={boardActive}>
                <Board onClick={(e) => e.stopPropagation()}>
                   <h1>Create new board</h1>
-                  <input placeholder="Board title*" />
+                  <input ref={backRef} placeholder="Board title*" />
                   <h3>Add background</h3>
                   <div>
                      <p>Photo</p>
                      <span onClick={showBackground}>See more</span>
                   </div>
                   <ImgContainer>
-                     <div style={{ backgroundImage: `url(${Board1})` }} />
-                     <div style={{ backgroundImage: `url(${Board2})` }} />
-                     <div style={{ backgroundImage: `url(${Board3})` }} />
+                     {BackgroundImg.map((item, index) => (
+                        <div
+                           ref={backRef}
+                           style={{ backgroundImage: `url(${item})` }}
+                           onClick={() => getIndex(index)}
+                        >
+                           {isChecked === index && (
+                              <img
+                                 style={{ paddingLeft: "30px" }}
+                                 src={Galochka}
+                                 alt="galochka"
+                              />
+                           )}
+                        </div>
+                     ))}
                   </ImgContainer>
                   <div>
                      <p>Colors</p>
@@ -67,6 +101,7 @@ function CreateBoard() {
                   <Colors>
                      {COLORS.map((color, index) => (
                         <span
+                           ref={backRef}
                            style={{ background: color }}
                            onClick={() => ChooseColor(index)}
                         >
@@ -80,7 +115,9 @@ function CreateBoard() {
                      <button onClick={CloseBoard} type="button">
                         Cancel
                      </button>
-                     <button type="button">Create board</button>
+                     <button type="button" onClick={seendingData}>
+                        Create board
+                     </button>
                   </BtnContainer>
                </Board>
 
@@ -88,8 +125,21 @@ function CreateBoard() {
                   <BackgroundContainer onClick={(e) => e.stopPropagation()}>
                      <h1>Photo</h1>
                      <div>
-                        {BackImage.map((img) => (
-                           <img src={img} alt="img" />
+                        {BackImage.map((img, index) => (
+                           <div ref={backRef} onClick={() => chooseImg(index)}>
+                              <img src={img} alt="img" />
+
+                              {isCheckedBackImg === index && (
+                                 <img
+                                    style={{
+                                       position: "absolute",
+                                       paddingTop: "30px",
+                                    }}
+                                    src={Galochka}
+                                    alt="galochka"
+                                 />
+                              )}
+                           </div>
                         ))}
                      </div>
                   </BackgroundContainer>
@@ -98,8 +148,23 @@ function CreateBoard() {
                   <ColorsContainer onClick={(e) => e.stopPropagation()}>
                      <h1>Colors</h1>
                      <div>
-                        {MORECOLLORS.map((color) => (
-                           <span style={{ background: color }} />
+                        {MORECOLLORS.map((color, index) => (
+                           <span
+                              ref={backRef}
+                              onClick={() => chooseBackColor(index)}
+                              style={{ background: color }}
+                           >
+                              {isCheckedColors === index && (
+                                 <img
+                                    style={{
+                                       paddingTop: "12px",
+                                       paddingLeft: "28px",
+                                    }}
+                                    src={Galochka}
+                                    alt="galochka"
+                                 />
+                              )}
+                           </span>
                         ))}
                      </div>
                   </ColorsContainer>
@@ -118,8 +183,8 @@ const Button = styled.button`
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   width: 20vh;
-   height: 5vh;
+   width: 21vh;
+   height: 6vh;
    background: #0079bf;
    border-radius: 24px;
    border: none;
@@ -261,7 +326,7 @@ const BackgroundContainer = styled.div`
       justify-content: space-evenly;
       flex-wrap: wrap;
    }
-   img {
+   img:first-child {
       padding-top: 0.5rem;
       cursor: pointer;
    }
