@@ -55,8 +55,8 @@ const DropDownContainer = styled.div`
 
 const DropDownBlock = styled.div`
    position: relative;
-   width: 180px;
-   height: 95px;
+   width: 17vw;
+   height: 17vh;
    background-color: #222222;
    border-radius: 15px;
    padding: 15px;
