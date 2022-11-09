@@ -32,6 +32,7 @@ export const login = createAsyncThunk(
       const { userData, navigate } = value
       try {
          const { data } = await loginRequest(userData)
+         console.log(data)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
          return data
@@ -66,7 +67,7 @@ export const AuthSlice = createSlice({
          const responseUserInfo = actions.payload
          state.userInfo = responseUserInfo
          state.loading = false
-         toast.success(`Кош келдиңиз ${responseUserInfo.firstName}`)
+         toast.success(`Welcome ${responseUserInfo.firstName}`)
       },
       [signUp.rejected]: (state, actions) => {
          toast.error(actions.payload.response.data.message)
@@ -74,12 +75,11 @@ export const AuthSlice = createSlice({
       },
       [logout.fulfilled]: (state) => {
          state.userInfo = initState
-         toast.warn("Вы вышли из аккаунта")
       },
       [login.fulfilled]: (state, actions) => {
          const responseUserData = actions.payload
          state.userInfo = responseUserData
-         toast.success(`Кош келдиңиз ${responseUserData.firstName}`)
+         toast.success(`Welcome ${responseUserData.firstName}`)
       },
       [login.rejected]: (state, actions) => {
          toast.error(actions.payload.response.data.message)

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { TextareaAutosize } from "@mui/material"
+import TextareaAutosize from "@mui/base/TextareaAutosize"
 import Button from "@mui/material/Button"
 import styled from "styled-components"
 import threePoint from "../../../assets/icons/threePoint.svg"
@@ -15,7 +15,7 @@ import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
 import AddButton from "./AddButtonColumn"
 import close from "../../../assets/icons/Vectorclose.svg"
 
-const TaskCard = ({ getTitleColumn }) => {
+const TaskCard = ({ getTitleColumn, showInnerTaskCard }) => {
    const [showLabel, setShowLabel] = useState(false)
    const [showAddCard, setShowAddCard] = useState(false)
    const [titleColumn, setTitleColumn] = useState("")
@@ -37,79 +37,82 @@ const TaskCard = ({ getTitleColumn }) => {
    }
 
    return Columns.length > 0 ? (
-      <DisplayFlexJCSB flexStart="flex-start">
-         {Columns.map(() => (
-            <CardColumn>
-               <CustomIcons
-                  src={threePoint}
-                  position="absolute"
-                  top="15px"
-                  right="14px"
-               />
-
-               <TitleColumn
-                  onBlur={sendTitleColumn}
-                  aria-label="empty textarea"
-                  value={titleColumn}
-                  onChange={titleColumnHandler}
-                  placeholder={
-                     titleColumn.trim().length < 1 && "Название колонки"
-                  }
-               />
-               <BlockCard>
-                  <BlockLables>
-                     {Labels.map((item) => (
-                        <Label
-                           showLabel={showLabel}
-                           key={item.id}
-                           onClick={showLabelHandler}
-                           color={item.color}
-                        >
-                           {showLabel ? item.text : ""}
-                        </Label>
-                     ))}
-                  </BlockLables>
-                  Какая то задача, которую нужно выполнить
+      <ContainerColumn>
+         <DisplayFlexJCSB flexStart="flex-start">
+            {Columns.map(() => (
+               <CardColumn>
                   <CustomIcons
-                     edit="edit"
-                     src={EditIcon}
+                     src={threePoint}
                      position="absolute"
                      top="15px"
-                     right="7px"
+                     right="14px"
                   />
-                  <DisplayFlexJCSB>
-                     <p>
-                        <CustomIcons src={timeIcon} /> 2 month
-                     </p>
-                     <DisplayFlexJCSB width="150px">
-                        <CustomIcons src={descriptionIcon} />
-                        <CustomIcons src={comentIcon} />
-                        <CustomIcons src={completeIcon} />
-                        <span>1/3</span>
-                        <CustomIcons src={peopleIcon} />
-                        <span>5</span>
-                     </DisplayFlexJCSB>
-                  </DisplayFlexJCSB>
-               </BlockCard>
 
-               {!showAddCard ? (
-                  <AddCardButton onClick={addCardHandler}>
-                     + Add a card
-                  </AddCardButton>
-               ) : (
-                  <>
-                     <InputAddCard />
-                     <DisplayFlexJCSB flexStart="flex-start" width="250px">
-                        <ButtonStyled size="small" variant="contained">
-                           Добавить карточку
-                        </ButtonStyled>
-                        <CustomIcons src={close} click={addCardHandler} />
+                  <TitleColumn
+                     onBlur={sendTitleColumn}
+                     aria-label="empty textarea"
+                     value={titleColumn}
+                     onChange={titleColumnHandler}
+                     placeholder={
+                        titleColumn.trim().length < 1 && "Название колонки"
+                     }
+                  />
+                  <BlockCard>
+                     <BlockLables>
+                        {Labels.map((item) => (
+                           <Label
+                              showLabel={showLabel}
+                              key={item.id}
+                              onClick={showLabelHandler}
+                              color={item.color}
+                           >
+                              {showLabel ? item.text : ""}
+                           </Label>
+                        ))}
+                     </BlockLables>
+                     <TitleCard>Движение кылыш керек</TitleCard>
+                     <CustomIcons
+                        click={showInnerTaskCard}
+                        edit="edit"
+                        src={EditIcon}
+                        position="absolute"
+                        top="15px"
+                        right="7px"
+                     />
+                     <DisplayFlexJCSB>
+                        <p>
+                           <CustomIcons src={timeIcon} /> 2 month
+                        </p>
+                        <DisplayFlexJCSB width="14vw">
+                           <CustomIcons src={descriptionIcon} />
+                           <CustomIcons src={comentIcon} />
+                           <CustomIcons src={completeIcon} />
+                           <span>1/3</span>
+                           <CustomIcons src={peopleIcon} />
+                           <span>5</span>
+                        </DisplayFlexJCSB>
                      </DisplayFlexJCSB>
-                  </>
-               )}
-            </CardColumn>
-         ))}
-      </DisplayFlexJCSB>
+                  </BlockCard>
+
+                  {!showAddCard ? (
+                     <AddCardButton onClick={addCardHandler}>
+                        + Add a card
+                     </AddCardButton>
+                  ) : (
+                     <>
+                        <InputAddCard />
+                        <DisplayFlexJCSB flexStart="flex-start" width="250px">
+                           <ButtonStyled size="small" variant="contained">
+                              Добавить карточку
+                           </ButtonStyled>
+                           <CustomIcons src={close} click={addCardHandler} />
+                        </DisplayFlexJCSB>
+                     </>
+                  )}
+               </CardColumn>
+            ))}
+         </DisplayFlexJCSB>
+      </ContainerColumn>
    ) : (
       <AddButton>+ Add a Column</AddButton>
    )
@@ -117,28 +120,35 @@ const TaskCard = ({ getTitleColumn }) => {
 
 export default TaskCard
 
+const ContainerColumn = styled.div`
+   display: flex;
+   align-items: flex-start;
+   overflow: scroll;
+   height: 87vh;
+   padding: 1rem;
+`
 const CardColumn = styled.div`
    position: relative;
-   width: 288px;
-   padding: 15px 15px 10px 12px;
+   width: 28vw;
+   padding: 1rem 1rem 0.6rem 0.75rem;
    background: #e6e6e6;
    border-radius: 8px;
    font-family: "Nunito", sans-serif;
    p {
-      font-size: 17px;
+      font-size: 1rem;
    }
    span {
-      font-size: 22px;
+      font-size: 1.3rem;
       cursor: pointer;
    }
 `
 
 const BlockCard = styled.p`
    position: relative;
-   width: 272px;
+   width: 100%;
    border-radius: 4px;
    border: none;
-   padding: 8px;
+   padding: 0.6rem;
    margin: 0 0 5px 0;
    font-size: 18px !important;
    background-color: white;
@@ -191,7 +201,7 @@ const Label = styled.label`
 const BlockLables = styled.div`
    display: flex;
    flex-wrap: wrap;
-   gap: 8px;
+   gap: 6px;
    margin-bottom: 10px;
 `
 const InputAddCard = styled.input`
@@ -214,15 +224,20 @@ const ButtonStyled = styled(Button)`
    }
 `
 const TitleColumn = styled(TextareaAutosize)`
-   &.sc-jrcTuL {
-      width: 250px;
-      border: none;
-      background: #e6e6e6;
-      font-size: 19px;
-      resize: none;
-      padding: 3px 3px 3px 8px;
-      &:focus {
-         background: white;
-      }
+   border: 5px solid red;
+   width: 250px;
+   border: none;
+   background: #e6e6e6;
+   font-size: 19px;
+   resize: none;
+   padding: 3px 3px 3px 8px;
+   &:focus {
+      background: white;
    }
+`
+
+const TitleCard = styled.h2`
+   font-size: 1.2rem;
+   margin: 0.8rem 0.3rem;
+   font-weight: 500;
 `

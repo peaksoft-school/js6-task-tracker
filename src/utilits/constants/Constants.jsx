@@ -2,6 +2,10 @@ import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
+import addPeopleIcon from "../../assets/svg/addPeople.svg"
+import labelIcon from "../../assets/icons/label.svg"
+import attachmentIcon from "../../assets/icons/scripka.svg"
+import checklistIcon from "../../assets/icons/checklist.svg"
 
 export const GLOBAL_URL = "http://18.192.179.151"
 
@@ -18,11 +22,16 @@ export const Labels = [
    },
    {
       id: 2,
+      color: "#b323e3",
+      text: "Движение кылыш керек",
+   },
+   {
+      id: 3,
       color: "#F2D600",
       text: "Обратите на это внимание",
    },
    {
-      id: 3,
+      id: 4,
       color: "#0079BF",
       text: "Хорошего всем настроения, друзья",
    },
@@ -125,6 +134,34 @@ export const SubMenuItems = [
    {
       iconId: 5,
       title: "Setting",
+   },
+]
+
+export const GrayButtonsInnerTaskCard = [
+   {
+      id: 1,
+      title: "Members",
+      icon: addPeopleIcon,
+   },
+   {
+      id: 2,
+      title: "Estimation",
+      icon: addPeopleIcon,
+   },
+   {
+      id: 3,
+      title: "Label",
+      icon: labelIcon,
+   },
+   {
+      id: 4,
+      title: "Atachment",
+      icon: attachmentIcon,
+   },
+   {
+      id: 5,
+      title: "Checklist",
+      icon: checklistIcon,
    },
 ]
 

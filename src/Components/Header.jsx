@@ -39,6 +39,7 @@ const ParentDiv = styled.header`
    width: 100vw;
    height: 68px;
    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
+   background-color: white;
 `
 const RightBlock = styled.div`
    width: 38vw;

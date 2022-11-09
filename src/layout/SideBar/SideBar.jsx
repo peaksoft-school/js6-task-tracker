@@ -193,7 +193,7 @@ const SideBar = ({ nameWorkspaces }) => {
                )
             })}
 
-            <ShowMoreText>
+            <ShowMoreText showSideBar={showSideBar}>
                <IconButton iconSvg={arrowDown} />
                {showSideBar && "Show More"}
             </ShowMoreText>
@@ -206,11 +206,12 @@ export default SideBar
 
 const StyledContainerSideBar = styled.aside`
    display: flex;
+   padding: 1rem 1rem 1rem 0;
+   margin: 0 2rem 0 0;
    flex-direction: column;
-   width: ${(props) => (props.stateSideBar ? "250px" : "90px")};
+   width: ${(props) => (props.stateSideBar ? "21vw" : "8.5vw")};
    background-color: white;
    transition: all 0.35s ease-out;
-   padding-top: 1.7rem;
    ul {
       padding: 0;
       display: flex;
@@ -230,14 +231,14 @@ const HeaderSideBar = styled.div`
    align-items: center;
    justify-content: space-between;
    p {
-      width: 60px;
+      width: 21.5vw;
       font-size: 1.2rem;
       padding: 0 7.5rem 0 1.5rem;
    }
    img {
-      margin-left: 2rem;
+      margin-left: 2.2rem;
       &:last-child {
-         margin-left: 0.8rem;
+         margin-left: 1.7rem;
       }
    }
 `
@@ -251,7 +252,7 @@ const SideBarItem = styled.li`
    cursor: pointer;
    span {
       text-align: start;
-      margin-left: 0.5rem;
+      margin-left: 0.6rem;
    }
    &:first-child {
       border-top: 2px solid #e0e0e0;
@@ -275,7 +276,6 @@ const SideBarItem = styled.li`
 const SideBarTitleBlock = styled.div`
    width: 100%;
    padding: 0 0 0 1.8rem;
-   margin-left: -8px;
    height: 37px;
    display: flex;
    justify-content: center;
@@ -306,25 +306,16 @@ const ShowMoreText = styled.span`
    display: flex;
    height: 30px;
    align-items: center;
-   margin-left: 24px;
+   margin-left: ${(props) => (props.showSideBar ? "1.9rem" : "1.9rem")};
    color: #909090;
 `
-const ShowSideBarButton = styled.img`
-   display: inline-block;
-   background-color: #ffffff;
-   padding: 7px;
-   border-radius: 8px;
-   cursor: pointer;
-   margin-left: 5px;
-`
+
 const WorkspacesItem = styled.div`
    display: flex;
    flex-wrap: wrap;
    width: 100%;
    justify-content: center;
    cursor: pointer;
-   margin-left: -8px;
-   padding-right: 9px;
    position: relative;
    &:hover {
       transition: 0.3s;
@@ -337,7 +328,12 @@ const WorkspacesItem = styled.div`
       text-align: start;
       margin-left: 10px;
    }
-   img {
-      margin-left: 15px;
-   }
+`
+
+const ShowSideBarButton = styled.img`
+   background-color: white;
+   padding: 7px;
+   width: 40px !important;
+   height: 40px !important;
+   border-radius: 8px;
 `

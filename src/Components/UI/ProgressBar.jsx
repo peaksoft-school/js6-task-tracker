@@ -13,7 +13,7 @@ const ProgressBar = ({ widthProgressPercent, tasks, completedTasks }) => {
             <StyledProgress width={`${widthProgressPercent}%`} />
          </StyledBoxProgress>
          <span>
-            {+widthProgressPercent <= 100 ? widthProgressPercent : "100"}%
+            {+widthProgressPercent <= 100 ? widthProgressPercent : "0"}%
          </span>
       </BlockProgressBar>
    )
