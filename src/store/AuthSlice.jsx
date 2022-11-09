@@ -51,9 +51,10 @@ export const login = createAsyncThunk(
 
 export const authWithGoogle = createAsyncThunk(
    "authorization/withGoogle",
-   async ({ rejectWithValue }) => {
+   async (value, { rejectWithValue }) => {
       try {
          const { user } = await signInWithPopup(auth, provider)
+         console.log(user.accessToken)
          const response = await authWithGoogleQuery(user.accessToken)
          return response
       } catch (error) {
@@ -108,7 +109,8 @@ export const AuthSlice = createSlice({
          state.userInfo = actions.payload
       },
       [authWithGoogle.rejected]: (state, actions) => {
-         toast.error(actions.payload)
+         console.log("ERROR DONE")
+         console.log(actions.error)
       },
    },
 })
