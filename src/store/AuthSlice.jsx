@@ -19,7 +19,6 @@ export const signUp = createAsyncThunk(
    "authorization/signup",
    async (value, { rejectWithValue }) => {
       const { userInfo, navigate } = value
-
       try {
          const { data } = await signUpRequest(userInfo)
          localStorageHelpers.saveData(USER_KEY, data)
@@ -53,12 +52,17 @@ export const login = createAsyncThunk(
 export const authWithGoogle = createAsyncThunk(
    "authorization/withGoogle",
    async (value, { rejectWithValue }) => {
+      const { navigate } = value
       try {
          const { user } = await signInWithPopup(auth, provider)
-         const response = await authWithGoogleQuery(user.accessToken)
-         return response
+         const { data } = await authWithGoogleQuery(user.accessToken)
+
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
+         navigate(PATH_IN_ROLES[data.role].path)
+
+         return data
       } catch (error) {
-         return rejectWithValue(error.message)
+         return rejectWithValue(error)
       }
    }
 )
@@ -106,11 +110,12 @@ export const AuthSlice = createSlice({
          toast.error(actions.payload.response.data.message)
       },
       [authWithGoogle.fulfilled]: (state, actions) => {
-         state.userInfo = actions.payload
+         const responseUserData = actions.payload
+         state.userInfo = responseUserData
+         toast.success(`Welcome ${responseUserData.firstName}`)
       },
-      [authWithGoogle.rejected]: (state, actions) => {
-         console.log("ERROR DONE")
-         console.log(actions.error)
+      [authWithGoogle.rejected]: () => {
+         toast.error("Sorry,something went wrong")
       },
    },
 })

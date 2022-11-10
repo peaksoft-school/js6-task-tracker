@@ -1,6 +1,6 @@
 import React from "react"
 import GoogleButton from "react-google-button"
-import { Link, Outlet, useLocation } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
@@ -9,11 +9,12 @@ import { authWithGoogle } from "../store/AuthSlice"
 
 const AuthorizationPages = () => {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const { pathname } = useLocation()
    const IamInRegistration = pathname === "/"
 
    const authWithGoogleHandler = () => {
-      dispatch(authWithGoogle())
+      dispatch(authWithGoogle({ navigate }))
    }
 
    return (

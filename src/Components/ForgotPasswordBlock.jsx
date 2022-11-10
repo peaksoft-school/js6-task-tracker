@@ -1,15 +1,13 @@
 import { useRef } from "react"
-import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import Button from "./UI/Button"
 
 const ForgotPasswordBlock = () => {
-   const dispatch = useDispatch()
    const inputRef = useRef(null)
 
    const sendHandler = () => {
       const inputValue = inputRef.current.value
-      dispatch()
+      console.log(inputValue)
    }
 
    return (
