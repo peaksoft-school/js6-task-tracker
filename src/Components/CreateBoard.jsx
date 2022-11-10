@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react"
 import styled from "styled-components"
-import Board2 from "../assets/svg/Board2.svg"
-import Board3 from "../assets/svg/Board3.svg"
-import Board1 from "../assets/svg/Board.svg"
 import Galochka from "../assets/svg/Galochka.svg"
 import Modal from "./UI/Modal"
-import { BackImage, COLORS, MORECOLLORS } from "../utilits/constants/Constants"
-
-const BackgroundImg = [Board1, Board2, Board3]
+import {
+   BackgroundImg,
+   BackImage,
+   COLORS,
+   MORECOLLORS,
+} from "../utilits/constants/Constants"
 
 function CreateBoard({ getData }) {
    const [boardActive, setBoardActive] = useState(false)
@@ -57,8 +57,9 @@ function CreateBoard({ getData }) {
       setElemData(backRef)
    }
 
-   const seendingData = () => {
+   const sendingData = () => {
       getData(elemData)
+      setBoardActive(false)
    }
    return (
       <Container>
@@ -115,7 +116,7 @@ function CreateBoard({ getData }) {
                      <button onClick={CloseBoard} type="button">
                         Cancel
                      </button>
-                     <button type="button" onClick={seendingData}>
+                     <button type="button" onClick={sendingData}>
                         Create board
                      </button>
                   </BtnContainer>
