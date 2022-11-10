@@ -1,23 +1,20 @@
 import styled from "styled-components"
-import { useState } from "react"
 import ReusableDropDown from "./UI/ReusableDropDown"
 import CustomIcons from "./UI/TaskCard/CustomIcons"
 import searchIcon from "../assets/svg/SearchIcon.svg"
 import MemberItem from "./UI/MemberItem"
 import photoAvatar from "../assets/images/avatarPhotoo.jpg"
 
-const Assignee = ({ assigneeMembers }) => {
-   const [searchTerm, setSearchTerm] = useState("")
-
+const Assignee = ({ assigneeMembers, onSearch, searchValue }) => {
    return (
       <div>
          <ReusableDropDown showState width="310px">
             <ContainerInput>
                <input
                   placeholder="Search"
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchValue}
+                  onChange={onSearch}
                />
-
                <CustomIcons
                   top="3px"
                   right="10px"
@@ -26,25 +23,19 @@ const Assignee = ({ assigneeMembers }) => {
                />
             </ContainerInput>
             <ContainerMembers>
-               {assigneeMembers
-                  .filter((item) =>
-                     item.userName
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
+               {assigneeMembers.map((item) => {
+                  return (
+                     <>
+                        <MemberItem
+                           key={item.id}
+                           userName={item.userName}
+                           userGmail={item.userEmail}
+                           photoUser={photoAvatar}
+                        />
+                        <input type="checkbox" />
+                     </>
                   )
-                  .map((item) => {
-                     return (
-                        <>
-                           <MemberItem
-                              key={item.id}
-                              userName={item.userName}
-                              userGmail={item.userEmail}
-                              photoUser={photoAvatar}
-                           />
-                           <input type="checkbox" />
-                        </>
-                     )
-                  })}
+               })}
             </ContainerMembers>
          </ReusableDropDown>
       </div>
@@ -75,10 +66,10 @@ const ContainerMembers = styled.div`
    flex-direction: column;
    input {
       width: 4vw;
-      height: 3vh;
+      height: 2vh;
       position: relative;
       left: -2rem;
-      top: -2.8rem;
+      top: -2.6rem;
    }
    div {
       margin-left: 20px;
