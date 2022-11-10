@@ -17,6 +17,8 @@ import Board1 from "../../assets/svg/Board.svg"
 import Board2 from "../../assets/svg/Board2.svg"
 import Board3 from "../../assets/svg/Board3.svg"
 
+export const GLOBAL_URL = "http://18.192.179.151"
+
 export const Labels = [
    {
       id: 0,
@@ -175,3 +177,5 @@ export const SubMenuItems = [
 ]
 
 export const BackgroundImg = [Board1, Board2, Board3]
+
+export const USER_KEY = "TASK-TRACKER-USER-KEY"
