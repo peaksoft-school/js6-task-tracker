@@ -22,7 +22,7 @@ const CommentSection = ({
             <CustomIcons click={click} src={arrowIcon} />
          </DisplayFlexJCSB>
          <Comment>
-            <UserAvatar userAvatar={userAvatar} />
+            <UserAvatar src={userAvatar} />
             <div>
                <UserName userName={userName} />
                <CommentText>

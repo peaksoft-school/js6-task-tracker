@@ -2,10 +2,11 @@ import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
-import addPeopleIcon from "../../assets/svg/addPeople.svg"
+import addPeopleIcon from "../../assets/icons/peopleGray.svg"
 import labelIcon from "../../assets/icons/label.svg"
 import attachmentIcon from "../../assets/icons/scripka.svg"
 import checklistIcon from "../../assets/icons/checklist.svg"
+import estimationIcon from "../../assets/icons/time.svg"
 
 export const GLOBAL_URL = "http://18.192.179.151"
 
@@ -28,7 +29,7 @@ export const Labels = [
    {
       id: 3,
       color: "#F2D600",
-      text: "Обратите на это внимание",
+      text: "Обратите внимание",
    },
    {
       id: 4,
@@ -146,7 +147,7 @@ export const GrayButtonsInnerTaskCard = [
    {
       id: 2,
       title: "Estimation",
-      icon: addPeopleIcon,
+      icon: estimationIcon,
    },
    {
       id: 3,
