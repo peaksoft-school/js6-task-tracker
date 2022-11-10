@@ -16,6 +16,7 @@ export const signUp = createAsyncThunk(
 
       try {
          const { data } = await signUpRequest(userInfo)
+         console.log(data)
          localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
          return data
