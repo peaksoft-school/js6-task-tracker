@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useFormik } from "formik"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -6,11 +6,18 @@ import styled from "styled-components"
 import Input from "../UI/Input"
 import PasswordInput from "../UI/PasswordInput"
 import Button from "../UI/Button"
+import Modal from "../UI/Modal"
 import { login } from "../../store/AuthSlice"
+import ForgotPasswordBlock from "../ForgotPasswordBlock"
 
 const Login = () => {
+   const [showModal, setShowModal] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+
+   const showCloseModalHandler = () => {
+      setShowModal(!showModal)
+   }
 
    const formik = useFormik({
       initialValues: {
@@ -33,9 +40,6 @@ const Login = () => {
                onChange={formik.handleChange}
                onBlur={formik.handleBlur}
             />
-            {formik.touched.email && formik.errors.email && (
-               <ErrorText>{formik.errors.email}</ErrorText>
-            )}
          </ContainerInputErrorText>
          <ContainerInputErrorText>
             <PasswordInput
@@ -46,10 +50,17 @@ const Login = () => {
                onChange={formik.handleChange}
                onBlur={formik.handleBlur}
             />
-            {formik.touched.password && formik.errors.password && (
-               <ErrorText>{formik.errors.password}</ErrorText>
-            )}
          </ContainerInputErrorText>
+         <TextForgotPassword>
+            <span onClick={showCloseModalHandler}> Forgot password ?</span>
+         </TextForgotPassword>
+         <Modal
+            fullWidth="40vw"
+            onClose={showCloseModalHandler}
+            isOpen={showModal}
+         >
+            <ForgotPasswordBlock />
+         </Modal>
          <Button fullHeight="2.8rem" type="submit" fullWidth="180px">
             Log in
          </Button>
@@ -70,11 +81,11 @@ const ContainerInputErrorText = styled.div`
    height: 43px;
    width: 320px;
 `
-
-const ErrorText = styled.p`
-   color: red;
-   margin: 0;
-   text-align: start;
-   font-size: 16px;
-   margin-left: 5px;
+const TextForgotPassword = styled.div`
+   width: 25vw;
+   text-align: end;
+   span {
+      font-size: 1.1rem;
+      cursor: pointer;
+   }
 `

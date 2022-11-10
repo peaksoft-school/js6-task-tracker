@@ -1,13 +1,10 @@
 import React from "react"
+import GoogleButton from "react-google-button"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
 import imageLogin from "../assets/images/ImageLogin.png"
-import googleIcon from "../assets/svg/googleIcon.svg"
-import CustomIcons from "../Components/UI/TaskCard/CustomIcons"
-import arrowDownIcon from "../assets/icons/arrowDown.svg"
-import img from "../assets/icons/BlueIconWorkspaces.svg"
 import { authWithGoogle } from "../store/AuthSlice"
 
 const AuthorizationPages = () => {
@@ -25,13 +22,7 @@ const AuthorizationPages = () => {
 
          <ContainerForm>
             <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
-            <SignUpGoogleBlock onClick={authWithGoogleHandler}>
-               <CustomIcons src={img} />
-               <p>Register with google example@gmail.com</p>
-
-               <CustomIcons src={arrowDownIcon} />
-               <CustomIcons src={googleIcon} />
-            </SignUpGoogleBlock>
+            <AuthWithGoogleButton onClick={authWithGoogleHandler} />
             <TextOr>or</TextOr>
             <Outlet />
             <NavigationText>
@@ -77,7 +68,7 @@ const ContainerForm = styled.div`
    }
 `
 const TextOr = styled.p`
-   margin: 0;
+   margin: 0.6rem 0 0.6rem 0;
    font-size: 1.4rem;
    color: #919191;
 `
@@ -85,26 +76,6 @@ const BackgroundImage = styled.img`
    width: 38vw;
    height: 100vh;
    margin-right: 5rem;
-`
-const SignUpGoogleBlock = styled.div`
-   display: flex;
-   align-items: center;
-   justify-content: space-around;
-   width: 23vw;
-   height: 6vh;
-   background-color: #f0f0f0;
-   border-radius: 8px;
-   padding: 0.4rem 1rem 0.4rem 1rem;
-   img {
-      width: 4vw;
-      height: 4vh;
-   }
-   p {
-      font-size: 1rem;
-      margin: 0;
-      color: #919191;
-      margin-left: 0.6rem;
-   }
 `
 const Title = styled.h2`
    font-weight: 500;
@@ -115,4 +86,7 @@ const NavigationText = styled.p`
       color: #2679bf;
       margin-left: 4px;
    }
+`
+const AuthWithGoogleButton = styled(GoogleButton)`
+   border: 5px solid red;
 `

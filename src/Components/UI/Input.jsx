@@ -30,9 +30,10 @@ const CssTextField = styled(TextField)({
    },
 })
 
-export default function Input({ label, type, id, ...other }) {
+export default function Input({ label, type, id, ref, ...other }) {
    return (
       <CssTextField
+         ref={ref}
          {...other}
          fullWidth
          size="small"
