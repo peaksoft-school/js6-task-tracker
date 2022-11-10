@@ -38,6 +38,7 @@ export const login = createAsyncThunk(
       const { userData, navigate } = value
       try {
          const { data } = await loginRequest(userData)
+
          if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
          return data
@@ -54,7 +55,6 @@ export const authWithGoogle = createAsyncThunk(
    async (value, { rejectWithValue }) => {
       try {
          const { user } = await signInWithPopup(auth, provider)
-         console.log(user.accessToken)
          const response = await authWithGoogleQuery(user.accessToken)
          return response
       } catch (error) {
