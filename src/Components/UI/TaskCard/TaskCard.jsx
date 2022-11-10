@@ -83,7 +83,7 @@ const TaskCard = ({ getTitleColumn, showInnerTaskCard }) => {
                         <p>
                            <CustomIcons src={timeIcon} /> 2 month
                         </p>
-                        <DisplayFlexJCSB width="14vw">
+                        <DisplayFlexJCSB width="12vw">
                            <CustomIcons src={descriptionIcon} />
                            <CustomIcons src={comentIcon} />
                            <CustomIcons src={completeIcon} />
@@ -129,21 +129,22 @@ const ContainerColumn = styled.div`
 `
 const CardColumn = styled.div`
    position: relative;
-   width: 28vw;
+   width: 25vw;
    padding: 1rem 1rem 0.6rem 0.75rem;
    background: #e6e6e6;
    border-radius: 8px;
    font-family: "Nunito", sans-serif;
    p {
-      font-size: 1rem;
+      font-size: 0.8rem;
    }
    span {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       cursor: pointer;
    }
 `
 
 const BlockCard = styled.p`
+   border: 1px solid black;
    position: relative;
    width: 100%;
    border-radius: 4px;
@@ -183,8 +184,8 @@ const AddCardButton = styled.span`
 `
 
 const Label = styled.label`
-   width: ${(props) => !props.showLabel && "56px"};
-   height: ${(props) => !props.showLabel && "7px"};
+   width: ${(props) => !props.showLabel && "4.8vw"};
+   height: ${(props) => !props.showLabel && "1vh"};
    padding: ${(props) => props.showLabel && "2px 5px"};
    background-color: ${(props) => props.color};
    font-size: 14px;
