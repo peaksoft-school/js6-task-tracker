@@ -1,13 +1,17 @@
 import { useRef } from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
+import { forgotPassword } from "../store/AuthSlice"
 import Button from "./UI/Button"
 
 const ForgotPasswordBlock = () => {
+   const link = window.location.href
+   const dispatch = useDispatch()
    const inputRef = useRef(null)
 
    const sendHandler = () => {
       const inputValue = inputRef.current.value
-      console.log(inputValue)
+      dispatch(forgotPassword({ email: inputValue, link }))
    }
 
    return (
@@ -16,7 +20,7 @@ const ForgotPasswordBlock = () => {
          <p>
             A link will be setn to your Email,follow the link sent to the mail
          </p>
-         <input ref={inputRef} />
+         <input placeholder="example@gmail.com" ref={inputRef} />
          <ButtonBlock>
             <Button onClick={sendHandler} fullHeight="5vh" fullWidth="13vw">
                Send
@@ -30,10 +34,13 @@ export default ForgotPasswordBlock
 
 const Block = styled.div`
    padding: 0 1rem 0 1rem;
-   Input {
-      &::placeholder {
-         font-family: "Nunito", sans-serif;
-      }
+   input {
+      width: 35vw;
+      height: 5vh;
+      border-radius: 8px;
+      border: 1px solid gray;
+      padding: 0 0 0 1rem;
+      font-size: 1.1rem;
    }
 `
 

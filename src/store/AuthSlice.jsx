@@ -10,6 +10,7 @@ import {
    signUpRequest,
    loginRequest,
    authWithGoogleQuery,
+   forgotPasswordQuery,
 } from "../api/auth.js"
 import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
@@ -48,7 +49,6 @@ export const login = createAsyncThunk(
 )
 
 // РЕГИСТРАЦИЯ ЧЕРЕЗ GOOGLE
-
 export const authWithGoogle = createAsyncThunk(
    "authorization/withGoogle",
    async (value, { rejectWithValue }) => {
@@ -63,6 +63,19 @@ export const authWithGoogle = createAsyncThunk(
          return data
       } catch (error) {
          return rejectWithValue(error)
+      }
+   }
+)
+
+// ЗАБЫЛИ ПАРОЛЬ?УСТАНОВИТЬ ПАРОЛЬ
+export const forgotPassword = createAsyncThunk(
+   "authorization/forgotPassword",
+   async (value, { rejectWithValue }) => {
+      try {
+         const response = forgotPasswordQuery(value)
+         return response
+      } catch (error) {
+         return rejectWithValue(error.message)
       }
    }
 )
@@ -116,6 +129,9 @@ export const AuthSlice = createSlice({
       },
       [authWithGoogle.rejected]: () => {
          toast.error("Sorry,something went wrong")
+      },
+      [forgotPassword.fulfilled]: (state, actions) => {
+         toast.success(actions.payload.data.message)
       },
    },
 })
