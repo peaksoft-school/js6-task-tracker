@@ -23,3 +23,7 @@ export const forgotPasswordQuery = (value) => {
       `/api/public/forgot/password?email=${value.email}&link=${value.link}`
    )
 }
+
+export const resetPasswordQuery = (value) => {
+   return axiosInstance.post("/api/public/reset/password", value)
+}

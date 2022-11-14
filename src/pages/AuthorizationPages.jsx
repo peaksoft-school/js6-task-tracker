@@ -1,8 +1,14 @@
 import React from "react"
 import GoogleButton from "react-google-button"
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
+import {
+   Link,
+   Outlet,
+   useLocation,
+   useNavigate,
+   useParams,
+} from "react-router-dom"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
 import imageLogin from "../assets/images/ImageLogin.png"
 import { authWithGoogle } from "../store/AuthSlice"
@@ -10,6 +16,8 @@ import { authWithGoogle } from "../store/AuthSlice"
 const AuthorizationPages = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const params = useParams()
+   const { isLoading } = useSelector((state) => state.auth)
    const { pathname } = useLocation()
    const IamInRegistration = pathname === "/"
 
@@ -19,21 +27,31 @@ const AuthorizationPages = () => {
 
    return (
       <AuthorizationContainer>
+         {isLoading && <h1>Загрузка</h1>}
          <LogoTaskTracker src={logoTaskTracker} alt="Task Tracker" />
 
          <ContainerForm>
-            <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
-            <AuthWithGoogleButton onClick={authWithGoogleHandler} />
-            <TextOr>or</TextOr>
+            {typeof params.id === "undefined" && (
+               <>
+                  <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
+                  <AuthWithGoogleButton onClick={authWithGoogleHandler} />
+
+                  <TextOr>or</TextOr>
+               </>
+            )}
+
             <Outlet />
-            <NavigationText>
-               {IamInRegistration
-                  ? "You already have an account?"
-                  : "Not a member?"}
-               <Link to={IamInRegistration ? "/login" : "/"}>
-                  {IamInRegistration ? "Log in" : "Sign up now"}
-               </Link>
-            </NavigationText>
+
+            {typeof params.id === "undefined" && (
+               <NavigationText>
+                  {IamInRegistration
+                     ? "You already have an account?"
+                     : "Not a member?"}
+                  <Link to={IamInRegistration ? "/login" : "/"}>
+                     {IamInRegistration ? "Log in" : "Sign up now"}
+                  </Link>
+               </NavigationText>
+            )}
          </ContainerForm>
          <BackgroundImage src={imageLogin} alt="Task Tracker" />
       </AuthorizationContainer>

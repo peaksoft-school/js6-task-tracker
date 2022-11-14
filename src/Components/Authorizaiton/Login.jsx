@@ -59,7 +59,10 @@ const Login = () => {
             onClose={showCloseModalHandler}
             isOpen={showModal}
          >
-            <ForgotPasswordBlock />
+            <ForgotPasswordBlock
+               isOpen={showModal}
+               showCloseModalHandler={showCloseModalHandler}
+            />
          </Modal>
          <Button fullHeight="2.8rem" type="submit" fullWidth="180px">
             Log in

@@ -7,7 +7,7 @@ import { useFormik } from "formik"
 import Input from "../UI/Input"
 import PasswordInput from "../UI/PasswordInput"
 import Button from "../UI/Button"
-import { signUp as fetchSignUp } from "../../store/AuthSlice"
+import { signUp } from "../../store/AuthSlice"
 import { validationSchema } from "./Validation"
 
 const SignUp = () => {
@@ -24,7 +24,7 @@ const SignUp = () => {
       },
       validationSchema,
       onSubmit: (userInfo) => {
-         return dispatch(fetchSignUp({ userInfo, navigate }))
+         return dispatch(signUp({ userInfo, navigate }))
       },
    })
 
