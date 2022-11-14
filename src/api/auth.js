@@ -11,3 +11,9 @@ export const signUpRequest = (userInfo) => {
 export const loginRequest = (userData) => {
    return axiosInstance.post("/api/public/login", userData)
 }
+
+export const authWithGoogleQuery = (tokenFromFirebase) => {
+   return axiosInstance.post(
+      `/api/public/authenticate/google?token=${tokenFromFirebase}`
+   )
+}

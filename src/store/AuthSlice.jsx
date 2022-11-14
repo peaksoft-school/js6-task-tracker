@@ -3,20 +3,24 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
+import { signInWithPopup } from "firebase/auth"
 import { localStorageHelpers } from "../utilits/helpers/localStorageHelpers"
 import { USER_KEY } from "../utilits/constants/Constants"
-import { signUpRequest, loginRequest } from "../api/auth.js"
+import {
+   signUpRequest,
+   loginRequest,
+   authWithGoogleQuery,
+} from "../api/auth.js"
 import { PATH_IN_ROLES } from "../utilits/constants/general"
+import { auth, provider } from "../firebase/firebase"
 
 // РЕГИСТРАЦИЯ
 export const signUp = createAsyncThunk(
    "authorization/signup",
    async (value, { rejectWithValue }) => {
       const { userInfo, navigate } = value
-
       try {
          const { data } = await signUpRequest(userInfo)
-         console.log(data)
          localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
          return data
@@ -33,8 +37,29 @@ export const login = createAsyncThunk(
       const { userData, navigate } = value
       try {
          const { data } = await loginRequest(userData)
+
          if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
+         return data
+      } catch (error) {
+         return rejectWithValue(error)
+      }
+   }
+)
+
+// РЕГИСТРАЦИЯ ЧЕРЕЗ GOOGLE
+
+export const authWithGoogle = createAsyncThunk(
+   "authorization/withGoogle",
+   async (value, { rejectWithValue }) => {
+      const { navigate } = value
+      try {
+         const { user } = await signInWithPopup(auth, provider)
+         const { data } = await authWithGoogleQuery(user.accessToken)
+
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
+         navigate(PATH_IN_ROLES[data.role].path)
+
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -67,7 +92,7 @@ export const AuthSlice = createSlice({
          const responseUserInfo = actions.payload
          state.userInfo = responseUserInfo
          state.loading = false
-         toast.success(`Кош келдиңиз ${responseUserInfo.firstName}`)
+         toast.success(`Welcome ${responseUserInfo.firstName}`)
       },
       [signUp.rejected]: (state, actions) => {
          toast.error(actions.payload.response.data.message)
@@ -75,15 +100,22 @@ export const AuthSlice = createSlice({
       },
       [logout.fulfilled]: (state) => {
          state.userInfo = initState
-         toast.warn("Вы вышли из аккаунта")
       },
       [login.fulfilled]: (state, actions) => {
          const responseUserData = actions.payload
          state.userInfo = responseUserData
-         toast.success(`Кош келдиңиз ${responseUserData.firstName}`)
+         toast.success(`Welcome ${responseUserData.firstName}`)
       },
       [login.rejected]: (state, actions) => {
          toast.error(actions.payload.response.data.message)
+      },
+      [authWithGoogle.fulfilled]: (state, actions) => {
+         const responseUserData = actions.payload
+         state.userInfo = responseUserData
+         toast.success(`Welcome ${responseUserData.firstName}`)
+      },
+      [authWithGoogle.rejected]: () => {
+         toast.error("Sorry,something went wrong")
       },
    },
 })
