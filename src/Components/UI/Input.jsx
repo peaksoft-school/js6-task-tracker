@@ -12,6 +12,7 @@ const CssTextField = styled(TextField)({
    },
    "& label": {
       fontSize: "16px",
+      fontFamily: "Nunito, Sans-serif",
    },
    "& .MuiInput-underline:after": {
       borderBottomColor: "green",
