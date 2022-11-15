@@ -87,7 +87,7 @@ const SignUp = () => {
          <ContainerInputErrorText>
             <PasswordInput
                id="confirmPassword"
-               label="confirmPassword"
+               label="Confirm password"
                value={formik.values.confirmPassword}
                type="text"
                onChange={formik.handleChange}
@@ -117,8 +117,8 @@ const SignUp = () => {
 export default SignUp
 
 const Form = styled.form`
-   width: 60vw;
-   height: 61vh;
+   width: 350px;
+   height: 415px;
    display: flex;
    justify-content: center;
    align-items: center;

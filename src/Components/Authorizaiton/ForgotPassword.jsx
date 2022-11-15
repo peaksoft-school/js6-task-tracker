@@ -71,8 +71,8 @@ const ForgotPassword = () => {
 export default ForgotPassword
 
 const Form = styled.form`
-   width: 40vw;
-   height: 44vh;
+   width: 340px;
+   height: 330px;
    display: flex;
    justify-content: center;
    align-items: center;

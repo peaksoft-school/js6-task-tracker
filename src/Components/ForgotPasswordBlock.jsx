@@ -46,8 +46,8 @@ const ForgotPasswordBlock = ({ showCloseModalHandler }) => {
             <Button
                type="submit"
                disabled={isValid}
-               fullHeight="5vh"
-               fullWidth="13vw"
+               fullHeight="40px"
+               fullWidth="220px"
             >
                Send
             </Button>
@@ -59,22 +59,21 @@ const ForgotPasswordBlock = ({ showCloseModalHandler }) => {
 export default ForgotPasswordBlock
 
 const Block = styled.form`
-   padding: 0 1rem 0 1rem;
    input {
       width: 35vw;
-      height: 5vh;
+      height: 40px;
       border-radius: 8px;
       padding: 0 0 0 1rem;
       font-size: 1.1rem;
    }
 `
 const ContainerInputErrorText = styled.div`
-   height: 65px;
-   width: 37vw;
+   height: 50px;
+   width: 500px;
    margin: 0.04rem;
 `
 const ButtonBlock = styled.div`
-   width: 37.5vw;
+   width: 520px;
    display: flex;
    justify-content: flex-end;
    padding: 1rem 0 1rem 0;
