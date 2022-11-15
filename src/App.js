@@ -1,5 +1,5 @@
 import React from "react"
-import { Toastify } from "./Components/UI/Toastify"
+import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import AppRoutes from "./routes/AppRoutes"
 
@@ -7,7 +7,7 @@ function App() {
    return (
       <div className="App">
          <AppRoutes />
-         <Toastify />
+         <ToastContainer />
       </div>
    )
 }

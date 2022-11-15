@@ -10,9 +10,15 @@ import {
    signUpRequest,
    loginRequest,
    authWithGoogleQuery,
+   forgotPasswordQuery,
+   resetPasswordQuery,
 } from "../api/auth.js"
 import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
+import {
+   successToastify,
+   errorToastify,
+} from "../utilits/helpers/reactToastifyHelpers"
 
 // РЕГИСТРАЦИЯ
 export const signUp = createAsyncThunk(
@@ -21,8 +27,9 @@ export const signUp = createAsyncThunk(
       const { userInfo, navigate } = value
       try {
          const { data } = await signUpRequest(userInfo)
-         localStorageHelpers.saveData(USER_KEY, data)
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
+
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -48,7 +55,6 @@ export const login = createAsyncThunk(
 )
 
 // РЕГИСТРАЦИЯ ЧЕРЕЗ GOOGLE
-
 export const authWithGoogle = createAsyncThunk(
    "authorization/withGoogle",
    async (value, { rejectWithValue }) => {
@@ -67,6 +73,39 @@ export const authWithGoogle = createAsyncThunk(
    }
 )
 
+// ПОЛУЧИТЬ ССЫЛКУ
+export const forgotPassword = createAsyncThunk(
+   "authorization/forgotPassword",
+   async (value, { rejectWithValue }) => {
+      try {
+         const response = await forgotPasswordQuery(value)
+         return response
+      } catch (error) {
+         return rejectWithValue(error)
+      }
+   }
+)
+
+// УСТАНОВИТЬ НОВЫЙ ПАРОЛЬ
+export const resetPassword = createAsyncThunk(
+   "authorization/resetPassword",
+   async (value, { rejectWithValue }) => {
+      const { userId, newPassword, navigate } = value
+      try {
+         const { data } = await resetPasswordQuery({ userId, newPassword })
+         const newData = {
+            ...data,
+            jwt: data.jwtToken,
+         }
+         if (data.role) localStorageHelpers.saveData(USER_KEY, newData)
+         navigate(PATH_IN_ROLES[data.role].path)
+         return newData
+      } catch (error) {
+         return rejectWithValue(error.message)
+      }
+   }
+)
+
 export const logout = createAsyncThunk("logout", async () => {
    localStorageHelpers.removeData(USER_KEY)
 })
@@ -78,6 +117,7 @@ const initState = {
       jwt: null,
       role: null,
       email: null,
+      idToast: null,
    },
 }
 
@@ -88,34 +128,61 @@ export const AuthSlice = createSlice({
       : initState,
    reducers: {},
    extraReducers: {
+      [signUp.pending]: (state) => {
+         state.idToast = toast.loading("Loading...")
+      },
       [signUp.fulfilled]: (state, actions) => {
          const responseUserInfo = actions.payload
          state.userInfo = responseUserInfo
-         state.loading = false
-         toast.success(`Welcome ${responseUserInfo.firstName}`)
+         successToastify(state.idToast, `Welcome ${responseUserInfo.firstName}`)
       },
       [signUp.rejected]: (state, actions) => {
-         toast.error(actions.payload.response.data.message)
-         state.loading = false
+         errorToastify(state.idToast, actions.payload.response.data.message)
       },
-      [logout.fulfilled]: (state) => {
-         state.userInfo = initState
+      [login.pending]: (state) => {
+         state.idToast = toast.loading("Loading...")
       },
       [login.fulfilled]: (state, actions) => {
          const responseUserData = actions.payload
          state.userInfo = responseUserData
-         toast.success(`Welcome ${responseUserData.firstName}`)
+         successToastify(state.idToast, `Welcome ${responseUserData.firstName}`)
       },
       [login.rejected]: (state, actions) => {
-         toast.error(actions.payload.response.data.message)
+         errorToastify(state.idToast, actions.payload.response.data.message)
       },
       [authWithGoogle.fulfilled]: (state, actions) => {
          const responseUserData = actions.payload
          state.userInfo = responseUserData
-         toast.success(`Welcome ${responseUserData.firstName}`)
+         successToastify(state.idToast, `Welcome ${responseUserData.firstName}`)
       },
-      [authWithGoogle.rejected]: () => {
-         toast.error("Sorry,something went wrong")
+      [authWithGoogle.pending]: (state) => {
+         state.idToast = toast.loading("Loading...")
+      },
+      [authWithGoogle.rejected]: (state, actions) => {
+         errorToastify(state.idToast, actions.payload.response.data.message)
+      },
+      [forgotPassword.pending]: (state) => {
+         state.idToast = toast.loading("Loading...")
+      },
+      [forgotPassword.fulfilled]: (state, actions) => {
+         successToastify(state.idToast, actions.payload.data.message)
+      },
+      [forgotPassword.rejected]: (state, actions) => {
+         errorToastify(state.idToast, actions.payload.response.data.message)
+      },
+      [resetPassword.pending]: (state) => {
+         state.idToast = toast.loading("Loading...")
+      },
+      [resetPassword.fulfilled]: (state, actions) => {
+         const responseUserData = actions.payload
+         state.userInfo = responseUserData
+         successToastify(state.idToast, actions.payload.message)
+      },
+      [resetPassword.rejected]: (state) => {
+         errorToastify(state.idToast, "Something went wrong")
+      },
+      [logout.fulfilled]: (state) => {
+         state.userInfo = initState
       },
    },
 })

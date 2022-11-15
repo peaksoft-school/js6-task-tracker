@@ -17,3 +17,13 @@ export const authWithGoogleQuery = (tokenFromFirebase) => {
       `/api/public/authenticate/google?token=${tokenFromFirebase}`
    )
 }
+
+export const forgotPasswordQuery = (value) => {
+   return axiosInstance.post(
+      `/api/public/forgot/password?email=${value.email}&link=${value.link}`
+   )
+}
+
+export const resetPasswordQuery = (value) => {
+   return axiosInstance.post("/api/public/reset/password", value)
+}
