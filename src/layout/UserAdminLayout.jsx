@@ -1,10 +1,9 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import Header from "../Components/Header"
-import SideBar from "./SideBar/SideBar"
 import { logout } from "../store/AuthSlice"
 
-const UserLayout = () => {
+const UserAdminLayout = () => {
    const dispatch = useDispatch()
    const logoutHandler = () => {
       dispatch(logout())
@@ -12,14 +11,11 @@ const UserLayout = () => {
    return (
       <>
          <Header />
-         <SideBar />
-         <div>
-            <button type="submit" onClick={logoutHandler}>
-               LOGOUT
-            </button>
-         </div>
+         <button type="submit" onClick={logoutHandler}>
+            LOGOUT
+         </button>
       </>
    )
 }
 
-export default UserLayout
+export default UserAdminLayout
