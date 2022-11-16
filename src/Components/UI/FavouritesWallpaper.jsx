@@ -4,10 +4,12 @@ import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
 import ReusableDropDown from "./ReusableDropDown"
 import openMenuIcon from "../../assets/icons/Favouritesmenuicon.svg"
+import useOpenClose from "../../hooks/useOpenClose"
 
 function FavouritesWallpaper({ listBoard }) {
    const [favourites, setFavourites] = useState(listBoard)
-   const [open, setOpen] = useState(true)
+
+   const { isShowing, toggle } = useOpenClose()
 
    const removeFavourites = (id) => {
       const removeItem = favourites.filter((item) => item.id !== id)
@@ -16,35 +18,38 @@ function FavouritesWallpaper({ listBoard }) {
 
    return (
       <>
-         <OpenMenu onClick={() => setOpen(!open)}>
+         <OpenMenu onClick={toggle}>
             Favourites <span>({favourites.length})</span>
             <img src={openMenuIcon} alt="Icon" />
          </OpenMenu>
 
-         {open && (
-            <ReusableDropDown showState width="351px">
-               <Container>
-                  <h3>Favourites </h3>
-                  {favourites.map((item) => (
-                     <Card key={item.id}>
-                        {item.url && <Wallpaper src={item.url} />}
-                        <TitleBox>
-                           <Title>{item.titleCard}</Title>
-                           <Name>{item.nameBoard}</Name>
-                        </TitleBox>
-                        <IconBox>
-                           <IconButton
-                              onClick={() => removeFavourites(item.id)}
-                              width="17px"
-                              height="17px"
-                              iconSvg={FavouritesIcon}
-                           />
-                        </IconBox>
-                     </Card>
-                  ))}
-               </Container>
-            </ReusableDropDown>
-         )}
+         <ReusableDropDown
+            top="45px"
+            left="280px"
+            showState={isShowing}
+            width="351px"
+         >
+            <Container>
+               <h3>Favourites </h3>
+               {favourites.map((item) => (
+                  <Card key={item.id}>
+                     {item.url && <Wallpaper src={item.url} />}
+                     <TitleBox>
+                        <Title>{item.titleCard}</Title>
+                        <Name>{item.nameBoard}</Name>
+                     </TitleBox>
+                     <IconBox>
+                        <IconButton
+                           onClick={() => removeFavourites(item.id)}
+                           width="17px"
+                           height="17px"
+                           iconSvg={FavouritesIcon}
+                        />
+                     </IconBox>
+                  </Card>
+               ))}
+            </Container>
+         </ReusableDropDown>
       </>
    )
 }

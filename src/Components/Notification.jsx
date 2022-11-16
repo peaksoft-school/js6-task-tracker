@@ -1,43 +1,74 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
-import { ClickAwayListener } from "@mui/material"
-import NotificationItem from "./UI/NotificationItem"
 import Notifications from "../assets/svg/NotificationIcon.svg"
+import useOpenClose from "../hooks/useOpenClose"
+import NotificationItem from "./UI/NotificationItem"
+import DropDown from "./UI/ReusableDropDown"
+import avatar from "../assets/svg/womenAvatar.svg"
 
-function Notification({ props }) {
-   const [modalActive, setModalActive] = useState(false)
-   const showNotification = () => {
-      setModalActive(!modalActive)
-   }
+function Notification({ quantityNotification }) {
+   const { toggle, isShowing } = useOpenClose()
+
    return (
       <>
-         <ClickAwayListener onClickAway={() => setModalActive(false)}>
-            <NotificationIconContainer>
-               <img src={Notifications} alt="" />
-               {props.length !== 0 && (
-                  <span onClick={showNotification}>{props.length}</span>
-               )}
-            </NotificationIconContainer>
-         </ClickAwayListener>
-         <div>
-            {modalActive && (
-               <>
-                  <NotificationItem />
-                  <NotificationItem />
-               </>
+         <NotificationIconContainer onClick={toggle}>
+            <img src={Notifications} alt="" />
+            {quantityNotification && (
+               <span onClick={toggle}>{quantityNotification}</span>
             )}
-         </div>
+         </NotificationIconContainer>
+
+         <DropDown
+            showState={isShowing}
+            width="390px"
+            height="90vh"
+            top="60px"
+            right="80px"
+         >
+            <NotificationContainer>
+               <TitleBlock>
+                  <h3>Notification</h3>
+                  <span>Mark as read</span>
+               </TitleBlock>
+               <NotificationItem userAvatar={avatar} />
+               <NotificationItem />
+               <NotificationItem />
+               <NotificationItem />
+            </NotificationContainer>
+         </DropDown>
       </>
    )
 }
 
 export default Notification
+
+const NotificationContainer = styled.div`
+   display: flex;
+   overflow: scroll;
+   flex-direction: column;
+   width: 380px;
+   height: 80vh;
+   align-items: center;
+`
+const TitleBlock = styled.div`
+   display: flex;
+   justify-content: flex-end;
+   height: 45px;
+   align-items: center;
+   width: 350px;
+   h3 {
+      font-weight: 500;
+   }
+   span {
+      text-decoration: underline;
+      margin: 0 0 0 35px;
+      color: gray;
+   }
+`
 const NotificationIconContainer = styled.div`
-   position: absolute;
    width: 37px;
    height: 27px;
-   left: 1410px;
-   top: 30px;
+   position: relative;
    cursor: pointer;
    span {
       background-color: #d91212;

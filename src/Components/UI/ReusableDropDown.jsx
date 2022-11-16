@@ -8,10 +8,17 @@ const ReusableDropDown = ({
    left,
    children,
    showState,
+   right,
 }) => {
    return (
       showState && (
-         <DropDownContainer top={top} left={left} width={width} height={height}>
+         <DropDownContainer
+            right={right}
+            top={top}
+            left={left}
+            width={width}
+            height={height}
+         >
             {children}
          </DropDownContainer>
       )
@@ -26,8 +33,9 @@ const DropDownContainer = styled.div`
    border-radius: 20px;
    top: ${(props) => props.top};
    left: ${(props) => props.left};
+   right: ${(props) => props.right};
    width: ${(props) => props.width};
-   height: ${(props) => props.height};
+   max-height: ${(props) => props.height};
    -webkit-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    -moz-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);

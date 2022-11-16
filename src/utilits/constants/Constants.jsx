@@ -2,6 +2,8 @@ import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
+import avatar from "../../assets/svg/womenAvatar.svg"
+import emptyStar from "../../assets/svg/empty.svg"
 
 export const GLOBAL_URL = "http://18.192.179.151"
 
@@ -129,3 +131,69 @@ export const SubMenuItems = [
 ]
 
 export const USER_KEY = "TASK-TRACKER-USER-KEY"
+
+export const listBoard = [
+   {
+      id: 1,
+      url: "https://steamuserimages-a.akamaihd.net/ugc/1701787040297254130/849D650AF0602525861BBCC9693EA8996D134B27/?imw=450&impolicy=Letterbox",
+      titleCard: "First",
+      nameBoard: "HelperText",
+   },
+   {
+      id: 2,
+      url: "https://steamuserimages-a.akamaihd.net/ugc/1701787040297254130/849D650AF0602525861BBCC9693EA8996D134B27/?imw=450&impolicy=Letterbox",
+      titleCard: "Экинчи",
+      nameBoard: "HelperText",
+   },
+   {
+      id: 3,
+      url: "https://steamuserimages-a.akamaihd.net/ugc/1701787040297254130/849D650AF0602525861BBCC9693EA8996D134B27/?imw=450&impolicy=Letterbox",
+      titleCard: "Three",
+      nameBoard: "HelperText",
+   },
+]
+
+export const tableData = [
+   {
+      id: 1,
+      Name: "Taigan",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 2,
+      Name: "Shoppix",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 3,
+      Name: "Task Tracker",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 4,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+   {
+      id: 5,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+   {
+      id: 6,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+]
