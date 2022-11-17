@@ -41,9 +41,11 @@ export const signUp = createAsyncThunk(
 export const login = createAsyncThunk(
    "authorizaiton/login",
    async (value, { rejectWithValue }) => {
+      console.log(value)
       const { userData, navigate } = value
       try {
          const { data } = await loginRequest(userData)
+         console.log(data)
 
          if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)

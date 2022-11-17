@@ -1,9 +1,13 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { tableData } from "../utilits/constants/Constants"
 
 const TableWorkspaces = () => {
+   const state = useSelector((state) => state)
+   console.log(state)
+
    return (
       <Table>
          <thead>

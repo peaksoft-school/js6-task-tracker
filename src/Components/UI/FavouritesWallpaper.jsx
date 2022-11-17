@@ -24,10 +24,10 @@ function FavouritesWallpaper({ listBoard }) {
          </OpenMenu>
 
          <ReusableDropDown
-            top="45px"
-            left="280px"
+            top="8vh"
+            left="20vw"
             showState={isShowing}
-            width="351px"
+            width="380px"
          >
             <Container>
                <h3>Favourites </h3>

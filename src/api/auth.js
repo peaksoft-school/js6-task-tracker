@@ -1,8 +1,4 @@
-import axios from "axios"
-
-export const axiosInstance = axios.create({
-   baseURL: "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com",
-})
+import { axiosInstance } from "./axiosInstance"
 
 // AUTHORIZATION
 
@@ -30,4 +26,8 @@ export const resetPasswordQuery = (value) => {
 // WORKSPACES API
 export const createWorkspacesQuery = (value) => {
    return axiosInstance.post("/api/workspace", value)
+}
+
+export const getWorkspacesQuery = () => {
+   return axiosInstance.get("/api/workspace")
 }

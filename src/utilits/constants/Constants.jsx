@@ -5,7 +5,8 @@ import arrowUp from "../../assets/icons/ArrowUp.svg"
 import avatar from "../../assets/svg/womenAvatar.svg"
 import emptyStar from "../../assets/svg/empty.svg"
 
-export const GLOBAL_URL = "http://18.192.179.151"
+export const GLOBAL_URL =
+   "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com"
 
 export const Labels = [
    {
