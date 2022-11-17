@@ -5,6 +5,7 @@ import UserName from "./UserName"
 import CustomIcons from "./TaskCard/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
 import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
+import arrowDownComment from "../../assets/svg/ArrowComment.svg"
 
 const CommentSection = ({
    comment,
@@ -13,42 +14,46 @@ const CommentSection = ({
    userName,
    editHandle,
    deleteHandle,
-   click,
+   sizeCommentHandler,
+   sizeComment,
 }) => {
    return (
-      <ContainerComments>
+      <StyledCommentSection>
          <DisplayFlexJCSB>
             <h3>Comments</h3>
-            <CustomIcons click={click} src={arrowIcon} />
+            <CustomIcons
+               click={sizeCommentHandler}
+               src={sizeComment ? arrowIcon : arrowDownComment}
+            />
          </DisplayFlexJCSB>
-         <Comment>
-            <UserAvatar src={userAvatar} />
-            <div>
-               <UserName userName={userName} />
-               <CommentText>
-                  {comment} I will do it only in a week,after the
-               </CommentText>
-
+         <ContainerComment sizeComment={sizeComment}>
+            <Comment>
+               <UserAvatar src={userAvatar} />
                <div>
-                  <span>{dateAdded} 12 sep ,2021 / 6:30pm</span>
-                  <BlockEditDeleteButton>
-                     <p onClick={editHandle}>Edit</p>
-                     <p onClick={deleteHandle}>Delete</p>
-                  </BlockEditDeleteButton>
+                  <UserName userName={userName} />
+                  <CommentText>
+                     {comment} I will do it only in a week,after the
+                  </CommentText>
+
+                  <div>
+                     <span>{dateAdded} 12 sep ,2021 / 6:30pm</span>
+                     <BlockEditDeleteButton>
+                        <p onClick={editHandle}>Edit</p>
+                        <p onClick={deleteHandle}>Delete</p>
+                     </BlockEditDeleteButton>
+                  </div>
                </div>
-            </div>
-         </Comment>
-      </ContainerComments>
+            </Comment>
+         </ContainerComment>
+      </StyledCommentSection>
    )
 }
 
 export default CommentSection
 
-const ContainerComments = styled.div`
+const StyledCommentSection = styled.div`
    position: relative;
    width: 33vw;
-   height: 53vh;
-   overflow: scroll;
    background: #f4f5f7;
    padding: 1rem;
    border-radius: 8px;
@@ -57,6 +62,10 @@ const ContainerComments = styled.div`
       line-height: 18px;
       color: #919191;
    }
+`
+const ContainerComment = styled.div`
+   overflow: scroll;
+   max-height: ${(props) => (props.sizeComment ? "340px" : "428px")};
 `
 
 const Comment = styled.div`

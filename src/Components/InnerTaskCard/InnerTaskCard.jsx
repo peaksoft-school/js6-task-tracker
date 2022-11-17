@@ -8,7 +8,6 @@ import closeIcon from "../../assets/icons/closeWhite.svg"
 import Button from "../UI/Button"
 import CustomIcons from "../UI/TaskCard/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
-import MemberItem from "../UI/MemberItem"
 import SecondBlock from "./SecondBlock"
 
 const InnerTaskCard = () => {
@@ -51,7 +50,6 @@ const InnerTaskCard = () => {
                   completedTasks={10}
                   widthProgressPercent={90}
                />
-               <MemberItem />
             </FirstBlock>
             <SecondBlock />
          </DisplayFlexJCSB>
@@ -68,13 +66,11 @@ const Container = styled.div`
 const TitleCard = styled.h3`
    font-weight: 500;
 `
-
 const FirstBlock = styled.div`
    width: 130vw;
    height: 90vh;
    overflow: scroll;
 `
-
 const BlockLabels = styled.ul`
    display: flex;
    flex-wrap: wrap;
@@ -97,7 +93,6 @@ const AddDescription = styled(TextareaAutosize)`
 const Text = styled.p`
    color: gray;
 `
-
 const Block = styled.div`
    width: 55vw;
    display: flex;

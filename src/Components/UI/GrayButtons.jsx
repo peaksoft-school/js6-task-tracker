@@ -1,9 +1,17 @@
 import React from "react"
 import styled from "styled-components"
 
-const GrayButton = ({ archived, children, onClick, iconButton, fullWidth }) => {
+const GrayButton = ({
+   archived,
+   children,
+   onClick,
+   iconButton,
+   fullWidth,
+   padding,
+}) => {
    return (
       <StyledGrayButton
+         padding={padding}
          archived={archived}
          fullWidth={fullWidth}
          icon={iconButton}
@@ -30,6 +38,7 @@ const StyledGrayButton = styled.button`
    font-weight: 400;
    color: ${(props) => (props.archived ? "white" : "gray")};
    border: none;
+   padding: ${(props) => props.padding};
 `
 
 const Icon = styled.img`

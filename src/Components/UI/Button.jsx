@@ -33,6 +33,7 @@ export default Button
 const StyledButton = styled.button`
    background-color: ${(props) => (props.color ? props.color : "#0079BF")};
    border: none;
+   font-weight: 300;
    width: ${(props) => props.fullWidth && props.fullWidth};
    height: ${(props) => props.fullHeight && props.fullHeight};
    font-size: 18px;
