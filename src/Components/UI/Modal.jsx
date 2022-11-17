@@ -27,4 +27,5 @@ const StyledBox = styled(Box)`
    background-color: white;
    border-radius: 8px;
    padding: 15px;
+   outline: none;
 `

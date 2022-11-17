@@ -6,7 +6,7 @@ import SideBar from "./SideBar/SideBar"
 import { logout } from "../store/AuthSlice"
 import TaskCard from "../Components/UI/TaskCard/TaskCard"
 import Modal from "../Components/UI/Modal"
-import InnerTaskCard from "../Components/InnerTaskCard"
+import InnerTaskCard from "../Components/InnerTaskCard/InnerTaskCard"
 
 const UserLayout = () => {
    const [showModalInnerTaskCard, setShowModalInnerTaskCard] = useState(false)

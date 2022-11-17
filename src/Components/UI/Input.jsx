@@ -12,6 +12,7 @@ const CssTextField = styled(TextField)({
    },
    "& label": {
       fontSize: "16px",
+      fontFamily: "Nunito, Sans-serif",
    },
    "& .MuiInput-underline:after": {
       borderBottomColor: "green",
@@ -30,9 +31,10 @@ const CssTextField = styled(TextField)({
    },
 })
 
-export default function Input({ label, type, id, ...other }) {
+export default function Input({ label, type, id, ref, ...other }) {
    return (
       <CssTextField
+         ref={ref}
          {...other}
          fullWidth
          size="small"
