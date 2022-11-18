@@ -33,7 +33,7 @@ const AuthorizationPages = () => {
          <ContainerForm>
             {typeof params.id === "undefined" && (
                <>
-                  <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
+                  <Title> {IamInRegistration ? "Sign up" : "Sign in"} </Title>
                   <AuthWithGoogleButton onClick={authWithGoogleHandler} />
 
                   <TextOr>or</TextOr>
@@ -108,4 +108,5 @@ const NavigationText = styled.p`
 `
 const AuthWithGoogleButton = styled(GoogleButton)`
    border: 5px solid red;
+   margin-top: 10px;
 `

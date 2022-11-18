@@ -53,7 +53,7 @@ export default CommentSection
 
 const StyledCommentSection = styled.div`
    position: relative;
-   width: 33vw;
+   width: 430px;
    background: #f4f5f7;
    padding: 1rem;
    border-radius: 8px;

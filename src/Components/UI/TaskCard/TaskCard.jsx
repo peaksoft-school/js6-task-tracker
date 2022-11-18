@@ -83,7 +83,7 @@ const TaskCard = ({ getTitleColumn, showInnerTaskCard }) => {
                         <p>
                            <CustomIcons src={timeIcon} /> 2 month
                         </p>
-                        <DisplayFlexJCSB width="12vw">
+                        <DisplayFlexJCSB width="160px">
                            <CustomIcons src={descriptionIcon} />
                            <CustomIcons src={comentIcon} />
                            <CustomIcons src={completeIcon} />
@@ -129,7 +129,7 @@ const ContainerColumn = styled.div`
 `
 const CardColumn = styled.div`
    position: relative;
-   width: 25vw;
+   width: 330px;
    padding: 1rem 1rem 0.6rem 0.75rem;
    background: #e6e6e6;
    border-radius: 8px;

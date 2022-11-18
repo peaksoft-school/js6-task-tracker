@@ -35,7 +35,7 @@ const SecondBlock = () => {
                      <GrayButton
                         onClick={() => buttonClick(item.id)}
                         iconButton={item.icon}
-                        fullWidth={isShowing && "10rem"}
+                        fullWidth={isShowing && "200px"}
                      >
                         {isShowing && item.title}
                      </GrayButton>

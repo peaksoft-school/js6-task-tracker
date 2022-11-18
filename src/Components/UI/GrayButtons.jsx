@@ -27,7 +27,7 @@ export default GrayButton
 const StyledGrayButton = styled.button`
    width: ${(props) => props.fullWidth && props.fullWidth};
    display: flex;
-   height: 4.5vh;
+   height: 35px;
    align-items: center;
    justify-content: flex-start;
    background-color: ${(props) =>
@@ -43,6 +43,6 @@ const StyledGrayButton = styled.button`
 
 const Icon = styled.img`
    margin: 0 0.7rem 0 0.7rem;
-   width: 2.5vw;
-   height: 2.5vh;
+   width: 20px;
+   height: 20px;
 `

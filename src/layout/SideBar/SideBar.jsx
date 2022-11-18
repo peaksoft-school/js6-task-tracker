@@ -51,40 +51,35 @@ const SideBar = ({ nameWorkspaces }) => {
       if (showSideBar) {
          return
       }
-      setTimeout(() => {
-         setDropDown({
-            id,
-            stateDropDown: true,
-            isMenuHovered: true,
-         })
-      }, 250)
+
+      setDropDown({
+         id,
+         stateDropDown: true,
+         isMenuHovered: true,
+      })
    }
 
    const onMouseLeaveFormMenuHandler = (id) => {
-      setTimeout(() => {
-         setDropDown({
-            id,
-            stateDropDown: false,
-            isMenuHovered: false,
-         })
-      }, 150)
+      setDropDown({
+         id,
+         stateDropDown: false,
+         isMenuHovered: false,
+      })
    }
 
    const onMouseLeaveFromContainerHandler = (id) => {
-      setTimeout(() => {
-         setDropDown((prevState) => {
-            if (prevState.isMenuHovered) {
-               return {
-                  id,
-                  stateDropDown: true,
-               }
-            }
+      setDropDown((prevState) => {
+         if (prevState.isMenuHovered) {
             return {
                id,
-               stateDropDown: false,
+               stateDropDown: true,
             }
-         })
-      }, 150)
+         }
+         return {
+            id,
+            stateDropDown: false,
+         }
+      })
    }
 
    const renderHeaderSideBar = () =>
@@ -209,7 +204,7 @@ const StyledContainerSideBar = styled.aside`
    padding: 1rem 1rem 1rem 0;
    margin: 0 2rem 0 0;
    flex-direction: column;
-   width: ${(props) => (props.stateSideBar ? "21vw" : "8.5vw")};
+   width: ${(props) => (props.stateSideBar ? "270px" : "107px")};
    background-color: white;
    transition: all 0.35s ease-out;
    ul {
@@ -309,7 +304,6 @@ const ShowMoreText = styled.span`
    margin-left: ${(props) => (props.showSideBar ? "1.9rem" : "1.9rem")};
    color: #909090;
 `
-
 const WorkspacesItem = styled.div`
    display: flex;
    flex-wrap: wrap;
@@ -329,7 +323,6 @@ const WorkspacesItem = styled.div`
       margin-left: 10px;
    }
 `
-
 const ShowSideBarButton = styled.img`
    background-color: white;
    padding: 7px;
