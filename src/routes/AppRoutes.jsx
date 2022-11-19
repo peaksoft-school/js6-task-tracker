@@ -1,5 +1,5 @@
 import React from "react"
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { PATH_IN_ROLES } from "../utilits/constants/general"
 import PrivateRoute from "./PrivateRoute"
 import UserRoutes from "./UserRoutes"
@@ -13,7 +13,8 @@ const AppRoutes = () => {
    return (
       <Routes>
          <Route path="/" element={<AuthorizationPages />}>
-            <Route path="/" element={<SignUp />} />
+            <Route path="" element={<Navigate to="/signup" />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login/:id" element={<ForgotPassword />} />
          </Route>

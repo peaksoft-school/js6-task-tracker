@@ -1,7 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
-import { successToastify } from "../utilits/helpers/reactToastifyHelpers"
+import {
+   errorToastify,
+   successToastify,
+} from "../utilits/helpers/reactToastifyHelpers"
 
 export const toastSlice = createSlice({
    name: "toast",
@@ -15,8 +18,17 @@ export const toastSlice = createSlice({
       successToastifyAction: (state, actions) => {
          state.toastId = successToastify(state.toastId, actions.payload)
       },
+      errorToastifyAction: (state, actions) => {
+         state.toastId = errorToastify(
+            state.toastId,
+            actions.payload.response.data.error
+         )
+      },
    },
 })
 
-export const { loadingToastifyAction, successToastifyAction } =
-   toastSlice.actions
+export const {
+   loadingToastifyAction,
+   successToastifyAction,
+   errorToastifyAction,
+} = toastSlice.actions

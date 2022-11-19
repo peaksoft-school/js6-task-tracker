@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react"
 import Header from "../Components/Header"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import { getFavoriteWorkspacesQuery } from "../api/auth"
-import AdminRoutes from "../routes/AdminRoutes"
 
-const Layout = () => {
+const Layout = ({ children }) => {
    const [favourites, setFavourites] = useState([])
 
    const getFavorites = async () => {
@@ -23,8 +22,8 @@ const Layout = () => {
    return (
       <>
          <Header favourites={favourites} />
-         <AdminRoutes />
          <Workspaces getFavorites={getFavorites} />
+         {children}
       </>
    )
 }

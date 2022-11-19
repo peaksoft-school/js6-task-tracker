@@ -10,6 +10,7 @@ import { createWorkspacesQuery } from "../../api/auth"
 import {
    loadingToastifyAction,
    successToastifyAction,
+   errorToastifyAction,
 } from "../../store/toastifySlice"
 
 const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
@@ -31,6 +32,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
       const emailsAfterRemove = emails.filter((item) => item.idEmail !== id)
       setEmails(emailsAfterRemove)
    }
+
    const createWorkspaces = async (value) => {
       try {
          dispatch(loadingToastifyAction())
@@ -39,7 +41,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
          dispatch(successToastifyAction(`Created workspaces ${data.name}`))
          return data
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction(error))
       }
    }
    const sendData = () => {

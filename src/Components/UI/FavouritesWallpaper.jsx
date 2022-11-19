@@ -70,7 +70,7 @@ const Container = styled.div`
    margin: auto;
    overflow: scroll;
    width: 100%;
-   height: 600px;
+   max-height: 600px;
    display: flex;
    flex-direction: column;
    gap: 16px;

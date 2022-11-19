@@ -25,7 +25,7 @@ const TableWorkspaces = ({ workspaces, updateWorkspaces, getFavorites }) => {
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
                      <td>{index}</td>
                      <td>
-                        <Link to={`workspaces/${item.id}`}>{item.name}</Link>
+                        <Link to={`/${item.id}`}>{item.name}</Link>
                      </td>
                      <td>
                         <UserAvatar src={avatar} />
