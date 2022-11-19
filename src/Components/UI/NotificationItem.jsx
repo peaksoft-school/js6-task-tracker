@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import png from "../../assets/images/Rectangle.png"
 import UserAvatar from "./UserAvatar"
+import { getNotificationQuery } from "../../api/auth"
 
 const NotificationItem = ({
    titleBoard,
@@ -12,6 +13,19 @@ const NotificationItem = ({
    dateAdded,
    click,
 }) => {
+   const getNotification = async () => {
+      try {
+         const response = getNotificationQuery()
+         return console.log(response)
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+
+   useEffect(() => {
+      getNotification()
+   }, [])
+
    return (
       <ContainerNotificationItem>
          <NotificationBoard backgroundImage={png}>

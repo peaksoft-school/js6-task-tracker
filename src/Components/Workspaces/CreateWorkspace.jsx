@@ -1,16 +1,20 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
 import { v4 as uuid } from "uuid"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import Button from "../UI/Button"
 import LabelTag from "../UI/LabelTag"
 import Input from "../UI/Input"
 import MemberEmails from "../UI/MemberEmails"
-import { createWorkspaces } from "../../store/WorkspacesSlice"
+import { createWorkspacesQuery } from "../../api/auth"
+import {
+   loadingToastifyAction,
+   successToastifyAction,
+} from "../../store/toastifySlice"
 
-const CreateWorkspaces = ({ clickCancel }) => {
-   const dispatch = useDispatch()
+const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
    const link = window.location.href
+   const dispatch = useDispatch()
    const [emails, setEmails] = useState([])
    const [data, setData] = useState({
       email: "",
@@ -23,21 +27,29 @@ const CreateWorkspaces = ({ clickCancel }) => {
          setEmails([...emails, { emails: data.email, idEmail: uuid() }])
       setData({ ...data, email: "" })
    }
-
    const deleteEmailInEmails = (id) => {
       const emailsAfterRemove = emails.filter((item) => item.idEmail !== id)
       setEmails(emailsAfterRemove)
    }
-
+   const createWorkspaces = async (value) => {
+      try {
+         dispatch(loadingToastifyAction())
+         const { data } = await createWorkspacesQuery(value)
+         getWorkspaces()
+         dispatch(successToastifyAction(`Created workspaces ${data.name}`))
+         return data
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
    const sendData = () => {
       if (data.name.trim().length > 0)
-         dispatch(
-            createWorkspaces({
-               emails: emails.length !== 0 ? emails : [data.email],
-               name: data.name,
-               link,
-            })
-         )
+         createWorkspaces({
+            emails: emails.length !== 0 ? emails : [data.email],
+            name: data.name,
+            link,
+         })
+      toggle()
    }
 
    return (
@@ -79,7 +91,7 @@ const CreateWorkspaces = ({ clickCancel }) => {
          <LabelTag text="asdfas" />
          <ButtonBlock>
             <Button
-               onClick={clickCancel}
+               onClick={toggle}
                hover="none"
                active="none"
                textColor=" #919191"

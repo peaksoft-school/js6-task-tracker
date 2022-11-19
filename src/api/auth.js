@@ -31,3 +31,13 @@ export const createWorkspacesQuery = (value) => {
 export const getWorkspacesQuery = () => {
    return axiosInstance.get("/api/workspace")
 }
+
+export const getFavoriteWorkspacesQuery = () => {
+   return axiosInstance.get("/api/workspace/favorites")
+}
+
+// NOTIFICATION API
+
+export const getNotificationQuery = () => {
+   return axiosInstance.get("")
+}

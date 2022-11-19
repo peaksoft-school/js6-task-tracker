@@ -31,9 +31,6 @@ function Notification({ quantityNotification }) {
                   <span>Mark as read</span>
                </TitleBlock>
                <NotificationItem userAvatar={avatar} />
-               <NotificationItem />
-               <NotificationItem />
-               <NotificationItem />
             </NotificationContainer>
          </DropDown>
       </>

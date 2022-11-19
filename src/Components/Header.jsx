@@ -7,14 +7,13 @@ import UserAvatar from "./UI/UserAvatar"
 import avatarPhoto from "../assets/svg/userAvatar.svg"
 import Notification from "./Notification"
 import Favorite from "./UI/FavouritesWallpaper"
-import { listBoard } from "../utilits/constants/Constants"
 
-function Header() {
+function Header({ favourites }) {
    return (
       <ParentDiv>
          <LeftBlock>
             <Logo src={TaskTracker} alt="" />
-            <Favorite listBoard={listBoard} />
+            <Favorite favourites={favourites} />
          </LeftBlock>
          <RightBlock>
             <ContainerInput>
@@ -39,6 +38,9 @@ const ParentDiv = styled.header`
    height: 68px;
    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
    background-color: white;
+   position: sticky;
+   top: 0;
+   margin-bottom: 20px;
 `
 const LeftBlock = styled.div`
    justify-content: space-between;

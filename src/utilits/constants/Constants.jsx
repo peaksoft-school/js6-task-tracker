@@ -8,6 +8,8 @@ import emptyStar from "../../assets/svg/empty.svg"
 export const GLOBAL_URL =
    "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com"
 
+export const USER_KEY = "TASK-TRACKER-USER-KEY"
+
 export const Labels = [
    {
       id: 0,
@@ -128,29 +130,6 @@ export const SubMenuItems = [
    {
       iconId: 5,
       title: "Setting",
-   },
-]
-
-export const USER_KEY = "TASK-TRACKER-USER-KEY"
-
-export const listBoard = [
-   {
-      id: 1,
-      url: "https://steamuserimages-a.akamaihd.net/ugc/1701787040297254130/849D650AF0602525861BBCC9693EA8996D134B27/?imw=450&impolicy=Letterbox",
-      titleCard: "First",
-      nameBoard: "HelperText",
-   },
-   {
-      id: 2,
-      url: "https://steamuserimages-a.akamaihd.net/ugc/1701787040297254130/849D650AF0602525861BBCC9693EA8996D134B27/?imw=450&impolicy=Letterbox",
-      titleCard: "Экинчи",
-      nameBoard: "HelperText",
-   },
-   {
-      id: 3,
-      url: "https://steamuserimages-a.akamaihd.net/ugc/1701787040297254130/849D650AF0602525861BBCC9693EA8996D134B27/?imw=450&impolicy=Letterbox",
-      titleCard: "Three",
-      nameBoard: "HelperText",
    },
 ]
 

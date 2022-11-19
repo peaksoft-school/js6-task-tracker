@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
@@ -6,20 +6,13 @@ import ReusableDropDown from "./ReusableDropDown"
 import openMenuIcon from "../../assets/icons/Favouritesmenuicon.svg"
 import useOpenClose from "../../hooks/useOpenClose"
 
-function FavouritesWallpaper({ listBoard }) {
-   const [favourites, setFavourites] = useState(listBoard)
-
+function FavouritesWallpaper({ favourites }) {
    const { isShowing, toggle } = useOpenClose()
-
-   const removeFavourites = (id) => {
-      const removeItem = favourites.filter((item) => item.id !== id)
-      setFavourites(removeItem)
-   }
 
    return (
       <>
          <OpenMenu onClick={toggle}>
-            Favourites <span>({favourites.length})</span>
+            Favourites <span>0</span>
             <img src={openMenuIcon} alt="Icon" />
          </OpenMenu>
 
@@ -28,26 +21,30 @@ function FavouritesWallpaper({ listBoard }) {
             left="20vw"
             showState={isShowing}
             width="380px"
+            height="600px"
          >
             <Container>
                <h3>Favourites </h3>
-               {favourites.map((item) => (
-                  <Card key={item.id}>
-                     {item.url && <Wallpaper src={item.url} />}
-                     <TitleBox>
-                        <Title>{item.titleCard}</Title>
-                        <Name>{item.nameBoard}</Name>
-                     </TitleBox>
-                     <IconBox>
-                        <IconButton
-                           onClick={() => removeFavourites(item.id)}
-                           width="17px"
-                           height="17px"
-                           iconSvg={FavouritesIcon}
-                        />
-                     </IconBox>
-                  </Card>
-               ))}
+               {favourites.map((item) =>
+                  item.favoriteWorkspaceResponses.map((item) => {
+                     return (
+                        <Card key={item.id}>
+                           {item.url && <Wallpaper src={item.url} />}
+                           <TitleBox>
+                              <Title>{item.name}</Title>
+                              <Name>{item.nameBoard}</Name>
+                           </TitleBox>
+                           <IconBox>
+                              <IconButton
+                                 width="17px"
+                                 height="17px"
+                                 iconSvg={FavouritesIcon}
+                              />
+                           </IconBox>
+                        </Card>
+                     )
+                  })
+               )}
             </Container>
          </ReusableDropDown>
       </>
@@ -69,11 +66,11 @@ const OpenMenu = styled.div`
       right: -15px;
    }
 `
-
 const Container = styled.div`
    margin: auto;
+   overflow: scroll;
    width: 100%;
-   height: 100%;
+   height: 600px;
    display: flex;
    flex-direction: column;
    gap: 16px;
@@ -88,7 +85,6 @@ const Container = styled.div`
       text-align: center;
    }
 `
-
 const Card = styled.div`
    line-height: 16px;
    position: relative;
@@ -113,7 +109,6 @@ const TitleBox = styled.div`
       margin: 0;
    }
 `
-
 const Title = styled.p`
    font-size: 16px;
    box-sizing: border-box;
