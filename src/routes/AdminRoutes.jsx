@@ -1,13 +1,7 @@
 import React from "react"
-import Layout from "../layout/Layout"
 
 const AdminRoutes = () => {
-   return (
-      <div>
-         <Layout />
-         <h1>ADMIN</h1>
-      </div>
-   )
+   return <h1>Admin</h1>
 }
 
 export default AdminRoutes

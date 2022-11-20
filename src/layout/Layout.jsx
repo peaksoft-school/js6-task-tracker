@@ -14,15 +14,23 @@ const Layout = ({ children }) => {
          return console.log(error.message)
       }
    }
-
    useEffect(() => {
       getFavorites()
    }, [])
 
+   // const getIdWorkspaces = async () => {
+   //    try {
+   //       const response = await axiosInstance.get(`/api/workspace`)
+   //       return console.log(response)
+   //    } catch (error) {
+   //       return console.log(error.message)
+   //    }
+   // }
+
    return (
       <>
          <Header favourites={favourites} />
-         <Workspaces getFavorites={getFavorites} />
+         <Workspaces />
          {children}
       </>
    )

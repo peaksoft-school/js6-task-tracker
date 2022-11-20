@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
+import { Outlet } from "react-router-dom"
 import useOpenClose from "../../hooks/useOpenClose"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
@@ -8,6 +9,7 @@ import TableWorkspaces from "../TableWorkspaces"
 import { getWorkspacesQuery } from "../../api/auth"
 
 const Workspaces = ({ getFavorites }) => {
+   console.log("done workspaces")
    const { toggle, isShowing } = useOpenClose()
    const [workspaces, setWorkspaces] = useState([])
 
@@ -46,6 +48,7 @@ const Workspaces = ({ getFavorites }) => {
                getFavorites={getFavorites}
             />
          </BlockWorkspaces>
+         <Outlet />
       </ContainerWorkspaces>
    )
 }
