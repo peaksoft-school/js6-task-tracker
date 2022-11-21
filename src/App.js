@@ -1,10 +1,13 @@
 import React from "react"
-import DateTimePicker from "./Components/UI/DateTimePicker"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import AppRoutes from "./routes/AppRoutes"
 
 function App() {
    return (
       <div className="App">
-         <DateTimePicker />
+         <AppRoutes />
+         <ToastContainer />
       </div>
    )
 }

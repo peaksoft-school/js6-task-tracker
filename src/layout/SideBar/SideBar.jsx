@@ -204,13 +204,13 @@ const SideBar = ({ nameWorkspaces }) => {
 
 export default SideBar
 
-const StyledContainerSideBar = styled.div`
+const StyledContainerSideBar = styled.aside`
    display: flex;
    flex-direction: column;
    width: ${(props) => (props.stateSideBar ? "250px" : "90px")};
    background-color: white;
-   height: 800px;
    transition: all 0.35s ease-out;
+   padding-top: 1.7rem;
    ul {
       padding: 0;
       display: flex;
@@ -231,12 +231,14 @@ const HeaderSideBar = styled.div`
    justify-content: space-between;
    p {
       width: 60px;
-      font-size: 18px;
-      margin-left: 25px;
-      margin-right: 70px;
+      font-size: 1.2rem;
+      padding: 0 7.5rem 0 1.5rem;
    }
    img {
-      margin-left: 33px;
+      margin-left: 2rem;
+      &:last-child {
+         margin-left: 0.8rem;
+      }
    }
 `
 const SideBarItem = styled.li`
@@ -249,30 +251,30 @@ const SideBarItem = styled.li`
    cursor: pointer;
    span {
       text-align: start;
-      margin-left: 10px;
+      margin-left: 0.5rem;
    }
    &:first-child {
       border-top: 2px solid #e0e0e0;
-      padding-top: 15px;
-      flex-direction: column;
+      padding-top: 0.9rem;
+      flex-direction: column !important;
    }
    &:nth-child(2) {
-      margin-top: 20px;
+      margin-top: 1.25rem;
       border-top: 2px solid #e0e0e0;
-      padding-top: 15px;
+      padding-top: 1rem;
    }
    &:nth-child(4) {
-      margin-bottom: 20px;
+      margin-bottom: 1.25rem;
       border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 15px;
+      padding-bottom: 1rem;
    }
    &:last-child {
-      margin: 15px 0 8px 0;
+      margin: 1rem 0 0.5rem 0;
    }
 `
 const SideBarTitleBlock = styled.div`
    width: 100%;
-   padding: 0 0 0 30px;
+   padding: 0 0 0 1.8rem;
    margin-left: -8px;
    height: 37px;
    display: flex;
@@ -308,11 +310,12 @@ const ShowMoreText = styled.span`
    color: #909090;
 `
 const ShowSideBarButton = styled.img`
-   background-color: #f8f8f8;
+   display: inline-block;
+   background-color: #ffffff;
    padding: 7px;
    border-radius: 8px;
    cursor: pointer;
-   margin-left: 20px;
+   margin-left: 5px;
 `
 const WorkspacesItem = styled.div`
    display: flex;
