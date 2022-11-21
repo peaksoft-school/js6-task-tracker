@@ -4,12 +4,12 @@ export const SUCCESS = "success"
 
 export const PATH_IN_ROLES = {
    ADMIN: {
-      path: "/admin",
+      path: "/admin/*",
    },
    USER: {
-      path: "/user",
+      path: "/users/*",
    },
    SUPER_ADMIN: {
-      path: "/superAdmin",
+      path: "/superAdmin/*",
    },
 }

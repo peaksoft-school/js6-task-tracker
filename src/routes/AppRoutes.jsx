@@ -4,10 +4,9 @@ import { PATH_IN_ROLES } from "../utilits/constants/general"
 import PrivateRoute from "./PrivateRoute"
 import AuthorizationPages from "../pages/AuthorizationPages"
 import SignUp from "../Components/Authorizaiton/SignUp"
+import AdminUserLayout from "../layout/AdminLayout"
 import Login from "../Components/Authorizaiton/Login"
 import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
-import UserLayout from "../layout/UserLayout"
-import AdminLayout from "../layout/AdminLayout"
 
 const AppRoutes = () => {
    return (
@@ -23,7 +22,7 @@ const AppRoutes = () => {
             element={
                <PrivateRoute
                   ROLES={Object.keys(PATH_IN_ROLES)[1]}
-                  COMPONENT={<UserLayout />}
+                  COMPONENT={<AdminUserLayout />}
                />
             }
          />
@@ -33,11 +32,10 @@ const AppRoutes = () => {
             element={
                <PrivateRoute
                   ROLES={Object.keys(PATH_IN_ROLES)[0]}
-                  COMPONENT={<AdminLayout />}
+                  COMPONENT={<AdminUserLayout />}
                />
             }
          />
-
          <Route path="/*" element={<h1>Извините страница не найдено</h1>} />
       </Routes>
    )

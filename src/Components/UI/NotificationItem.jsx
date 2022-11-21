@@ -1,10 +1,9 @@
-import React, { useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
-import png from "../../assets/images/Rectangle.png"
 import UserAvatar from "./UserAvatar"
-import { getNotificationQuery } from "../../api/auth"
 
 const NotificationItem = ({
+   notifcation,
    titleBoard,
    nameColumn,
    userAvatar,
@@ -13,39 +12,34 @@ const NotificationItem = ({
    dateAdded,
    click,
 }) => {
-   const getNotification = async () => {
-      try {
-         const response = getNotificationQuery()
-         return console.log(response)
-      } catch (error) {
-         return console.log(error)
-      }
-   }
-
-   useEffect(() => {
-      getNotification()
-   }, [])
-
+   console.log(notifcation)
    return (
       <ContainerNotificationItem>
-         <NotificationBoard backgroundImage={png}>
-            <BlueIcon />
+         {/* {notificaition.map((item) => {
+            console.log(item)
+            return ( */}
+         <>
+            <NotificationBoard backgroundImage="link">
+               <BlueIcon />
 
-            <TitleBoard>{titleBoard}</TitleBoard>
-            <p>{nameColumn}</p>
-         </NotificationBoard>
-         <StyledNotificationItem>
-            <div>
-               <UserAvatar src={userAvatar} />
-               <StyledUserName>Nazira Nazirova {userName}</StyledUserName>
-            </div>
+               <TitleBoard>{titleBoard}</TitleBoard>
+               <p>{nameColumn}</p>
+            </NotificationBoard>
+            <StyledNotificationItem>
+               <div>
+                  <UserAvatar src={userAvatar} />
+                  <StyledUserName>Nazira Nazirova {userName}</StyledUserName>
+               </div>
 
-            <NotificationText>
-               {notificationText}Moved to list Done
-            </NotificationText>
-            <DateAdded>{dateAdded} Sep 15 at 13:23 PM</DateAdded>
-            <StyledArrowIcon onClick={click} />
-         </StyledNotificationItem>
+               <NotificationText>
+                  {notificationText}Moved to list Done
+               </NotificationText>
+               <DateAdded>{dateAdded} Sep 15 at 13:23 PM</DateAdded>
+               <StyledArrowIcon onClick={click} />
+            </StyledNotificationItem>
+         </>
+         {/* ) }) */}
+         {/* } */}
       </ContainerNotificationItem>
    )
 }

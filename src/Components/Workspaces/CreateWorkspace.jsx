@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { v4 as uuid } from "uuid"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import Button from "../UI/Button"
@@ -24,12 +23,11 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
 
    const addEmailInEmails = (e) => {
       e.preventDefault()
-      if (data.email.trim().length > 0)
-         setEmails([...emails, { emails: data.email, idEmail: uuid() }])
+      if (data.email.trim().length > 0) setEmails([...emails, data.email])
       setData({ ...data, email: "" })
    }
-   const deleteEmailInEmails = (id) => {
-      const emailsAfterRemove = emails.filter((item) => item.idEmail !== id)
+   const deleteEmailInEmails = (i) => {
+      const emailsAfterRemove = emails.filter((item, index) => index !== i)
       setEmails(emailsAfterRemove)
    }
 
@@ -47,7 +45,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
    const sendData = () => {
       if (data.name.trim().length > 0)
          createWorkspaces({
-            emails: emails.length !== 0 ? emails : [data.email],
+            emailAndEmailID: emails.length !== 0 ? emails : [data.email],
             name: data.name,
             link,
          })
@@ -67,14 +65,12 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
          <Label>Invite a member</Label>
          <form onSubmit={addEmailInEmails}>
             <InputBlock>
-               {emails.map((item) => {
+               {emails.map((item, index) => {
                   return (
                      <MemberEmails
-                        deleteEmailInEmails={() =>
-                           deleteEmailInEmails(item.idEmail)
-                        }
-                        key={item.idEmail}
-                        text={item.emails}
+                        deleteEmailInEmails={() => deleteEmailInEmails(index)}
+                        key={item.emailID}
+                        text={item}
                      />
                   )
                })}

@@ -37,7 +37,3 @@ export const getFavoriteWorkspacesQuery = () => {
 }
 
 // NOTIFICATION API
-
-export const getNotificationQuery = () => {
-   return axiosInstance.get("")
-}

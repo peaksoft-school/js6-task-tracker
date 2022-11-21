@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import Header from "../Components/Header"
-import Workspaces from "../Components/Workspaces/Workspaces"
 import { getFavoriteWorkspacesQuery } from "../api/auth"
 
 const Layout = ({ children }) => {
@@ -30,7 +29,6 @@ const Layout = ({ children }) => {
    return (
       <>
          <Header favourites={favourites} />
-         <Workspaces />
          {children}
       </>
    )
