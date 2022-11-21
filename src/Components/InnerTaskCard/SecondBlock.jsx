@@ -137,6 +137,7 @@ const SecondBlock = () => {
             </GrayButton>
          </ContainerButtons>
          <CommentSection
+            setActiveDropDown={setActiveDropDown}
             sizeComment={isShowing}
             sizeCommentHandler={toggle}
             userAvatar={avatarPhoto}
