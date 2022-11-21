@@ -36,16 +36,20 @@ export default function DateTimePicker({ getDateTimeValue }) {
       getDateTimeValue(dateData)
    }
    const calendarChangeHandler = (newValue) => {
-      if (value !== startDate) {
-         setValue(newValue)
-         setStartDate(newValue)
-         setHighlightedDays([newValue.$D])
-         dueDateRef.current.focus()
-      } else {
+      if (
+         value === startDate &&
+         newValue.$D > startDate.$D &&
+         newValue.$M >= startDate.$M
+      ) {
          setValue(newValue)
          setDueDate(newValue)
          setHighlightedDays((state) => [...state, newValue.$D])
          timeValueRef.current.focus()
+      } else {
+         setValue(newValue)
+         setStartDate(newValue)
+         setHighlightedDays([newValue.$D])
+         dueDateRef.current.focus()
       }
    }
 
@@ -153,6 +157,9 @@ const Calendar = styled(StaticDatePicker)`
    .css-169iwlq-MuiCalendarPicker-root {
       width: 270px;
       margin: 0;
+   }
+   .css-nk89i7-MuiPickersCalendarHeader-root {
+      padding-left: 10px;
    }
 `
 const DueDateBlock = styled.div`

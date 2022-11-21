@@ -1,11 +1,10 @@
 import React from "react"
-
-import SideBar from "./layout/SideBar/SideBar"
+import DateTimePicker from "./Components/UI/DateTimePicker"
 
 function App() {
    return (
       <div className="App">
-         <SideBar />
+         <DateTimePicker />
       </div>
    )
 }
