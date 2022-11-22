@@ -4,11 +4,10 @@ import styled from "styled-components"
 
 const DateAdded = ({ date }) => {
    const formatDate = new Date(date)
-   //    const newFormatDate = dateFormat(formatDate, " d at h:MM TT")
-   const month = dateFormat(formatDate, "mmm")
-   const fullDate = `${month} `
-   console.log(fullDate)
-   return <StyledDateAdded>DateAdded</StyledDateAdded>
+   const monthDay = dateFormat(formatDate, "mmm d")
+   const time = dateFormat(formatDate, "HH:MM TT")
+   const fullDate = `${monthDay} at ${time}`
+   return <StyledDateAdded>{fullDate}</StyledDateAdded>
 }
 
 export default DateAdded

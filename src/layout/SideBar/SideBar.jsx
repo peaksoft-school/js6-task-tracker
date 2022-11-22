@@ -211,6 +211,7 @@ const StyledContainerSideBar = styled.aside`
    background-color: white;
    transition: all 0.35s ease-out;
    padding-top: 1.7rem;
+   margin-right: 30px;
    ul {
       padding: 0;
       display: flex;

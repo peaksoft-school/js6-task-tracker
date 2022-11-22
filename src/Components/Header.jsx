@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
@@ -21,8 +22,9 @@ function Header({ favourites }) {
                <SearchIcon src={searchIcon} />
             </ContainerInput>
             <Notification quantityNotification={5} />
-
-            <UserAvatar src={avatarPhoto} />
+            <Link to="profile">
+               <UserAvatar src={avatarPhoto} />{" "}
+            </Link>
          </RightBlock>
       </ParentDiv>
    )
@@ -35,12 +37,12 @@ const ParentDiv = styled.header`
    align-items: center;
    justify-content: space-between;
    width: 100vw;
-   height: 68px;
+   height: 78px;
    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
    background-color: white;
    position: sticky;
    top: 0;
-   margin-bottom: 20px;
+   z-index: 200;
 `
 const LeftBlock = styled.div`
    justify-content: space-between;

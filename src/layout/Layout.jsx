@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import Header from "../Components/Header"
 import { getFavoriteWorkspacesQuery } from "../api/auth"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, role }) => {
    const [favourites, setFavourites] = useState([])
 
    const getFavorites = async () => {
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
 
    return (
       <>
-         <Header favourites={favourites} />
+         <Header role={role} favourites={favourites} />
          {children}
       </>
    )

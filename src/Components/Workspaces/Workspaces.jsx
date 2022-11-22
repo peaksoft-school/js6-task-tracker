@@ -8,8 +8,7 @@ import CreateWorkspaces from "./CreateWorkspace"
 import TableWorkspaces from "../TableWorkspaces"
 import { getWorkspacesQuery } from "../../api/auth"
 
-const Workspaces = ({ getFavorites }) => {
-   console.log("done workspaces")
+const Workspaces = ({ getFavorites, role }) => {
    const { toggle, isShowing } = useOpenClose()
    const [workspaces, setWorkspaces] = useState([])
 
@@ -31,9 +30,11 @@ const Workspaces = ({ getFavorites }) => {
          <BlockWorkspaces>
             <Block>
                <h2>Workspaces</h2>
-               <Button onClick={toggle} fullHeight="40px" fullWidth="100px">
-                  Create
-               </Button>
+               {role === "ADMIN" && (
+                  <Button onClick={toggle} fullHeight="40px" fullWidth="100px">
+                     Create
+                  </Button>
+               )}
             </Block>
             <Modal onClose={toggle} isOpen={isShowing}>
                <CreateWorkspaces

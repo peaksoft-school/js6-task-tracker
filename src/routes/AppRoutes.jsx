@@ -4,7 +4,7 @@ import { PATH_IN_ROLES } from "../utilits/constants/general"
 import PrivateRoute from "./PrivateRoute"
 import AuthorizationPages from "../pages/AuthorizationPages"
 import SignUp from "../Components/Authorizaiton/SignUp"
-import AdminUserLayout from "../layout/AdminLayout"
+import AdminUserLayout from "../layout/AdminUserLayout"
 import Login from "../Components/Authorizaiton/Login"
 import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
 

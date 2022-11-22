@@ -7,7 +7,7 @@ export const PATH_IN_ROLES = {
       path: "/admin/*",
    },
    USER: {
-      path: "/users/*",
+      path: "/user/*",
    },
    SUPER_ADMIN: {
       path: "/superAdmin/*",
