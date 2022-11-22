@@ -5,7 +5,8 @@ import UserAvatar from "./UserAvatar"
 const MemberItem = ({ userGmail, photoUser, userName }) => {
    return (
       <StyledMemberItem>
-         <UserAvatar src={photoUser} />
+         <UserAvatar userAvatar={photoUser} />
+
          <div>
             <p>{userName}Nazira</p>
             <span>{userGmail}nazira@gmail.com</span>

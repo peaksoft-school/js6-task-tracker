@@ -16,6 +16,7 @@ import avatar from "../../assets/svg/userAvatar.svg"
 import Button from "../UI/Button"
 import CloseButton from "../UI/CloseButton"
 import useOpenClose from "../../hooks/useOpenClose"
+import DateTimePicker from "../UI/DateTimePicker"
 
 const SecondBlock = () => {
    const [activeDropDown, setActiveDropDown] = useState(0)
@@ -69,6 +70,25 @@ const SecondBlock = () => {
                               <MemberItem photoUser={avatar} />
                               <MemberItem photoUser={avatar} />
                            </ContainerMemberItem>
+                        </DropDown>
+                     )}
+                     {activeDropDown === 2 && (
+                        <DropDown
+                           showState={activeDropDown === item.id}
+                           top="65px"
+                           left="105px"
+                           padding="6px 0 0 20px"
+                        >
+                           <ContainerText>
+                              <span>Estimation</span>
+                              <CloseButton
+                                 onClick={() => setActiveDropDown(0)}
+                                 src={closeSvg}
+                                 alt="close"
+                              />
+                           </ContainerText>
+
+                           <DateTimePicker />
                         </DropDown>
                      )}
                      {activeDropDown === 3 && (
@@ -157,6 +177,7 @@ const ContainerButtons = styled.div`
 const StyledSecondBlock = styled.div`
    width: 80vw;
    height: 90vh;
+   position: relative;
 `
 const ContainerText = styled.div`
    height: 40px;
