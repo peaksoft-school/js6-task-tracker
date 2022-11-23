@@ -1,8 +1,20 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import Header from "../Components/Header"
+import Participants from "../Components/Participants"
 import SideBar from "./SideBar/SideBar"
 import { logout } from "../store/AuthSlice"
+
+const members = [
+   {
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
+   },
+]
 
 const UserLayout = () => {
    const dispatch = useDispatch()
@@ -12,6 +24,7 @@ const UserLayout = () => {
    return (
       <>
          <Header />
+         <Participants members={members} />
          <SideBar />
          <div>
             <button type="submit" onClick={logoutHandler}>
