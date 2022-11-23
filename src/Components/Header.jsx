@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
+import { logout } from "../store/AuthSlice"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
 import searchIcon from "../assets/svg/SearchIcon.svg"
@@ -15,6 +17,7 @@ import { useActiveIndex } from "../hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 
 function Header({ getFavorites, workspaces }) {
+   const dispatch = useDispatch()
    const { activeIndex, getActiveIndexHandler } = useActiveIndex()
    const [notification, setNotification] = useState([])
    const [favourites, setFavourites] = useState([])
@@ -79,9 +82,23 @@ function Header({ getFavorites, workspaces }) {
                <Notification notification={notification} />
             </DropDown>
 
-            <Link to="profile">
-               <UserAvatar src={avatarPhoto} />{" "}
-            </Link>
+            <UserAvatar
+               src={avatarPhoto}
+               click={() => getActiveIndexHandler(activeIndex !== 3 ? 3 : 0)}
+            />
+            <DropDown
+               width="150px"
+               top="50px"
+               right="80px"
+               showState={activeIndex === 3}
+            >
+               <ProfileLogout>
+                  <Link to="profile">
+                     <p>Profile</p>
+                  </Link>
+                  <p onClick={() => dispatch(logout())}>Logout</p>
+               </ProfileLogout>
+            </DropDown>
          </RightBlock>
       </ParentDiv>
    )
@@ -108,7 +125,6 @@ const LeftBlock = styled.div`
    heigth: 68px;
    align-items: center;
 `
-
 const RightBlock = styled.div`
    width: 48vw;
    display: flex;
@@ -132,7 +148,6 @@ const SearchIcon = styled.img`
 const Logo = styled.img`
    padding: 1rem 2.1rem 1rem;
 `
-
 const NotificationIconContainer = styled.div`
    width: 37px;
    height: 27px;
@@ -163,5 +178,15 @@ const OpenMenu = styled.div`
    img {
       position: absolute;
       right: -15px;
+   }
+`
+const ProfileLogout = styled.div`
+   a {
+      color: black;
+      text-decoration: none;
+   }
+   p {
+      margin: 10px 20px;
+      cursor: pointer;
    }
 `
