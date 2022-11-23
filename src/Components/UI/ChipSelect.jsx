@@ -1,21 +1,22 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import deleteUser from "../../assets/icons/close.svg"
 
-const ChipSelect = ({ UserId, UserEmail }) => {
-   const [userEmail, setUserEmails] = useState([
-      {
-         id: UserId,
-         email: UserEmail,
-      },
-   ])
+const ChipSelect = ({ usersEmail, getResultList }) => {
+   const [filteredEmail, setFilteredEmail] = useState([])
    const deleteUserEmail = (id) => {
-      const deletedUserEmail = userEmail.filter((item) => item.id !== id)
-      setUserEmails(deletedUserEmail)
+      const deletedUserEmail = filteredEmail.filter((item) => item.id !== id)
+      setFilteredEmail(deletedUserEmail)
    }
+   useEffect(() => {
+      setFilteredEmail(usersEmail)
+   }, [])
+   useEffect(() => {
+      getResultList(filteredEmail)
+   }, [filteredEmail])
    return (
       <Container>
-         {userEmail.map((item) => {
+         {filteredEmail.map((item) => {
             return (
                <p key={item.id}>
                   {item.email}
