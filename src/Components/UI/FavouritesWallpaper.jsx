@@ -2,70 +2,37 @@ import React from "react"
 import styled from "styled-components"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
-import ReusableDropDown from "./ReusableDropDown"
-import openMenuIcon from "../../assets/icons/Favouritesmenuicon.svg"
-import useOpenClose from "../../hooks/useOpenClose"
 
 function FavouritesWallpaper({ favourites }) {
-   const { isShowing, toggle } = useOpenClose()
-
    return (
-      <>
-         <OpenMenu onClick={toggle}>
-            Favourites <span>0</span>
-            <img src={openMenuIcon} alt="Icon" />
-         </OpenMenu>
-
-         <ReusableDropDown
-            top="8vh"
-            left="20vw"
-            showState={isShowing}
-            width="380px"
-            height="600px"
-         >
-            <Container>
-               <h3>Favourites </h3>
-               {favourites.map((item) =>
-                  item.favoriteWorkspaceResponses.map((item) => {
-                     return (
-                        <Card key={item.id}>
-                           {item.url && <Wallpaper src={item.url} />}
-                           <TitleBox>
-                              <Title>{item.name}</Title>
-                              <Name>{item.nameBoard}</Name>
-                           </TitleBox>
-                           <IconBox>
-                              <IconButton
-                                 width="17px"
-                                 height="17px"
-                                 iconSvg={FavouritesIcon}
-                              />
-                           </IconBox>
-                        </Card>
-                     )
-                  })
-               )}
-            </Container>
-         </ReusableDropDown>
-      </>
+      <Container>
+         <h3>Favourites </h3>
+         {favourites.map((item) =>
+            item.favoriteWorkspaceResponses.map((item) => {
+               return (
+                  <Card key={item.id}>
+                     {item.url && <Wallpaper src={item.url} />}
+                     <TitleBox>
+                        <Title>{item.name}</Title>
+                        <Name>{item.nameBoard}</Name>
+                     </TitleBox>
+                     <IconBox>
+                        <IconButton
+                           width="17px"
+                           height="17px"
+                           iconSvg={FavouritesIcon}
+                        />
+                     </IconBox>
+                  </Card>
+               )
+            })
+         )}
+      </Container>
    )
 }
 
 export default FavouritesWallpaper
-const OpenMenu = styled.div`
-   position: relative;
-   width: 102px;
-   height: 20px;
-   font-weight: 500;
-   display: flex;
-   align-items: center;
-   gap: 5px;
-   cursor: pointer;
-   img {
-      position: absolute;
-      right: -15px;
-   }
-`
+
 const Container = styled.div`
    margin: auto;
    overflow: scroll;

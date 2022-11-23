@@ -1,13 +1,17 @@
 import React from "react"
 import styled from "styled-components"
-import { Link } from "react-router-dom"
 import actionTrueSvg from "../assets/icons/actionTrue.svg"
 import actionFalseSvg from "../assets/icons/actionFalse.svg"
 import UserAvatar from "./UI/UserAvatar"
 import { changeAction } from "../api/Query"
 import avatar from "../assets/svg/userAvatar.svg"
 
-const TableWorkspaces = ({ workspaces, updateWorkspaces, getFavorites }) => {
+const TableWorkspaces = ({
+   workspaces,
+   updateWorkspaces,
+   getFavorites,
+   getWorkspacesId,
+}) => {
    return (
       <Table>
          <thead>
@@ -24,8 +28,8 @@ const TableWorkspaces = ({ workspaces, updateWorkspaces, getFavorites }) => {
                <thead key={item.id}>
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
                      <td>{index}</td>
-                     <td>
-                        <Link to={`${item.id}`}>{item.name}</Link>
+                     <td onClick={() => getWorkspacesId(item.id)}>
+                        <span>{item.name}</span>
                      </td>
                      <td>
                         <UserAvatar src={avatar} />
@@ -78,6 +82,11 @@ const Table = styled.table`
    }
    td:nth-child(2) {
       width: 60vw;
+      span {
+         color: #0073de;
+         cursor: pointer;
+         text-decoration: underline;
+      }
    }
    td:nth-child(3) {
       display: flex;
@@ -94,9 +103,6 @@ const Table = styled.table`
    }
    td:first-child {
       padding: 0 0 0 20px;
-   }
-   a {
-      color: #0073de;
    }
 `
 const WorkspacesItem = styled.tr`

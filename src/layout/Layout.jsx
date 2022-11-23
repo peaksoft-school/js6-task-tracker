@@ -17,15 +17,6 @@ const Layout = ({ children, role }) => {
       getFavorites()
    }, [])
 
-   // const getIdWorkspaces = async () => {
-   //    try {
-   //       const response = await axiosInstance.get(`/api/workspace`)
-   //       return console.log(response)
-   //    } catch (error) {
-   //       return console.log(error.message)
-   //    }
-   // }
-
    return (
       <>
          <Header role={role} favourites={favourites} />

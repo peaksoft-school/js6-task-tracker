@@ -8,7 +8,7 @@ import CreateWorkspaces from "./CreateWorkspace"
 import TableWorkspaces from "../TableWorkspaces"
 import { getWorkspacesQuery } from "../../api/auth"
 
-const Workspaces = ({ getFavorites, role }) => {
+const Workspaces = ({ getFavorites, role, getWorkspacesId }) => {
    const { toggle, isShowing } = useOpenClose()
    const [workspaces, setWorkspaces] = useState([])
 
@@ -43,6 +43,7 @@ const Workspaces = ({ getFavorites, role }) => {
                />
             </Modal>
             <TableWorkspaces
+               getWorkspacesId={getWorkspacesId}
                updateWorkspaces={getWorkspacesInDataBase}
                workspaces={workspaces}
                toggle={toggle}

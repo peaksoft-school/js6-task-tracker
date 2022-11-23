@@ -5,10 +5,10 @@ import WallpaperBoardCard from "./UI/WallpaperBoardCard"
 import { PhotoArray } from "../utilits/constants/Constants"
 import Button from "./UI/Button"
 
-const Board = ({ role }) => {
+const Board = ({ workspacesById, role }) => {
    return (
       <ContainerBoard>
-         <SideBar />
+         <SideBar workspacesById={workspacesById} />
          <Container>
             <TitleButtonBlock>
                <h3>All Boards</h3>

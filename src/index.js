@@ -5,6 +5,7 @@ import { Provider } from "react-redux"
 import App from "./App"
 import "./index.css"
 import { store } from "./store"
+
 import { injectStore } from "./api/axiosInstance"
 
 injectStore(store)

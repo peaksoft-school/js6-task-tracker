@@ -35,6 +35,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
       try {
          dispatch(loadingToastifyAction())
          const { data } = await createWorkspacesQuery(value)
+
          getWorkspaces()
          dispatch(successToastifyAction(`Created workspaces ${data.name}`))
          return data
@@ -45,7 +46,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
    const sendData = () => {
       if (data.name.trim().length > 0)
          createWorkspaces({
-            emailAndEmailID: emails.length !== 0 ? emails : [data.email],
+            emails: emails.length !== 0 ? emails : [data.email],
             name: data.name,
             link,
          })

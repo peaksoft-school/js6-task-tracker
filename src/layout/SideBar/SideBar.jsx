@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { SideBarItems, Workspaces } from "../../utilits/constants/Constants"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
@@ -12,7 +13,8 @@ import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 
-const SideBar = ({ nameWorkspaces }) => {
+const SideBar = ({ workspacesById }) => {
+   const navigate = useNavigate()
    const [activeIndex, setActiveIndex] = useState(0)
    const [showSideBar, setSideBar] = useState(false)
    const [DropDown, setDropDown] = useState({
@@ -51,47 +53,41 @@ const SideBar = ({ nameWorkspaces }) => {
       if (showSideBar) {
          return
       }
-      setTimeout(() => {
-         setDropDown({
-            id,
-            stateDropDown: true,
-            isMenuHovered: true,
-         })
-      }, 250)
+      setDropDown({
+         id,
+         stateDropDown: true,
+         isMenuHovered: true,
+      })
    }
 
    const onMouseLeaveFormMenuHandler = (id) => {
-      setTimeout(() => {
-         setDropDown({
-            id,
-            stateDropDown: false,
-            isMenuHovered: false,
-         })
-      }, 150)
+      setDropDown({
+         id,
+         stateDropDown: false,
+         isMenuHovered: false,
+      })
    }
 
    const onMouseLeaveFromContainerHandler = (id) => {
-      setTimeout(() => {
-         setDropDown((prevState) => {
-            if (prevState.isMenuHovered) {
-               return {
-                  id,
-                  stateDropDown: true,
-               }
-            }
+      setDropDown((prevState) => {
+         if (prevState.isMenuHovered) {
             return {
                id,
-               stateDropDown: false,
+               stateDropDown: true,
             }
-         })
-      }, 150)
+         }
+         return {
+            id,
+            stateDropDown: false,
+         }
+      })
    }
 
    const renderHeaderSideBar = () =>
       showSideBar ? (
          <>
-            <IconButton iconSvg={arrowRight} />
-            <p>{nameWorkspaces}LMS</p>
+            <IconButton onClick={() => navigate(-1)} iconSvg={arrowRight} />
+            <p>{workspacesById.name}</p>
          </>
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />

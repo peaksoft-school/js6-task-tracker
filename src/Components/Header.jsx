@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
@@ -8,20 +8,72 @@ import UserAvatar from "./UI/UserAvatar"
 import avatarPhoto from "../assets/svg/userAvatar.svg"
 import Notification from "./Notification"
 import Favorite from "./UI/FavouritesWallpaper"
+import DropDown from "./UI/ReusableDropDown"
+import Notifications from "../assets/svg/NotificationIcon.svg"
+import { axiosInstance } from "../api/axiosInstance"
+import { useActiveIndex } from "../hooks/useActiveIndex"
+import Arrow from "./UI/Arrow"
 
 function Header({ favourites }) {
+   const { activeIndex, getActiveIndexHandler } = useActiveIndex()
+   const [notification, setNotification] = useState([])
+
+   const getNotificationHandler = async () => {
+      try {
+         const { data } = await axiosInstance.get("/api/notifications")
+         return setNotification(data)
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+
+   useEffect(() => {
+      getNotificationHandler()
+   })
+
    return (
       <ParentDiv>
          <LeftBlock>
             <Logo src={TaskTracker} alt="" />
-            <Favorite favourites={favourites} />
+            <OpenMenu
+               onClick={() => getActiveIndexHandler(activeIndex !== 1 ? 1 : 0)}
+            >
+               Favourites <span>{favourites.length}</span>
+               <Arrow rotate="270deg" />
+            </OpenMenu>
+
+            <DropDown
+               top="8vh"
+               left="20vw"
+               showState={activeIndex === 1}
+               width="380px"
+               height="600px"
+            >
+               <Favorite favourites={favourites} />
+            </DropDown>
          </LeftBlock>
          <RightBlock>
             <ContainerInput>
                <Input placeholder="Search" />
                <SearchIcon src={searchIcon} />
             </ContainerInput>
-            <Notification quantityNotification={5} />
+
+            <NotificationIconContainer
+               onClick={() => getActiveIndexHandler(activeIndex !== 2 ? 2 : 0)}
+            >
+               <img src={Notifications} alt="" />
+               {notification.length > 0 && <span>{notification.length}</span>}
+            </NotificationIconContainer>
+            <DropDown
+               showState={activeIndex === 2}
+               width="390px"
+               height="90vh"
+               top="60px"
+               right="80px"
+            >
+               <Notification notification={notification} />
+            </DropDown>
+
             <Link to="profile">
                <UserAvatar src={avatarPhoto} />{" "}
             </Link>
@@ -74,4 +126,37 @@ const SearchIcon = styled.img`
 `
 const Logo = styled.img`
    padding: 1rem 2.1rem 1rem;
+`
+
+const NotificationIconContainer = styled.div`
+   width: 37px;
+   height: 27px;
+   position: relative;
+   cursor: pointer;
+   span {
+      background-color: #d91212;
+      border-radius: 8px;
+      font-size: 12px;
+      color: white;
+      padding: 0.8px 7px 0.8px;
+      font-weight: 500;
+      align-items: center;
+      position: absolute;
+      left: 12px;
+      bottom: 15px;
+   }
+`
+const OpenMenu = styled.div`
+   position: relative;
+   width: 102px;
+   height: 20px;
+   font-weight: 500;
+   display: flex;
+   align-items: center;
+   gap: 5px;
+   cursor: pointer;
+   img {
+      position: absolute;
+      right: -15px;
+   }
 `

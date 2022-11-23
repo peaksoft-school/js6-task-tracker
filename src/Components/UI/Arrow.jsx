@@ -9,5 +9,7 @@ const Arrow = ({ rotate }) => {
 export default Arrow
 
 const StyledArrow = styled.img`
+   width: 22px;
+   height: 22px;
    transform: ${(props) => `rotate(${props.rotate})`};
 `
