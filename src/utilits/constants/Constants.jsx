@@ -13,6 +13,11 @@ import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
+import Board1 from "../../assets/svg/Board.svg"
+import Board2 from "../../assets/svg/Board2.svg"
+import Board3 from "../../assets/svg/Board3.svg"
+
+export const GLOBAL_URL = "http://18.192.179.151"
 
 export const Labels = [
    {
@@ -170,3 +175,7 @@ export const SubMenuItems = [
       title: "Setting",
    },
 ]
+
+export const BackgroundImg = [Board1, Board2, Board3]
+
+export const USER_KEY = "TASK-TRACKER-USER-KEY"
