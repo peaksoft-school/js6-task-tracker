@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import Header from "../Components/Header"
-import { getFavoriteWorkspacesQuery } from "../api/auth"
 
-const Layout = ({ children, role }) => {
-   const [favourites, setFavourites] = useState([])
-
-   const getFavorites = async () => {
-      try {
-         const { data } = await getFavoriteWorkspacesQuery()
-         return setFavourites(data)
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
-   useEffect(() => {
-      getFavorites()
-   }, [])
-
+const Layout = ({ children, role, getFavorites, workspaces }) => {
    return (
       <>
-         <Header role={role} favourites={favourites} />
+         <Header
+            workspaces={workspaces}
+            getFavorites={getFavorites}
+            role={role}
+         />
          {children}
       </>
    )

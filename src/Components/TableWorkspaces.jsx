@@ -7,9 +7,9 @@ import { changeAction } from "../api/Query"
 import avatar from "../assets/svg/userAvatar.svg"
 
 const TableWorkspaces = ({
+   getFavorites,
    workspaces,
    updateWorkspaces,
-   getFavorites,
    getWorkspacesId,
 }) => {
    return (

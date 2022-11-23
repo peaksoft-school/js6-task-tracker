@@ -7,26 +7,24 @@ function FavouritesWallpaper({ favourites }) {
    return (
       <Container>
          <h3>Favourites </h3>
-         {favourites.map((item) =>
-            item.favoriteWorkspaceResponses.map((item) => {
-               return (
-                  <Card key={item.id}>
-                     {item.url && <Wallpaper src={item.url} />}
-                     <TitleBox>
-                        <Title>{item.name}</Title>
-                        <Name>{item.nameBoard}</Name>
-                     </TitleBox>
-                     <IconBox>
-                        <IconButton
-                           width="17px"
-                           height="17px"
-                           iconSvg={FavouritesIcon}
-                        />
-                     </IconBox>
-                  </Card>
-               )
-            })
-         )}
+         {favourites.map((item) => {
+            return (
+               <Card key={item.id}>
+                  {item.url && <Wallpaper src={item.url} />}
+                  <TitleBox>
+                     <Title>{item.name}</Title>
+                     <Name>{item.workspaceOrBoard}</Name>
+                  </TitleBox>
+                  <IconBox>
+                     <IconButton
+                        width="17px"
+                        height="17px"
+                        iconSvg={FavouritesIcon}
+                     />
+                  </IconBox>
+               </Card>
+            )
+         })}
       </Container>
    )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Outlet } from "react-router-dom"
 import useOpenClose from "../../hooks/useOpenClose"
@@ -6,24 +6,15 @@ import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateWorkspaces from "./CreateWorkspace"
 import TableWorkspaces from "../TableWorkspaces"
-import { getWorkspacesQuery } from "../../api/auth"
 
-const Workspaces = ({ getFavorites, role, getWorkspacesId }) => {
+const Workspaces = ({
+   getFavorites,
+   role,
+   getWorkspacesId,
+   workspaces,
+   getWorkspacesInDataBase,
+}) => {
    const { toggle, isShowing } = useOpenClose()
-   const [workspaces, setWorkspaces] = useState([])
-
-   const getWorkspacesInDataBase = async () => {
-      try {
-         const { data } = await getWorkspacesQuery()
-         return setWorkspaces(data)
-      } catch (error) {
-         return error.message
-      }
-   }
-
-   useEffect(() => {
-      getWorkspacesInDataBase()
-   }, [])
 
    return (
       <ContainerWorkspaces>

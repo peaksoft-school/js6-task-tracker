@@ -5,9 +5,12 @@ import { axiosInstance } from "../api/axiosInstance"
 import Board from "../Components/Board"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
+import { getFavoriteWorkspacesQuery, getWorkspacesQuery } from "../api/auth"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
+   const [workspaces, setWorkspaces] = useState([])
+
    const { role } = useSelector((state) => state.auth.userInfo)
    const link = window.location.href
    const navigate = useNavigate()
@@ -31,13 +34,41 @@ const AdminUserLayout = () => {
       }
    }
 
+   const getFavorites = async () => {
+      try {
+         const { data } = await getFavoriteWorkspacesQuery()
+         return data
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
+   const getWorkspacesInDataBase = async () => {
+      try {
+         const { data } = await getWorkspacesQuery()
+         return setWorkspaces(data)
+      } catch (error) {
+         return error.message
+      }
+   }
+
+   useEffect(() => {
+      getWorkspacesInDataBase()
+   }, [])
+
    return (
-      <Layout role={role}>
+      <Layout workspaces={workspaces} getFavorites={getFavorites} role={role}>
          <Routes>
             <Route
                path="workspaces/*"
                element={
-                  <Workspaces getWorkspacesId={getWorkspacesId} role={role} />
+                  <Workspaces
+                     getWorkspacesInDataBase={getWorkspacesInDataBase}
+                     workspaces={workspaces}
+                     getFavorites={getFavorites}
+                     getWorkspacesId={getWorkspacesId}
+                     role={role}
+                  />
                }
             />
             <Route path="profile" element={<h1>Profile</h1>} />

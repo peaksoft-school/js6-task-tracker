@@ -14,9 +14,10 @@ import { axiosInstance } from "../api/axiosInstance"
 import { useActiveIndex } from "../hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 
-function Header({ favourites }) {
+function Header({ getFavorites, workspaces }) {
    const { activeIndex, getActiveIndexHandler } = useActiveIndex()
    const [notification, setNotification] = useState([])
+   const [favourites, setFavourites] = useState([])
 
    const getNotificationHandler = async () => {
       try {
@@ -28,8 +29,12 @@ function Header({ favourites }) {
    }
 
    useEffect(() => {
+      getFavorites().then((data) => setFavourites(data))
+   }, [workspaces])
+
+   useEffect(() => {
       getNotificationHandler()
-   })
+   }, [])
 
    return (
       <ParentDiv>
