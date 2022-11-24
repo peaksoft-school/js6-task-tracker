@@ -32,7 +32,7 @@ export const getWorkspacesQuery = () => {
    return axiosInstance.get("/api/workspace")
 }
 
-export const getFavoriteWorkspacesQuery = () => {
+export const getFavoritesQuery = () => {
    return axiosInstance.get("/api/workspace/favorites")
 }
 

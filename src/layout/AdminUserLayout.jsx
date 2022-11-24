@@ -5,7 +5,7 @@ import { axiosInstance } from "../api/axiosInstance"
 import Board from "../Components/Board"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
-import { getFavoriteWorkspacesQuery, getWorkspacesQuery } from "../api/auth"
+import { getWorkspacesQuery } from "../api/auth"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
@@ -34,15 +34,6 @@ const AdminUserLayout = () => {
       }
    }
 
-   const getFavorites = async () => {
-      try {
-         const { data } = await getFavoriteWorkspacesQuery()
-         return data
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
-
    const getWorkspacesInDataBase = async () => {
       try {
          const { data } = await getWorkspacesQuery()
@@ -57,7 +48,7 @@ const AdminUserLayout = () => {
    }, [])
 
    return (
-      <Layout workspaces={workspaces} getFavorites={getFavorites} role={role}>
+      <Layout workspaces={workspaces} role={role}>
          <Routes>
             <Route
                path="workspaces/*"
@@ -65,7 +56,6 @@ const AdminUserLayout = () => {
                   <Workspaces
                      getWorkspacesInDataBase={getWorkspacesInDataBase}
                      workspaces={workspaces}
-                     getFavorites={getFavorites}
                      getWorkspacesId={getWorkspacesId}
                      role={role}
                   />

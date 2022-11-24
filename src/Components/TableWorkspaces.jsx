@@ -1,7 +1,8 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import styled from "styled-components"
-import actionTrueSvg from "../assets/icons/actionTrue.svg"
-import actionFalseSvg from "../assets/icons/actionFalse.svg"
+// import actionTrueSvg from "../assets/icons/actionTrue.svg"
+// import actionFalseSvg from "../assets/icons/actionFalse.svg"
 import UserAvatar from "./UI/UserAvatar"
 import { changeAction } from "../api/Query"
 import avatar from "../assets/svg/userAvatar.svg"
@@ -12,6 +13,13 @@ const TableWorkspaces = ({
    updateWorkspaces,
    getWorkspacesId,
 }) => {
+   const { favourites } = useSelector((state) => state.favourites)
+
+   const test = (id) => {
+      const actionTrue = favourites.id === id
+      console.log(actionTrue)
+   }
+
    return (
       <Table>
          <thead>
@@ -42,10 +50,10 @@ const TableWorkspaces = ({
                               changeAction(
                                  item.id,
                                  updateWorkspaces,
-                                 getFavorites
+                                 getFavorites,
+                                 test
                               )
                            }
-                           src={item.action ? actionTrueSvg : actionFalseSvg}
                            alt="star"
                         />
                      </td>

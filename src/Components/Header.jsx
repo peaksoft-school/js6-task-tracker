@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../store/AuthSlice"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
@@ -15,12 +15,13 @@ import Notifications from "../assets/svg/NotificationIcon.svg"
 import { axiosInstance } from "../api/axiosInstance"
 import { useActiveIndex } from "../hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
+import { getFavourites } from "../store/FavouritesSlice"
 
-function Header({ getFavorites, workspaces }) {
+function Header({ workspaces }) {
+   const { favourites } = useSelector((state) => state.favourites)
    const dispatch = useDispatch()
    const { activeIndex, getActiveIndexHandler } = useActiveIndex()
    const [notification, setNotification] = useState([])
-   const [favourites, setFavourites] = useState([])
 
    const getNotificationHandler = async () => {
       try {
@@ -32,7 +33,7 @@ function Header({ getFavorites, workspaces }) {
    }
 
    useEffect(() => {
-      getFavorites().then((data) => setFavourites(data))
+      dispatch(getFavourites())
    }, [workspaces])
 
    useEffect(() => {
