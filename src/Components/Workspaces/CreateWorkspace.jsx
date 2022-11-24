@@ -37,10 +37,10 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
          const { data } = await createWorkspacesQuery(value)
 
          getWorkspaces()
-         dispatch(successToastifyAction(`Created workspaces ${data.name}`))
+         dispatch(successToastifyAction(`Created workspace ${data.name}`))
          return data
       } catch (error) {
-         return dispatch(errorToastifyAction(error))
+         return dispatch(errorToastifyAction(error.message))
       }
    }
    const sendData = () => {

@@ -1,23 +1,47 @@
 import React from "react"
-import { useSelector } from "react-redux"
 import styled from "styled-components"
-// import actionTrueSvg from "../assets/icons/actionTrue.svg"
-// import actionFalseSvg from "../assets/icons/actionFalse.svg"
+import { useDispatch } from "react-redux"
+import actionTrueSvg from "../assets/icons/actionTrue.svg"
+import actionFalseSvg from "../assets/icons/actionFalse.svg"
 import UserAvatar from "./UI/UserAvatar"
-import { changeAction } from "../api/Query"
+import { axiosInstance } from "../api/axiosInstance"
 import avatar from "../assets/svg/userAvatar.svg"
+import { getFavourites } from "../store/FavouritesSlice"
+import {
+   loadingToastifyAction,
+   successToastifyAction,
+   warningToastifyAction,
+} from "../store/toastifySlice"
 
-const TableWorkspaces = ({
-   getFavorites,
-   workspaces,
-   updateWorkspaces,
-   getWorkspacesId,
-}) => {
-   const { favourites } = useSelector((state) => state.favourites)
+const TableWorkspaces = ({ workspaces, updateWorkspaces, getWorkspacesId }) => {
+   const dispatch = useDispatch()
 
-   const test = (id) => {
-      const actionTrue = favourites.id === id
-      console.log(actionTrue)
+   const changeAction = async (id) => {
+      try {
+         dispatch(loadingToastifyAction())
+         const { data, status } = await axiosInstance.put(
+            `/api/workspace/make-favorite/${id}`
+         )
+         if (status === 200) {
+            getFavourites()
+            updateWorkspaces()
+            if (data.action) {
+               dispatch(
+                  successToastifyAction(`You added favourite ${data.name}`)
+               )
+            } else {
+               dispatch(
+                  warningToastifyAction(
+                     `You deleted from favorites ${data.name}`
+                  )
+               )
+            }
+         }
+
+         return data
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
 
    return (
@@ -46,14 +70,8 @@ const TableWorkspaces = ({
                      </td>
                      <td>
                         <img
-                           onClick={() =>
-                              changeAction(
-                                 item.id,
-                                 updateWorkspaces,
-                                 getFavorites,
-                                 test
-                              )
-                           }
+                           src={item.action ? actionTrueSvg : actionFalseSvg}
+                           onClick={() => changeAction(item.id)}
                            alt="star"
                         />
                      </td>

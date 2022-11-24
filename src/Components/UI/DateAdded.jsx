@@ -16,4 +16,5 @@ const StyledDateAdded = styled.p`
    color: #919191;
    font-size: 17px;
    margin: 0;
+   margin: 0 0 8px 0;
 `
