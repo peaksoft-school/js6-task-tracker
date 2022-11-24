@@ -56,6 +56,7 @@ const TableWorkspaces = ({ workspaces, updateWorkspaces, getWorkspacesId }) => {
          </thead>
 
          {workspaces.map((item, index) => {
+            console.log(item)
             return (
                <thead key={item.id}>
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
