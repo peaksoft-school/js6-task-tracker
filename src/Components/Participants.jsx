@@ -1,8 +1,13 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import deleteSVG from "../assets/svg/Delete.svg"
+import Modal from "./UI/Modal"
+import arrow from "../assets/svg/arrow.svg"
+import ReusableDropDown from "./UI/ReusableDropDown"
 
 function Participants({ members }) {
+   const [isOpen, setIsOpen] = useState(false)
+   const [isActive, setIsActive] = useState(false)
    return (
       <Parents>
          <Button>
@@ -10,10 +15,18 @@ function Participants({ members }) {
                <h1>View all issues</h1>
                <select>
                   <option>Role</option>
+                  <option>All</option>
+                  <option>Admin</option>
+                  <option>Member</option>
                </select>
             </Title>
 
-            <button type="button">Create</button>
+            <button type="button" onClick={() => setIsOpen(true)}>
+               Create
+            </button>
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+               <h1>MNADNODOAD</h1>
+            </Modal>
          </Button>
          <Total>
             <p>
@@ -33,11 +46,22 @@ function Participants({ members }) {
                   <td>{item.name}</td>
                   <td>{item.Email}</td>
                   <td>
-                     <select>
-                        <option value={item.role.member}>Member</option>
-                        <option value={item.role.admin}>Admin</option>
-                     </select>
-                     <img src={deleteSVG} alt="" />
+                     <div>
+                        <li onClick={() => setIsActive(true)}>
+                           Member{" "}
+                           <span>
+                              <img src={arrow} alt="" />
+                           </span>
+                           <ReusableDropDown
+                              showState={isActive}
+                              width="165px"
+                              height="84px"
+                           >
+                              fds
+                           </ReusableDropDown>
+                        </li>
+                        <img src={deleteSVG} alt="" />
+                     </div>
                   </td>
                </tr>
             ))}
@@ -103,8 +127,9 @@ const Button = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   width: 1150px;
+   width: 1146px;
    button {
+      margin-left: 700px;
       width: 77px;
       height: 34px;
       background: #0079bf;
@@ -120,17 +145,24 @@ const Button = styled.div`
 `
 const Table = styled.table`
    width: 1146px;
+   hr {
+      position: absolute;
+      width: 1146px;
+   }
    th {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 14px;
       line-height: 18px;
+   }
+   td {
+      padding-top: 40px;
    }
    th,
    td {
       text-align: start;
-      font-weight: 400;
       font-size: 16px;
       line-height: 20px;
+      color: #000000;
       :first-child {
          width: 600px;
       }
@@ -138,11 +170,19 @@ const Table = styled.table`
          text-align: end;
       }
    }
-   select {
+   li {
+      list-style: none;
       border: none;
       font-weight: 400;
       font-size: 16px;
       line-height: 20px;
       cursor: pointer;
+   }
+   img {
+      cursor: pointer;
+   }
+   div {
+      display: flex;
+      justify-content: space-around;
    }
 `

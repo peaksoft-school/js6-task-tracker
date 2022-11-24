@@ -7,6 +7,16 @@ import { logout } from "../store/AuthSlice"
 
 const members = [
    {
+      id: 1,
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
+   },
+   {
+      id: 2,
       name: "Salamat Salamat",
       Email: "salamat@gmail.com",
       role: {
