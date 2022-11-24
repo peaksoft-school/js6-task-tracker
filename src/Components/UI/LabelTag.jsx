@@ -4,7 +4,7 @@ import styled from "styled-components"
 function LableTag({ text, color }) {
    return (
       <Label backgroundColor={color} type="button">
-         {text}
+         {text}asdfasdfasfasdfa
       </Label>
    )
 }
