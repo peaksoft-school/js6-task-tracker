@@ -1,16 +1,15 @@
 import React from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
-import { changeAction, getFavourites } from "../../store/FavouritesSlice"
-import { getWorkspacesInDataBase } from "../../api/Query"
+import { getFavourites } from "../../store/FavouritesSlice"
+import { useWorkspaces } from "../../utilits/hooks/useWorkspaces"
 
 function FavouritesWallpaper({ favourites }) {
-   const dispatch = useDispatch()
+   const { changeAction } = useWorkspaces()
 
    const deleteFavourite = (id) => {
-      dispatch(changeAction({ id, getWorkspacesInDataBase, getFavourites }))
+      changeAction({ id, getFavourites })
    }
 
    return (

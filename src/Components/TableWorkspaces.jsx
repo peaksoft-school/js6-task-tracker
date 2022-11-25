@@ -5,14 +5,14 @@ import actionTrueSvg from "../assets/icons/actionTrue.svg"
 import actionFalseSvg from "../assets/icons/actionFalse.svg"
 import UserAvatar from "./UI/UserAvatar"
 import avatar from "../assets/svg/userAvatar.svg"
-import { changeAction, getFavourites } from "../store/FavouritesSlice"
-import { getWorkspacesInDataBase } from "../api/Query"
+import { useWorkspaces } from "../utilits/hooks/useWorkspaces"
 
 const TableWorkspaces = ({ workspaces, getWorkspacesId }) => {
    const dispatch = useDispatch()
+   const { changeAction } = useWorkspaces()
 
    const changeActionHandler = (id) => {
-      dispatch(changeAction({ id, getWorkspacesInDataBase, getFavourites }))
+      changeAction({ id, dispatch })
    }
 
    return (

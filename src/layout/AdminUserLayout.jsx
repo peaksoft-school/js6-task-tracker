@@ -5,11 +5,11 @@ import { axiosInstance } from "../api/axiosInstance"
 import Board from "../Components/Board"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
-import { getWorkspacesInDataBase } from "../api/Query"
+import { useWorkspaces } from "../utilits/hooks/useWorkspaces"
 
 const AdminUserLayout = () => {
+   const { workspaces, getWorkspacesInDataBase } = useWorkspaces()
    const [workspacesById, setWorkspacesById] = useState([])
-   const [workspaces, setWorkspaces] = useState([])
 
    const { role } = useSelector((state) => state.auth.userInfo)
    const link = window.location.href
@@ -34,15 +34,8 @@ const AdminUserLayout = () => {
       }
    }
 
-   const test = async () => {
-      console.log("done test")
-      const response = await getWorkspacesInDataBase()
-      console.log(response)
-      setWorkspaces(response)
-   }
-
    useEffect(() => {
-      test()
+      getWorkspacesInDataBase()
    }, [])
 
    return (
