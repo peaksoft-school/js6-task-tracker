@@ -2,14 +2,13 @@ import React from "react"
 import styled from "styled-components"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
-import { getFavourites } from "../../store/FavouritesSlice"
 import { useWorkspaces } from "../../utilits/hooks/useWorkspaces"
 
 function FavouritesWallpaper({ favourites }) {
    const { changeAction } = useWorkspaces()
 
    const deleteFavourite = (id) => {
-      changeAction({ id, getFavourites })
+      changeAction({ id })
    }
 
    return (

@@ -1,10 +1,10 @@
 import React from "react"
 import Header from "../Components/Header"
 
-const Layout = ({ children, role, workspaces }) => {
+const Layout = ({ children, role }) => {
    return (
       <>
-         <Header workspaces={workspaces} role={role} />
+         <Header role={role} />
          {children}
       </>
    )

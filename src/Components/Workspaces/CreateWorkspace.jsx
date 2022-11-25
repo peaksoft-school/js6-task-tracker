@@ -5,14 +5,11 @@ import Button from "../UI/Button"
 import LabelTag from "../UI/LabelTag"
 import Input from "../UI/Input"
 import MemberEmails from "../UI/MemberEmails"
-import { createWorkspacesQuery } from "../../api/auth"
-import {
-   loadingToastifyAction,
-   successToastifyAction,
-   errorToastifyAction,
-} from "../../store/toastifySlice"
 
-const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
+import { useWorkspaces } from "../../utilits/hooks/useWorkspaces"
+
+const CreateWorkspaces = ({ toggle }) => {
+   const { createWorkspaces, getAllWorkspaces } = useWorkspaces()
    const link = window.location.href
    const dispatch = useDispatch()
    const [emails, setEmails] = useState([])
@@ -32,25 +29,14 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
       setEmails(emailsAfterRemove)
    }
 
-   const createWorkspaces = async (value) => {
-      try {
-         dispatch(loadingToastifyAction())
-         const { data } = await createWorkspacesQuery(value)
-
-         getWorkspaces()
-         dispatch(successToastifyAction(`Created workspace ${data.name}`))
-         return data
-      } catch (error) {
-         return dispatch(errorToastifyAction(error.message))
-      }
-   }
    const sendData = () => {
+      const readyData = {
+         emails: emails.length !== 0 ? emails : [data.email],
+         name: data.name,
+         link,
+      }
       if (data.name.trim().length > 0)
-         createWorkspaces({
-            emails: emails.length !== 0 ? emails : [data.email],
-            name: data.name,
-            link,
-         })
+         createWorkspaces({ readyData, dispatch, getAllWorkspaces })
       toggle()
    }
 

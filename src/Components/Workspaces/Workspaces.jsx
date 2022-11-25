@@ -7,13 +7,7 @@ import Modal from "../UI/Modal"
 import CreateWorkspaces from "./CreateWorkspace"
 import TableWorkspaces from "../TableWorkspaces"
 
-const Workspaces = ({
-   getFavorites,
-   role,
-   getWorkspacesId,
-   workspaces,
-   getWorkspacesInDataBase,
-}) => {
+const Workspaces = ({ getFavorites, role, getWorkspacesId }) => {
    const { toggle, isShowing } = useOpenClose()
 
    return (
@@ -28,15 +22,10 @@ const Workspaces = ({
                )}
             </Block>
             <Modal onClose={toggle} isOpen={isShowing}>
-               <CreateWorkspaces
-                  getWorkspaces={getWorkspacesInDataBase}
-                  toggle={toggle}
-               />
+               <CreateWorkspaces toggle={toggle} />
             </Modal>
             <TableWorkspaces
                getWorkspacesId={getWorkspacesId}
-               updateWorkspaces={getWorkspacesInDataBase}
-               workspaces={workspaces}
                toggle={toggle}
                getFavorites={getFavorites}
             />

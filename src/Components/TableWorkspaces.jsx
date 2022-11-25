@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import actionTrueSvg from "../assets/icons/actionTrue.svg"
@@ -7,9 +7,13 @@ import UserAvatar from "./UI/UserAvatar"
 import avatar from "../assets/svg/userAvatar.svg"
 import { useWorkspaces } from "../utilits/hooks/useWorkspaces"
 
-const TableWorkspaces = ({ workspaces, getWorkspacesId }) => {
+const TableWorkspaces = ({ getWorkspacesId }) => {
+   const { workspaces, changeAction, getAllWorkspaces } = useWorkspaces()
    const dispatch = useDispatch()
-   const { changeAction } = useWorkspaces()
+
+   useEffect(() => {
+      getAllWorkspaces()
+   }, [])
 
    const changeActionHandler = (id) => {
       changeAction({ id, dispatch })

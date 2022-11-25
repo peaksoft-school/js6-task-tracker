@@ -44,7 +44,6 @@ export const login = createAsyncThunk(
       const { userData, navigate } = value
       try {
          const { data } = await loginRequest(userData)
-         console.log(data)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
          return data

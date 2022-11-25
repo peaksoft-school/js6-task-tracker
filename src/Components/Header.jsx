@@ -17,7 +17,7 @@ import { useActiveIndex } from "../hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 
-function Header({ workspaces }) {
+function Header() {
    const { favourites } = useSelector((state) => state.favourites)
    const dispatch = useDispatch()
    const { activeIndex, getActiveIndexHandler } = useActiveIndex()
@@ -34,7 +34,7 @@ function Header({ workspaces }) {
 
    useEffect(() => {
       dispatch(getFavourites())
-   }, [workspaces])
+   }, [])
 
    useEffect(() => {
       getNotificationHandler()

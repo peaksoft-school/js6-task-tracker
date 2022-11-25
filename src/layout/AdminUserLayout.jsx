@@ -5,10 +5,8 @@ import { axiosInstance } from "../api/axiosInstance"
 import Board from "../Components/Board"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
-import { useWorkspaces } from "../utilits/hooks/useWorkspaces"
 
 const AdminUserLayout = () => {
-   const { workspaces, getWorkspacesInDataBase } = useWorkspaces()
    const [workspacesById, setWorkspacesById] = useState([])
 
    const { role } = useSelector((state) => state.auth.userInfo)
@@ -25,6 +23,7 @@ const AdminUserLayout = () => {
    }, [])
 
    const getWorkspacesId = async (id) => {
+      console.log(id)
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          setWorkspacesById(data)
@@ -34,21 +33,13 @@ const AdminUserLayout = () => {
       }
    }
 
-   useEffect(() => {
-      getWorkspacesInDataBase()
-   }, [])
-
    return (
-      <Layout workspaces={workspaces} role={role}>
+      <Layout role={role}>
          <Routes>
             <Route
                path="workspaces/*"
                element={
-                  <Workspaces
-                     workspaces={workspaces}
-                     getWorkspacesId={getWorkspacesId}
-                     role={role}
-                  />
+                  <Workspaces getWorkspacesId={getWorkspacesId} role={role} />
                }
             />
             <Route path="profile" element={<h1>Profile</h1>} />
