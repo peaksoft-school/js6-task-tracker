@@ -6,10 +6,9 @@ const MemberItem = ({ userGmail, photoUser, userName }) => {
    return (
       <StyledMemberItem>
          <UserAvatar userAvatar={photoUser} />
-
          <div>
-            <p>{userName}Nazira</p>
-            <span>{userGmail}nazira@gmail.com</span>
+            <p>{userName}</p>
+            <span>{userGmail}</span>
          </div>
       </StyledMemberItem>
    )
