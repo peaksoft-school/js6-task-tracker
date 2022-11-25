@@ -1,74 +1,41 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
-import ReusableDropDown from "./ReusableDropDown"
-import openMenuIcon from "../../assets/icons/Favouritesmenuicon.svg"
 
-function FavouritesWallpaper({ listBoard }) {
-   const [favourites, setFavourites] = useState(listBoard)
-   const [open, setOpen] = useState(true)
-
-   const removeFavourites = (id) => {
-      const removeItem = favourites.filter((item) => item.id !== id)
-      setFavourites(removeItem)
-   }
-
+function FavouritesWallpaper({ favourites }) {
    return (
-      <>
-         <OpenMenu onClick={() => setOpen(!open)}>
-            Favourites <span>({favourites.length})</span>
-            <img src={openMenuIcon} alt="Icon" />
-         </OpenMenu>
-
-         {open && (
-            <ReusableDropDown showState width="351px">
-               <Container>
-                  <h3>Favourites </h3>
-                  {favourites.map((item) => (
-                     <Card key={item.id}>
-                        {item.url && <Wallpaper src={item.url} />}
-                        <TitleBox>
-                           <Title>{item.titleCard}</Title>
-                           <Name>{item.nameBoard}</Name>
-                        </TitleBox>
-                        <IconBox>
-                           <IconButton
-                              onClick={() => removeFavourites(item.id)}
-                              width="17px"
-                              height="17px"
-                              iconSvg={FavouritesIcon}
-                           />
-                        </IconBox>
-                     </Card>
-                  ))}
-               </Container>
-            </ReusableDropDown>
-         )}
-      </>
+      <Container>
+         <h3>Favourites </h3>
+         {favourites.map((item) => {
+            return (
+               <Card key={item.id}>
+                  {item.url && <Wallpaper src={item.url} />}
+                  <TitleBox>
+                     <Title>{item.name}</Title>
+                     <Name>{item.workspaceOrBoard}</Name>
+                  </TitleBox>
+                  <IconBox>
+                     <IconButton
+                        width="17px"
+                        height="17px"
+                        iconSvg={FavouritesIcon}
+                     />
+                  </IconBox>
+               </Card>
+            )
+         })}
+      </Container>
    )
 }
 
 export default FavouritesWallpaper
-const OpenMenu = styled.div`
-   position: relative;
-   width: 102px;
-   height: 20px;
-   font-weight: 500;
-   display: flex;
-   align-items: center;
-   gap: 5px;
-   cursor: pointer;
-   img {
-      position: absolute;
-      right: -15px;
-   }
-`
 
 const Container = styled.div`
    margin: auto;
+   overflow: scroll;
    width: 100%;
-   height: 100%;
+   max-height: 600px;
    display: flex;
    flex-direction: column;
    gap: 16px;
@@ -83,7 +50,6 @@ const Container = styled.div`
       text-align: center;
    }
 `
-
 const Card = styled.div`
    line-height: 16px;
    position: relative;
@@ -108,7 +74,6 @@ const TitleBox = styled.div`
       margin: 0;
    }
 `
-
 const Title = styled.p`
    font-size: 16px;
    box-sizing: border-box;

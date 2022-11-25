@@ -33,10 +33,10 @@ const Login = () => {
       <Form onSubmit={formik.handleSubmit}>
          <ContainerInputErrorText>
             <Input
-               id="email"
-               value={formik.values.email}
                type="email"
+               id="email"
                label="example@gmail.com"
+               value={formik.values.email}
                onChange={formik.handleChange}
                onBlur={formik.handleBlur}
             />
