@@ -8,7 +8,6 @@ import Layout from "./Layout"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
-
    const { role } = useSelector((state) => state.auth.userInfo)
    const link = window.location.href
    const navigate = useNavigate()
@@ -23,7 +22,6 @@ const AdminUserLayout = () => {
    }, [])
 
    const getWorkspacesId = async (id) => {
-      console.log(id)
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          setWorkspacesById(data)

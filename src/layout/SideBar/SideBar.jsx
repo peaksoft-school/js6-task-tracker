@@ -135,6 +135,7 @@ const SideBar = ({ workspacesById }) => {
          <HeaderSideBar>
             {renderHeaderSideBar()}
             <ShowSideBarButton
+               showSideBar={showSideBar}
                onClick={showSideBarHandler}
                src={showSideBarIcon}
                alt="button"
@@ -203,6 +204,7 @@ export default SideBar
 const StyledContainerSideBar = styled.aside`
    display: flex;
    flex-direction: column;
+   position: relative;
    width: ${(props) => (props.stateSideBar ? "250px" : "90px")};
    background-color: white;
    transition: all 0.35s ease-out;
@@ -227,17 +229,15 @@ const HeaderSideBar = styled.div`
    align-items: center;
    justify-content: space-between;
    p {
-      width: 60px;
       font-size: 1.2rem;
-      padding: 0 7.5rem 0 1.5rem;
+      position: absolute;
+      left: 50px;
    }
    img {
-      margin-left: 2rem;
-      &:last-child {
-         margin-left: 0.8rem;
-      }
+      margin: 0 0 0 30px;
    }
 `
+
 const SideBarItem = styled.li`
    display: flex;
    width: ${(props) => (props.stateSideBar ? "100%" : "100%")};
@@ -307,12 +307,14 @@ const ShowMoreText = styled.span`
    color: #909090;
 `
 const ShowSideBarButton = styled.img`
+   position: absolute;
+   left: ${(props) => (props.showSideBar ? "200px" : "35px")};
    display: inline-block;
    background-color: #ffffff;
    padding: 7px;
    border-radius: 8px;
    cursor: pointer;
-   margin-left: 5px;
+   transition: all 0.35s ease;
 `
 const WorkspacesItem = styled.div`
    display: flex;

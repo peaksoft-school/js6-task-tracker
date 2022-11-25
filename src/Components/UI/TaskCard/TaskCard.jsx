@@ -132,7 +132,6 @@ const CardColumn = styled.div`
       cursor: pointer;
    }
 `
-
 const BlockCard = styled.p`
    position: relative;
    width: 272px;

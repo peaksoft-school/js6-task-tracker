@@ -31,8 +31,8 @@ export const useWorkspaces = () => {
             `/api/workspace/make-favorite/${id}`
          )
 
-         getAllWorkspaces()
          dispatch(getFavourites())
+         getAllWorkspaces()
          if (data.action) {
             dispatch(successToastifyAction("success"))
          }
