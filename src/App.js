@@ -1,10 +1,13 @@
 import React from "react"
-import PasswordInput from "./Components/UI/PasswordInput"
+import { ToastContainer } from "react-toastify"
+import AppRoutes from "./routes/AppRoutes"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
    return (
       <div className="App">
-         <PasswordInput label="Password" type="password" size="small" />
+         <AppRoutes />
+         <ToastContainer />
       </div>
    )
 }

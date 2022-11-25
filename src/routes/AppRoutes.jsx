@@ -1,0 +1,44 @@
+import React from "react"
+import { Navigate, Route, Routes } from "react-router-dom"
+import { PATH_IN_ROLES } from "../utilits/constants/general"
+import PrivateRoute from "./PrivateRoute"
+import AuthorizationPages from "../pages/AuthorizationPages"
+import SignUp from "../Components/Authorizaiton/SignUp"
+import AdminUserLayout from "../layout/AdminUserLayout"
+import Login from "../Components/Authorizaiton/Login"
+import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
+
+const AppRoutes = () => {
+   return (
+      <Routes>
+         <Route path="/" element={<AuthorizationPages />}>
+            <Route path="" element={<Navigate to="/signup" />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login/:id" element={<ForgotPassword />} />
+         </Route>
+         <Route
+            path={PATH_IN_ROLES.USER.path}
+            element={
+               <PrivateRoute
+                  ROLES={Object.keys(PATH_IN_ROLES)[1]}
+                  COMPONENT={<AdminUserLayout />}
+               />
+            }
+         />
+
+         <Route
+            path={PATH_IN_ROLES.ADMIN.path}
+            element={
+               <PrivateRoute
+                  ROLES={Object.keys(PATH_IN_ROLES)[0]}
+                  COMPONENT={<AdminUserLayout />}
+               />
+            }
+         />
+         <Route path="/*" element={<h1>Извините страница не найдено</h1>} />
+      </Routes>
+   )
+}
+
+export default AppRoutes
