@@ -13,6 +13,11 @@ import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
+import addPeopleIcon from "../../assets/icons/peopleGray.svg"
+import labelIcon from "../../assets/icons/label.svg"
+import attachmentIcon from "../../assets/icons/scripka.svg"
+import checklistIcon from "../../assets/icons/checklist.svg"
+import estimationIcon from "../../assets/icons/time.svg"
 import avatar from "../../assets/svg/womenAvatar.svg"
 import emptyStar from "../../assets/svg/empty.svg"
 import Board1 from "../../assets/svg/Board.svg"
@@ -37,11 +42,16 @@ export const Labels = [
    },
    {
       id: 2,
-      color: "#F2D600",
-      text: "Обратите на это внимание",
+      color: "#b323e3",
+      text: "Движение кылыш керек",
    },
    {
       id: 3,
+      color: "#F2D600",
+      text: "Обратите внимание",
+   },
+   {
+      id: 4,
       color: "#0079BF",
       text: "Хорошего всем настроения, друзья",
    },
@@ -178,6 +188,34 @@ export const SubMenuItems = [
    {
       iconId: 5,
       title: "Setting",
+   },
+]
+
+export const GrayButtonsInnerTaskCard = [
+   {
+      id: 1,
+      title: "Members",
+      icon: addPeopleIcon,
+   },
+   {
+      id: 2,
+      title: "Estimation",
+      icon: estimationIcon,
+   },
+   {
+      id: 3,
+      title: "Label",
+      icon: labelIcon,
+   },
+   {
+      id: 4,
+      title: "Atachment",
+      icon: attachmentIcon,
+   },
+   {
+      id: 5,
+      title: "Checklist",
+      icon: checklistIcon,
    },
 ]
 

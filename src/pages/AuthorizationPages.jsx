@@ -108,4 +108,5 @@ const NavigationText = styled.p`
 `
 const AuthWithGoogleButton = styled(GoogleButton)`
    border: 5px solid red;
+   margin-top: 10px;
 `

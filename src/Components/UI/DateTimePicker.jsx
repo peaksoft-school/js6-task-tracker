@@ -116,7 +116,11 @@ export default function DateTimePicker({ getDateTimeValue }) {
                <option value="60">1 hour before</option>
             </Select>
          </FormControl>
-         <Button fullWidth="270px" onClick={creteTemplateHandler}>
+         <Button
+            fullWidth="270px"
+            fullHeight="30px"
+            onClick={creteTemplateHandler}
+         >
             Create a new template
          </Button>
       </DateStyeled>
@@ -126,10 +130,10 @@ const DateStyeled = styled.div`
    display: flex;
    flex-direction: column;
    width: 285px;
-   height: 606px;
+   height: 550px;
    background: white;
    border-radius: 12px;
-   padding: 10px 7px 5px 13px;
+   padding: 0 7px 5px 5px;
    label {
       font-weight: 400;
       font-size: 16px;
@@ -160,6 +164,9 @@ const Calendar = styled(StaticDatePicker)`
    .css-nk89i7-MuiPickersCalendarHeader-root {
       padding-left: 10px;
    }
+   .css-sf5t6v-PrivatePickersSlideTransition-root-MuiDayPicker-slideTransition {
+      min-height: 190px;
+   }
 `
 const DueDateBlock = styled.div`
    width: 240px;
@@ -179,5 +186,5 @@ const Select = styled.select`
    border-radius: 10px;
    font-size: 17px;
    border: 2px solid #919191;
-   margin: 3px 0 18px 0px;
+   margin: 3px 0 8px 0px;
 `
