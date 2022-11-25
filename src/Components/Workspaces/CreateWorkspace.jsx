@@ -26,6 +26,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
       if (data.email.trim().length > 0) setEmails([...emails, data.email])
       setData({ ...data, email: "" })
    }
+
    const deleteEmailInEmails = (i) => {
       const emailsAfterRemove = emails.filter((item, index) => index !== i)
       setEmails(emailsAfterRemove)

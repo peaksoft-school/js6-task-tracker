@@ -5,7 +5,7 @@ import { axiosInstance } from "../api/axiosInstance"
 import Board from "../Components/Board"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
-import { getWorkspacesQuery } from "../api/auth"
+import { getWorkspacesInDataBase } from "../api/Query"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
@@ -34,17 +34,15 @@ const AdminUserLayout = () => {
       }
    }
 
-   const getWorkspacesInDataBase = async () => {
-      try {
-         const { data } = await getWorkspacesQuery()
-         return setWorkspaces(data)
-      } catch (error) {
-         return error.message
-      }
+   const test = async () => {
+      console.log("done test")
+      const response = await getWorkspacesInDataBase()
+      console.log(response)
+      setWorkspaces(response)
    }
 
    useEffect(() => {
-      getWorkspacesInDataBase()
+      test()
    }, [])
 
    return (
@@ -54,7 +52,6 @@ const AdminUserLayout = () => {
                path="workspaces/*"
                element={
                   <Workspaces
-                     getWorkspacesInDataBase={getWorkspacesInDataBase}
                      workspaces={workspaces}
                      getWorkspacesId={getWorkspacesId}
                      role={role}

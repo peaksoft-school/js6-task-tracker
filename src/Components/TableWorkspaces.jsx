@@ -4,44 +4,15 @@ import { useDispatch } from "react-redux"
 import actionTrueSvg from "../assets/icons/actionTrue.svg"
 import actionFalseSvg from "../assets/icons/actionFalse.svg"
 import UserAvatar from "./UI/UserAvatar"
-import { axiosInstance } from "../api/axiosInstance"
 import avatar from "../assets/svg/userAvatar.svg"
-import { getFavourites } from "../store/FavouritesSlice"
-import {
-   loadingToastifyAction,
-   successToastifyAction,
-   warningToastifyAction,
-} from "../store/toastifySlice"
+import { changeAction, getFavourites } from "../store/FavouritesSlice"
+import { getWorkspacesInDataBase } from "../api/Query"
 
-const TableWorkspaces = ({ workspaces, updateWorkspaces, getWorkspacesId }) => {
+const TableWorkspaces = ({ workspaces, getWorkspacesId }) => {
    const dispatch = useDispatch()
 
-   const changeAction = async (id) => {
-      try {
-         dispatch(loadingToastifyAction())
-         const { data, status } = await axiosInstance.put(
-            `/api/workspace/make-favorite/${id}`
-         )
-         if (status === 200) {
-            getFavourites()
-            updateWorkspaces()
-            if (data.action) {
-               dispatch(
-                  successToastifyAction(`You added favourite ${data.name}`)
-               )
-            } else {
-               dispatch(
-                  warningToastifyAction(
-                     `You deleted from favorites ${data.name}`
-                  )
-               )
-            }
-         }
-
-         return data
-      } catch (error) {
-         return console.log(error.message)
-      }
+   const changeActionHandler = (id) => {
+      dispatch(changeAction({ id, getWorkspacesInDataBase, getFavourites }))
    }
 
    return (
@@ -56,7 +27,6 @@ const TableWorkspaces = ({ workspaces, updateWorkspaces, getWorkspacesId }) => {
          </thead>
 
          {workspaces.map((item, index) => {
-            console.log(item)
             return (
                <thead key={item.id}>
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
@@ -72,7 +42,7 @@ const TableWorkspaces = ({ workspaces, updateWorkspaces, getWorkspacesId }) => {
                      <td>
                         <img
                            src={item.action ? actionTrueSvg : actionFalseSvg}
-                           onClick={() => changeAction(item.id)}
+                           onClick={() => changeActionHandler(item.id)}
                            alt="star"
                         />
                      </td>

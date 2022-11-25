@@ -1,9 +1,18 @@
 import React from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
+import { changeAction, getFavourites } from "../../store/FavouritesSlice"
+import { getWorkspacesInDataBase } from "../../api/Query"
 
 function FavouritesWallpaper({ favourites }) {
+   const dispatch = useDispatch()
+
+   const deleteFavourite = (id) => {
+      dispatch(changeAction({ id, getWorkspacesInDataBase, getFavourites }))
+   }
+
    return (
       <Container>
          <h3>Favourites </h3>
@@ -15,7 +24,7 @@ function FavouritesWallpaper({ favourites }) {
                      <Title>{item.name}</Title>
                      <Name>{item.workspaceOrBoard}</Name>
                   </TitleBox>
-                  <IconBox>
+                  <IconBox onClick={() => deleteFavourite(item.id)}>
                      <IconButton
                         width="17px"
                         height="17px"
