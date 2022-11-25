@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { SideBarItems, Workspaces } from "../../utilits/constants/Constants"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
@@ -12,7 +13,8 @@ import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 
-const SideBar = ({ nameWorkspaces }) => {
+const SideBar = ({ workspacesById }) => {
+   const navigate = useNavigate()
    const [activeIndex, setActiveIndex] = useState(0)
    const [showSideBar, setSideBar] = useState(false)
    const [DropDown, setDropDown] = useState({
@@ -51,7 +53,6 @@ const SideBar = ({ nameWorkspaces }) => {
       if (showSideBar) {
          return
       }
-
       setDropDown({
          id,
          stateDropDown: true,
@@ -85,8 +86,8 @@ const SideBar = ({ nameWorkspaces }) => {
    const renderHeaderSideBar = () =>
       showSideBar ? (
          <>
-            <IconButton iconSvg={arrowRight} />
-            <p>{nameWorkspaces}LMS</p>
+            <IconButton onClick={() => navigate(-1)} iconSvg={arrowRight} />
+            <p>{workspacesById.name}</p>
          </>
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
@@ -207,6 +208,8 @@ const StyledContainerSideBar = styled.aside`
    width: ${(props) => (props.stateSideBar ? "270px" : "107px")};
    background-color: white;
    transition: all 0.35s ease-out;
+   padding-top: 1.7rem;
+   margin-right: 30px;
    ul {
       padding: 0;
       display: flex;

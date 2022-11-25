@@ -9,14 +9,13 @@ const ReusableDropDown = ({
    padding,
    children,
    showState,
-   borderRadius,
+   right,
 }) => {
    return (
       showState && (
          <DropDownContainer
             padding={padding}
-            className="DropDown"
-            borderRadius={borderRadius}
+            right={right}
             top={top}
             left={left}
             width={width}
@@ -32,6 +31,7 @@ export default ReusableDropDown
 
 const DropDownContainer = styled.div`
    background-color: white;
+   padding: ${(props) => props.padding};
    position: absolute;
    padding: ${(props) => props.padding};
    z-index: 50;
@@ -39,8 +39,9 @@ const DropDownContainer = styled.div`
       props.borderRadius ? props.borderRadius : "20px"};
    top: ${(props) => props.top};
    left: ${(props) => props.left};
+   right: ${(props) => props.right};
    width: ${(props) => props.width};
-   height: ${(props) => props.height};
+   max-height: ${(props) => props.height};
    -webkit-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    -moz-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);

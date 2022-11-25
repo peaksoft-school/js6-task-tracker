@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import UserAvatar from "./UserAvatar"
-import UserName from "./UserName"
 import CustomIcons from "./TaskCard/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
 import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
@@ -11,7 +10,6 @@ const CommentSection = ({
    comment,
    dateAdded,
    userAvatar,
-   userName,
    editHandle,
    deleteHandle,
    sizeCommentHandler,
@@ -30,7 +28,7 @@ const CommentSection = ({
             <Comment>
                <UserAvatar src={userAvatar} />
                <div>
-                  <UserName userName={userName} />
+                  <p>Nazira Nazirova</p>
                   <CommentText>
                      {comment} I will do it only in a week,after the
                   </CommentText>

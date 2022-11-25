@@ -18,11 +18,16 @@ import labelIcon from "../../assets/icons/label.svg"
 import attachmentIcon from "../../assets/icons/scripka.svg"
 import checklistIcon from "../../assets/icons/checklist.svg"
 import estimationIcon from "../../assets/icons/time.svg"
-// import Board1 from "../../assets/svg/Board.svg"
-// import Board2 from "../../assets/svg/Board2.svg"
-// import Board3 from "../../assets/svg/Board3.svg"
+import avatar from "../../assets/svg/womenAvatar.svg"
+import emptyStar from "../../assets/svg/empty.svg"
+import Board1 from "../../assets/svg/Board.svg"
+import Board2 from "../../assets/svg/Board2.svg"
+import Board3 from "../../assets/svg/Board3.svg"
 
-export const GLOBAL_URL = "http://18.192.179.151"
+export const GLOBAL_URL =
+   "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com"
+
+export const USER_KEY = "TASK-TRACKER-USER-KEY"
 
 export const Labels = [
    {
@@ -214,4 +219,134 @@ export const GrayButtonsInnerTaskCard = [
    },
 ]
 
-export const USER_KEY = "TASK-TRACKER-USER-KEY"
+export const tableData = [
+   {
+      id: 1,
+      Name: "Taigan",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 2,
+      Name: "Shoppix",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 3,
+      Name: "Task Tracker",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 4,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+   {
+      id: 5,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+   {
+      id: 6,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+]
+export const PhotoArray = [
+   {
+      id: 1,
+      nameWallpaper: "First",
+      colors: "#CBCBCB",
+   },
+   {
+      id: 2,
+      nameWallpaper: "Two",
+      colors: "#B04632",
+   },
+   {
+      id: 3,
+      nameWallpaper: "There",
+      colors: "#519839",
+   },
+   {
+      id: 4,
+      nameWallpaper: "First",
+      colors: "#D29034",
+   },
+   {
+      id: 5,
+      nameWallpaper: "Two",
+      colors: "#89609E",
+   },
+   {
+      id: 6,
+      nameWallpaper: "There",
+      colors: "#0079BF",
+   },
+   {
+      id: 7,
+      nameWallpaper: "First",
+      colors: "#CD5A91",
+   },
+   {
+      id: 8,
+      nameWallpaper: "Two",
+      colors: "#2A2A2A",
+   },
+   {
+      id: 9,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+   {
+      id: 10,
+      nameWallpaper: "First",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 11,
+      nameWallpaper: "Two",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 12,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+   {
+      id: 13,
+      nameWallpaper: "First",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 14,
+      nameWallpaper: "Two",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 15,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+   {
+      id: 16,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+]
+export const BackgroundImg = [Board1, Board2, Board3]
