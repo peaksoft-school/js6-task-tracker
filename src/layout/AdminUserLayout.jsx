@@ -5,6 +5,8 @@ import { axiosInstance } from "../api/axiosInstance"
 import Board from "../Components/Board"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
+import InnerTaskCard from "../Components/InnerTaskCard/InnerTaskCard"
+import Modal from "../Components/UI/Modal"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
@@ -46,6 +48,9 @@ const AdminUserLayout = () => {
                element={<Board workspacesById={workspacesById} role={role} />}
             />
          </Routes>
+         <Modal fullWidth="95vw" isOpen>
+            <InnerTaskCard />
+         </Modal>
       </Layout>
    )
 }
