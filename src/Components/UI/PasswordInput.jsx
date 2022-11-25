@@ -47,6 +47,7 @@ const FormControl1 = styled(FormControl)({
       background: "white",
    },
    "& .MuiOutlinedInput-root": {
+      borderRadius: "13px",
       width: "321px",
       "& fieldset": {
          borderColor: "#BDBDBD",

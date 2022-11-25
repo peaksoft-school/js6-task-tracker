@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import React from "react"
-
 import UserAvatar from "./UserAvatar"
 
 const MemberItem = ({ userGmail, photoUser, userName }) => {
