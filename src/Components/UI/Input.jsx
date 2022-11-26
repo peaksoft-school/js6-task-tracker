@@ -12,6 +12,7 @@ const CssTextField = styled(TextField)({
    },
    "& label": {
       fontSize: "16px",
+      fontFamily: "Nunito, Sans-serif",
    },
    "& .MuiInput-underline:after": {
       borderBottomColor: "green",
@@ -19,7 +20,7 @@ const CssTextField = styled(TextField)({
    "& .MuiOutlinedInput-root": {
       "& fieldset": {
          border: "1px solid #BDBDBD",
-         borderRadius: 3,
+         borderRadius: 13,
       },
       "&:hover fieldset": {
          border: "1px solid #0079BF",
@@ -30,7 +31,7 @@ const CssTextField = styled(TextField)({
    },
 })
 
-export default function Input({ label, type, id, ...other }) {
+export default function Input({ label, type, id, ref, ...other }) {
    return (
       <CssTextField
          {...other}

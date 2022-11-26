@@ -1,7 +1,21 @@
+import BackImg from "../../assets/boardimg/Rectangle 55.svg"
+import BackImg2 from "../../assets/boardimg/Rectangle 56.svg"
+import BackImg3 from "../../assets/boardimg/Rectangle 57.svg"
+import BackImg4 from "../../assets/boardimg/Rectangle 58.svg"
+import BackImg5 from "../../assets/boardimg/Rectangle 59.svg"
+import BackImg6 from "../../assets/boardimg/Rectangle 60.svg"
+import BackImg7 from "../../assets/boardimg/Rectangle 61.svg"
+import BackImg8 from "../../assets/boardimg/Rectangle 62.svg"
+import BackImg9 from "../../assets/boardimg/Rectangle 63.svg"
+import BackImg10 from "../../assets/boardimg/Rectangle 64.svg"
+import BackImg11 from "../../assets/boardimg/Rectangle 65.svg"
 import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
+import Board1 from "../../assets/svg/Board.svg"
+import Board2 from "../../assets/svg/Board2.svg"
+import Board3 from "../../assets/svg/Board3.svg"
 
 export const GLOBAL_URL = "http://18.192.179.151"
 
@@ -34,6 +48,40 @@ export const Columns = [
    },
 ]
 
+export const COLORS = [
+   "#CBCBCB",
+   "#B04632",
+   "#385f38",
+   "#D29034",
+   "#89609E",
+   "#005C92",
+]
+
+export const BackImage = [
+   BackImg2,
+   BackImg,
+   BackImg10,
+   BackImg6,
+   BackImg4,
+   BackImg3,
+   BackImg,
+   BackImg7,
+   BackImg11,
+   BackImg9,
+   BackImg5,
+   BackImg8,
+]
+
+export const MORECOLLORS = [
+   "#CBCBCB",
+   "#B04632",
+   "#519839",
+   "#D29034",
+   "#89609E",
+   "#0079BF",
+   "#CD5A91",
+   "#2A2A2A",
+]
 export const SideBarItems = [
    {
       id: 1,
@@ -128,63 +176,54 @@ export const SubMenuItems = [
    },
 ]
 
-export const USER_KEY = "TASK-TRACKER-USER-KEY"
-
-export const listProject = [
+export const members = [
    {
       id: 1,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
+      name: "SalazxcvzxcvSalamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
    },
    {
       id: 2,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
    },
    {
       id: 3,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
    },
    {
       id: 4,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
    },
    {
-      id: 15,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
-   },
-   {
-      id: 6,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
-   },
-   {
-      id: 6,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
-   },
-   {
-      id: 6,
-      boardIcon:
-         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
-      titleBoard: "LMS",
-      discription: "PeakSoft продукт!",
+      id: 5,
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: {
+         member: "Member",
+         admin: "Admin",
+      },
    },
 ]
+
+export const BackgroundImg = [Board1, Board2, Board3]
+
+export const USER_KEY = "TASK-TRACKER-USER-KEY"

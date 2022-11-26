@@ -1,40 +1,57 @@
 import React from "react"
-import { Link, Outlet, useLocation } from "react-router-dom"
+import GoogleButton from "react-google-button"
+import {
+   Link,
+   Outlet,
+   useLocation,
+   useNavigate,
+   useParams,
+} from "react-router-dom"
 import styled from "styled-components"
+import { useDispatch, useSelector } from "react-redux"
 import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
 import imageLogin from "../assets/images/ImageLogin.png"
-import googleIcon from "../assets/svg/googleIcon.svg"
-import CustomIcons from "../Components/UI/TaskCard/CustomIcons"
-import arrowDownIcon from "../assets/icons/arrowDown.svg"
-import img from "../assets/icons/BlueIconWorkspaces.svg"
+import { authWithGoogle } from "../store/AuthSlice"
 
 const AuthorizationPages = () => {
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const params = useParams()
+   const { isLoading } = useSelector((state) => state.auth)
    const { pathname } = useLocation()
-   const IamInRegistration = pathname === "/"
+   const IamInRegistration = pathname === "/signup"
+
+   const authWithGoogleHandler = () => {
+      dispatch(authWithGoogle({ navigate }))
+   }
 
    return (
       <AuthorizationContainer>
+         {isLoading && <h1>Загрузка</h1>}
          <LogoTaskTracker src={logoTaskTracker} alt="Task Tracker" />
 
          <ContainerForm>
-            <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
-            <SignUpGoogleBlock>
-               <CustomIcons src={img} />
-               <p>Register with google example@gmail.com</p>
+            {typeof params.id === "undefined" && (
+               <>
+                  <Title> {IamInRegistration ? "Sign Up" : "Sign Up"} </Title>
+                  <AuthWithGoogleButton onClick={authWithGoogleHandler} />
 
-               <CustomIcons src={arrowDownIcon} />
-               <CustomIcons src={googleIcon} />
-            </SignUpGoogleBlock>
-            <TextOr>or</TextOr>
+                  <TextOr>or</TextOr>
+               </>
+            )}
+
             <Outlet />
-            <NavigationText>
-               {IamInRegistration
-                  ? "You already have an account?"
-                  : "Not a member?"}
-               <Link to={IamInRegistration ? "/login" : "/"}>
-                  {IamInRegistration ? "Log in" : "Sign up now"}
-               </Link>
-            </NavigationText>
+
+            {typeof params.id === "undefined" && (
+               <NavigationText>
+                  {IamInRegistration
+                     ? "You already have an account?"
+                     : "Not a member?"}
+                  <Link to={IamInRegistration ? "/login" : "/signup"}>
+                     {IamInRegistration ? "Log in" : "Sign up now"}
+                  </Link>
+               </NavigationText>
+            )}
          </ContainerForm>
          <BackgroundImage src={imageLogin} alt="Task Tracker" />
       </AuthorizationContainer>
@@ -70,7 +87,7 @@ const ContainerForm = styled.div`
    }
 `
 const TextOr = styled.p`
-   margin: 0;
+   margin: 0.6rem 0 0.6rem 0;
    font-size: 1.4rem;
    color: #919191;
 `
@@ -78,26 +95,6 @@ const BackgroundImage = styled.img`
    width: 38vw;
    height: 100vh;
    margin-right: 5rem;
-`
-const SignUpGoogleBlock = styled.div`
-   display: flex;
-   align-items: center;
-   justify-content: space-around;
-   width: 23vw;
-   height: 6vh;
-   background-color: #f0f0f0;
-   border-radius: 8px;
-   padding: 0.4rem 1rem 0.4rem 1rem;
-   img {
-      width: 4vw;
-      height: 4vh;
-   }
-   p {
-      font-size: 1rem;
-      margin: 0;
-      color: #919191;
-      margin-left: 0.6rem;
-   }
 `
 const Title = styled.h2`
    font-weight: 500;
@@ -108,4 +105,8 @@ const NavigationText = styled.p`
       color: #2679bf;
       margin-left: 4px;
    }
+`
+const AuthWithGoogleButton = styled(GoogleButton)`
+   border: 5px solid red;
+   margin-top: 10px;
 `

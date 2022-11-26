@@ -44,9 +44,10 @@ const OutlinedInput1 = styled(OutlinedInput)`
 const FormControl1 = styled(FormControl)({
    "& label.Mui-focused": {
       color: "#919191",
-      background: "white",
+      background: "transparent",
    },
    "& .MuiOutlinedInput-root": {
+      borderRadius: "13px",
       width: "321px",
       "& fieldset": {
          borderColor: "#BDBDBD",
