@@ -7,6 +7,7 @@ import AdminRoutes from "./AdminRoutes"
 import AuthorizationPages from "../pages/AuthorizationPages"
 import SignUp from "../Components/Authorizaiton/SignUp"
 import Login from "../Components/Authorizaiton/Login"
+import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
 
 const AppRoutes = () => {
    return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
          <Route path="/" element={<AuthorizationPages />}>
             <Route path="/" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/login/:id" element={<ForgotPassword />} />
          </Route>
 
          <Route

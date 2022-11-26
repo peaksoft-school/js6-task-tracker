@@ -1,10 +1,10 @@
 import React from "react"
-import UserLayout from "../layout/UserLayout"
+import UserAdminLayout from "../layout/UserAdminLayout"
 
 const AdminRoutes = () => {
    return (
       <div>
-         <UserLayout />
+         <UserAdminLayout />
          <h1>ADMIN</h1>
       </div>
    )

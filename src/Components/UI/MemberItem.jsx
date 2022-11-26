@@ -12,6 +12,7 @@ const MemberItem = ({ userGmail, photoUser, userName }) => {
          </GrayButton>
          <StyledMemberItem>
             <UserAvatar userAvatar={photoUser} />
+
             <div>
                <p>{userName}Nazira</p>
                <span>{userGmail}nazira@gmail.com</span>

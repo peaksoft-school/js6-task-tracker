@@ -1,13 +1,13 @@
 import React from "react"
-import { Toastify } from "./Components/UI/Toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify"
 import AppRoutes from "./routes/AppRoutes"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
    return (
       <div className="App">
          <AppRoutes />
-         <Toastify />
+         <ToastContainer />
       </div>
    )
 }

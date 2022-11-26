@@ -2,12 +2,18 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import deleteSVG from "../assets/svg/Delete.svg"
 import Modal from "./UI/Modal"
-import arrow from "../assets/svg/arrow.svg"
-import ReusableDropDown from "./UI/ReusableDropDown"
+import { useActiveIndex } from "../hooks/useActiveIndex"
+import { members } from "../utilits/constants/Constants"
 
-function Participants({ members }) {
+function Participants({ total }) {
    const [isOpen, setIsOpen] = useState(false)
-   const [isActive, setIsActive] = useState(false)
+   const { activeIndex, getActiveIndexHandler } = useActiveIndex()
+   const [membersArray, setMembersArray] = useState(members)
+   const deleteItemHanlder = (id) => {
+      const newArray = membersArray.filter((item) => item.id !== id)
+      setMembersArray(newArray)
+   }
+
    return (
       <Parents>
          <Button>
@@ -30,41 +36,47 @@ function Participants({ members }) {
          </Button>
          <Total>
             <p>
-               Total: <span>254</span>
+               Total: <span>{total}82</span>
             </p>
          </Total>
          <Table>
-            <tr>
-               <th>Name</th>
-               <th>Email</th>
-               <th>Role</th>
-            </tr>
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+               </tr>
+            </thead>
             <hr />
 
-            {members.map((item) => (
-               <tr>
-                  <td>{item.name}</td>
-                  <td>{item.Email}</td>
-                  <td>
-                     <div>
-                        <li onClick={() => setIsActive(true)}>
-                           Member{" "}
-                           <span>
-                              <img src={arrow} alt="" />
-                           </span>
-                           <ReusableDropDown
-                              showState={isActive}
-                              width="165px"
-                              height="84px"
-                           >
-                              fds
-                           </ReusableDropDown>
-                        </li>
-                        <img src={deleteSVG} alt="" />
-                     </div>
-                  </td>
-               </tr>
-            ))}
+            {membersArray.map((item, index) => {
+               return (
+                  <ParticipantItem background={index % 2 !== 0}>
+                     <tr>
+                        <td>{item.name}</td>
+                        <td>{item.Email}</td>
+                        <td>
+                           <div>
+                              <li
+                                 onClick={() =>
+                                    getActiveIndexHandler(
+                                       item.id !== activeIndex ? item.id : 0
+                                    )
+                                 }
+                              >
+                                 {item.role}
+                              </li>
+                              <img
+                                 src={deleteSVG}
+                                 alt=""
+                                 onClick={() => deleteItemHanlder(item.id)}
+                              />
+                           </div>
+                        </td>
+                     </tr>
+                  </ParticipantItem>
+               )
+            })}
          </Table>
       </Parents>
    )
@@ -143,6 +155,10 @@ const Button = styled.div`
       cursor: pointer;
    }
 `
+const ParticipantItem = styled.tbody`
+   border: 1px solid black;
+   background-color: ${(props) => props.background && "#E6E6E6"};
+`
 const Table = styled.table`
    width: 1146px;
    hr {
@@ -155,7 +171,9 @@ const Table = styled.table`
       line-height: 18px;
    }
    td {
-      padding-top: 40px;
+      padding-top: 30px;
+      justify-content: center;
+      padding-bottom: 20px;
    }
    th,
    td {
@@ -179,6 +197,7 @@ const Table = styled.table`
       cursor: pointer;
    }
    img {
+      padding-left: 5px;
       cursor: pointer;
    }
    div {
