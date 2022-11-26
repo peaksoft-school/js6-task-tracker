@@ -316,6 +316,8 @@ const ShowSideBarButton = styled.img`
    border-radius: 8px;
    cursor: pointer;
    transition: all 0.35s ease;
+   width: 35px !important;
+   height: 35px !important;
 `
 const WorkspacesItem = styled.div`
    display: flex;
