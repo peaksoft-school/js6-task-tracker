@@ -129,3 +129,62 @@ export const SubMenuItems = [
 ]
 
 export const USER_KEY = "TASK-TRACKER-USER-KEY"
+
+export const listProject = [
+   {
+      id: 1,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 2,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 3,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 4,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 15,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 6,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 6,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 6,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+]
