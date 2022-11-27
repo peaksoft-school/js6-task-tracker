@@ -13,7 +13,7 @@ import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
 import Notifications from "../assets/svg/NotificationIcon.svg"
 import { axiosInstance } from "../api/axiosInstance"
-import { useActiveIndex } from "../hooks/useActiveIndex"
+import { useActiveIndex } from "../utilits/hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 

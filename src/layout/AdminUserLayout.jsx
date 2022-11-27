@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom"
 import { axiosInstance } from "../api/axiosInstance"
-import Board from "../Components/Board"
+import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
 import { getWorkspacesQuery } from "../api/auth"
@@ -12,23 +12,23 @@ const AdminUserLayout = () => {
    const [workspaces, setWorkspaces] = useState([])
 
    const { role } = useSelector((state) => state.auth.userInfo)
-   const link = window.location.href
    const navigate = useNavigate()
+   const { pathname } = useLocation()
 
    useEffect(() => {
-      if (
-         link === "http://localhost:3000/admin/*" ||
-         link === "http://localhost:3000/user/*"
-      ) {
-         navigate("workspaces")
+      if (pathname === "/admin/*" || pathname === "/user/*") {
+         navigate("allWorkspaces")
+      } else {
+         navigate(pathname)
       }
    }, [])
 
    const getWorkspacesId = async (id) => {
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
-         setWorkspacesById(data)
-         return navigate(`board/${data.name}`)
+         console.log(data)
+         setWorkspacesById("Task Tracker")
+         return navigate(`workspaces/TaskTracker/*`)
       } catch (error) {
          return console.log(error)
       }
@@ -51,7 +51,7 @@ const AdminUserLayout = () => {
       <Layout workspaces={workspaces} role={role}>
          <Routes>
             <Route
-               path="workspaces/*"
+               path="/allWorkspaces"
                element={
                   <Workspaces
                      getWorkspacesInDataBase={getWorkspacesInDataBase}
@@ -61,11 +61,13 @@ const AdminUserLayout = () => {
                   />
                }
             />
-            <Route path="profile" element={<h1>Profile</h1>} />
             <Route
-               path="board/*"
-               element={<Board workspacesById={workspacesById} role={role} />}
+               path="workspaces/*"
+               element={
+                  <AllBoards workspacesById={workspacesById} role={role} />
+               }
             />
+            <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
       </Layout>
    )

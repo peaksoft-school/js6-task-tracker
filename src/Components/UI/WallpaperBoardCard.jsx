@@ -1,27 +1,23 @@
 import styled from "styled-components"
-import { useState } from "react"
 import { DefaultStarIcon, ActiveStarIcon } from "../../assets/icons/index"
 
-function WallpaperBoardCard({ PhotoArray, ref, onHandlerImg }) {
-   const [inputViewOnOff, setInputViewOnOff] = useState(false)
-   function handleViewOnOff() {
-      setInputViewOnOff((prevState) => !prevState)
-   }
-
+function WallpaperBoardCard({ board, ref, onHandlerImg }) {
    return (
       <CardThemeBox ref={ref}>
-         {PhotoArray.map((item) => {
+         {board.map((item) => {
             return (
                <CardTheme
-                  backgroundImage={item.photo}
-                  style={{ background: item.colors }}
+                  background={item.background}
                   key={item.id}
                   onClick={() => onHandlerImg(item.photo, item.colors)}
                >
-                  <span>{item.nameWallpaper}</span>
-                  {item.photo && <Img src={item.photo} />}
-                  <IconContainer onClick={() => handleViewOnOff()}>
-                     {inputViewOnOff ? <DefaultStarIcon /> : <ActiveStarIcon />}
+                  <span>{item.title}</span>
+                  <IconContainer>
+                     {item.isFavorite ? (
+                        <DefaultStarIcon />
+                     ) : (
+                        <ActiveStarIcon />
+                     )}
                   </IconContainer>
                </CardTheme>
             )
@@ -34,7 +30,7 @@ export default WallpaperBoardCard
 
 const CardThemeBox = styled.div`
    box-sizing: border-box;
-   width: 100%;
+   width: 99%;
    border: none;
    position: relative;
    display: grid;
@@ -48,9 +44,12 @@ const CardTheme = styled.div`
    position: relative;
    width: 100%;
    color: #ffffff;
+   background: ${(props) => props.background};
+   background-image: ${(props) => `url(${props.background})`};
+   background-repeat: no-repeat;
+   background-size: cover;
    height: 130px;
    border-radius: 8px;
-
    span {
       position: absolute;
       left: 17px;
@@ -58,11 +57,6 @@ const CardTheme = styled.div`
       font-style: normal;
       font-weight: 500;
    }
-`
-const Img = styled.img`
-   border-radius: 8px;
-   width: 100%;
-   height: 100%;
 `
 
 const IconContainer = styled("div")`

@@ -1,14 +1,16 @@
 import React from "react"
 import styled from "styled-components"
+import closeSvg from "../../assets/icons/close.svg"
 
-const CloseButton = ({ onClick, src }) => {
-   return <StyledCloseButton src={src} onClick={onClick} />
+const CloseButton = ({ onClick }) => {
+   return <StyledCloseButton src={closeSvg} onClick={onClick} />
 }
 
 export default CloseButton
 
 const StyledCloseButton = styled.img`
    position: absolute;
+   cursor: pointer;
    top: 13px;
    right: 15px;
    width: 15px;

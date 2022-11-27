@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import Button from "../UI/Button"
 import LabelTag from "../UI/LabelTag"
-import Input from "../UI/Input"
 import MemberEmails from "../UI/MemberEmails"
 import { createWorkspacesQuery } from "../../api/auth"
 import {
@@ -57,12 +56,17 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
       <>
          <Title>Create a new workspaces</Title>
          <Label>Name of the workspaces</Label>
-         <Input
-            onChange={(event) => setData({ ...data, name: event.target.value })}
-            type="text"
-            id="nameWorkspaces"
-            placeholder="Name"
-         />
+         <InputBlock>
+            <StyledInput
+               type="text"
+               value={data.name}
+               onChange={(event) =>
+                  setData({ ...data, name: event.target.value })
+               }
+               placeholder="Name"
+               autoFocus
+            />
+         </InputBlock>
          <Label>Invite a member</Label>
          <form onSubmit={addEmailInEmails}>
             <InputBlock>
@@ -120,22 +124,21 @@ const Label = styled.p`
 `
 const ButtonBlock = styled.div`
    display: flex;
-   height: 44px;
+   height: 40px;
    justify-content: flex-end;
-   padding: 27px 0 20px 0;
    button {
       margin-left: 8px;
    }
 `
 const InputBlock = styled.div`
-   border: 1px solid gray;
+   border: 1px solid #afafaf;
    border-radius: 13px;
    padding: 0 0 0 10px;
 `
 const StyledInput = styled.input`
    outline: none;
    border: none;
-   width: 400px;
-   height: 30px;
+   width: 370px;
+   height: 40px;
    font-size: 1.1rem;
 `

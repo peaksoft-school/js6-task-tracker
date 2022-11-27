@@ -15,8 +15,9 @@ import MemberItem from "../UI/MemberItem"
 import avatar from "../../assets/svg/userAvatar.svg"
 import Button from "../UI/Button"
 import CloseButton from "../UI/CloseButton"
-import useOpenClose from "../../hooks/useOpenClose"
+import useOpenClose from "../../utilits/hooks/useOpenClose"
 import DateTimePicker from "../UI/DateTimePicker"
+import CustomIcons from "../UI/TaskCard/CustomIcons"
 
 const SecondBlock = () => {
    const [activeDropDown, setActiveDropDown] = useState(0)
@@ -58,11 +59,14 @@ const SecondBlock = () => {
                            </ContainerText>
 
                            <ContainerInput>
-                              <Input placeholder="Search" />
-                              <CloseButton
-                                 onClick={() => setActiveDropDown(0)}
+                              <Input placeholder="Search" />{" "}
+                              <CustomIcons
+                                 click={() => setActiveDropDown(0)}
                                  src={searchIcon}
+                                 position="absolute"
                                  alt="search"
+                                 top="8px"
+                                 right="10px"
                               />
                            </ContainerInput>
                            <ContainerMemberItem>
@@ -178,6 +182,7 @@ const StyledSecondBlock = styled.div`
    width: 80vw;
    height: 90vh;
    position: relative;
+   margin-right: 15px;
 `
 const ContainerText = styled.div`
    height: 40px;
@@ -198,9 +203,8 @@ const ContainerInput = styled.div`
       border-radius: 10px;
    }
    img {
-      position: absolute;
-      top: 12px;
-      right: 10px;
+      width: 20px;
+      height: 20px;
    }
 `
 const ContainerMemberItem = styled.div`

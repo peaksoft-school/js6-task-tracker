@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Outlet } from "react-router-dom"
-import useOpenClose from "../../hooks/useOpenClose"
+import useOpenClose from "../../utilits/hooks/useOpenClose"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateWorkspaces from "./CreateWorkspace"
