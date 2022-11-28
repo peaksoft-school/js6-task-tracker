@@ -12,7 +12,7 @@ import InnerBoard from "../Components/Board/InnerBoard"
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
    const [workspaces, setWorkspaces] = useState([])
-
+   console.log(workspacesById)
    const { role } = useSelector((state) => state.auth.userInfo)
    const navigate = useNavigate()
 
