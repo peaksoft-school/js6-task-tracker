@@ -1,18 +1,20 @@
 import React from "react"
-import { Outlet, useNavigate } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 
 import styled from "styled-components"
 import SideBar from "../../layout/SideBar/SideBar"
+import Boards from "./Boards"
+import InnerBoard from "./InnerBoard"
 
-const AllBoards = ({ workspacesById }) => {
-   const navigate = useNavigate()
-
-   navigate("boards", { replace: true })
-
+const AllBoards = ({ workspacesById, role }) => {
    return (
       <ContainerBoard>
          <SideBar workspacesById={workspacesById} />
-         <Outlet />
+         <Routes>
+            <Route path="/*" element={<Navigate to="boards" />} />
+            <Route path="boards" element={<Boards role={role} />} />
+            <Route path="board" element={<InnerBoard />} />
+         </Routes>
       </ContainerBoard>
    )
 }
