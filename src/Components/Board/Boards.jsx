@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import WallpaperBoardCard from "../UI/WallpaperBoardCard"
 import Button from "../UI/Button"
@@ -8,6 +9,7 @@ import useOpenClose from "../../utilits/hooks/useOpenClose"
 import { useBoard } from "../../utilits/hooks/useBoard"
 
 const Boards = ({ workspacesById, role, getBoardById }) => {
+   const navigate = useNavigate()
    const { isShowing, toggle } = useOpenClose()
    const { getBoard, board } = useBoard()
 
@@ -16,7 +18,7 @@ const Boards = ({ workspacesById, role, getBoardById }) => {
    }, [])
 
    return (
-      <Container>
+      <Container onClick={() => navigate("board")}>
          <TitleButtonBlock>
             <h3>All Boards</h3>
             {role === "ADMIN" && (
