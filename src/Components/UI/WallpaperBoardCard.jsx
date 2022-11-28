@@ -7,7 +7,7 @@ function WallpaperBoardCard({ board, ref, getBoardById }) {
          {board.map((item) => {
             return (
                <CardTheme
-                  onClick={getBoardById}
+                  onClick={() => getBoardById(item.id, item.title)}
                   background={item.background}
                   key={item.id}
                >

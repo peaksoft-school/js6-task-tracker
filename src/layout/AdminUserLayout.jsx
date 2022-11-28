@@ -6,8 +6,8 @@ import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
 import { getWorkspacesQuery } from "../api/auth"
-import InnerBoard from "../Components/Board/InnerBoard"
 import Boards from "../Components/Board/Boards"
+import InnerBoard from "../Components/Board/InnerBoard"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
@@ -61,14 +61,11 @@ const AdminUserLayout = () => {
             />
             <Route
                path="workspaces/:workspaceName/*"
-               element={
-                  <AllBoards workspacesById={workspacesById} role={role} />
-               }
+               element={<AllBoards role={role} />}
             >
                <Route path="boards" element={<Boards role={role} />} />
-               <Route path="board" element={<InnerBoard />} />
+               <Route path="boards/:boardName" element={<InnerBoard />} />
             </Route>
-
             <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
       </Layout>
