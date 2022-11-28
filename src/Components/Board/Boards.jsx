@@ -17,8 +17,13 @@ const Boards = ({ workspacesById, role, getBoardById }) => {
       getBoard()
    }, [])
 
+   const getBoardIdPlusNavigate = (boardId, boardTitle) => {
+      // getBoardById(boardId)
+      navigate(boardTitle)
+   }
+
    return (
-      <Container onClick={() => navigate("board")}>
+      <Container>
          <TitleButtonBlock>
             <h3>All Boards</h3>
             {role === "ADMIN" && (
@@ -34,7 +39,10 @@ const Boards = ({ workspacesById, role, getBoardById }) => {
                toggle={toggle}
             />
          </Modal>
-         <WallpaperBoardCard getBoardById={getBoardById} board={board} />
+         <WallpaperBoardCard
+            getBoardById={getBoardIdPlusNavigate}
+            board={board}
+         />
       </Container>
    )
 }

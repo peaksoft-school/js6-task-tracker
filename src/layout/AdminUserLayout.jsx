@@ -65,7 +65,7 @@ const AdminUserLayout = () => {
                element={<AllBoards role={role} />}
             >
                <Route path="boards" element={<Boards role={role} />} />
-               <Route path="board" element={<InnerBoard />} />
+               <Route path="boards/:boardName" element={<InnerBoard />} />
             </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
