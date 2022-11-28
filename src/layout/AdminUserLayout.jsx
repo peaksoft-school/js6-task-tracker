@@ -45,7 +45,6 @@ const AdminUserLayout = () => {
       getWorkspacesInDataBase()
    }, [])
 
-   console.log(workspacesById)
    return (
       <Layout workspaces={workspaces} role={role}>
          <Routes>
