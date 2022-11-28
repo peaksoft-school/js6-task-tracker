@@ -1,10 +1,12 @@
-import React from "react"
+import { useSearchParams } from "react-router-dom"
 
 export const useActiveIndex = () => {
-   const [activeIndex, setActiveIndex] = React.useState(0)
+   const [searchParams, setSearchParams] = useSearchParams()
 
+   const isActiveDropDown = searchParams.get("activeDropDown")
    const getActiveIndexHandler = (index) => {
-      setActiveIndex(index)
+      setSearchParams({ activeDropDown: index })
    }
-   return { activeIndex, getActiveIndexHandler }
+
+   return { getActiveIndexHandler, isActiveDropDown }
 }

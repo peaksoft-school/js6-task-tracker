@@ -87,7 +87,7 @@ const SideBar = ({ workspacesById }) => {
       showSideBar ? (
          <>
             <IconButton onClick={() => navigate(-1)} iconSvg={arrowRight} />
-            <p>{workspacesById.name}</p>
+            <p>{workspacesById}</p>
          </>
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
@@ -106,16 +106,6 @@ const SideBar = ({ workspacesById }) => {
       )
 
    const renderSideBar = (item) => {
-      if (showSideBar) {
-         return (
-            <Title>
-               <span>{item.title}</span>
-               <CustomIcons
-                  src={showSubMenu[item.id] ? item.arrowUp : item.arrowDown}
-               />
-            </Title>
-         )
-      }
       if (!showSideBar && DropDown.id === item.id && DropDown.stateDropDown) {
          return (
             <DropDownSideBar
@@ -135,6 +125,7 @@ const SideBar = ({ workspacesById }) => {
          <HeaderSideBar>
             {renderHeaderSideBar()}
             <ShowSideBarButton
+               showSideBar={showSideBar}
                onClick={showSideBarHandler}
                src={showSideBarIcon}
                alt="button"
@@ -149,18 +140,21 @@ const SideBar = ({ workspacesById }) => {
                         onClick={() => onClickSideBarItem(index)}
                         active={activeIndex === index}
                      >
-                        <SvgGenerator
-                           id={item.id}
-                           activeColor={activeIndex === index}
-                        />
-                        {showSideBar ? (
-                           <Title>
-                              <span>{item.title}</span>
-                              {renderSVGs(item, index)}
-                              {item.amount && <span>({item.amount})</span>}
-                           </Title>
-                        ) : null}
+                        <ContainerNavItem>
+                           <SvgGenerator
+                              id={item.id}
+                              activeColor={activeIndex === index}
+                           />
+                           {showSideBar ? (
+                              <>
+                                 <span>{item.title}</span>
+                                 {item.amount && <span>{item.amount})</span>}
+                              </>
+                           ) : null}
+                        </ContainerNavItem>
+                        {showSideBar ? renderSVGs(item, index) : null}
                      </SideBarTitleBlock>
+
                      {activeIndex === 0 &&
                         showSideBar &&
                         showSubMenuBoards[item.id] && <SubMenuBoards />}
@@ -181,8 +175,22 @@ const SideBar = ({ workspacesById }) => {
                         stateSideBar={showSideBar}
                         workspacesHover
                      >
-                        <CustomIcons src={item.icon} />
                         {renderSideBar(item)}
+
+                        <ContainerNavItem>
+                           <CustomIcons src={item.icon} />
+                           {showSideBar && <span>{item.title}</span>}
+                        </ContainerNavItem>
+
+                        {showSideBar && (
+                           <CustomIcons
+                              src={
+                                 showSubMenu[item.id]
+                                    ? item.arrowUp
+                                    : item.arrowDown
+                              }
+                           />
+                        )}
                      </SideBarTitleBlock>
                      {showSideBar && showSubMenu[item.id] && <SubMenu />}
                   </WorkspacesItem>
@@ -205,7 +213,7 @@ const StyledContainerSideBar = styled.aside`
    padding: 1rem 1rem 1rem 0;
    margin: 0 2rem 0 0;
    flex-direction: column;
-   width: ${(props) => (props.stateSideBar ? "270px" : "107px")};
+   width: ${(props) => (props.stateSideBar ? "300px" : "107px")};
    background-color: white;
    transition: all 0.35s ease-out;
    padding-top: 1.7rem;
@@ -222,6 +230,17 @@ const StyledContainerSideBar = styled.aside`
       height: 25px;
    }
 `
+const ContainerNavItem = styled.div`
+   display: flex;
+   width: 100%;
+   height: 40px;
+   align-items: center;
+   padding: 0 0 0 35px;
+   span {
+      text-align: start;
+      margin: 0 0 0 0.6rem;
+   }
+`
 const HeaderSideBar = styled.div`
    width: 100%;
    height: 40px;
@@ -229,15 +248,13 @@ const HeaderSideBar = styled.div`
    align-items: center;
    justify-content: space-between;
    p {
-      width: 21.5vw;
+      transition: all 0.35s ease-out;
+      width: 170px;
       font-size: 1.2rem;
-      padding: 0 7.5rem 0 1.5rem;
+      text-align: start;
    }
    img {
       margin-left: 2.2rem;
-      &:last-child {
-         margin-left: 1.7rem;
-      }
    }
 `
 const SideBarItem = styled.li`
@@ -248,10 +265,7 @@ const SideBarItem = styled.li`
    list-style: none;
    align-items: center;
    cursor: pointer;
-   span {
-      text-align: start;
-      margin-left: 0.6rem;
-   }
+
    &:first-child {
       border-top: 2px solid #e0e0e0;
       padding-top: 0.9rem;
@@ -273,7 +287,6 @@ const SideBarItem = styled.li`
 `
 const SideBarTitleBlock = styled.div`
    width: 100%;
-   padding: 0 0 0 1.8rem;
    height: 37px;
    display: flex;
    justify-content: center;
@@ -289,15 +302,6 @@ const SideBarTitleBlock = styled.div`
    }
    img {
       position: relative;
-   }
-`
-const Title = styled.div`
-   width: 160px;
-   height: 30px;
-   display: flex;
-   align-items: center;
-   span {
-      width: 155px;
    }
 `
 const ShowMoreText = styled.span`
@@ -327,9 +331,12 @@ const WorkspacesItem = styled.div`
    }
 `
 const ShowSideBarButton = styled.img`
+   position: absolute;
+   left: ${(props) => (props.showSideBar ? "180px" : "40px")};
    background-color: white;
    padding: 7px;
    width: 40px !important;
    height: 40px !important;
    border-radius: 8px;
+   transition: all 0.3s ease-out;
 `

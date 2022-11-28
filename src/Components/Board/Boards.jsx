@@ -7,8 +7,7 @@ import CreateBoard from "./CreateBoard/CreateBoard"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
 import { useBoard } from "../../utilits/hooks/useBoard"
 
-const Boards = ({ workspacesById, role }) => {
-   console.log("boards")
+const Boards = ({ workspacesById, role, getBoardById }) => {
    const { isShowing, toggle } = useOpenClose()
    const { getBoard, board } = useBoard()
 
@@ -27,9 +26,13 @@ const Boards = ({ workspacesById, role }) => {
             )}
          </TitleButtonBlock>
          <Modal fullWidth="500px" onClose={toggle} isOpen={isShowing}>
-            <CreateBoard workspacesId={workspacesById} toggle={toggle} />
+            <CreateBoard
+               getBoardById={getBoardById}
+               workspacesId={workspacesById}
+               toggle={toggle}
+            />
          </Modal>
-         <WallpaperBoardCard board={board} />
+         <WallpaperBoardCard getBoardById={getBoardById} board={board} />
       </Container>
    )
 }

@@ -15,19 +15,14 @@ const AdminUserLayout = () => {
    const navigate = useNavigate()
    const { pathname } = useLocation()
 
-   useEffect(() => {
-      if (pathname === "/admin/*" || pathname === "/user/*") {
-         navigate("allWorkspaces")
-      } else {
-         navigate(pathname)
-      }
-   }, [])
+   if (pathname === "/admin/*" || pathname === "/user/*")
+      navigate("allWorkspaces")
 
    const getWorkspacesId = async (id) => {
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          console.log(data)
-         setWorkspacesById("Task Tracker")
+         setWorkspacesById("TaskTracker")
          return navigate(`workspaces/TaskTracker/*`)
       } catch (error) {
          return console.log(error)

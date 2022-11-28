@@ -19,7 +19,7 @@ export default SubMenuBoards
 
 const ContainerSubMenu = styled.div`
    display: flex;
-   width: 180px !important;
+   width: 150px !important;
    flex-direction: column;
    border-left: 1px solid #a9a9a9;
    align-items: flex-end;

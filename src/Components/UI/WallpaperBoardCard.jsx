@@ -1,15 +1,15 @@
 import styled from "styled-components"
 import { DefaultStarIcon, ActiveStarIcon } from "../../assets/icons/index"
 
-function WallpaperBoardCard({ board, ref, onHandlerImg }) {
+function WallpaperBoardCard({ board, ref, getBoardById }) {
    return (
       <CardThemeBox ref={ref}>
          {board.map((item) => {
             return (
                <CardTheme
+                  onClick={getBoardById}
                   background={item.background}
                   key={item.id}
-                  onClick={() => onHandlerImg(item.photo, item.colors)}
                >
                   <span>{item.title}</span>
                   <IconContainer>
