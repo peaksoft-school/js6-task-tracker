@@ -6,6 +6,8 @@ import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
 import { getWorkspacesQuery } from "../api/auth"
+import Boards from "../Components/Board/Boards"
+import InnerBoard from "../Components/Board/InnerBoard"
 
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
@@ -24,7 +26,7 @@ const AdminUserLayout = () => {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          console.log(data)
          setWorkspacesById("TaskTracker")
-         return navigate(`workspaces/TaskTracker/`)
+         return navigate(`workspaces/TaskTracker/boards`)
       } catch (error) {
          return console.log(error)
       }
@@ -61,7 +63,10 @@ const AdminUserLayout = () => {
             <Route
                path="workspaces/:workspaceName/*"
                element={<AllBoards role={role} />}
-            />
+            >
+               <Route path="boards" element={<Boards role={role} />} />
+               <Route path="board" element={<InnerBoard />} />
+            </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
       </Layout>
