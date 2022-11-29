@@ -13,12 +13,20 @@ import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
+import addPeopleIcon from "../../assets/icons/peopleGray.svg"
+import labelIcon from "../../assets/icons/label.svg"
+import attachmentIcon from "../../assets/icons/scripka.svg"
+import checklistIcon from "../../assets/icons/checklist.svg"
+import estimationIcon from "../../assets/icons/time.svg"
+import avatar from "../../assets/svg/womenAvatar.svg"
+import emptyStar from "../../assets/svg/empty.svg"
 import Board1 from "../../assets/svg/Board.svg"
 import Board2 from "../../assets/svg/Board2.svg"
 import Board3 from "../../assets/svg/Board3.svg"
 
-export const GLOBAL_URL = "http://18.192.179.151"
-
+export const GLOBAL_URL =
+   "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com"
+export const USER_KEY = "TASK-TRACKER-USER-KEY"
 export const Labels = [
    {
       id: 0,
@@ -32,31 +40,33 @@ export const Labels = [
    },
    {
       id: 2,
-      color: "#F2D600",
-      text: "Обратите на это внимание",
+      color: "#B323E3",
+      text: "Движение кылыш керек",
    },
    {
       id: 3,
+      color: "#F2D600",
+      text: "Обратите внимание",
+   },
+   {
+      id: 4,
       color: "#0079BF",
       text: "Хорошего всем настроения, друзья",
    },
 ]
-
 export const Columns = [
    {
       titleColumn: "Придумать что-то чтобы измениь мир",
    },
 ]
-
 export const COLORS = [
    "#CBCBCB",
    "#B04632",
-   "#385f38",
+   "#385F38",
    "#D29034",
    "#89609E",
    "#005C92",
 ]
-
 export const BackImage = [
    BackImg2,
    BackImg,
@@ -71,7 +81,6 @@ export const BackImage = [
    BackImg5,
    BackImg8,
 ]
-
 export const MORECOLLORS = [
    "#CBCBCB",
    "#B04632",
@@ -108,7 +117,6 @@ export const SideBarItems = [
       plusIcon,
    },
 ]
-
 export const Workspaces = [
    {
       id: 1,
@@ -157,7 +165,6 @@ export const Workspaces = [
       arrowUp,
    },
 ]
-
 export const SubMenuItems = [
    {
       iconId: 1,
@@ -175,55 +182,220 @@ export const SubMenuItems = [
       title: "Setting",
    },
 ]
-
-export const members = [
+export const GrayButtonsInnerTaskCard = [
    {
       id: 1,
-      name: "SalazxcvzxcvSalamat",
-      Email: "salamat@gmail.com",
-      role: {
-         member: "Member",
-         admin: "Admin",
-      },
+      title: "Members",
+      icon: addPeopleIcon,
    },
    {
       id: 2,
-      name: "Salamat Salamat",
-      Email: "salamat@gmail.com",
-      role: {
-         member: "Member",
-         admin: "Admin",
-      },
+      title: "Estimation",
+      icon: estimationIcon,
    },
    {
       id: 3,
-      name: "Salamat Salamat",
-      Email: "salamat@gmail.com",
-      role: {
-         member: "Member",
-         admin: "Admin",
-      },
+      title: "Label",
+      icon: labelIcon,
    },
    {
       id: 4,
-      name: "Salamat Salamat",
-      Email: "salamat@gmail.com",
-      role: {
-         member: "Member",
-         admin: "Admin",
-      },
+      title: "Atachment",
+      icon: attachmentIcon,
    },
    {
       id: 5,
-      name: "Salamat Salamat",
-      Email: "salamat@gmail.com",
-      role: {
-         member: "Member",
-         admin: "Admin",
-      },
+      title: "Checklist",
+      icon: checklistIcon,
    },
 ]
-
+export const tableData = [
+   {
+      id: 1,
+      Name: "Taigan",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 2,
+      Name: "Shoppix",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 3,
+      Name: "Task Tracker",
+      Lead: avatar,
+      leadName: "Almaz Almazov",
+      icon: emptyStar,
+   },
+   {
+      id: 4,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+   {
+      id: 5,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+   {
+      id: 6,
+      Name: "Mobile UX-UI",
+      leadName: "Almaz Almazov",
+      Lead: avatar,
+      icon: emptyStar,
+   },
+]
+export const PhotoArray = [
+   {
+      id: 1,
+      nameWallpaper: "First",
+      colors: "#CBCBCB",
+   },
+   {
+      id: 2,
+      nameWallpaper: "Two",
+      colors: "#B04632",
+   },
+   {
+      id: 3,
+      nameWallpaper: "There",
+      colors: "#519839",
+   },
+   {
+      id: 4,
+      nameWallpaper: "First",
+      colors: "#D29034",
+   },
+   {
+      id: 5,
+      nameWallpaper: "Two",
+      colors: "#89609E",
+   },
+   {
+      id: 6,
+      nameWallpaper: "There",
+      colors: "#0079BF",
+   },
+   {
+      id: 7,
+      nameWallpaper: "First",
+      colors: "#CD5A91",
+   },
+   {
+      id: 8,
+      nameWallpaper: "Two",
+      colors: "#2A2A2A",
+   },
+   {
+      id: 9,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+   {
+      id: 10,
+      nameWallpaper: "First",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 11,
+      nameWallpaper: "Two",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 12,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+   {
+      id: 13,
+      nameWallpaper: "First",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 14,
+      nameWallpaper: "Two",
+      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
+      colors: "red",
+   },
+   {
+      id: 15,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+   {
+      id: 16,
+      nameWallpaper: "There",
+      colors: "red",
+   },
+]
 export const BackgroundImg = [Board1, Board2, Board3]
 
-export const USER_KEY = "TASK-TRACKER-USER-KEY"
+export const listProject = [
+   {
+      id: 1,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 2,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 3,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 4,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 15,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 6,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 6,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+   {
+      id: 6,
+      boardIcon:
+         "https://wallpapers.com/images/hd/fierce-2b-from-nier-automata-n6aynx99xmsvde25.webp",
+      titleBoard: "LMS",
+      discription: "PeakSoft продукт!",
+   },
+]

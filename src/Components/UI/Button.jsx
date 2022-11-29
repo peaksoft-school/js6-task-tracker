@@ -12,9 +12,11 @@ const Button = ({
    fullHeight,
    type,
    textColor,
+   style,
 }) => {
    return (
       <StyledButton
+         style={style}
          textColor={textColor}
          type={type}
          fullWidth={fullWidth}

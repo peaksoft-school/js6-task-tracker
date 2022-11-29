@@ -3,7 +3,7 @@ import styled from "styled-components"
 import DefaultAvatar from "../../assets/svg/defaultAvatar.svg"
 import Pen from "../../assets/svg/editIcon.svg"
 
-function Avatar({ src, alt, editIcon }) {
+function Avatar({ src, alt, editIcon, onClick }) {
    const [isEdit, setIsEdit] = useState(false)
    const handleOnError = (e) => {
       e.target.src = DefaultAvatar
@@ -20,7 +20,7 @@ function Avatar({ src, alt, editIcon }) {
          )}
          {isEdit && (
             <Icon>
-               <Svg edit={editIcon} src={Pen} alt="pen" />
+               <Svg onClick={onClick} edit={editIcon} src={Pen} alt="pen" />
             </Icon>
          )}
       </ParentStyled>
@@ -29,9 +29,10 @@ function Avatar({ src, alt, editIcon }) {
 
 export default Avatar
 const Ava = styled.img`
-   border: 5px solid #ffffff;
+   border-radius: 50%;
    width: 141px;
    height: 141px;
+   background-color: white;
 `
 const Icon = styled.button`
    background: #f0f0f0;
