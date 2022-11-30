@@ -11,6 +11,7 @@ import { axiosInstance } from "../api/axiosInstance"
 
 const AdminUserLayout = () => {
    const [boardById, setBoardById] = useState({})
+   const [workspacesById, setWorkspacesById] = useState({})
    const { role } = useSelector((state) => state.auth.userInfo)
    const navigate = useNavigate()
    const dispatch = useDispatch()
@@ -25,6 +26,7 @@ const AdminUserLayout = () => {
    const getWorkspacesId = async (id) => {
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
+         setWorkspacesById(data)
          return navigate(`workspaces/${data.name}${data.id}/boards`)
       } catch (error) {
          return console.log(error)
@@ -54,7 +56,13 @@ const AdminUserLayout = () => {
             >
                <Route
                   path="boards"
-                  element={<Boards getBoardById={getBoardById} role={role} />}
+                  element={
+                     <Boards
+                        workspacesById={workspacesById}
+                        getBoardById={getBoardById}
+                        role={role}
+                     />
+                  }
                />
                <Route
                   path="boards/:boardName"

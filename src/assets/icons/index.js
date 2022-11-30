@@ -1,7 +1,5 @@
 export { ReactComponent as HidePassword } from "./HidePassword.svg"
 export { ReactComponent as ShowPassword } from "./ShowPassword.svg"
-export { ReactComponent as ActiveStarIcon } from "./favourite-active.svg"
-export { ReactComponent as DefaultStarIcon } from "./favourite-default.svg"
 export { ReactComponent as DefaultSelectIcon } from "./SelectListDown.svg"
 export { ReactComponent as CloseSelectIcon } from "./SelectListUp.svg"
 export { ReactComponent as ScrollUp } from "./SelectSkrollUp.svg"

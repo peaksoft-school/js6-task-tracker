@@ -1,13 +1,16 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
 import styled from "styled-components"
-import { DefaultStarIcon, ActiveStarIcon } from "../../assets/icons/index"
+import { useParams } from "react-router-dom"
 import { addBoardToFavourites } from "../../store/boardSlice"
+import activeStarIcon from "../../assets/icons/favourite-active.svg"
+import defaultStarIcon from "../../assets/icons/favourite-default.svg"
+import CustomIcons from "./TaskCard/CustomIcons"
 
 function WallpaperBoardCard({ getBoardById }) {
    const { id: workspaceId } = useParams()
    const dispatch = useDispatch()
    const { board } = useSelector((state) => state.boards)
+
    const addBoardToFavouritesHandler = (id) => {
       dispatch(addBoardToFavourites({ id, dispatch, workspaceId }))
    }
@@ -23,11 +26,9 @@ function WallpaperBoardCard({ getBoardById }) {
                   <IconContainer
                      onClick={() => addBoardToFavouritesHandler(item.id)}
                   >
-                     {item.isFavorite ? (
-                        <ActiveStarIcon />
-                     ) : (
-                        <DefaultStarIcon />
-                     )}
+                     <CustomIcons
+                        src={item.isFavorite ? activeStarIcon : defaultStarIcon}
+                     />
                   </IconContainer>
                </CardTheme>
             )
@@ -49,13 +50,12 @@ const CardThemeBox = styled.div`
    grid-column-gap: 1px;
    grid-row-gap: 8px;
 `
-
 const CardTheme = styled.div`
    position: relative;
    width: 98%;
    color: #ffffff;
-   background-color: ${(props) => props.background};
    background-image: url(${(props) => props.backgroundImage});
+   background: ${(props) => props.backgroundImage};
    background-repeat: no-repeat;
    background-size: cover;
    height: 130px;
@@ -72,7 +72,6 @@ const Block = styled.div`
    width: 88%;
    height: 100%;
 `
-
 const IconContainer = styled("div")`
    position: absolute;
    bottom: 8px;
