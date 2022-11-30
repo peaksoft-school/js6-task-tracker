@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import styled from "styled-components"
+import Avatar1 from "react-avatar-edit"
 import { useFormik } from "formik"
 import WallpaperTop from "../assets/svg/WallpaperTopBanner.svg"
 import Avatar from "./UI/Avatar"
 import Pen from "../assets/svg/editIcon.svg"
-import DefaultAvatar from "../assets/svg/defaultAvatar.svg"
 import Input from "./UI/Input"
 import PasswordInput from "./UI/PasswordInput"
 import Button from "./UI/Button"
@@ -16,8 +16,19 @@ import Modal from "./UI/Modal"
 
 function ProfileCrud() {
    const [open, setOpen] = useState(false)
-   // const [src, setSrc] = useState(null)
+   const [src, setSrc] = useState(null)
+   const [preview, setPreview] = useState(null)
    const [modalActive, setModalActive] = useState(false)
+   const onClose = () => {
+      setPreview(null)
+   }
+   const onCrop = (view) => {
+      setPreview(view)
+   }
+   const onRemove = () => {
+      setPreview(null)
+   }
+
    const formik = useFormik({
       initialValues: {
          firstName: "",
@@ -42,7 +53,7 @@ function ProfileCrud() {
             <div className="profile">
                <Avatar
                   onClick={() => setOpen(!open)}
-                  src={DefaultAvatar}
+                  src={preview}
                   editIcon={Pen}
                   alt="MyProfil"
                />
@@ -59,11 +70,34 @@ function ProfileCrud() {
                      <span onClick={() => setModalActive(true)}>
                         Change profile photo
                      </span>
-                     <span>Remove</span>
+                     <span onClick={onRemove}>Remove</span>
                   </li>
                </ReusableDropDown>
-               <Modal showState={modalActive}>
-                  <div>MDMDAJDJAJ</div>
+               <Modal
+                  isOpen={modalActive}
+                  onClose={() => setModalActive(false)}
+               >
+                  <ModalWindow>
+                     <Avatar1
+                        onClick={() => setSrc()}
+                        width={400}
+                        height={300}
+                        src={src}
+                        onCrop={onCrop}
+                        onClose={onClose}
+                     />
+                     {/* {preview && <Avatar src={preview} />} */}
+                     <Button
+                        onClick={() => setModalActive(false)}
+                        style={{ cursor: "pointer" }}
+                        fullWidth="90px"
+                        fullHeight="34px"
+                        disabled={!isValid}
+                        type="submit"
+                     >
+                        Confirm
+                     </Button>
+                  </ModalWindow>
                </Modal>
                <Name>Riki Morti</Name>
             </div>
@@ -158,6 +192,12 @@ function ProfileCrud() {
    )
 }
 export default ProfileCrud
+const ModalWindow = styled.div`
+   text-align: center;
+   button {
+      margin-top: 5px;
+   }
+`
 const ContainerInputErrorText = styled.div`
    height: 50px;
    width: 320px;
