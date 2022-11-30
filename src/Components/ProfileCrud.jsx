@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Avatar1 from "react-avatar-edit"
 import { useFormik } from "formik"
@@ -9,16 +9,31 @@ import Input from "./UI/Input"
 import PasswordInput from "./UI/PasswordInput"
 import Button from "./UI/Button"
 import MemberBoard from "./MemberBoard"
-import { listProject } from "../utilits/constants/Constants"
 import ReusableDropDown from "./UI/ReusableDropDown"
 import { validationSchema } from "./Authorizaiton/Validation"
 import Modal from "./UI/Modal"
+import { axiosInstance } from "../api/axiosInstance"
 
 function ProfileCrud() {
+   const [profileData, setProfileData] = useState({})
    const [open, setOpen] = useState(false)
    const [src, setSrc] = useState(null)
    const [preview, setPreview] = useState(null)
    const [modalActive, setModalActive] = useState(false)
+
+   const getProfileData = async () => {
+      try {
+         const { data } = await axiosInstance("/api/profile/me")
+         return setProfileData(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
+   useEffect(() => {
+      getProfileData()
+   }, [])
+
    const onClose = () => {
       setPreview(null)
    }
@@ -29,11 +44,15 @@ function ProfileCrud() {
       setPreview(null)
    }
 
+   useEffect(() => {
+      getProfileData()
+   }, [])
+
    const formik = useFormik({
       initialValues: {
-         firstName: "",
-         lastName: "",
-         email: "",
+         firstName: profileData.firstName,
+         lastName: profileData.lastName,
+         email: profileData.email,
          password: "",
          confirmPassword: "",
       },
@@ -57,7 +76,6 @@ function ProfileCrud() {
                   editIcon={Pen}
                   alt="MyProfil"
                />
-
                <ReusableDropDown
                   showState={open}
                   width="250px"
@@ -86,7 +104,7 @@ function ProfileCrud() {
                         onCrop={onCrop}
                         onClose={onClose}
                      />
-                     {/* {preview && <Avatar src={preview} />} */}
+
                      <Button
                         onClick={() => setModalActive(false)}
                         style={{ cursor: "pointer" }}
@@ -99,7 +117,9 @@ function ProfileCrud() {
                      </Button>
                   </ModalWindow>
                </Modal>
-               <Name>Riki Morti</Name>
+               <Name>
+                  {profileData.firstName} {profileData.lastName}
+               </Name>
             </div>
             <form onSubmit={formik.handleSubmit} className="form" action="">
                <MiniBoxInput>
@@ -185,7 +205,7 @@ function ProfileCrud() {
                </MiniPasswordBox>
             </form>
             <ListProject>
-               <MemberBoard listProject={listProject} />
+               <MemberBoard listProject={profileData.projectResponses} />
             </ListProject>
          </MidBox>
       </Container>

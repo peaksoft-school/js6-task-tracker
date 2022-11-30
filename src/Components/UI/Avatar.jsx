@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import styled from "styled-components"
-import DefaultAvatar from "../../assets/svg/defaultAvatar.svg"
 import Pen from "../../assets/svg/editIcon.svg"
+import initialAvatar from "../../assets/images/initialAvatar.jpeg"
 
 function Avatar({ src, alt, editIcon, onClick }) {
-   const [isEdit, setIsEdit] = useState(false)
-   const handleOnError = (e) => {
-      e.target.src = DefaultAvatar
-   }
-   useEffect(() => {
-      setIsEdit(editIcon)
-   }, [])
    return (
       <ParentStyled>
          {src ? (
-            <Ava src={src} alt={alt} onError={handleOnError} />
+            <Ava src={src} alt={alt} />
          ) : (
-            <Ava src={DefaultAvatar} alt={alt} />
+            <Ava src={initialAvatar} alt={alt} />
          )}
-         {isEdit && (
-            <Icon>
-               <Svg onClick={onClick} edit={editIcon} src={Pen} alt="pen" />
-            </Icon>
-         )}
+
+         <Icon>
+            <Svg onClick={onClick} edit={editIcon} src={Pen} alt="pen" />
+         </Icon>
       </ParentStyled>
    )
 }

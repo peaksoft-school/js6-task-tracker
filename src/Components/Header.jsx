@@ -7,7 +7,6 @@ import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
 import searchIcon from "../assets/svg/SearchIcon.svg"
 import UserAvatar from "./UI/UserAvatar"
-import avatarPhoto from "../assets/svg/userAvatar.svg"
 import Notification from "./Notification"
 import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
@@ -16,6 +15,7 @@ import { axiosInstance } from "../api/axiosInstance"
 import { useActiveIndex } from "../hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
+import initialAvatar from "../assets/images/initialAvatar.jpeg"
 
 function Header({ workspaces }) {
    const { favourites } = useSelector((state) => state.favourites)
@@ -84,7 +84,7 @@ function Header({ workspaces }) {
             </DropDown>
 
             <UserAvatar
-               src={avatarPhoto}
+               src={initialAvatar}
                click={() => getActiveIndexHandler(activeIndex !== 3 ? 3 : 0)}
             />
             <DropDown

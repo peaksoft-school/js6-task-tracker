@@ -11,7 +11,6 @@ import ProfileCrud from "../Components/ProfileCrud"
 const AdminUserLayout = () => {
    const [workspacesById, setWorkspacesById] = useState([])
    const [workspaces, setWorkspaces] = useState([])
-
    const { role } = useSelector((state) => state.auth.userInfo)
    const link = window.location.href
    const navigate = useNavigate()
@@ -34,7 +33,6 @@ const AdminUserLayout = () => {
          return console.log(error)
       }
    }
-
    const getWorkspacesInDataBase = async () => {
       try {
          const { data } = await getWorkspacesQuery()
@@ -43,10 +41,6 @@ const AdminUserLayout = () => {
          return error.message
       }
    }
-
-   useEffect(() => {
-      getWorkspacesInDataBase()
-   }, [])
 
    return (
       <Layout workspaces={workspaces} role={role}>

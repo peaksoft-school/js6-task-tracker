@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 function MemberBoard({ listProject }) {
+   console.log(listProject)
    return (
       <GlobalBox>
          <Container>
