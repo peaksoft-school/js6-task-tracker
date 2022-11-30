@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import { COLORS, BackImage } from "../../../utilits/constants/Constants"
 import Input from "../../UI/Input"
@@ -7,27 +9,29 @@ import Button from "../../UI/Button"
 import { useActiveIndex } from "../../../utilits/hooks/useActiveIndex"
 import ImageBlock from "./ImageBlock"
 import ColorBlock from "./ColorBlock"
-import { useBoard } from "../../../utilits/hooks/useBoard"
-import BackImg1 from "../../../assets/boardimg/img2.jpg"
+import { createBoard } from "../../../store/boardSlice"
 
 function CreateBoard({ toggle }) {
-   const [selectedBoard, setSelectedBoard] = useState(BackImg1)
+   const initialValue =
+      "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+
+   const dispatch = useDispatch()
+   const { id } = useParams()
+   const [selectedBoard, setSelectedBoard] = useState(initialValue)
    const [titleBoard, setTitleBoard] = useState("")
-   const { activeIndex, getActiveIndexHandler } = useActiveIndex()
-   const { createBoard } = useBoard()
+   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
 
    const selectedBoardHandler = (value) => {
       setSelectedBoard(value)
-      getActiveIndexHandler(0)
    }
 
    const createWorkspacesHandler = () => {
-      const data = {
-         workspaceId: 2,
+      const readyData = {
+         workspaceId: Number(id),
          title: titleBoard,
          background: selectedBoard,
       }
-      createBoard(data)
+      dispatch(createBoard({ readyData, dispatch }))
       toggle()
    }
 
@@ -42,26 +46,34 @@ function CreateBoard({ toggle }) {
          <p>Add background</p>
          <DisplayFlexJCSB>
             <p>Photo</p>
-            <p onClick={() => getActiveIndexHandler(activeIndex !== 1 ? 1 : 0)}>
+            <p
+               onClick={() =>
+                  getActiveIndexHandler(isActiveDropDown !== "4" ? "4" : "0")
+               }
+            >
                See more
             </p>
          </DisplayFlexJCSB>
          <ImageBlock
             selectedBoardHandler={selectedBoardHandler}
             selectedBoard={selectedBoard}
-            activeIndex={activeIndex}
+            activeIndex={isActiveDropDown}
             BackImage={BackImage}
          />
          <DisplayFlexJCSB>
             <p>Colors</p>
-            <p onClick={() => getActiveIndexHandler(activeIndex !== 2 ? 2 : 0)}>
+            <p
+               onClick={() =>
+                  getActiveIndexHandler(isActiveDropDown !== "5" ? "5" : "0")
+               }
+            >
                See more
             </p>
          </DisplayFlexJCSB>
          <ColorBlock
             selectedBoardHandler={selectedBoardHandler}
             selectedBoard={selectedBoard}
-            activeIndex={activeIndex}
+            activeIndex={isActiveDropDown}
             COLORS={COLORS}
          />
          <ContainerButton>

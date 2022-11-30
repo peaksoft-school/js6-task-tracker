@@ -1,22 +1,42 @@
 import React from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import IconButton from "./IconButton"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
+import CustomIcons from "./TaskCard/CustomIcons"
+import sadStar from "../../assets/svg/sadStar.svg"
+import { addWorkspacesToFavourites } from "../../store/workspacesSlice"
 
 function FavouritesWallpaper({ favourites }) {
+   const dispatch = useDispatch()
+
+   const deleteWorkspacesInFavourites = (id) => {
+      dispatch(addWorkspacesToFavourites({ id, dispatch }))
+   }
+
    return (
       <Container>
-         <h3>Favourites </h3>
+         {favourites.length === 0 ? (
+            <Empty>
+               <p>Favorites empty</p>
+               <CustomIcons src={sadStar} />
+            </Empty>
+         ) : (
+            <h3>Favourites</h3>
+         )}
          {favourites.map((item) => {
             return (
                <Card key={item.id}>
-                  {item.url && <Wallpaper src={item.url} />}
+                  {item.background && (
+                     <Wallpaper backgroundImage={item.background} />
+                  )}
                   <TitleBox>
                      <Title>{item.name}</Title>
                      <Name>{item.workspaceOrBoard}</Name>
                   </TitleBox>
                   <IconBox>
                      <IconButton
+                        onClick={() => deleteWorkspacesInFavourites(item.id)}
                         width="17px"
                         height="17px"
                         iconSvg={FavouritesIcon}
@@ -61,10 +81,12 @@ const Card = styled.div`
    border-radius: 8px;
    background-color: white;
 `
-const Wallpaper = styled.img`
+const Wallpaper = styled.div`
    width: 84px;
    height: 38px;
    border-radius: 8px;
+   background-color: ${(props) => props.backgroundImage};
+   background-image: url(${(props) => props.backgroundImage});
 `
 const TitleBox = styled.div`
    width: 227px;
@@ -92,5 +114,16 @@ const IconBox = styled.span`
    img {
       position: absolute;
       top: 10.5px;
+   }
+`
+const Empty = styled.div`
+   text-align: center;
+   p {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+   }
+   img {
+      width: 100px;
+      height: 100px;
    }
 `

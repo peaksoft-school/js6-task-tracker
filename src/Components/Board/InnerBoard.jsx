@@ -28,15 +28,16 @@ export default InnerBoard
 
 const Container = styled.div`
    display: flex;
+   width: 100%;
    flex-direction: column;
-   height: 90vh;
+   height: 100%;
 `
 const InfoBoard = styled.div`
-   width: 90vw;
+   width: 100%;
    height: 13vh;
 `
 const ContainerColumns = styled.div`
-   width: 90vw;
+   width: 100%;
    overflow: scroll;
    display: flex;
    align-items: flex-start;

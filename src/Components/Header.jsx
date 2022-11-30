@@ -17,8 +17,9 @@ import { useActiveIndex } from "../utilits/hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 
-function Header({ workspaces }) {
-   const { favourites } = useSelector((state) => state.favourites)
+function Header() {
+   const { favourites, workspaces } = useSelector((state) => state)
+
    const dispatch = useDispatch()
    const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
    const [notification, setNotification] = useState([])
@@ -49,18 +50,18 @@ function Header({ workspaces }) {
                   getActiveIndexHandler(isActiveDropDown !== "1" ? "1" : "0")
                }
             >
-               Favourites <span>{favourites.length}</span>
+               Favourites <span>{favourites.favourites.length}</span>
                <Arrow rotate="270deg" />
             </OpenMenu>
 
             <DropDown
-               top="8vh"
-               left="20vw"
+               top="7vh"
+               left="20.5vw"
                showState={isActiveDropDown === "1"}
                width="380px"
                height="600px"
             >
-               <Favorite favourites={favourites} />
+               <Favorite favourites={favourites.favourites} />
             </DropDown>
          </LeftBlock>
          <RightBlock>

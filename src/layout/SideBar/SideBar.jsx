@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import { SideBarItems, Workspaces } from "../../utilits/constants/Constants"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
@@ -13,7 +13,8 @@ import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 
-const SideBar = ({ workspacesById }) => {
+const SideBar = () => {
+   const params = useParams()
    const navigate = useNavigate()
    const [activeIndex, setActiveIndex] = useState(0)
    const [showSideBar, setSideBar] = useState(false)
@@ -87,7 +88,7 @@ const SideBar = ({ workspacesById }) => {
       showSideBar ? (
          <>
             <IconButton onClick={() => navigate(-1)} iconSvg={arrowRight} />
-            <p>{workspacesById}</p>
+            <p>{params.workspaceName}</p>
          </>
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
@@ -210,14 +211,12 @@ export default SideBar
 
 const StyledContainerSideBar = styled.aside`
    display: flex;
-   padding: 1rem 1rem 1rem 0;
-   margin: 0 2rem 0 0;
    flex-direction: column;
-   width: ${(props) => (props.stateSideBar ? "300px" : "107px")};
-   background-color: white;
+   width: ${(props) => (props.stateSideBar ? "330px" : "117px")};
+   background: rgba(248, 248, 248, 0.6);
    transition: all 0.35s ease-out;
    padding-top: 1.7rem;
-   margin-right: 30px;
+   margin: 0 20px 0 0;
    ul {
       padding: 0;
       display: flex;
@@ -235,7 +234,7 @@ const ContainerNavItem = styled.div`
    width: 100%;
    height: 40px;
    align-items: center;
-   padding: 0 0 0 35px;
+   padding: 0 0 0 40px;
    span {
       text-align: start;
       margin: 0 0 0 0.6rem;
@@ -249,17 +248,18 @@ const HeaderSideBar = styled.div`
    justify-content: space-between;
    p {
       transition: all 0.35s ease-out;
-      width: 170px;
+      width: 200px;
       font-size: 1.2rem;
       text-align: start;
+      color: white;
    }
    img {
-      margin-left: 2.2rem;
+      margin-left: 2.4rem;
    }
 `
 const SideBarItem = styled.li`
    display: flex;
-   width: ${(props) => (props.stateSideBar ? "100%" : "100%")};
+   width: 100%;
    justify-content: center;
    text-align: center;
    list-style: none;
@@ -292,7 +292,7 @@ const SideBarTitleBlock = styled.div`
    justify-content: center;
    transition: 0.2s;
    align-items: center;
-   padding-right: 25px;
+   padding-right: 15px;
    background-color: ${(props) => props.active && "rgba(58, 104, 131, 0.6)"};
    color: ${(props) => (props.active ? "white" : "black")};
    border-top-right-radius: ${(props) => (props.active ? "20px" : "")};
@@ -308,7 +308,7 @@ const ShowMoreText = styled.span`
    display: flex;
    height: 30px;
    align-items: center;
-   margin-left: ${(props) => (props.showSideBar ? "1.9rem" : "1.9rem")};
+   margin-left: 2.2rem;
    color: #909090;
 `
 const WorkspacesItem = styled.div`
@@ -332,7 +332,7 @@ const WorkspacesItem = styled.div`
 `
 const ShowSideBarButton = styled.img`
    position: absolute;
-   left: ${(props) => (props.showSideBar ? "180px" : "40px")};
+   left: ${(props) => (props.showSideBar ? "200px" : "46px")};
    background-color: white;
    padding: 7px;
    width: 40px !important;

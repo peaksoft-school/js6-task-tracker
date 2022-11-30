@@ -26,12 +26,12 @@ const ImageBlock = ({
                   )}
                   {typeof item === "object" && (
                      <ReusableDropDown
-                        top="0"
+                        top="-40px"
                         width="320px"
-                        left="460px"
+                        left="487px"
                         padding="8px"
                         height="580px"
-                        showState={activeIndex === 1}
+                        showState={activeIndex === "4"}
                      >
                         <h4>Photo</h4>
                         <ContainerBlock>

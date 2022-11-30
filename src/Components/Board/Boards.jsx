@@ -1,25 +1,33 @@
 import React, { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import WallpaperBoardCard from "../UI/WallpaperBoardCard"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateBoard from "./CreateBoard/CreateBoard"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
-import { useBoard } from "../../utilits/hooks/useBoard"
+import { getBoards } from "../../store/boardSlice"
+import { axiosInstance } from "../../api/axiosInstance"
 
-const Boards = ({ workspacesById, role, getBoardById }) => {
+const Boards = ({ role, getBoardById }) => {
+   const { id } = useParams()
    const navigate = useNavigate()
+   const dispatch = useDispatch()
    const { isShowing, toggle } = useOpenClose()
-   const { getBoard, board } = useBoard()
 
    useEffect(() => {
-      getBoard()
+      dispatch(getBoards(id))
    }, [])
 
-   const getBoardIdPlusNavigate = (boardId, boardTitle) => {
-      // getBoardById(boardId)
-      navigate(boardTitle)
+   const getBoardIdPlusNavigate = async (boardId, boardTitle) => {
+      try {
+         const { data } = await axiosInstance.get(`/api/boards/${boardId}`)
+         navigate(boardTitle)
+         return getBoardById(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
 
    return (
@@ -33,16 +41,9 @@ const Boards = ({ workspacesById, role, getBoardById }) => {
             )}
          </TitleButtonBlock>
          <Modal fullWidth="500px" onClose={toggle} isOpen={isShowing}>
-            <CreateBoard
-               getBoardById={getBoardById}
-               workspacesId={workspacesById}
-               toggle={toggle}
-            />
+            <CreateBoard toggle={toggle} />
          </Modal>
-         <WallpaperBoardCard
-            getBoardById={getBoardIdPlusNavigate}
-            board={board}
-         />
+         <WallpaperBoardCard getBoardById={getBoardIdPlusNavigate} />
       </Container>
    )
 }
@@ -50,7 +51,7 @@ const Boards = ({ workspacesById, role, getBoardById }) => {
 export default Boards
 
 const Container = styled.div`
-   width: 100%;
+   width: 95vw;
 `
 const TitleButtonBlock = styled.div`
    display: flex;

@@ -26,11 +26,7 @@ export const toastSlice = createSlice({
          )
       },
       warningToastifyAction: (state, actions) => {
-         console.log(actions.payload)
-         state.toastId = warningToastify(
-            state.toastId,
-            "Вы удалили из израбранное"
-         )
+         state.toastId = warningToastify(state.toastId, actions.payload)
       },
    },
 })

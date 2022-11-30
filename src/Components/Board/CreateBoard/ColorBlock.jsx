@@ -23,12 +23,12 @@ const ColorBlock = ({
                   </StyledColorBlock>
                )}
                <ReusableDropDown
-                  top="180px"
+                  top="137px"
                   width="320px"
-                  left="460px"
+                  left="487px"
                   height="400px"
                   padding="8px 0 0 0"
-                  showState={activeIndex === 2}
+                  showState={activeIndex === "5"}
                >
                   <h4>Color</h4>
                   <ContainerBlock>

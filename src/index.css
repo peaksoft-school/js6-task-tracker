@@ -4,7 +4,6 @@ body {
    padding: 0;
    box-sizing: border-box;
    width: 100vw;
-   background-color: #f8f8f8;
 }
 ::placeholder {
    font-family: "Nunito", sans-serif;

@@ -1,19 +1,3 @@
-import BackImg1 from "../../assets/boardimg/img2.jpg"
-import BackImg2 from "../../assets/boardimg/img3.jpg"
-import BackImg3 from "../../assets/boardimg/img4.jpg"
-import BackImg4 from "../../assets/boardimg/img5.jpg"
-import BackImg6 from "../../assets/boardimg/img6.jpg"
-import BackImg7 from "../../assets/boardimg/img7.jpg"
-import BackImg8 from "../../assets/boardimg/img8.jpg"
-import BackImg9 from "../../assets/boardimg/img9.jpg"
-import BackImg11 from "../../assets/boardimg/img10.jpg"
-import BackImg12 from "../../assets/boardimg/img11.jpg"
-import BackImg13 from "../../assets/boardimg/img12.jpg"
-import BackImg14 from "../../assets/boardimg/img13.jpg"
-import BackImg15 from "../../assets/boardimg/img14.jpg"
-import BackImg16 from "../../assets/boardimg/img15.jpg"
-import BackImg17 from "../../assets/boardimg/img16.jpg"
-
 import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
@@ -83,22 +67,22 @@ export const COLORS = [
    ],
 ]
 export const BackImage = [
-   BackImg1,
-   BackImg2,
-   BackImg3,
+   "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+   "https://images.unsplash.com/photo-1667594049406-25f6a193c50d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80",
+   "https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
    [
-      BackImg4,
-      BackImg6,
-      BackImg7,
-      BackImg8,
-      BackImg9,
-      BackImg11,
-      BackImg12,
-      BackImg13,
-      BackImg14,
-      BackImg15,
-      BackImg16,
-      BackImg17,
+      "https://images.unsplash.com/photo-1668805585915-0a8b56aecfef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1575497230541-b4668dbc9072?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+      "https://images.unsplash.com/photo-1529258057921-2ac593ee4d04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1502161254066-6c74afbf07aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
+      "https://images.unsplash.com/photo-1505598439340-9a5cdc676547?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1489493512598-d08130f49bea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1467&q=80",
+      "https://images.unsplash.com/photo-1489493512598-d08130f49bea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1467&q=80",
+      "https://images.unsplash.com/photo-1668800477268-021d1ed8564e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80",
+      "https://images.unsplash.com/photo-1667938403586-eec95b202379?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80",
+      "https://images.unsplash.com/photo-1520013817300-1f4c1cb245ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1513&q=80",
+      "https://images.unsplash.com/photo-1486934474798-4c02bd91a318?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1669111960303-99c5090cb6a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
    ],
 ]
 export const MORECOLLORS = [
