@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams, useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { SideBarItems, Workspaces } from "../../utilits/constants/Constants"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
@@ -13,9 +13,18 @@ import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 
-const SideBar = () => {
-   const params = useParams()
+const SideBar = ({ workspaceById }) => {
+   const { workspaceId, boardId } = useParams()
+   const { pathname } = useLocation()
    const navigate = useNavigate()
+   const goBackHandle = () => {
+      if (pathname === `/admin/workspaces/${workspaceId}/boards`)
+         navigate("/admin/allWorkspaces")
+      else if (
+         pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
+      )
+         navigate(`/admin/workspaces/${workspaceId}/boards`)
+   }
    const [activeIndex, setActiveIndex] = useState(0)
    const [showSideBar, setSideBar] = useState(false)
    const [DropDown, setDropDown] = useState({
@@ -25,6 +34,7 @@ const SideBar = () => {
    })
    const [showSubMenu, setShowSubMenu] = useState({})
    const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
+
    const showSubMenuHandler = (item) => {
       return () => {
          setActiveIndex(null)
@@ -40,16 +50,13 @@ const SideBar = () => {
          }))
       }
    }
-
    const onClickSideBarItem = (index) => {
       setActiveIndex(index)
       setShowSubMenu({})
    }
-
    const showSideBarHandler = () => {
       setSideBar(!showSideBar)
    }
-
    const onMouseOverHandler = (id) => {
       if (showSideBar) {
          return
@@ -60,7 +67,6 @@ const SideBar = () => {
          isMenuHovered: true,
       })
    }
-
    const onMouseLeaveFormMenuHandler = (id) => {
       setDropDown({
          id,
@@ -68,7 +74,6 @@ const SideBar = () => {
          isMenuHovered: false,
       })
    }
-
    const onMouseLeaveFromContainerHandler = (id) => {
       setDropDown((prevState) => {
          if (prevState.isMenuHovered) {
@@ -83,17 +88,15 @@ const SideBar = () => {
          }
       })
    }
-
    const renderHeaderSideBar = () =>
       showSideBar ? (
          <>
-            <IconButton onClick={() => navigate(-1)} iconSvg={arrowRight} />
-            <p>{params.workspaceName}</p>
+            <IconButton onClick={goBackHandle} iconSvg={arrowRight} />
+            <p>{workspaceById.name}</p>
          </>
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
       )
-
    const renderSVGs = (item, index) =>
       item.id === 1 && (
          <>
@@ -105,7 +108,6 @@ const SideBar = () => {
             />
          </>
       )
-
    const renderSideBar = (item) => {
       if (!showSideBar && DropDown.id === item.id && DropDown.stateDropDown) {
          return (
@@ -224,6 +226,7 @@ const StyledContainerSideBar = styled.aside`
       width: 100%;
       position: relative;
    }
+
    img {
       width: 25px;
       height: 25px;
@@ -251,7 +254,7 @@ const HeaderSideBar = styled.div`
       width: 200px;
       font-size: 1.2rem;
       text-align: start;
-      color: white;
+      color: black;
    }
    img {
       margin-left: 2.4rem;
@@ -311,7 +314,7 @@ const ShowMoreText = styled.span`
    margin-left: 2.2rem;
    color: #909090;
 `
-const WorkspacesItem = styled.div`
+const WorkspacesItem = styled.li`
    display: flex;
    flex-wrap: wrap;
    width: 100%;
@@ -332,8 +335,9 @@ const WorkspacesItem = styled.div`
 `
 const ShowSideBarButton = styled.img`
    position: absolute;
+   z-index: 1000;
    left: ${(props) => (props.showSideBar ? "200px" : "46px")};
-   background-color: white;
+   background: rgba(248, 248, 248, 10);
    padding: 7px;
    width: 40px !important;
    height: 40px !important;

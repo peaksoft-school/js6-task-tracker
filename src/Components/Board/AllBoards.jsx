@@ -1,12 +1,16 @@
 import React from "react"
-import { Outlet } from "react-router-dom"
+import { useParams, useLocation, Outlet } from "react-router-dom"
 import styled from "styled-components"
 import SideBar from "../../layout/SideBar/SideBar"
 
-const AllBoards = ({ boardById }) => {
+const AllBoards = ({ boardById, workspaceById }) => {
+   const { workspaceId, boardId } = useParams()
+   const { pathname } = useLocation()
+   const backgroundTrue =
+      pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
    return (
-      <ContainerBoard backgroundImage={boardById.background}>
-         <SideBar />
+      <ContainerBoard backgroundImage={backgroundTrue && boardById.background}>
+         <SideBar workspaceById={workspaceById} />
          <Outlet />
       </ContainerBoard>
    )

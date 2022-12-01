@@ -39,11 +39,12 @@ export const createWorkspaces = createAsyncThunk(
    }
 )
 
-// ДОБАВИТЬ WORKSPACE В ИЗБРАННОЕ
+// ДОБАВИТЬ  WORKSPACE В ИЗБРАННОЕ
 export const addWorkspacesToFavourites = createAsyncThunk(
    "worskpaces/favourites",
    async (value) => {
       const { dispatch, id } = value
+      console.log(id)
       try {
          dispatch(loadingToastifyAction())
          const { data } = await axiosInstance.put(

@@ -7,7 +7,7 @@ import defaultStarIcon from "../../assets/icons/favourite-default.svg"
 import CustomIcons from "./TaskCard/CustomIcons"
 
 function WallpaperBoardCard({ getBoardById }) {
-   const { id: workspaceId } = useParams()
+   const { workspaceId } = useParams()
    const dispatch = useDispatch()
    const { board } = useSelector((state) => state.boards)
 
@@ -20,7 +20,7 @@ function WallpaperBoardCard({ getBoardById }) {
          {board.map((item) => {
             return (
                <CardTheme backgroundImage={item.background} key={item.id}>
-                  <Block onClick={() => getBoardById(item.id, item.title)}>
+                  <Block onClick={() => getBoardById(item.id)}>
                      <span>{item.title}</span>
                   </Block>
                   <IconContainer

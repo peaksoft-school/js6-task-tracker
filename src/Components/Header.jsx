@@ -17,7 +17,7 @@ import { useActiveIndex } from "../utilits/hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 
-function Header() {
+function Header({ workspacesById }) {
    const { favourites, workspaces } = useSelector((state) => state)
 
    const dispatch = useDispatch()
@@ -50,7 +50,12 @@ function Header() {
                   getActiveIndexHandler(isActiveDropDown !== "1" ? "1" : "0")
                }
             >
-               Favourites <span>{favourites.favourites.length}</span>
+               Favourites
+               <span>
+                  <span>(</span>
+                  <span>{favourites.favourites.length}</span>
+                  <span>)</span>
+               </span>
                <Arrow rotate="270deg" />
             </OpenMenu>
 
@@ -61,7 +66,10 @@ function Header() {
                width="380px"
                height="600px"
             >
-               <Favorite favourites={favourites.favourites} />
+               <Favorite
+                  workspacesById={workspacesById}
+                  favourites={favourites.favourites}
+               />
             </DropDown>
          </LeftBlock>
          <RightBlock>
@@ -183,9 +191,12 @@ const OpenMenu = styled.div`
    align-items: center;
    gap: 5px;
    cursor: pointer;
-   img {
-      position: absolute;
-      right: -15px;
+   span {
+      span {
+         &:nth-child(2) {
+            margin: 0 2px 0 2px;
+         }
+      }
    }
 `
 const ProfileLogout = styled.div`

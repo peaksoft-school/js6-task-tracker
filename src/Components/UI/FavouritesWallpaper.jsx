@@ -7,14 +7,20 @@ import sadStar from "../../assets/svg/sadStar.svg"
 import { addWorkspacesToFavourites } from "../../store/workspacesSlice"
 import { addBoardToFavourites } from "../../store/boardSlice"
 
-function FavouritesWallpaper({ favourites }) {
+function FavouritesWallpaper({ favourites, workspacesById }) {
    const dispatch = useDispatch()
 
    const deleteWorkspacesInFavourites = (id, title) => {
-      if (title === "WORKSPACES") {
+      if (title === "WORKSPACE") {
          dispatch(addWorkspacesToFavourites({ id, dispatch }))
       } else if (title === "BOARD") {
-         dispatch(addBoardToFavourites({ id, dispatch }))
+         dispatch(
+            addBoardToFavourites({
+               id,
+               dispatch,
+               workspaceId: workspacesById.id,
+            })
+         )
       }
    }
 

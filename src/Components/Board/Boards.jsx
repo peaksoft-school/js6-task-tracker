@@ -11,19 +11,19 @@ import { getBoards } from "../../store/boardSlice"
 import { axiosInstance } from "../../api/axiosInstance"
 
 const Boards = ({ role, getBoardById }) => {
-   const { id } = useParams()
+   const { workspaceId } = useParams()
    const navigate = useNavigate()
    const dispatch = useDispatch()
    const { isShowing, toggle } = useOpenClose()
 
    useEffect(() => {
-      dispatch(getBoards(id))
+      dispatch(getBoards(workspaceId))
    }, [])
 
-   const getBoardIdPlusNavigate = async (boardId, boardTitle) => {
+   const getBoardIdPlusNavigate = async (boardId) => {
       try {
          const { data } = await axiosInstance.get(`/api/boards/${boardId}`)
-         navigate(boardTitle)
+         navigate(`${boardId}`)
          return getBoardById(data)
       } catch (error) {
          return console.log(error.message)

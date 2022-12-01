@@ -5,49 +5,49 @@ const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/
 export const validationSchema = yup.object({
    firstName: yup
       .string()
-      .typeError("Должно быть строкой")
-      .max(15, "Максимум 15 символов")
-      .required("Обязательное поле"),
+      .typeError("Should be a string")
+      .max(15, "maximum 15 characters")
+      .required("required field"),
    lastName: yup
       .string()
-      .max(15, "Максимум 15 символов")
-      .required("Обязательное поле"),
+      .max(15, "maximum 15 characters")
+      .required("required field"),
    email: yup
       .string()
-      .max(30, "Максимум 30 символов")
-      .email("Неверный адрес электронной почты")
-      .required("Обязательное поле"),
+      .max(30, "maximum 30 characters")
+      .email("Incorrect email address")
+      .required("required field"),
    password: yup
       .string()
-      .min(5, "Минимум 5 символов")
+      .min(5, "minimum 15 characters")
       .matches(passwordRules, {
-         message: "Бир ар кыйыныраак пароль тап акя",
+         message: "think of a more complex password",
       })
-      .required("Обязательное поле"),
+      .required("required field"),
    confirmPassword: yup
       .string()
       .oneOf([yup.ref("password"), null], "Пароли не совпадают")
-      .required("Обязательное поле"),
+      .required("required field"),
 })
 
 export const validationEmailInForgotPassword = yup.object({
    email: yup
       .string()
-      .max(30, "Максимум 30 символов")
-      .email("Неверный адрес электронной почты")
-      .required("Обязательное поле"),
+      .max(30, "maximum 30 characters")
+      .email("incorrect email address")
+      .required("required field"),
 })
 
 export const validationConfirmPassword = yup.object({
    password: yup
       .string()
-      .min(5, "Минимум 5 символов")
+      .min(5, "minimum 15 characters")
       .matches(passwordRules, {
-         message: "Бир ар кыйыныраак пароль тап акя",
+         message: "think of a more complex password",
       })
-      .required("Обязательное поле"),
+      .required("required field"),
    confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), null], "Пароли не совпадают")
-      .required("Обязательное поле"),
+      .oneOf([yup.ref("password"), null], "passwords do not match")
+      .required("required field"),
 })

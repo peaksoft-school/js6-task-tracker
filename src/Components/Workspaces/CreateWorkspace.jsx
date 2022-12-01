@@ -26,15 +26,17 @@ const CreateWorkspaces = ({ toggle }) => {
    }
 
    const sendData = () => {
-      if (data.name.trim().length > 0) {
-         const readyData = {
-            emails: emails.length !== 0 ? emails : [data.email],
-            name: data.name,
-            link,
-         }
-         dispatch(createWorkspaces({ readyData, dispatch }))
+      const readyData = {
+         emails: emails.length !== 0 ? emails : [data.email],
+         name: data.name,
+         link,
       }
+      dispatch(createWorkspaces({ readyData, dispatch }))
       toggle()
+   }
+
+   const getInputWorkspaceTitle = (e) => {
+      setData({ ...data, name: e.target.value })
    }
 
    return (
@@ -45,13 +47,12 @@ const CreateWorkspaces = ({ toggle }) => {
             <StyledInput
                type="text"
                value={data.name}
-               onChange={(event) =>
-                  setData({ ...data, name: event.target.value })
-               }
+               onChange={(e) => getInputWorkspaceTitle(e)}
                placeholder="Name"
                autoFocus
             />
          </InputBlock>
+
          <Label>Invite a member</Label>
          <form onSubmit={addEmailInEmails}>
             <InputBlock>
@@ -88,7 +89,7 @@ const CreateWorkspaces = ({ toggle }) => {
             >
                Cancel
             </Button>
-            <Button onClick={sendData} fullWidth="110px">
+            <Button type="submit" onClick={sendData} fullWidth="110px">
                Create
             </Button>
          </ButtonBlock>
@@ -103,7 +104,7 @@ const Title = styled.h3`
    text-align: center;
 `
 const Label = styled.p`
-   margin: 14px 0 8px 0;
+   margin: 18px 0 8px 7px;
    color: #919191;
    font-size: 1.1rem;
 `

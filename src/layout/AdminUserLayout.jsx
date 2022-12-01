@@ -27,7 +27,7 @@ const AdminUserLayout = () => {
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          setWorkspacesById(data)
-         return navigate(`workspaces/${data.name}${data.id}/boards`)
+         return navigate(`workspaces/${data.id}/boards`)
       } catch (error) {
          return console.log(error)
       }
@@ -42,7 +42,7 @@ const AdminUserLayout = () => {
    }
 
    return (
-      <Layout role={role}>
+      <Layout workspacesById={workspacesById} role={role}>
          <Routes>
             <Route
                path="allWorkspaces"
@@ -51,8 +51,14 @@ const AdminUserLayout = () => {
                }
             />
             <Route
-               path="workspaces/:workspaceName:id/*"
-               element={<AllBoards boardById={boardById} role={role} />}
+               path="workspaces/:workspaceId/*"
+               element={
+                  <AllBoards
+                     workspaceById={workspacesById}
+                     boardById={boardById}
+                     role={role}
+                  />
+               }
             >
                <Route
                   path="boards"
@@ -65,7 +71,7 @@ const AdminUserLayout = () => {
                   }
                />
                <Route
-                  path="boards/:boardName"
+                  path="boards/:boardId"
                   element={<InnerBoard boardById={boardById} />}
                />
             </Route>

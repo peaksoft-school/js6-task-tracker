@@ -10,16 +10,18 @@ import { useActiveIndex } from "../../../utilits/hooks/useActiveIndex"
 import ImageBlock from "./ImageBlock"
 import ColorBlock from "./ColorBlock"
 import { createBoard } from "../../../store/boardSlice"
+import { useValidation } from "../../../utilits/hooks/useValidation"
 
 function CreateBoard({ toggle }) {
+   const dispatch = useDispatch()
+   const { workspaceId } = useParams()
    const initialValue =
       "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
 
-   const dispatch = useDispatch()
-   const { id } = useParams()
    const [selectedBoard, setSelectedBoard] = useState(initialValue)
    const [titleBoard, setTitleBoard] = useState("")
    const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
+   const { isValid, validHandler } = useValidation()
 
    const selectedBoardHandler = (value) => {
       setSelectedBoard(value)
@@ -27,12 +29,24 @@ function CreateBoard({ toggle }) {
 
    const createWorkspacesHandler = () => {
       const readyData = {
-         workspaceId: Number(id),
+         workspaceId,
          title: titleBoard,
          background: selectedBoard,
       }
-      dispatch(createBoard({ readyData, dispatch }))
-      toggle()
+      if (readyData.title.trim().length > 0) {
+         dispatch(createBoard({ readyData, dispatch }))
+         toggle()
+      }
+      if (readyData.title.trim().length === 0) {
+         validHandler(true)
+      }
+   }
+
+   const getTitleBoardHandler = (e) => {
+      setTitleBoard(e.target.value)
+      if (titleBoard.trim().length >= 0) {
+         validHandler(false)
+      }
    }
 
    return (
@@ -40,10 +54,11 @@ function CreateBoard({ toggle }) {
          <h4>Create new board</h4>
          <Input
             value={titleBoard}
-            onChange={(e) => setTitleBoard(e.target.value)}
+            onChange={(e) => getTitleBoardHandler(e)}
             placeholder="Board title*"
          />
-         <p>Add background</p>
+         <ErrorText>{isValid && "required field"} </ErrorText>
+         <h3>Add background</h3>
          <DisplayFlexJCSB>
             <p>Photo</p>
             <p
@@ -104,6 +119,11 @@ const Container = styled.div`
       font-weight: 500;
       font-size: 1.2rem;
    }
+   h3 {
+      font-weight: 400;
+      color: gray;
+      margin-top: 10px;
+   }
    p {
       color: gray;
       font-size: 1.2rem;
@@ -130,4 +150,10 @@ const ContainerButton = styled.div`
    button {
       margin-left: 15px;
    }
+`
+const ErrorText = styled.p`
+   position: absolute;
+   color: red !important;
+   top: 79px;
+   left: 5px;
 `

@@ -103,7 +103,7 @@ export const SideBarItems = [
    },
    {
       id: 2,
-      title: "All issues",
+      title: `Allissues`,
       amount: 267,
    },
    {

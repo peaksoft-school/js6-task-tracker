@@ -11,7 +11,6 @@ import { getFavourites } from "./FavouritesSlice"
 
 // ПОЛУЧИТЬ BOARD ИЗ БАЗЫ ДАННЫХ
 export const getBoards = createAsyncThunk("get/board", async (id) => {
-   console.log(id, "id")
    try {
       const { data } = await axiosInstance.get(`/api/boards/list/${id}`)
       return data
@@ -27,21 +26,18 @@ export const createBoard = createAsyncThunk("create/board", async (value) => {
       dispatch(loadingToastifyAction())
       const { data } = await axiosInstance.post("/api/boards", readyData)
       dispatch(getBoards(readyData.workspaceId))
-      if (data.isFavorite) {
-         dispatch(successToastifyAction(`Created board ${data.title}`))
-      }
+      dispatch(successToastifyAction(`Created board ${data.title}`))
       return data
    } catch (error) {
       return dispatch(errorToastifyAction(error.message))
    }
 })
 
-// ДОБАВИТЬ BOARD В ИЗБРАННОЕ
+// ДОБАВИТЬ  BOARD В ИЗБРАННОЕ
 export const addBoardToFavourites = createAsyncThunk(
    "board/favourites",
    async (value) => {
       const { dispatch, id, workspaceId } = value
-      console.log(workspaceId)
       try {
          dispatch(loadingToastifyAction())
          const { data } = await axiosInstance.put(
