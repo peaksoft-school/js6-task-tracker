@@ -13,14 +13,15 @@ import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
 import Notifications from "../assets/svg/NotificationIcon.svg"
 import { axiosInstance } from "../api/axiosInstance"
-import { useActiveIndex } from "../hooks/useActiveIndex"
+import { useActiveIndex } from "../utilits/hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 
-function Header({ workspaces }) {
-   const { favourites } = useSelector((state) => state.favourites)
+function Header({ workspacesById }) {
+   const { favourites, workspaces } = useSelector((state) => state)
+
    const dispatch = useDispatch()
-   const { activeIndex, getActiveIndexHandler } = useActiveIndex()
+   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
    const [notification, setNotification] = useState([])
 
    const getNotificationHandler = async () => {
@@ -45,20 +46,30 @@ function Header({ workspaces }) {
          <LeftBlock>
             <Logo src={TaskTracker} alt="" />
             <OpenMenu
-               onClick={() => getActiveIndexHandler(activeIndex !== 1 ? 1 : 0)}
+               onClick={() =>
+                  getActiveIndexHandler(isActiveDropDown !== "1" ? "1" : "0")
+               }
             >
-               Favourites <span>{favourites.length}</span>
+               Favourites
+               <span>
+                  <span>(</span>
+                  <span>{favourites.favourites.length}</span>
+                  <span>)</span>
+               </span>
                <Arrow rotate="270deg" />
             </OpenMenu>
 
             <DropDown
-               top="8vh"
-               left="20vw"
-               showState={activeIndex === 1}
+               top="7vh"
+               left="20.5vw"
+               showState={isActiveDropDown === "1"}
                width="380px"
                height="600px"
             >
-               <Favorite favourites={favourites} />
+               <Favorite
+                  workspacesById={workspacesById}
+                  favourites={favourites.favourites}
+               />
             </DropDown>
          </LeftBlock>
          <RightBlock>
@@ -68,13 +79,15 @@ function Header({ workspaces }) {
             </ContainerInput>
 
             <NotificationIconContainer
-               onClick={() => getActiveIndexHandler(activeIndex !== 2 ? 2 : 0)}
+               onClick={() =>
+                  getActiveIndexHandler(isActiveDropDown !== "2" ? "2" : "0")
+               }
             >
                <img src={Notifications} alt="" />
                {notification.length > 0 && <span>{notification.length}</span>}
             </NotificationIconContainer>
             <DropDown
-               showState={activeIndex === 2}
+               showState={isActiveDropDown === "2"}
                width="390px"
                height="90vh"
                top="60px"
@@ -85,13 +98,15 @@ function Header({ workspaces }) {
 
             <UserAvatar
                src={avatarPhoto}
-               click={() => getActiveIndexHandler(activeIndex !== 3 ? 3 : 0)}
+               click={() =>
+                  getActiveIndexHandler(isActiveDropDown !== "3" ? "3" : "0")
+               }
             />
             <DropDown
                width="150px"
                top="50px"
                right="80px"
-               showState={activeIndex === 3}
+               showState={isActiveDropDown === "3"}
             >
                <ProfileLogout>
                   <Link to="profile">
@@ -176,9 +191,12 @@ const OpenMenu = styled.div`
    align-items: center;
    gap: 5px;
    cursor: pointer;
-   img {
-      position: absolute;
-      right: -15px;
+   span {
+      span {
+         &:nth-child(2) {
+            margin: 0 2px 0 2px;
+         }
+      }
    }
 `
 const ProfileLogout = styled.div`

@@ -1,14 +1,3 @@
-import BackImg from "../../assets/boardimg/Rectangle 55.svg"
-import BackImg2 from "../../assets/boardimg/Rectangle 56.svg"
-import BackImg3 from "../../assets/boardimg/Rectangle 57.svg"
-import BackImg4 from "../../assets/boardimg/Rectangle 58.svg"
-import BackImg5 from "../../assets/boardimg/Rectangle 59.svg"
-import BackImg6 from "../../assets/boardimg/Rectangle 60.svg"
-import BackImg7 from "../../assets/boardimg/Rectangle 61.svg"
-import BackImg8 from "../../assets/boardimg/Rectangle 62.svg"
-import BackImg9 from "../../assets/boardimg/Rectangle 63.svg"
-import BackImg10 from "../../assets/boardimg/Rectangle 64.svg"
-import BackImg11 from "../../assets/boardimg/Rectangle 65.svg"
 import plusIcon from "../../assets/icons/plus.svg"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
@@ -20,9 +9,6 @@ import checklistIcon from "../../assets/icons/checklist.svg"
 import estimationIcon from "../../assets/icons/time.svg"
 import avatar from "../../assets/svg/womenAvatar.svg"
 import emptyStar from "../../assets/svg/empty.svg"
-import Board1 from "../../assets/svg/Board.svg"
-import Board2 from "../../assets/svg/Board2.svg"
-import Board3 from "../../assets/svg/Board3.svg"
 
 export const GLOBAL_URL =
    "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com"
@@ -56,37 +42,49 @@ export const Labels = [
       text: "Хорошего всем настроения, друзья",
    },
 ]
-
 export const Columns = [
    {
       titleColumn: "Придумать что-то чтобы измениь мир",
    },
 ]
-
 export const COLORS = [
-   "#CBCBCB",
+   "#6d96ff",
    "#B04632",
    "#385f38",
    "#D29034",
    "#89609E",
    "#005C92",
+   [
+      "#CBCBCB",
+      "#20dad9",
+      "#d6e04d",
+      "#67e7a3",
+      "#ffe277",
+      "#13fff7",
+      "#00b6ff",
+      "#fffb4c",
+      "#124446",
+   ],
 ]
-
 export const BackImage = [
-   BackImg2,
-   BackImg,
-   BackImg10,
-   BackImg6,
-   BackImg4,
-   BackImg3,
-   BackImg,
-   BackImg7,
-   BackImg11,
-   BackImg9,
-   BackImg5,
-   BackImg8,
+   "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+   "https://images.unsplash.com/photo-1667594049406-25f6a193c50d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80",
+   "https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+   [
+      "https://images.unsplash.com/photo-1668805585915-0a8b56aecfef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1575497230541-b4668dbc9072?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+      "https://images.unsplash.com/photo-1529258057921-2ac593ee4d04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1502161254066-6c74afbf07aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
+      "https://images.unsplash.com/photo-1505598439340-9a5cdc676547?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1489493512598-d08130f49bea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1467&q=80",
+      "https://images.unsplash.com/photo-1489493512598-d08130f49bea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1467&q=80",
+      "https://images.unsplash.com/photo-1668800477268-021d1ed8564e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80",
+      "https://images.unsplash.com/photo-1667938403586-eec95b202379?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80",
+      "https://images.unsplash.com/photo-1520013817300-1f4c1cb245ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1513&q=80",
+      "https://images.unsplash.com/photo-1486934474798-4c02bd91a318?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1669111960303-99c5090cb6a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+   ],
 ]
-
 export const MORECOLLORS = [
    "#CBCBCB",
    "#B04632",
@@ -105,7 +103,7 @@ export const SideBarItems = [
    },
    {
       id: 2,
-      title: "All issues",
+      title: `Allissues`,
       amount: 267,
    },
    {
@@ -123,7 +121,6 @@ export const SideBarItems = [
       plusIcon,
    },
 ]
-
 export const Workspaces = [
    {
       id: 1,
@@ -172,7 +169,6 @@ export const Workspaces = [
       arrowUp,
    },
 ]
-
 export const SubMenuItems = [
    {
       iconId: 1,
@@ -190,7 +186,6 @@ export const SubMenuItems = [
       title: "Setting",
    },
 ]
-
 export const GrayButtonsInnerTaskCard = [
    {
       id: 1,
@@ -218,7 +213,6 @@ export const GrayButtonsInnerTaskCard = [
       icon: checklistIcon,
    },
 ]
-
 export const tableData = [
    {
       id: 1,
@@ -269,84 +263,4 @@ export const PhotoArray = [
       nameWallpaper: "First",
       colors: "#CBCBCB",
    },
-   {
-      id: 2,
-      nameWallpaper: "Two",
-      colors: "#B04632",
-   },
-   {
-      id: 3,
-      nameWallpaper: "There",
-      colors: "#519839",
-   },
-   {
-      id: 4,
-      nameWallpaper: "First",
-      colors: "#D29034",
-   },
-   {
-      id: 5,
-      nameWallpaper: "Two",
-      colors: "#89609E",
-   },
-   {
-      id: 6,
-      nameWallpaper: "There",
-      colors: "#0079BF",
-   },
-   {
-      id: 7,
-      nameWallpaper: "First",
-      colors: "#CD5A91",
-   },
-   {
-      id: 8,
-      nameWallpaper: "Two",
-      colors: "#2A2A2A",
-   },
-   {
-      id: 9,
-      nameWallpaper: "There",
-      colors: "red",
-   },
-   {
-      id: 10,
-      nameWallpaper: "First",
-      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
-      colors: "red",
-   },
-   {
-      id: 11,
-      nameWallpaper: "Two",
-      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
-      colors: "red",
-   },
-   {
-      id: 12,
-      nameWallpaper: "There",
-      colors: "red",
-   },
-   {
-      id: 13,
-      nameWallpaper: "First",
-      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
-      colors: "red",
-   },
-   {
-      id: 14,
-      nameWallpaper: "Two",
-      photo: "https://steamuserimages-a.akamaihd.net/ugc/1758066490773386497/FFB8A9E914BD96DBF8A8AB1DF1DCE09ED4FDE9A8/?imw=1200&impolicy=Letterbox",
-      colors: "red",
-   },
-   {
-      id: 15,
-      nameWallpaper: "There",
-      colors: "red",
-   },
-   {
-      id: 16,
-      nameWallpaper: "There",
-      colors: "red",
-   },
 ]
-export const BackgroundImg = [Board1, Board2, Board3]

@@ -3,18 +3,12 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import Button from "../UI/Button"
 import LabelTag from "../UI/LabelTag"
-import Input from "../UI/Input"
 import MemberEmails from "../UI/MemberEmails"
-import { createWorkspacesQuery } from "../../api/auth"
-import {
-   loadingToastifyAction,
-   successToastifyAction,
-   errorToastifyAction,
-} from "../../store/toastifySlice"
+import { createWorkspaces } from "../../store/workspacesSlice"
 
-const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
-   const link = window.location.href
+const CreateWorkspaces = ({ toggle }) => {
    const dispatch = useDispatch()
+   const link = window.location.href
    const [emails, setEmails] = useState([])
    const [data, setData] = useState({
       email: "",
@@ -31,38 +25,34 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
       setEmails(emailsAfterRemove)
    }
 
-   const createWorkspaces = async (value) => {
-      try {
-         dispatch(loadingToastifyAction())
-         const { data } = await createWorkspacesQuery(value)
-
-         getWorkspaces()
-         dispatch(successToastifyAction(`Created workspace ${data.name}`))
-         return data
-      } catch (error) {
-         return dispatch(errorToastifyAction(error.message))
-      }
-   }
    const sendData = () => {
-      if (data.name.trim().length > 0)
-         createWorkspaces({
-            emails: emails.length !== 0 ? emails : [data.email],
-            name: data.name,
-            link,
-         })
+      const readyData = {
+         emails: emails.length !== 0 ? emails : [data.email],
+         name: data.name,
+         link,
+      }
+      dispatch(createWorkspaces({ readyData, dispatch }))
       toggle()
+   }
+
+   const getInputWorkspaceTitle = (e) => {
+      setData({ ...data, name: e.target.value })
    }
 
    return (
       <>
          <Title>Create a new workspaces</Title>
          <Label>Name of the workspaces</Label>
-         <Input
-            onChange={(event) => setData({ ...data, name: event.target.value })}
-            type="text"
-            id="nameWorkspaces"
-            placeholder="Name"
-         />
+         <InputBlock>
+            <StyledInput
+               type="text"
+               value={data.name}
+               onChange={(e) => getInputWorkspaceTitle(e)}
+               placeholder="Name"
+               autoFocus
+            />
+         </InputBlock>
+
          <Label>Invite a member</Label>
          <form onSubmit={addEmailInEmails}>
             <InputBlock>
@@ -99,7 +89,7 @@ const CreateWorkspaces = ({ toggle, getWorkspaces }) => {
             >
                Cancel
             </Button>
-            <Button onClick={sendData} fullWidth="110px">
+            <Button type="submit" onClick={sendData} fullWidth="110px">
                Create
             </Button>
          </ButtonBlock>
@@ -114,28 +104,27 @@ const Title = styled.h3`
    text-align: center;
 `
 const Label = styled.p`
-   margin: 14px 0 8px 0;
+   margin: 18px 0 8px 7px;
    color: #919191;
    font-size: 1.1rem;
 `
 const ButtonBlock = styled.div`
    display: flex;
-   height: 44px;
+   height: 40px;
    justify-content: flex-end;
-   padding: 27px 0 20px 0;
    button {
       margin-left: 8px;
    }
 `
 const InputBlock = styled.div`
-   border: 1px solid gray;
+   border: 1px solid #afafaf;
    border-radius: 13px;
    padding: 0 0 0 10px;
 `
 const StyledInput = styled.input`
    outline: none;
    border: none;
-   width: 400px;
-   height: 30px;
+   width: 370px;
+   height: 40px;
    font-size: 1.1rem;
 `

@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { Route, Routes, useNavigate } from "react-router-dom"
-import { axiosInstance } from "../api/axiosInstance"
-import Board from "../Components/Board"
+import { useSelector, useDispatch } from "react-redux"
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom"
+import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Layout from "./Layout"
-import { getWorkspacesQuery } from "../api/auth"
+import Boards from "../Components/Board/Boards"
+import InnerBoard from "../Components/Board/InnerBoard"
+import { getAllWorkspaces } from "../store/workspacesSlice"
+import { axiosInstance } from "../api/axiosInstance"
 
 const AdminUserLayout = () => {
-   const [workspacesById, setWorkspacesById] = useState([])
-   const [workspaces, setWorkspaces] = useState([])
-
+   const [boardById, setBoardById] = useState({})
+   const [workspacesById, setWorkspacesById] = useState({})
    const { role } = useSelector((state) => state.auth.userInfo)
-   const link = window.location.href
    const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { pathname } = useLocation()
 
    useEffect(() => {
-      if (
-         link === "http://localhost:3000/admin/*" ||
-         link === "http://localhost:3000/user/*"
-      ) {
-         navigate("workspaces")
+      if (pathname === "/admin/*" || pathname === "/user/*") {
+         navigate("allWorkspaces")
       }
    }, [])
 
@@ -28,44 +27,55 @@ const AdminUserLayout = () => {
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          setWorkspacesById(data)
-         return navigate(`board/${data.name}`)
+         return navigate(`workspaces/${data.id}/boards`)
       } catch (error) {
          return console.log(error)
       }
    }
 
-   const getWorkspacesInDataBase = async () => {
-      try {
-         const { data } = await getWorkspacesQuery()
-         return setWorkspaces(data)
-      } catch (error) {
-         return error.message
-      }
-   }
-
    useEffect(() => {
-      getWorkspacesInDataBase()
+      dispatch(getAllWorkspaces())
    }, [])
 
+   const getBoardById = (data) => {
+      setBoardById(data)
+   }
+
    return (
-      <Layout workspaces={workspaces} role={role}>
+      <Layout workspacesById={workspacesById} role={role}>
          <Routes>
             <Route
-               path="workspaces/*"
+               path="allWorkspaces"
                element={
-                  <Workspaces
-                     getWorkspacesInDataBase={getWorkspacesInDataBase}
-                     workspaces={workspaces}
-                     getWorkspacesId={getWorkspacesId}
+                  <Workspaces getWorkspacesId={getWorkspacesId} role={role} />
+               }
+            />
+            <Route
+               path="workspaces/:workspaceId/*"
+               element={
+                  <AllBoards
+                     workspaceById={workspacesById}
+                     boardById={boardById}
                      role={role}
                   />
                }
-            />
+            >
+               <Route
+                  path="boards"
+                  element={
+                     <Boards
+                        workspacesById={workspacesById}
+                        getBoardById={getBoardById}
+                        role={role}
+                     />
+                  }
+               />
+               <Route
+                  path="boards/:boardId"
+                  element={<InnerBoard boardById={boardById} />}
+               />
+            </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
-            <Route
-               path="board/*"
-               element={<Board workspacesById={workspacesById} role={role} />}
-            />
          </Routes>
       </Layout>
    )

@@ -9,10 +9,12 @@ import Button from "../UI/Button"
 import CustomIcons from "../UI/TaskCard/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
 import SecondBlock from "./SecondBlock"
+import CloseButton from "../UI/CloseButton"
 
-const InnerTaskCard = () => {
+const InnerTaskCard = ({ toggle }) => {
    return (
       <Container>
+         <CloseButton onClick={toggle} />
          <DisplayFlexJCSB>
             <FirstBlock>
                <TitleCard>Какая то задача которую нужно выполнить</TitleCard>

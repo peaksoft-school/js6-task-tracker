@@ -1,27 +1,58 @@
 import React from "react"
 import styled from "styled-components"
-import IconButton from "./IconButton"
+import { useDispatch } from "react-redux"
+import CustomIcons from "./TaskCard/CustomIcons"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
+import sadStar from "../../assets/svg/sadStar.svg"
+import { addWorkspacesToFavourites } from "../../store/workspacesSlice"
+import { addBoardToFavourites } from "../../store/boardSlice"
 
-function FavouritesWallpaper({ favourites }) {
+function FavouritesWallpaper({ favourites, workspacesById }) {
+   const dispatch = useDispatch()
+
+   const deleteWorkspacesInFavourites = (id, title) => {
+      if (title === "WORKSPACE") {
+         dispatch(addWorkspacesToFavourites({ id, dispatch }))
+      } else if (title === "BOARD") {
+         dispatch(
+            addBoardToFavourites({
+               id,
+               dispatch,
+               workspaceId: workspacesById.id,
+            })
+         )
+      }
+   }
+
    return (
       <Container>
-         <h3>Favourites </h3>
+         {favourites.length === 0 ? (
+            <Empty>
+               <p>Favorites empty</p>
+               <CustomIcons src={sadStar} />
+            </Empty>
+         ) : (
+            <h3>Favourites</h3>
+         )}
          {favourites.map((item) => {
             return (
                <Card key={item.id}>
-                  {item.url && <Wallpaper src={item.url} />}
+                  {item.background !== "The workspace can not have photo" && (
+                     <Wallpaper backgroundImage={item.background} />
+                  )}
                   <TitleBox>
-                     <Title>{item.name}</Title>
-                     <Name>{item.workspaceOrBoard}</Name>
+                     <p>{item.name}</p>
+                     <p>{item.workspaceOrBoard}</p>
                   </TitleBox>
-                  <IconBox>
-                     <IconButton
-                        width="17px"
-                        height="17px"
-                        iconSvg={FavouritesIcon}
-                     />
-                  </IconBox>
+                  <CustomIcons
+                     onClick={() =>
+                        deleteWorkspacesInFavourites(
+                           item.id,
+                           item.workspaceOrBoard
+                        )
+                     }
+                     src={FavouritesIcon}
+                  />
                </Card>
             )
          })}
@@ -51,46 +82,39 @@ const Container = styled.div`
    }
 `
 const Card = styled.div`
-   line-height: 16px;
-   position: relative;
-   width: 321px;
-   height: 38px;
-   gap: 10px;
    display: flex;
-   margin: 0 auto;
+   align-items: center;
+   justify-content: space-between;
+   width: 341px;
+   height: 50px;
    border-radius: 8px;
-   background-color: white;
 `
-const Wallpaper = styled.img`
-   width: 84px;
-   height: 38px;
+const Wallpaper = styled.div`
+   width: 100px;
+   background-image: url(${(props) => props.backgroundImage});
+   background: ${(props) => props.backgroundImage};
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: 40px;
    border-radius: 8px;
 `
 const TitleBox = styled.div`
-   width: 227px;
-   height: 38px;
-   line-height: 20px;
+   width: 200px;
    p {
-      margin: 0;
+      &:last-child {
+         box-sizing: border-box;
+         color: #919191;
+      }
    }
 `
-const Title = styled.p`
-   font-size: 16px;
-   box-sizing: border-box;
-   font-weight: 400;
-   font-style: normal;
-`
-const Name = styled.p`
-   font-size: 14px;
-   box-sizing: border-box;
-   color: #919191;
-`
-const IconBox = styled.span`
-   position: absolute;
-   right: -7px;
-   height: 38px;
+const Empty = styled.div`
+   text-align: center;
+   p {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+   }
    img {
-      position: absolute;
-      top: 10.5px;
+      width: 100px;
+      height: 100px;
    }
 `
