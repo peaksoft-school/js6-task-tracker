@@ -130,7 +130,7 @@ const ParentDiv = styled.header`
    height: 78px;
    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
    background-color: white;
-   position: sticky;
+   position: fixed;
    top: 0;
    z-index: 200;
 `

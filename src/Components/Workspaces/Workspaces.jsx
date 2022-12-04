@@ -1,32 +1,34 @@
 import React from "react"
 import styled from "styled-components"
 import { Outlet } from "react-router-dom"
-import useOpenClose from "../../utilits/hooks/useOpenClose"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateWorkspaces from "./CreateWorkspace"
 import TableWorkspaces from "../TableWorkspaces"
+import useOpenClose from "../../utilits/hooks/useOpenClose"
 
 const Workspaces = ({ getFavorites, role, getWorkspacesId }) => {
-   const { toggle, isShowing } = useOpenClose()
-
+   const { toggle, stateModal } = useOpenClose()
    return (
       <ContainerWorkspaces>
          <BlockWorkspaces>
             <Block>
                <h2>Workspaces</h2>
                {role === "ADMIN" && (
-                  <Button onClick={toggle} fullHeight="40px" fullWidth="100px">
+                  <Button
+                     onClick={() => toggle("true")}
+                     fullHeight="40px"
+                     fullWidth="100px"
+                  >
                      Create
                   </Button>
                )}
             </Block>
-            <Modal onClose={toggle} isOpen={isShowing}>
+            <Modal onClose={toggle} isOpen={stateModal === "true"}>
                <CreateWorkspaces toggle={toggle} />
             </Modal>
             <TableWorkspaces
                getWorkspacesId={getWorkspacesId}
-               toggle={toggle}
                getFavorites={getFavorites}
             />
          </BlockWorkspaces>
@@ -57,4 +59,5 @@ const ContainerWorkspaces = styled.div`
    display: flex;
    justify-content: center;
    margin-top: 20px;
+   margin-top: 100px;
 `

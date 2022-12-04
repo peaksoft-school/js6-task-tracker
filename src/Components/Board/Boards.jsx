@@ -1,49 +1,54 @@
 import React, { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import WallpaperBoardCard from "../UI/WallpaperBoardCard"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateBoard from "./CreateBoard/CreateBoard"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
-import { getBoards } from "../../store/boardSlice"
-import { axiosInstance } from "../../api/axiosInstance"
+import { getBoards, getBoardByIdQuery } from "../../store/boardSlice"
 
-const Boards = ({ role, getBoardById }) => {
+const Boards = ({ role }) => {
    const { workspaceId } = useParams()
    const navigate = useNavigate()
    const dispatch = useDispatch()
-   const { isShowing, toggle } = useOpenClose()
+   const { stateModal, toggle } = useOpenClose()
+   const { showSideBar } = useSelector((state) => state.showSideBar)
 
    useEffect(() => {
       dispatch(getBoards(workspaceId))
    }, [])
 
    const getBoardIdPlusNavigate = async (boardId) => {
-      try {
-         const { data } = await axiosInstance.get(`/api/boards/${boardId}`)
-         navigate(`${boardId}`)
-         return getBoardById(data)
-      } catch (error) {
-         return console.log(error.message)
-      }
+      navigate(`${boardId}`)
+      dispatch(getBoardByIdQuery(boardId))
    }
 
    return (
       <Container>
-         <TitleButtonBlock>
-            <h3>All Boards</h3>
-            {role === "ADMIN" && (
-               <Button onClick={toggle} fullWidth="190px" fullHeight="37px">
-                  Create new board
-               </Button>
-            )}
-         </TitleButtonBlock>
-         <Modal fullWidth="500px" onClose={toggle} isOpen={isShowing}>
-            <CreateBoard toggle={toggle} />
-         </Modal>
-         <WallpaperBoardCard getBoardById={getBoardIdPlusNavigate} />
+         <ContainerBoardsButton showSideBar={showSideBar}>
+            <TitleButtonBlock>
+               <h3>All Boards</h3>
+               {role === "ADMIN" && (
+                  <Button
+                     onClick={() => toggle("true")}
+                     fullWidth="190px"
+                     fullHeight="37px"
+                  >
+                     Create new board
+                  </Button>
+               )}
+            </TitleButtonBlock>
+            <Modal
+               fullWidth="500px"
+               onClose={toggle}
+               isOpen={stateModal === "true"}
+            >
+               <CreateBoard toggle={toggle} />
+            </Modal>
+            <WallpaperBoardCard getBoardById={getBoardIdPlusNavigate} />
+         </ContainerBoardsButton>
       </Container>
    )
 }
@@ -51,12 +56,20 @@ const Boards = ({ role, getBoardById }) => {
 export default Boards
 
 const Container = styled.div`
-   width: 95vw;
+   display: flex;
+   width: 100%;
+   flex-direction: column;
+   align-items: flex-end;
+   border: 1px solid black;
 `
 const TitleButtonBlock = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   height: 50px;
-   margin: 25px 14px 10px 0;
+   margin: 100px 14px 10px 0;
+`
+const ContainerBoardsButton = styled.div`
+   width: ${(props) => (props.showSideBar ? "78%" : "90%")};
+   transition: all 0.35s ease-out;
+   height: 100%;
 `

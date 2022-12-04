@@ -1,10 +1,10 @@
-import React, { useState } from "react"
-import { useParams, useLocation, useNavigate } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useParams, useLocation, useNavigate, Link } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
-import { SideBarItems, Workspaces } from "../../utilits/constants/Constants"
+import { SideBarItems } from "../../utilits/constants/Constants"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
 import IconButton from "../../Components/UI/IconButton"
-import arrowDown from "../../assets/icons/arrowDown.svg"
 import showSideBarIcon from "../../assets/icons/showSideBar.svg"
 import arrowRight from "../../assets/icons/arrowRight.svg"
 import CustomIcons from "../../Components/UI/TaskCard/CustomIcons"
@@ -12,11 +12,33 @@ import BlueIconWorkspaces from "../../assets/icons/BlueIconWorkspaces.svg"
 import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
+import { showSideBarAction } from "../../store/sideBarSlice"
+import { clearBoardById, getBoards } from "../../store/boardSlice"
+import arrowDown from "../../assets/icons/arrowDown.svg"
+import arrowUp from "../../assets/icons/ArrowUp.svg"
+import Modal from "../../Components/UI/Modal"
+import Settings from "./Settings"
 
-const SideBar = ({ workspaceById }) => {
+const SideBar = () => {
    const { workspaceId, boardId } = useParams()
    const { pathname } = useLocation()
+   const { showSideBar } = useSelector((state) => state.showSideBar)
+   const { workspaces } = useSelector((state) => state.workspaces)
+   const [showModal, setShowModal] = useState(false)
+   const dispatch = useDispatch()
    const navigate = useNavigate()
+   const [activeSideBar, setActiveSideBar] = useState("boards")
+   const [showSubMenu, setShowSubMenu] = useState({})
+   const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
+   const [DropDown, setDropDown] = useState({
+      id: 0,
+      stateDropDown: false,
+      isMenuHovered: false,
+   })
+   useEffect(() => {
+      dispatch(getBoards(workspaceId))
+   }, [])
+
    const goBackHandle = () => {
       if (pathname === `/admin/workspaces/${workspaceId}/boards`)
          navigate("/admin/allWorkspaces")
@@ -24,20 +46,10 @@ const SideBar = ({ workspaceById }) => {
          pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
       )
          navigate(`/admin/workspaces/${workspaceId}/boards`)
+      dispatch(clearBoardById())
    }
-   const [activeIndex, setActiveIndex] = useState(0)
-   const [showSideBar, setSideBar] = useState(false)
-   const [DropDown, setDropDown] = useState({
-      id: 0,
-      stateDropDown: false,
-      isMenuHovered: false,
-   })
-   const [showSubMenu, setShowSubMenu] = useState({})
-   const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
-
    const showSubMenuHandler = (item) => {
       return () => {
-         setActiveIndex(null)
          setShowSubMenuBoards({})
          setShowSubMenu((prevState) => ({ [item.id]: !prevState[item.id] }))
       }
@@ -50,12 +62,12 @@ const SideBar = ({ workspaceById }) => {
          }))
       }
    }
-   const onClickSideBarItem = (index) => {
-      setActiveIndex(index)
+   const onClickSideBarItem = (path) => {
+      setActiveSideBar(path)
       setShowSubMenu({})
    }
    const showSideBarHandler = () => {
-      setSideBar(!showSideBar)
+      dispatch(showSideBarAction())
    }
    const onMouseOverHandler = (id) => {
       if (showSideBar) {
@@ -90,20 +102,20 @@ const SideBar = ({ workspaceById }) => {
    }
    const renderHeaderSideBar = () =>
       showSideBar ? (
-         <>
-            <IconButton onClick={goBackHandle} iconSvg={arrowRight} />
-            <p>{workspaceById.name}</p>
-         </>
+         <IconButton onClick={goBackHandle} iconSvg={arrowRight} />
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
       )
-   const renderSVGs = (item, index) =>
+   const renderSVGs = (item) =>
       item.id === 1 && (
          <>
-            <SvgGenerator activeColor={activeIndex === index} id="plus" />
+            <SvgGenerator
+               activeColor={activeSideBar === item.path ? "true" : "false"}
+               id="plus"
+            />
             <SvgGenerator
                click={showSubMenuBoardsHandler(item)}
-               activeColor={activeIndex === index}
+               activeColor={activeSideBar === item.path ? "true" : "false"}
                id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
             />
          </>
@@ -114,7 +126,7 @@ const SideBar = ({ workspaceById }) => {
             <DropDownSideBar
                state={DropDown.stateDropDown}
                setStateDropDown={setDropDown}
-               nameWorkspaces={item.title}
+               nameWorkspaces={item.name}
                onMouseLeave={() => onMouseLeaveFromContainerHandler(item.id)}
             />
          )
@@ -122,11 +134,15 @@ const SideBar = ({ workspaceById }) => {
 
       return null
    }
+   const placeOfWorkSpace = workspaces.filter(
+      (item) => item.id === +workspaceId
+   )
 
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
          <HeaderSideBar>
             {renderHeaderSideBar()}
+            <p>{showSideBar && placeOfWorkSpace[0]?.name}</p>
             <ShowSideBarButton
                showSideBar={showSideBar}
                onClick={showSideBarHandler}
@@ -140,13 +156,20 @@ const SideBar = ({ workspaceById }) => {
                return (
                   <SideBarItem stateSideBar={showSideBar} key={item.id}>
                      <SideBarTitleBlock
-                        onClick={() => onClickSideBarItem(index)}
-                        active={activeIndex === index}
+                        onClick={() => onClickSideBarItem(item.path)}
+                        active={activeSideBar === item.path ? "true" : "false"}
                      >
-                        <ContainerNavItem>
+                        <ContainerNavItem
+                           active={
+                              activeSideBar === item.path ? "true" : "false"
+                           }
+                           to={item.path}
+                        >
                            <SvgGenerator
                               id={item.id}
-                              activeColor={activeIndex === index}
+                              activeColor={
+                                 activeSideBar === item.path ? "true" : "false"
+                              }
                            />
                            {showSideBar ? (
                               <>
@@ -158,52 +181,71 @@ const SideBar = ({ workspaceById }) => {
                         {showSideBar ? renderSVGs(item, index) : null}
                      </SideBarTitleBlock>
 
-                     {activeIndex === 0 &&
+                     {activeSideBar === item.path &&
                         showSideBar &&
                         showSubMenuBoards[item.id] && <SubMenuBoards />}
                   </SideBarItem>
                )
             })}
-            {Workspaces.map((item) => {
-               return (
-                  <WorkspacesItem
-                     stateSideBar={showSideBar}
-                     key={item.id}
-                     workspacesHover
-                     onMouseEnter={() => onMouseOverHandler(item.id)}
-                     onMouseLeave={() => onMouseLeaveFormMenuHandler(item.id)}
-                  >
-                     <SideBarTitleBlock
-                        onClick={showSubMenuHandler(item)}
+            <ContainerNavItem onClick={() => setShowModal(true)}>
+               <SvgGenerator id={5} />
+               {showSideBar && <span>Settings</span>}
+            </ContainerNavItem>
+            <Modal onClose={() => setShowModal(false)} isOpen={showModal}>
+               <Settings
+                  nameWorkspaces={placeOfWorkSpace[0]?.name}
+                  closeModal={() => setShowModal(false)}
+               />
+            </Modal>
+            {/* <Line top="5px" showSideBar={showSideBar} />
+            <Line top="62px" showSideBar={showSideBar} />
+            <Line top="200px" showSideBar={showSideBar} /> */}
+            <ContainerNavItem>
+               <SvgGenerator id={6} />
+               {showSideBar && (
+                  <>
+                     <span>Workspaces</span>
+                     <SvgGenerator id="plus" />
+                  </>
+               )}
+            </ContainerNavItem>
+            <ContainerWorkspaces>
+               {workspaces.map((item) => {
+                  return (
+                     <WorkspacesItem
                         stateSideBar={showSideBar}
+                        key={item.id}
                         workspacesHover
+                        onMouseEnter={() => onMouseOverHandler(item.id)}
+                        onMouseLeave={() =>
+                           onMouseLeaveFormMenuHandler(item.id)
+                        }
                      >
-                        {renderSideBar(item)}
+                        <SideBarTitleBlock
+                           onClick={showSubMenuHandler(item)}
+                           stateSideBar={showSideBar}
+                           workspacesHover
+                        >
+                           {renderSideBar(item)}
 
-                        <ContainerNavItem>
-                           <CustomIcons src={item.icon} />
-                           {showSideBar && <span>{item.title}</span>}
-                        </ContainerNavItem>
+                           <ContainerNavItem>
+                              <p>{item.name.charAt(0)}</p>
+                              {showSideBar ? <span>{item.name}</span> : null}
+                           </ContainerNavItem>
 
-                        {showSideBar && (
-                           <CustomIcons
-                              src={
-                                 showSubMenu[item.id]
-                                    ? item.arrowUp
-                                    : item.arrowDown
-                              }
-                           />
-                        )}
-                     </SideBarTitleBlock>
-                     {showSideBar && showSubMenu[item.id] && <SubMenu />}
-                  </WorkspacesItem>
-               )
-            })}
-
-            <ShowMoreText showSideBar={showSideBar}>
-               <IconButton iconSvg={arrowDown} />
-               {showSideBar && "Show More"}
-            </ShowMoreText>
+                           {showSideBar ? (
+                              <CustomIcons
+                                 src={
+                                    showSubMenu[item.id] ? arrowUp : arrowDown
+                                 }
+                              />
+                           ) : null}
+                        </SideBarTitleBlock>
+                        {showSideBar && showSubMenu[item.id] && <SubMenu />}
+                     </WorkspacesItem>
+                  )
+               })}
+            </ContainerWorkspaces>
          </ul>
       </StyledContainerSideBar>
    )
@@ -214,11 +256,16 @@ export default SideBar
 const StyledContainerSideBar = styled.aside`
    display: flex;
    flex-direction: column;
-   width: ${(props) => (props.stateSideBar ? "330px" : "117px")};
-   background: rgba(248, 248, 248, 0.6);
+   width: ${(props) => (props.stateSideBar ? "260px" : "110px")};
+   background: rgba(248, 248, 248, 0.7);
    transition: all 0.35s ease-out;
    padding-top: 1.7rem;
    margin: 0 20px 0 0;
+   position: fixed;
+   z-index: 150;
+   top: 78px;
+   left: 0;
+   height: 100vh;
    ul {
       padding: 0;
       display: flex;
@@ -226,21 +273,36 @@ const StyledContainerSideBar = styled.aside`
       width: 100%;
       position: relative;
    }
-
    img {
       width: 25px;
       height: 25px;
    }
 `
-const ContainerNavItem = styled.div`
+const ContainerNavItem = styled(Link)`
    display: flex;
    width: 100%;
    height: 40px;
    align-items: center;
    padding: 0 0 0 40px;
+   text-decoration: none;
+   color: ${(props) => (props.active === "true" ? "white" : "black")};
    span {
       text-align: start;
       margin: 0 0 0 0.6rem;
+   }
+   svg {
+      margin-top: 5px;
+   }
+   p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      background-color: #2cb107;
+      color: white;
+      border-radius: 50%;
+      margin-left: -4px;
    }
 `
 const HeaderSideBar = styled.div`
@@ -248,13 +310,10 @@ const HeaderSideBar = styled.div`
    height: 40px;
    display: flex;
    align-items: center;
-   justify-content: space-between;
    p {
-      transition: all 0.35s ease-out;
-      width: 200px;
-      font-size: 1.2rem;
-      text-align: start;
-      color: black;
+      width: 160px;
+      font-size: 1.3rem;
+      margin-left: 25px;
    }
    img {
       margin-left: 2.4rem;
@@ -268,24 +327,13 @@ const SideBarItem = styled.li`
    list-style: none;
    align-items: center;
    cursor: pointer;
-
    &:first-child {
-      border-top: 2px solid #e0e0e0;
       padding-top: 0.9rem;
       flex-direction: column !important;
    }
    &:nth-child(2) {
       margin-top: 1.25rem;
-      border-top: 2px solid #e0e0e0;
       padding-top: 1rem;
-   }
-   &:nth-child(4) {
-      margin-bottom: 1.25rem;
-      border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 1rem;
-   }
-   &:last-child {
-      margin: 1rem 0 0.5rem 0;
    }
 `
 const SideBarTitleBlock = styled.div`
@@ -293,26 +341,18 @@ const SideBarTitleBlock = styled.div`
    height: 37px;
    display: flex;
    justify-content: center;
-   transition: 0.2s;
    align-items: center;
    padding-right: 15px;
-   background-color: ${(props) => props.active && "rgba(58, 104, 131, 0.6)"};
-   color: ${(props) => (props.active ? "white" : "black")};
-   border-top-right-radius: ${(props) => (props.active ? "20px" : "")};
-   border-bottom-right-radius: ${(props) => (props.active ? "20px" : "")};
+   background-color: ${(props) =>
+      props.active === "true" && "rgba(58, 104, 131, 0.6)"};
+   border-top-right-radius: 20px;
+   border-bottom-right-radius: 20px;
    svg {
       margin-top: 5px;
    }
    img {
       position: relative;
    }
-`
-const ShowMoreText = styled.span`
-   display: flex;
-   height: 30px;
-   align-items: center;
-   margin-left: 2.2rem;
-   color: #909090;
 `
 const WorkspacesItem = styled.li`
    display: flex;
@@ -344,3 +384,17 @@ const ShowSideBarButton = styled.img`
    border-radius: 8px;
    transition: all 0.3s ease-out;
 `
+const ContainerWorkspaces = styled.ul`
+   margin-bottom: 30px;
+   max-height: 42vh;
+   overflow: scroll;
+`
+// const Line = styled.div`
+//    position: absolute;
+//    top: ${(props) => props.top};
+//    left: 33px;
+//    width: ${(props) => (props.showSideBar ? "180px" : "35px")};
+//    height: 1px;
+//    background-color: white;
+//    transition: all 0.35s ease-out;
+// `

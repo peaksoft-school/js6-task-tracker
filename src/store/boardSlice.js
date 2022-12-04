@@ -9,16 +9,16 @@ import {
 } from "./toastifySlice"
 import { getFavourites } from "./FavouritesSlice"
 
-// ПОЛУЧИТЬ BOARD ИЗ БАЗЫ ДАННЫХ
+// ПОЛУЧИТЬ BOARDS ИЗ БАЗЫ ДАННЫХ
 export const getBoards = createAsyncThunk("get/board", async (id) => {
    try {
       const { data } = await axiosInstance.get(`/api/boards/list/${id}`)
+      data.sort((a, b) => (a.id > b.id ? 1 : -1))
       return data
    } catch (error) {
       return console.log(error.message)
    }
 })
-
 // СОЗДАТЬ НОВЫЙ BOARD
 export const createBoard = createAsyncThunk("create/board", async (value) => {
    const { readyData, dispatch } = value
@@ -32,7 +32,6 @@ export const createBoard = createAsyncThunk("create/board", async (value) => {
       return dispatch(errorToastifyAction(error.message))
    }
 })
-
 // ДОБАВИТЬ  BOARD В ИЗБРАННОЕ
 export const addBoardToFavourites = createAsyncThunk(
    "board/favourites",
@@ -62,16 +61,38 @@ export const addBoardToFavourites = createAsyncThunk(
       }
    }
 )
+// ПОЛУЧИТЬ ОПРЕДЕЛЕННЫЙ BOARD
+export const getBoardByIdQuery = createAsyncThunk(
+   "getBoard/ById",
+   async (boardId) => {
+      try {
+         const { data } = await axiosInstance.get(`/api/boards/${boardId}`)
+         return data
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+)
 
 export const boardSlice = createSlice({
    name: "board",
    initialState: {
       board: [],
+      boardById: {},
    },
-   reducers: {},
+   reducers: {
+      clearBoardById: (state) => {
+         state.boardById = {}
+      },
+   },
    extraReducers: {
       [getBoards.fulfilled]: (state, actions) => {
          state.board = actions.payload
       },
+      [getBoardByIdQuery.fulfilled]: (state, actions) => {
+         state.boardById = actions.payload
+      },
    },
 })
+
+export const { clearBoardById } = boardSlice.actions

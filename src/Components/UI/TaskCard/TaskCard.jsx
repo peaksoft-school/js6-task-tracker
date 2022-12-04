@@ -27,8 +27,8 @@ const TaskCard = ({ getTitleColumn, openInnerTaskCard }) => {
 
    return Columns.length > 0 ? (
       <DisplayFlexJCSB flexStart="flex-start">
-         {Columns.map(() => (
-            <CardColumn>
+         {Columns.map((item) => (
+            <CardColumn key={item.id}>
                <CustomIcons
                   src={threePoint}
                   position="absolute"

@@ -8,7 +8,7 @@ export default function Modal({ children, fullWidth, isOpen, onClose }) {
       <div>
          <UiModal
             open={isOpen}
-            onClose={() => onClose()}
+            onClose={() => onClose("false")}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
          >

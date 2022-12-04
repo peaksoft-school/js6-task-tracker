@@ -19,7 +19,6 @@ export const getAllWorkspaces = createAsyncThunk("workspaces", async () => {
       return console.log(error.message)
    }
 })
-
 // СОЗДАТЬ НОВЫЙ WORKSPACES
 export const createWorkspaces = createAsyncThunk(
    "worskpaces",
@@ -38,7 +37,6 @@ export const createWorkspaces = createAsyncThunk(
       }
    }
 )
-
 // ДОБАВИТЬ  WORKSPACE В ИЗБРАННОЕ
 export const addWorkspacesToFavourites = createAsyncThunk(
    "worskpaces/favourites",
@@ -60,6 +58,26 @@ export const addWorkspacesToFavourites = createAsyncThunk(
          return data
       } catch (error) {
          return dispatch(errorToastifyAction())
+      }
+   }
+)
+
+// УДАЛИТЬ WORKSPACE
+export const deleteWorkspaceById = createAsyncThunk(
+   "delete/workspaces",
+   async (value) => {
+      const { workspaceId, dispatch, navigate } = value
+      try {
+         dispatch(loadingToastifyAction())
+         const response = await axiosInstance.delete(
+            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/workspace/${workspaceId}`
+         )
+         navigate("/admin/allWorkspaces")
+         dispatch(warningToastifyAction(`Deleted workspace`))
+         dispatch(getAllWorkspaces())
+         return console.log(response)
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
       }
    }
 )

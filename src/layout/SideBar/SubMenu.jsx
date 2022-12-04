@@ -27,12 +27,12 @@ export default SubMenu
 
 const ContainerSubMenu = styled.div`
    width: 200px;
-   height: 90px;
+   height: 100px;
    opacity: 0.5;
-   padding: 7px;
    display: flex;
    flex-direction: column;
    align-items: flex-end;
+   justify-content: center;
    li {
       display: flex;
       align-items: center;
@@ -41,6 +41,6 @@ const ContainerSubMenu = styled.div`
       margin: 2px;
    }
    span {
-      margin: 0 15px 4px 8px;
+      margin: 0 19px 4px 8px;
    }
 `

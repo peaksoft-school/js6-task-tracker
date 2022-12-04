@@ -14,7 +14,7 @@ import CloseButton from "../UI/CloseButton"
 const InnerTaskCard = ({ toggle }) => {
    return (
       <Container>
-         <CloseButton onClick={toggle} />
+         <CloseButton onClick={() => toggle("false")} />
          <DisplayFlexJCSB>
             <FirstBlock>
                <TitleCard>Какая то задача которую нужно выполнить</TitleCard>

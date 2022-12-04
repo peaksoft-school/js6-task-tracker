@@ -10,11 +10,9 @@ function WallpaperBoardCard({ getBoardById }) {
    const { workspaceId } = useParams()
    const dispatch = useDispatch()
    const { board } = useSelector((state) => state.boards)
-
    const addBoardToFavouritesHandler = (id) => {
       dispatch(addBoardToFavourites({ id, dispatch, workspaceId }))
    }
-
    return (
       <CardThemeBox>
          {board.map((item) => {
@@ -41,7 +39,7 @@ export default WallpaperBoardCard
 
 const CardThemeBox = styled.div`
    box-sizing: border-box;
-   width: 99%;
+   width: 100%;
    border: none;
    position: relative;
    display: grid;
@@ -49,6 +47,7 @@ const CardThemeBox = styled.div`
    grid-template-rows: repeat(5, 1fr);
    grid-column-gap: 1px;
    grid-row-gap: 8px;
+   height: 80vh;
 `
 const CardTheme = styled.div`
    position: relative;

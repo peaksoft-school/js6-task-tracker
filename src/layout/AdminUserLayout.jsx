@@ -10,7 +10,6 @@ import { getAllWorkspaces } from "../store/workspacesSlice"
 import { axiosInstance } from "../api/axiosInstance"
 
 const AdminUserLayout = () => {
-   const [boardById, setBoardById] = useState({})
    const [workspacesById, setWorkspacesById] = useState({})
    const { role } = useSelector((state) => state.auth.userInfo)
    const navigate = useNavigate()
@@ -32,14 +31,9 @@ const AdminUserLayout = () => {
          return console.log(error)
       }
    }
-
    useEffect(() => {
       dispatch(getAllWorkspaces())
    }, [])
-
-   const getBoardById = (data) => {
-      setBoardById(data)
-   }
 
    return (
       <Layout workspacesById={workspacesById} role={role}>
@@ -53,26 +47,27 @@ const AdminUserLayout = () => {
             <Route
                path="workspaces/:workspaceId/*"
                element={
-                  <AllBoards
-                     workspaceById={workspacesById}
-                     boardById={boardById}
-                     role={role}
-                  />
+                  <AllBoards workspaceById={workspacesById} role={role} />
                }
             >
                <Route
                   path="boards"
                   element={
-                     <Boards
-                        workspacesById={workspacesById}
-                        getBoardById={getBoardById}
-                        role={role}
-                     />
+                     <Boards workspacesById={workspacesById} role={role} />
+                  }
+               />
+               <Route path="boards/:boardId" element={<InnerBoard />} />
+               <Route
+                  path="allissues"
+                  element={
+                     <h1 style={{ margin: "150px 0 0 300px" }}>All Issues</h1>
                   }
                />
                <Route
-                  path="boards/:boardId"
-                  element={<InnerBoard boardById={boardById} />}
+                  path="participants"
+                  element={
+                     <h1 style={{ margin: "150px 0 0 300px" }}>Participants</h1>
+                  }
                />
             </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
