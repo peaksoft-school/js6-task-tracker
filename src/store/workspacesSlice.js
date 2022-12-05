@@ -9,6 +9,7 @@ import {
 } from "./toastifySlice"
 import { axiosInstance } from "../api/axiosInstance"
 import { getFavourites } from "./FavouritesSlice"
+import { getBoards } from "./boardSlice"
 
 // ПОЛУЧИТЬ WORSKPACES ИЗ БАЗЫ ДАННЫХ
 export const getAllWorkspaces = createAsyncThunk("workspaces", async () => {
@@ -64,11 +65,11 @@ export const addWorkspacesToFavourites = createAsyncThunk(
 export const getWorkspacesId = createAsyncThunk(
    "getWorkspace/ById",
    async (value) => {
-      console.log("done")
-      const { id, navigate } = value
+      const { id, navigate, dispatch } = value
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          navigate(`/admin/workspaces/${data.id}/boards`)
+         dispatch(getBoards(id))
          return data
       } catch (error) {
          return console.log(error)
