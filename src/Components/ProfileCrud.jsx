@@ -13,6 +13,7 @@ import ReusableDropDown from "./UI/ReusableDropDown"
 import { validationSchema } from "./Authorizaiton/Validation"
 import Modal from "./UI/Modal"
 import { axiosInstance } from "../api/axiosInstance"
+import { successToastify } from "../utilits/helpers/reactToastifyHelpers"
 
 function ProfileCrud() {
    const [profileData, setProfileData] = useState({})
@@ -20,48 +21,55 @@ function ProfileCrud() {
    const [src, setSrc] = useState(null)
    const [preview, setPreview] = useState(null)
    const [modalActive, setModalActive] = useState(false)
+   const formik = useFormik({
+      initialValues: {
+         image: preview,
+         firstName: "",
+         lastName: "",
+         email: "",
+         password: "",
+         confirmPassword: "",
+      },
+      validationSchema,
+      onSubmit: async (userInfo) => {
+         await axiosInstance
+            .put("api/profile", userInfo)
+            .then(() => successToastify(23, "success"))
+            .catch((err) => console.log(err))
 
-   const getProfileData = async () => {
-      try {
-         const { data } = await axiosInstance("/api/profile/me")
-         return setProfileData(data)
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
-
+         console.log(userInfo)
+      },
+   })
+   const { isValid } = formik
    useEffect(() => {
-      getProfileData()
+      ;(async () => {
+         try {
+            const { data } = await axiosInstance("/api/profile/me")
+            formik.setValues({
+               image: data?.image,
+               firstName: data?.firstName,
+               lastName: data?.lastName,
+               email: data?.email,
+               password: "",
+               confirmPassword: "",
+            })
+            return setProfileData(data)
+         } catch (error) {
+            return console.log(error.message)
+         }
+      })()
    }, [])
-
+   console.log(preview)
    const onClose = () => {
       setPreview(null)
    }
    const onCrop = (view) => {
       setPreview(view)
+      formik.setFieldValue({ img: view })
    }
    const onRemove = () => {
       setPreview(null)
    }
-
-   useEffect(() => {
-      getProfileData()
-   }, [])
-
-   const formik = useFormik({
-      initialValues: {
-         firstName: profileData.firstName,
-         lastName: profileData.lastName,
-         email: profileData.email,
-         password: "",
-         confirmPassword: "",
-      },
-      validationSchema,
-      onSubmit: (userInfo) => {
-         console.log(userInfo)
-      },
-   })
-   const { isValid } = formik
    return (
       <Container>
          <TopBox>
@@ -118,7 +126,7 @@ function ProfileCrud() {
                   </ModalWindow>
                </Modal>
                <Name>
-                  {profileData.firstName} {profileData.lastName}
+                  {profileData?.firstName} {profileData?.lastName}
                </Name>
             </div>
             <form onSubmit={formik.handleSubmit} className="form" action="">
@@ -205,7 +213,7 @@ function ProfileCrud() {
                </MiniPasswordBox>
             </form>
             <ListProject>
-               <MemberBoard listProject={profileData.projectResponses} />
+               <MemberBoard listProject={profileData?.projectResponses} />
             </ListProject>
          </MidBox>
       </Container>

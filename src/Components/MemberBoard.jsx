@@ -1,25 +1,32 @@
 import styled from "styled-components"
+import Avatar from "react-avatar"
 
 function MemberBoard({ listProject }) {
    console.log(listProject)
+
    return (
       <GlobalBox>
          <Container>
             <span className="title-list">Involved in project</span>
-            <span className="length-array">{listProject.length}</span>
+            <span className="length-array">{listProject?.length}</span>
          </Container>
          <BoardContainer>
-            {listProject.map((item) => {
-               return (
-                  <Board id={item.id}>
-                     <img src={item.boardIcon} alt="" />
-                     <TitleBox>
-                        <p>{item.titleBoard}</p>
-                        <span>{item.discription}</span>
-                     </TitleBox>
-                  </Board>
-               )
-            })}
+            {listProject?.length > 0 &&
+               listProject.map((item) => {
+                  return (
+                     <Board id={item.id}>
+                        <Avatar
+                           name={item.name}
+                           size="68"
+                           round="10px"
+                           color="#0079BF"
+                        />
+                        <TitleBox>
+                           <p>{item.name}</p>
+                        </TitleBox>
+                     </Board>
+                  )
+               })}
          </BoardContainer>
       </GlobalBox>
    )
@@ -84,13 +91,6 @@ const TitleBox = styled.div`
       font-size: 18px;
       line-height: 23px;
       color: #000000;
-      margin: 0;
-   }
-   span {
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 20px;
-      color: #919191;
-      margin: 0;
+      margin-top: 10px;
    }
 `
