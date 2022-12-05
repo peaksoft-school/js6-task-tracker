@@ -1,19 +1,29 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
 import actionTrueSvg from "../assets/icons/actionTrue.svg"
 import actionFalseSvg from "../assets/icons/actionFalse.svg"
 import UserAvatar from "./UI/UserAvatar"
 import avatar from "../assets/svg/userAvatar.svg"
-import { addWorkspacesToFavourites } from "../store/workspacesSlice"
+import {
+   addWorkspacesToFavourites,
+   getWorkspacesId,
+} from "../store/workspacesSlice"
 
-const TableWorkspaces = ({ getWorkspacesId }) => {
+const TableWorkspaces = () => {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const { workspaces } = useSelector((state) => state)
 
    const addToFavouritesWorkspacesHandler = (id) => {
       dispatch(addWorkspacesToFavourites({ id, dispatch }))
    }
+
+   const getWorkspaceByIdPlusNavigate = (id) => {
+      dispatch(getWorkspacesId({ id, navigate }))
+   }
+
    return (
       <Table>
          <thead>
@@ -30,7 +40,7 @@ const TableWorkspaces = ({ getWorkspacesId }) => {
                <thead key={item.id}>
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
                      <td>{index}</td>
-                     <td onClick={() => getWorkspacesId(item.id)}>
+                     <td onClick={() => getWorkspaceByIdPlusNavigate(item.id)}>
                         <span>{item.name}</span>
                      </td>
                      <td>

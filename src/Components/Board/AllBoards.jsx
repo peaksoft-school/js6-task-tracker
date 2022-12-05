@@ -3,10 +3,10 @@ import { Outlet } from "react-router-dom"
 import styled from "styled-components"
 import SideBar from "../../layout/SideBar/SideBar"
 
-const AllBoards = ({ workspaceById }) => {
+const AllBoards = () => {
    return (
       <ContainerBoard>
-         <SideBar workspaceById={workspaceById} />
+         <SideBar />
          <Outlet />
       </ContainerBoard>
    )

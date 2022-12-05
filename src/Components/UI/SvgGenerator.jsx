@@ -212,7 +212,6 @@ const SvgGenerator = ({ id, activeColor, color, click }) => {
 export default SvgGenerator
 
 const Icon = styled.div`
-   margin-left: ${(props) => props.id === "plus" && "58px"};
    svg {
       path {
          fill: ${(props) =>

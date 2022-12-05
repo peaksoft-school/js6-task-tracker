@@ -1,5 +1,5 @@
-import React, { useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import React from "react"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import WallpaperBoardCard from "../UI/WallpaperBoardCard"
@@ -7,18 +7,13 @@ import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateBoard from "./CreateBoard/CreateBoard"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
-import { getBoards, getBoardByIdQuery } from "../../store/boardSlice"
+import { getBoardByIdQuery } from "../../store/boardSlice"
 
 const Boards = ({ role }) => {
-   const { workspaceId } = useParams()
    const navigate = useNavigate()
    const dispatch = useDispatch()
    const { stateModal, toggle } = useOpenClose()
    const { showSideBar } = useSelector((state) => state.showSideBar)
-
-   useEffect(() => {
-      dispatch(getBoards(workspaceId))
-   }, [])
 
    const getBoardIdPlusNavigate = async (boardId) => {
       navigate(`${boardId}`)

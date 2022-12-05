@@ -1,4 +1,4 @@
-import plusIcon from "../../assets/icons/plus.svg"
+// import plusIcon from "../../assets/icons/plus.svg"
 import addPeopleIcon from "../../assets/icons/peopleGray.svg"
 import labelIcon from "../../assets/icons/label.svg"
 import attachmentIcon from "../../assets/icons/scripka.svg"
@@ -105,7 +105,6 @@ export const SideBarItems = [
    {
       id: 1,
       title: "Boards",
-      plusIcon,
       path: "boards",
    },
    {

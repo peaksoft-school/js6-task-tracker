@@ -7,7 +7,7 @@ import CreateWorkspaces from "./CreateWorkspace"
 import TableWorkspaces from "../TableWorkspaces"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
 
-const Workspaces = ({ getFavorites, role, getWorkspacesId }) => {
+const Workspaces = ({ getFavorites, role }) => {
    const { toggle, stateModal } = useOpenClose()
    return (
       <ContainerWorkspaces>
@@ -27,10 +27,7 @@ const Workspaces = ({ getFavorites, role, getWorkspacesId }) => {
             <Modal onClose={toggle} isOpen={stateModal === "true"}>
                <CreateWorkspaces toggle={toggle} />
             </Modal>
-            <TableWorkspaces
-               getWorkspacesId={getWorkspacesId}
-               getFavorites={getFavorites}
-            />
+            <TableWorkspaces getFavorites={getFavorites} />
          </BlockWorkspaces>
          <Outlet />
       </ContainerWorkspaces>

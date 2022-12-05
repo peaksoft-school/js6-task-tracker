@@ -36,13 +36,13 @@ export const createBoard = createAsyncThunk("create/board", async (value) => {
 export const addBoardToFavourites = createAsyncThunk(
    "board/favourites",
    async (value) => {
-      const { dispatch, id, workspaceId } = value
+      const { dispatch, id } = value
       try {
          dispatch(loadingToastifyAction())
          const { data } = await axiosInstance.put(
             `/api/boards/make-favorite/${id}`
          )
-         dispatch(getBoards(workspaceId))
+         dispatch(getBoards("26"))
          dispatch(getFavourites())
          if (data.isFavorite) {
             dispatch(

@@ -108,17 +108,11 @@ const SideBar = () => {
       )
    const renderSVGs = (item) =>
       item.id === 1 && (
-         <>
-            <SvgGenerator
-               activeColor={activeSideBar === item.path ? "true" : "false"}
-               id="plus"
-            />
-            <SvgGenerator
-               click={showSubMenuBoardsHandler(item)}
-               activeColor={activeSideBar === item.path ? "true" : "false"}
-               id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
-            />
-         </>
+         <SvgGenerator
+            click={showSubMenuBoardsHandler(item)}
+            activeColor={activeSideBar === item.path ? "true" : "false"}
+            id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
+         />
       )
    const renderSideBar = (item) => {
       if (!showSideBar && DropDown.id === item.id && DropDown.stateDropDown) {
@@ -202,12 +196,7 @@ const SideBar = () => {
             <Line top="200px" showSideBar={showSideBar} /> */}
             <ContainerNavItem>
                <SvgGenerator id={6} />
-               {showSideBar && (
-                  <>
-                     <span>Workspaces</span>
-                     <SvgGenerator id="plus" />
-                  </>
-               )}
+               {showSideBar && <span>Workspaces</span>}
             </ContainerNavItem>
             <ContainerWorkspaces>
                {workspaces.map((item) => {

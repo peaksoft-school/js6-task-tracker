@@ -42,7 +42,6 @@ export const addWorkspacesToFavourites = createAsyncThunk(
    "worskpaces/favourites",
    async (value) => {
       const { dispatch, id } = value
-      console.log(id)
       try {
          dispatch(loadingToastifyAction())
          const { data } = await axiosInstance.put(
@@ -61,7 +60,21 @@ export const addWorkspacesToFavourites = createAsyncThunk(
       }
    }
 )
-
+// ПОЛУЧИТЬ ОПРЕДЕЛННЫЙ WORKSPACES
+export const getWorkspacesId = createAsyncThunk(
+   "getWorkspace/ById",
+   async (value) => {
+      console.log("done")
+      const { id, navigate } = value
+      try {
+         const { data } = await axiosInstance.get(`/api/workspace/${id}`)
+         navigate(`/admin/workspaces/${data.id}/boards`)
+         return data
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+)
 // УДАЛИТЬ WORKSPACE
 export const deleteWorkspaceById = createAsyncThunk(
    "delete/workspaces",
@@ -86,11 +99,15 @@ export const workspacesSlice = createSlice({
    name: "workspaces",
    initialState: {
       workspaces: [],
+      workspaceById: {},
    },
    reducers: {},
    extraReducers: {
       [getAllWorkspaces.fulfilled]: (state, actions) => {
          state.workspaces = actions.payload
+      },
+      [getWorkspacesId.fulfilled]: (state, actions) => {
+         state.workspaceById = actions.payload
       },
    },
 })
