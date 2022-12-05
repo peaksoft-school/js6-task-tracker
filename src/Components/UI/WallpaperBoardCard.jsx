@@ -10,12 +10,13 @@ function WallpaperBoardCard({ getBoardById }) {
    const { workspaceId } = useParams()
    const dispatch = useDispatch()
    const { board } = useSelector((state) => state.boards)
+
    const addBoardToFavouritesHandler = (id) => {
       dispatch(addBoardToFavourites({ id, dispatch, workspaceId }))
    }
    return (
       <CardThemeBox>
-         {board.map((item) => {
+         {board?.map((item) => {
             return (
                <CardTheme backgroundImage={item.background} key={item.id}>
                   <Block onClick={() => getBoardById(item.id)}>
