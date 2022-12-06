@@ -1,16 +1,14 @@
-import { useState } from "react"
+import { useSearchParams } from "react-router-dom"
 
 const useOpenClose = () => {
-   const [isShowing, setIsShowing] = useState(false)
+   const [modalParams, setSearchParams] = useSearchParams()
 
-   function toggle() {
-      setIsShowing(!isShowing)
+   const stateModal = modalParams.get("showModal")
+   const toggle = (state) => {
+      setSearchParams({ showModal: state })
    }
 
-   return {
-      isShowing,
-      toggle,
-   }
+   return { stateModal, toggle }
 }
 
 export default useOpenClose

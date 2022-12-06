@@ -19,7 +19,7 @@ export const validationSchema = yup.object({
       .required("required field"),
    password: yup
       .string()
-      .min(5, "minimum 15 characters")
+      .min(6, "minimum 6 characters")
       .matches(passwordRules, {
          message: "think of a more complex password",
       })

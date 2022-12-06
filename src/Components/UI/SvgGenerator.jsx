@@ -203,7 +203,7 @@ const SvgGenerator = ({ id, activeColor, color, click }) => {
       )
    }
    return (
-      <Icon color={color} activeColor={activeColor}>
+      <Icon id={id} color={color} activeColor={activeColor}>
          {svg}
       </Icon>
    )
@@ -214,15 +214,18 @@ export default SvgGenerator
 const Icon = styled.div`
    svg {
       path {
-         fill: ${(props) => (props.activeColor ? "white" : "#919191")};
+         fill: ${(props) =>
+            props.activeColor === "true" ? "white" : "#919191"};
          fill: ${(props) => props.color && "white"};
       }
       rect {
-         fill: ${(props) => (props.activeColor ? "white" : "#919191")};
+         fill: ${(props) =>
+            props.activeColor === "true" ? "white" : "#919191"};
          fill: ${(props) => props.color && "white"};
       }
       line {
-         stroke: ${(props) => (props.activeColor ? "#3A688399" : "white")};
+         stroke: ${(props) =>
+            props.activeColor === "true" ? "#3A688399" : "white"};
          stroke: ${(props) => props.color && "white"};
       }
    }

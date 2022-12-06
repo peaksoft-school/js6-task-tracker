@@ -1,7 +1,4 @@
-import plusIcon from "../../assets/icons/plus.svg"
-import arrowDown from "../../assets/icons/arrowDown.svg"
-import iconWorkspaces from "../../assets/icons/iconWorkspaces.svg"
-import arrowUp from "../../assets/icons/ArrowUp.svg"
+// import plusIcon from "../../assets/icons/plus.svg"
 import addPeopleIcon from "../../assets/icons/peopleGray.svg"
 import labelIcon from "../../assets/icons/label.svg"
 import attachmentIcon from "../../assets/icons/scripka.svg"
@@ -44,6 +41,15 @@ export const Labels = [
 ]
 export const Columns = [
    {
+      id: 1,
+      titleColumn: "Придумать что-то чтобы измениь мир",
+   },
+   {
+      id: 2,
+      titleColumn: "Придумать что-то чтобы измениь мир",
+   },
+   {
+      id: 3,
       titleColumn: "Придумать что-то чтобы измениь мир",
    },
 ]
@@ -99,74 +105,19 @@ export const SideBarItems = [
    {
       id: 1,
       title: "Boards",
-      plusIcon,
+      path: "boards",
    },
    {
       id: 2,
       title: `Allissues`,
       amount: 267,
+      path: "allissues",
    },
    {
       id: 3,
       title: "Participants",
       amount: 7,
-   },
-   {
-      id: 5,
-      title: "Setting",
-   },
-   {
-      id: 6,
-      title: "Workspaces",
-      plusIcon,
-   },
-]
-export const Workspaces = [
-   {
-      id: 1,
-      title: "Accounting",
-      icon: iconWorkspaces,
-      arrowDown,
-      arrowUp,
-   },
-   {
-      id: 2,
-      title: "LMS",
-      icon: iconWorkspaces,
-      arrowDown,
-      arrowUp,
-      boards: [
-         {
-            id: 1,
-            title: "Title",
-         },
-         {
-            id: 2,
-            title: "Title",
-         },
-         {
-            id: 3,
-            title: "Title",
-         },
-         {
-            id: 4,
-            title: "Title",
-         },
-      ],
-   },
-   {
-      id: 3,
-      title: "Accounting",
-      icon: iconWorkspaces,
-      arrowDown,
-      arrowUp,
-   },
-   {
-      id: 4,
-      title: "LMS",
-      icon: iconWorkspaces,
-      arrowDown,
-      arrowUp,
+      path: "participants",
    },
 ]
 export const SubMenuItems = [

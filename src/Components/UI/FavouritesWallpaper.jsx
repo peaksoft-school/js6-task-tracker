@@ -7,9 +7,8 @@ import sadStar from "../../assets/svg/sadStar.svg"
 import { addWorkspacesToFavourites } from "../../store/workspacesSlice"
 import { addBoardToFavourites } from "../../store/boardSlice"
 
-function FavouritesWallpaper({ favourites, workspacesById }) {
+function FavouritesWallpaper({ favourites }) {
    const dispatch = useDispatch()
-
    const deleteWorkspacesInFavourites = (id, title) => {
       if (title === "WORKSPACE") {
          dispatch(addWorkspacesToFavourites({ id, dispatch }))
@@ -18,7 +17,6 @@ function FavouritesWallpaper({ favourites, workspacesById }) {
             addBoardToFavourites({
                id,
                dispatch,
-               workspaceId: workspacesById.id,
             })
          )
       }

@@ -32,7 +32,7 @@ const Card = ({ showInnerTaskCard }) => {
          </BlockLables>
          <TitleCard>Движение кылыш керек</TitleCard>
          <CustomIcons
-            click={showInnerTaskCard}
+            onClick={() => showInnerTaskCard("true")}
             edit="edit"
             src={EditIcon}
             position="absolute"

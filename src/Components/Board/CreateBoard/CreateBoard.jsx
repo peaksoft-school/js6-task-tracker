@@ -5,12 +5,12 @@ import styled from "styled-components"
 import { COLORS, BackImage } from "../../../utilits/constants/Constants"
 import Input from "../../UI/Input"
 import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
-import Button from "../../UI/Button"
 import { useActiveIndex } from "../../../utilits/hooks/useActiveIndex"
 import ImageBlock from "./ImageBlock"
 import ColorBlock from "./ColorBlock"
 import { createBoard } from "../../../store/boardSlice"
 import { useValidation } from "../../../utilits/hooks/useValidation"
+import ContainerButtons from "../../UI/ContainerButtons"
 
 function CreateBoard({ toggle }) {
    const dispatch = useDispatch()
@@ -35,7 +35,7 @@ function CreateBoard({ toggle }) {
       }
       if (readyData.title.trim().length > 0) {
          dispatch(createBoard({ readyData, dispatch }))
-         toggle()
+         toggle("false")
       }
       if (readyData.title.trim().length === 0) {
          validHandler(true)
@@ -91,21 +91,13 @@ function CreateBoard({ toggle }) {
             activeIndex={isActiveDropDown}
             COLORS={COLORS}
          />
-         <ContainerButton>
-            <Button
-               onClick={toggle}
-               active="none"
-               hover="none"
-               fullWidth="110px"
-               textColor=" #919191"
-               color="#F0F0F0"
-            >
-               Cancel
-            </Button>
-            <Button onClick={createWorkspacesHandler} fullWidth="140px">
-               Create Board
-            </Button>
-         </ContainerButton>
+         <ContainerButtons
+            clickGrayButton={() => toggle("false")}
+            clickBlueButton={createWorkspacesHandler}
+            titleBlueButton="Create Board"
+            titleGrayButton="Cancel"
+            paddingButton="0 20px 0 20px"
+         />
       </Container>
    )
 }
@@ -141,14 +133,6 @@ const Container = styled.div`
    }
    div {
       margin: 7px 0 7px 0;
-   }
-`
-const ContainerButton = styled.div`
-   height: 40px;
-   display: flex;
-   justify-content: flex-end;
-   button {
-      margin-left: 15px;
    }
 `
 const ErrorText = styled.p`

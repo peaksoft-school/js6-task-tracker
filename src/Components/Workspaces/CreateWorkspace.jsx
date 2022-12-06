@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import Button from "../UI/Button"
 import LabelTag from "../UI/LabelTag"
 import MemberEmails from "../UI/MemberEmails"
 import { createWorkspaces } from "../../store/workspacesSlice"
+import ContainerButtons from "../UI/ContainerButtons"
 
 const CreateWorkspaces = ({ toggle }) => {
    const dispatch = useDispatch()
@@ -32,7 +32,7 @@ const CreateWorkspaces = ({ toggle }) => {
          link,
       }
       dispatch(createWorkspaces({ readyData, dispatch }))
-      toggle()
+      toggle("false")
    }
 
    const getInputWorkspaceTitle = (e) => {
@@ -78,21 +78,13 @@ const CreateWorkspaces = ({ toggle }) => {
          </form>
 
          <LabelTag text="asdfas" />
-         <ButtonBlock>
-            <Button
-               onClick={toggle}
-               hover="none"
-               active="none"
-               textColor=" #919191"
-               color="#F0F0F0"
-               fullWidth="110px"
-            >
-               Cancel
-            </Button>
-            <Button type="submit" onClick={sendData} fullWidth="110px">
-               Create
-            </Button>
-         </ButtonBlock>
+         <ContainerButtons
+            clickGrayButton={() => toggle("false")}
+            clickBlueButton={sendData}
+            titleBlueButton="Create"
+            titleGrayButton="Cancel"
+            paddingButton="0 40px 0 40px"
+         />
       </>
    )
 }
@@ -107,14 +99,6 @@ const Label = styled.p`
    margin: 18px 0 8px 7px;
    color: #919191;
    font-size: 1.1rem;
-`
-const ButtonBlock = styled.div`
-   display: flex;
-   height: 40px;
-   justify-content: flex-end;
-   button {
-      margin-left: 8px;
-   }
 `
 const InputBlock = styled.div`
    border: 1px solid #afafaf;

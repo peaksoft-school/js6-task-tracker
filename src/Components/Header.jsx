@@ -17,9 +17,8 @@ import { useActiveIndex } from "../utilits/hooks/useActiveIndex"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 
-function Header({ workspacesById }) {
+function Header() {
    const { favourites, workspaces } = useSelector((state) => state)
-
    const dispatch = useDispatch()
    const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
    const [notification, setNotification] = useState([])
@@ -41,15 +40,15 @@ function Header({ workspacesById }) {
       getNotificationHandler()
    }, [])
 
+   const openDropDownFavouritesHandler = () => {
+      getActiveIndexHandler(isActiveDropDown !== "1" ? "1" : "0")
+   }
+
    return (
       <ParentDiv>
          <LeftBlock>
             <Logo src={TaskTracker} alt="" />
-            <OpenMenu
-               onClick={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "1" ? "1" : "0")
-               }
-            >
+            <OpenMenu onClick={openDropDownFavouritesHandler}>
                Favourites
                <span>
                   <span>(</span>
@@ -66,10 +65,7 @@ function Header({ workspacesById }) {
                width="380px"
                height="600px"
             >
-               <Favorite
-                  workspacesById={workspacesById}
-                  favourites={favourites.favourites}
-               />
+               <Favorite favourites={favourites.favourites} />
             </DropDown>
          </LeftBlock>
          <RightBlock>
@@ -130,7 +126,7 @@ const ParentDiv = styled.header`
    height: 78px;
    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
    background-color: white;
-   position: sticky;
+   position: fixed;
    top: 0;
    z-index: 200;
 `
