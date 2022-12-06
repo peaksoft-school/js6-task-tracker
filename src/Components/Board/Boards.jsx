@@ -6,14 +6,15 @@ import WallpaperBoardCard from "../UI/WallpaperBoardCard"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateBoard from "./CreateBoard/CreateBoard"
-import useOpenClose from "../../utilits/hooks/useOpenClose"
 import { getBoardByIdQuery } from "../../store/boardSlice"
+import useModalDropDown from "../../utilits/hooks/useModalDropDown"
 
 const Boards = ({ role }) => {
    const navigate = useNavigate()
    const dispatch = useDispatch()
-   const { stateModal, toggle } = useOpenClose()
    const { showSideBar } = useSelector((state) => state.showSideBar)
+   const { toggle, stateModal, activeDropDownInCreateBoard } =
+      useModalDropDown()
 
    const getBoardIdPlusNavigate = async (boardId) => {
       navigate(`${boardId}`)
@@ -27,7 +28,7 @@ const Boards = ({ role }) => {
                <h3>All Boards</h3>
                {role === "ADMIN" && (
                   <Button
-                     onClick={() => toggle("true")}
+                     onClick={() => toggle("true", "0")}
                      fullWidth="190px"
                      fullHeight="37px"
                   >
@@ -37,10 +38,13 @@ const Boards = ({ role }) => {
             </TitleButtonBlock>
             <Modal
                fullWidth="500px"
-               onClose={toggle}
+               onClose={() => toggle("false", "0")}
                isOpen={stateModal === "true"}
             >
-               <CreateBoard toggle={toggle} />
+               <CreateBoard
+                  activeDropDown={activeDropDownInCreateBoard}
+                  toggle={toggle}
+               />
             </Modal>
             <WallpaperBoardCard getBoardById={getBoardIdPlusNavigate} />
          </ContainerBoardsButton>

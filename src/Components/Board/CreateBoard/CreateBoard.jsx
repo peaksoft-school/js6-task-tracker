@@ -5,23 +5,21 @@ import styled from "styled-components"
 import { COLORS, BackImage } from "../../../utilits/constants/Constants"
 import Input from "../../UI/Input"
 import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
-import { useActiveIndex } from "../../../utilits/hooks/useActiveIndex"
 import ImageBlock from "./ImageBlock"
 import ColorBlock from "./ColorBlock"
 import { createBoard } from "../../../store/boardSlice"
 import { useValidation } from "../../../utilits/hooks/useValidation"
 import ContainerButtons from "../../UI/ContainerButtons"
 
-function CreateBoard({ toggle }) {
+function CreateBoard({ toggle, activeDropDown }) {
    const dispatch = useDispatch()
    const { workspaceId } = useParams()
    const initialValue =
       "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
 
    const [selectedBoard, setSelectedBoard] = useState(initialValue)
-   const [titleBoard, setTitleBoard] = useState("")
-   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
    const { isValid, validHandler } = useValidation()
+   const [titleBoard, setTitleBoard] = useState("")
 
    const selectedBoardHandler = (value) => {
       setSelectedBoard(value)
@@ -63,7 +61,7 @@ function CreateBoard({ toggle }) {
             <p>Photo</p>
             <p
                onClick={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "4" ? "4" : "0")
+                  toggle("true", activeDropDown !== "4" ? "4" : "0")
                }
             >
                See more
@@ -72,14 +70,14 @@ function CreateBoard({ toggle }) {
          <ImageBlock
             selectedBoardHandler={selectedBoardHandler}
             selectedBoard={selectedBoard}
-            activeIndex={isActiveDropDown}
+            activeIndex={activeDropDown}
             BackImage={BackImage}
          />
          <DisplayFlexJCSB>
             <p>Colors</p>
             <p
                onClick={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "5" ? "5" : "0")
+                  toggle("true", activeDropDown !== "5" ? "5" : "0")
                }
             >
                See more
@@ -88,11 +86,11 @@ function CreateBoard({ toggle }) {
          <ColorBlock
             selectedBoardHandler={selectedBoardHandler}
             selectedBoard={selectedBoard}
-            activeIndex={isActiveDropDown}
+            activeIndex={activeDropDown}
             COLORS={COLORS}
          />
          <ContainerButtons
-            clickGrayButton={() => toggle("false")}
+            clickGrayButton={() => toggle("false", "0")}
             clickBlueButton={createWorkspacesHandler}
             titleBlueButton="Create Board"
             titleGrayButton="Cancel"

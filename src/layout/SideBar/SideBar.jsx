@@ -191,9 +191,6 @@ const SideBar = () => {
                   closeModal={() => setShowModal(false)}
                />
             </Modal>
-            {/* <Line top="5px" showSideBar={showSideBar} />
-            <Line top="62px" showSideBar={showSideBar} />
-            <Line top="200px" showSideBar={showSideBar} /> */}
             <ContainerNavItem>
                <SvgGenerator id={6} />
                {showSideBar && <span>Workspaces</span>}
@@ -378,12 +375,3 @@ const ContainerWorkspaces = styled.ul`
    max-height: 42vh;
    overflow: scroll;
 `
-// const Line = styled.div`
-//    position: absolute;
-//    top: ${(props) => props.top};
-//    left: 33px;
-//    width: ${(props) => (props.showSideBar ? "180px" : "35px")};
-//    height: 1px;
-//    background-color: white;
-//    transition: all 0.35s ease-out;
-// `

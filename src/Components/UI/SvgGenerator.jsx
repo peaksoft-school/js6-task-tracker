@@ -215,12 +215,12 @@ const Icon = styled.div`
    svg {
       path {
          fill: ${(props) =>
-            props.activeColor === "true" ? "white" : "#919191"};
+            props.activeColor === "true" ? "white" : "#737272"};
          fill: ${(props) => props.color && "white"};
       }
       rect {
          fill: ${(props) =>
-            props.activeColor === "true" ? "white" : "#919191"};
+            props.activeColor === "true" ? "white" : "#6f6e6e"};
          fill: ${(props) => props.color && "white"};
       }
       line {

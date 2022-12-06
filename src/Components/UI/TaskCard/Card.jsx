@@ -58,12 +58,12 @@ const Card = ({ showInnerTaskCard }) => {
 
 export default Card
 
-const StyledCard = styled.p`
+const StyledCard = styled.div`
    position: relative;
    width: 100%;
    border-radius: 4px;
    border: none;
-   padding: 0.6rem;
+   padding: 13px 3px 13px 3px;
    margin: 0 0 5px 0;
    font-size: 18px !important;
    background-color: white;
@@ -91,9 +91,9 @@ const StyledCard = styled.p`
    }
 `
 const Label = styled.label`
-   width: ${(props) => !props.showLabel && "4.8vw"};
-   height: ${(props) => !props.showLabel && "1vh"};
-   padding: ${(props) => props.showLabel && "2px 5px"};
+   width: ${(props) => !props.showLabel && "4vw"};
+   height: ${(props) => !props.showLabel && "0.6vh"};
+   padding: ${(props) => props.showLabel && "1px 7px"};
    background-color: ${(props) => props.color};
    font-size: 14px;
    cursor: pointer;
@@ -105,14 +105,12 @@ const Label = styled.label`
    -o-transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
    transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
 `
-
 const BlockLables = styled.div`
    display: flex;
    flex-wrap: wrap;
    gap: 6px;
    margin-bottom: 10px;
 `
-
 const TitleCard = styled.h2`
    font-size: 1.2rem;
    margin: 0.8rem 0.3rem;

@@ -1,34 +1,90 @@
 /* eslint-disable no-undef */
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import TaskCard from "../UI/TaskCard/TaskCard"
-import EditIcon from "../../assets/icons/Icon Shape (1).svg"
-import CustomIcons from "../UI/TaskCard/CustomIcons"
 import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
 import Modal from "../UI/Modal"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
 import { getBoardByIdQuery } from "../../store/boardSlice"
+import CustomIcons from "../UI/TaskCard/CustomIcons"
+import EditIcon from "../../assets/icons/Icon Shape (1).svg"
+import openMenu from "../../assets/icons/openMenu.svg"
+import star from "../../assets/icons/star.svg"
+import { axiosInstance } from "../../api/axiosInstance"
+import {
+   loadingToastifyAction,
+   errorToastifyAction,
+   successToastifyAction,
+} from "../../store/toastifySlice"
 
 const InnerBoard = () => {
    const { showSideBar, boards } = useSelector((state) => state)
    const { stateModal, toggle } = useOpenClose()
    const { boardId } = useParams()
    const dispatch = useDispatch()
+   const [columns, setColumns] = useState([])
 
    useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
    }, [])
 
+   // ПОЛУЧИТЬ КОЛОНЫ ИЗ БАЗА ДАННЫХ
+   const getColumnsInDataBase = async (id) => {
+      try {
+         const { data } = await axiosInstance.get(
+            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/column/${id}`
+         )
+         return setColumns(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // СОЗДАТЬ НОВУЮ КОЛОНУ
+   const createNewColumn = async (nameNewColumn) => {
+      try {
+         dispatch(loadingToastifyAction())
+         const { data } = await axiosInstance.post("/api/column", {
+            columnName: nameNewColumn,
+            boardId,
+         })
+         getColumnsInDataBase(boardId)
+         return dispatch(
+            successToastifyAction(`Your created column ${data.columnName}`)
+         )
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+
+   useEffect(() => {
+      getColumnsInDataBase(boardId)
+   }, [createNewColumn])
+
    return (
       <Container backgroundImage={boards.boardById.background}>
          <ContainerInfoBoardColumn showSideBar={showSideBar.showSideBar}>
             <InfoBoard>
-               <CustomIcons edit="edit" src={EditIcon} top="15px" right="7px" />
+               <LeftBlock>
+                  <CustomIcons top="3px" position="absolute" src={EditIcon} />
+                  <h3>{boards.boardById.title}</h3>
+                  <p>
+                     Columns: <span>24</span>
+                  </p>
+               </LeftBlock>
+               <RightBlock>
+                  <img src={star} alt="star" />
+                  <img src={openMenu} alt="open menu" />
+               </RightBlock>
             </InfoBoard>
             <ContainerColumns>
-               <TaskCard openInnerTaskCard={toggle} />
+               <TaskCard
+                  createColumn={createNewColumn}
+                  changeColumn={setColumns}
+                  columns={columns}
+                  openInnerTaskCard={toggle}
+               />
                <Modal
                   isOpen={stateModal === "true"}
                   onClose={toggle}
@@ -59,6 +115,9 @@ const InfoBoard = styled.div`
    width: 100%;
    height: 13vh;
    margin-top: 80px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
 `
 const ContainerColumns = styled.div`
    width: 100%;
@@ -72,4 +131,26 @@ const ContainerInfoBoardColumn = styled.div`
    width: ${(props) => (props.showSideBar ? "78%" : "90%")};
    transition: all 0.35s ease-out;
    height: 100%;
+`
+const LeftBlock = styled.div`
+   color: white;
+   position: relative;
+   margin-left: 20px;
+   h3 {
+      display: inline-block;
+      margin-left: 30px;
+      font-weight: 500;
+      font-size: 1.4rem;
+   }
+   span {
+      background-color: gray;
+      padding: 0 8px 0 8px;
+      border-radius: 10px;
+   }
+`
+const RightBlock = styled.div`
+   display: flex;
+   width: 40%;
+   justify-content: space-between;
+   margin-right: 30px;
 `
