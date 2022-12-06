@@ -18,6 +18,7 @@ import arrowDown from "../../assets/icons/arrowDown.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
 import Modal from "../../Components/UI/Modal"
 import Settings from "./Settings"
+import { getWorkspacesId } from "../../store/workspacesSlice"
 
 const SideBar = () => {
    const { workspaceId, boardId } = useParams()
@@ -39,15 +40,11 @@ const SideBar = () => {
       dispatch(getBoards(workspaceId))
    }, [])
 
-   const goBackHandle = () => {
-      if (pathname === `/admin/workspaces/${workspaceId}/boards`)
-         navigate("/admin/allWorkspaces")
-      else if (
-         pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
-      )
-         navigate(`/admin/workspaces/${workspaceId}/boards`)
-      dispatch(clearBoardById())
+   // CLICKS DROP DOWN AND SUB MENU
+   const getWorkspacesIdHandler = (id) => {
+      dispatch(getWorkspacesId({ id, navigate, dispatch }))
    }
+   // SUB MENU
    const showSubMenuHandler = (item) => {
       return () => {
          setShowSubMenuBoards({})
@@ -62,6 +59,17 @@ const SideBar = () => {
          }))
       }
    }
+   // КНОПКА НАЗАД
+   const goBackHandle = () => {
+      if (pathname === `/admin/workspaces/${workspaceId}/boards`)
+         navigate("/admin/allWorkspaces")
+      else if (
+         pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
+      )
+         navigate(`/admin/workspaces/${workspaceId}/boards`)
+      dispatch(clearBoardById())
+   }
+   // CLICK SIDE BAR ITEMS
    const onClickSideBarItem = (path) => {
       setActiveSideBar(path)
       setShowSubMenu({})
@@ -69,6 +77,7 @@ const SideBar = () => {
    const showSideBarHandler = () => {
       dispatch(showSideBarAction())
    }
+   // DROP DOWN CLICKS
    const onMouseOverHandler = (id) => {
       if (showSideBar) {
          return
@@ -100,6 +109,21 @@ const SideBar = () => {
          }
       })
    }
+   const renderSideBar = (item) => {
+      if (!showSideBar && DropDown.id === item.id && DropDown.stateDropDown) {
+         return (
+            <DropDownSideBar
+               state={DropDown.stateDropDown}
+               setStateDropDown={setDropDown}
+               nameWorkspaces={item.name}
+               onMouseLeave={() => onMouseLeaveFromContainerHandler(item.id)}
+               clickBoards={() => getWorkspacesIdHandler(item.id)}
+            />
+         )
+      }
+
+      return null
+   }
    const renderHeaderSideBar = () =>
       showSideBar ? (
          <IconButton onClick={goBackHandle} iconSvg={arrowRight} />
@@ -114,20 +138,6 @@ const SideBar = () => {
             id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
          />
       )
-   const renderSideBar = (item) => {
-      if (!showSideBar && DropDown.id === item.id && DropDown.stateDropDown) {
-         return (
-            <DropDownSideBar
-               state={DropDown.stateDropDown}
-               setStateDropDown={setDropDown}
-               nameWorkspaces={item.name}
-               onMouseLeave={() => onMouseLeaveFromContainerHandler(item.id)}
-            />
-         )
-      }
-
-      return null
-   }
    const placeOfWorkSpace = workspaces.filter(
       (item) => item.id === +workspaceId
    )
@@ -149,6 +159,9 @@ const SideBar = () => {
             {SideBarItems.map((item, index) => {
                return (
                   <SideBarItem stateSideBar={showSideBar} key={item.id}>
+                     {item.id === 1 ? (
+                        <Line stateSideBar={showSideBar} />
+                     ) : null}
                      <SideBarTitleBlock
                         onClick={() => onClickSideBarItem(item.path)}
                         active={activeSideBar === item.path ? "true" : "false"}
@@ -178,6 +191,9 @@ const SideBar = () => {
                      {activeSideBar === item.path &&
                         showSideBar &&
                         showSubMenuBoards[item.id] && <SubMenuBoards />}
+                     {item.id === 1 ? (
+                        <Line stateSideBar={showSideBar} />
+                     ) : null}
                   </SideBarItem>
                )
             })}
@@ -191,46 +207,56 @@ const SideBar = () => {
                   closeModal={() => setShowModal(false)}
                />
             </Modal>
-            <ContainerNavItem>
+            <Line stateSideBar={showSideBar} marginLeft />
+            <ContainerNavItem to="/admin/allWorkspaces">
                <SvgGenerator id={6} />
                {showSideBar && <span>Workspaces</span>}
             </ContainerNavItem>
             <ContainerWorkspaces>
-               {workspaces.map((item) => {
-                  return (
-                     <WorkspacesItem
-                        stateSideBar={showSideBar}
-                        key={item.id}
-                        workspacesHover
-                        onMouseEnter={() => onMouseOverHandler(item.id)}
-                        onMouseLeave={() =>
-                           onMouseLeaveFormMenuHandler(item.id)
-                        }
-                     >
-                        <SideBarTitleBlock
-                           onClick={showSubMenuHandler(item)}
+               {workspaces
+                  .filter((item) => item.id !== +workspaceId)
+                  .map((item) => {
+                     return (
+                        <WorkspacesItem
                            stateSideBar={showSideBar}
+                           key={item.id}
                            workspacesHover
+                           onMouseEnter={() => onMouseOverHandler(item.id)}
+                           onMouseLeave={() =>
+                              onMouseLeaveFormMenuHandler(item.id)
+                           }
                         >
-                           {renderSideBar(item)}
+                           <SideBarTitleBlock
+                              onClick={showSubMenuHandler(item)}
+                              stateSideBar={showSideBar}
+                              workspacesHover
+                           >
+                              <ContainerNavItem>
+                                 <p>{item.name.toUpperCase().charAt(0)}</p>
+                                 {showSideBar ? <span>{item.name}</span> : null}
+                              </ContainerNavItem>
 
-                           <ContainerNavItem>
-                              <p>{item.name.charAt(0)}</p>
-                              {showSideBar ? <span>{item.name}</span> : null}
-                           </ContainerNavItem>
-
-                           {showSideBar ? (
-                              <CustomIcons
-                                 src={
-                                    showSubMenu[item.id] ? arrowUp : arrowDown
+                              {showSideBar ? (
+                                 <CustomIcons
+                                    src={
+                                       showSubMenu[item.id]
+                                          ? arrowUp
+                                          : arrowDown
+                                    }
+                                 />
+                              ) : null}
+                           </SideBarTitleBlock>
+                           {showSideBar && showSubMenu[item.id] && (
+                              <SubMenu
+                                 clickBoards={() =>
+                                    getWorkspacesIdHandler(item.id)
                                  }
                               />
-                           ) : null}
-                        </SideBarTitleBlock>
-                        {showSideBar && showSubMenu[item.id] && <SubMenu />}
-                     </WorkspacesItem>
-                  )
-               })}
+                           )}
+                           {renderSideBar(item)}
+                        </WorkspacesItem>
+                     )
+                  })}
             </ContainerWorkspaces>
          </ul>
       </StyledContainerSideBar>
@@ -314,11 +340,9 @@ const SideBarItem = styled.li`
    align-items: center;
    cursor: pointer;
    &:first-child {
-      padding-top: 0.9rem;
       flex-direction: column !important;
    }
    &:nth-child(2) {
-      margin-top: 1.25rem;
       padding-top: 1rem;
    }
 `
@@ -373,5 +397,18 @@ const ShowSideBarButton = styled.img`
 const ContainerWorkspaces = styled.ul`
    margin-bottom: 30px;
    max-height: 42vh;
-   overflow: scroll;
+`
+const Line = styled.hr`
+   width: ${(props) => (props.stateSideBar ? "180px" : "45px")};
+   border: 1px solid white;
+   margin-left: ${(props) => (props.marginLeft ? "28px" : "")};
+   margin-right: ${(props) =>
+      !props.marginLeft && props.stateSideBar ? "27px" : "10px"};
+   transition: all 0.35s ease-out;
+   &:first-child {
+      margin-bottom: 10px;
+   }
+   &:last-child {
+      margin-top: 10px;
+   }
 `

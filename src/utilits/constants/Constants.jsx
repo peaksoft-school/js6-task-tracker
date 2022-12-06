@@ -112,23 +112,6 @@ export const SideBarItems = [
       path: "participants",
    },
 ]
-export const SubMenuItems = [
-   {
-      iconId: 1,
-      title: "Boards",
-      iconPlus: "plus",
-      iconArrowDown: "arrowDown",
-   },
-   {
-      iconId: 3,
-      title: "Paricipants",
-      amount: 7,
-   },
-   {
-      iconId: 5,
-      title: "Setting",
-   },
-]
 export const GrayButtonsInnerTaskCard = [
    {
       id: 1,

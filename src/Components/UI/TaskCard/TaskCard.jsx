@@ -22,6 +22,7 @@ const TaskCard = ({
    createColumn,
 }) => {
    const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
+
    const titleColumnHandler = ({ target: { name, value } }) => {
       const newColumns = [...columns]
       newColumns[name].columnName = value
