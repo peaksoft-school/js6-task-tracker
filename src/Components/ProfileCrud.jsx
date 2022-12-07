@@ -18,6 +18,7 @@ import { successToastify } from "../utilits/helpers/reactToastifyHelpers"
 function ProfileCrud() {
    const [profileData, setProfileData] = useState({})
    const [open, setOpen] = useState(false)
+   const [selectedFile, setSelectedFile] = useState(null)
    const [src, setSrc] = useState(null)
    const [preview, setPreview] = useState(null)
    const [modalActive, setModalActive] = useState(false)
@@ -31,10 +32,26 @@ function ProfileCrud() {
          confirmPassword: "",
       },
       validationSchema,
-      onSubmit: async (userInfo) => {
+      onSubmit: async (userInfo, onSubmitProps) => {
+         const formData = new FormData()
+         formData.append("firstName", userInfo.firstName)
+         formData.append("lastName", userInfo.lastName)
+         formData.append("email", userInfo.email)
+         formData.append("password", userInfo.password)
+         formData.append("confirmPassword", userInfo.confirmPassword)
+         formData.append("confirmPassword", userInfo.image)
+
          await axiosInstance
             .put("api/profile", userInfo)
-            .then(() => successToastify(23, "success"))
+            .then(() => {
+               successToastify(23, "success")
+               onSubmitProps.resetForm()
+               // formik.setValues((prev) => ({
+               //    ...prev,
+               //    password: "",
+               //    confirmPassword: "",
+               // }))
+            })
             .catch((err) => console.log(err))
 
          console.log(userInfo)
@@ -59,7 +76,7 @@ function ProfileCrud() {
          }
       })()
    }, [])
-   console.log(preview)
+
    const onClose = () => {
       setPreview(null)
    }
@@ -70,6 +87,16 @@ function ProfileCrud() {
    const onRemove = () => {
       setPreview(null)
    }
+
+   const onSelectFile = (elem) => {
+      if (!elem.target.files || elem.target.files.length === 0) {
+         setSelectedFile(undefined)
+         return
+      }
+      console.log(elem)
+      setSelectedFile(elem.target.files[0])
+   }
+   console.log(selectedFile)
    return (
       <Container>
          <TopBox>
@@ -79,6 +106,7 @@ function ProfileCrud() {
          <MidBox>
             <div className="profile">
                <Avatar
+                  onBeforeFileLoad={onSelectFile}
                   onClick={() => setOpen(!open)}
                   src={preview}
                   editIcon={Pen}
