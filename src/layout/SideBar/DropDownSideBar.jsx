@@ -1,28 +1,31 @@
 import React from "react"
 import styled from "styled-components"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
-import { SubMenuItems } from "../../utilits/constants/Constants"
 
 const DropDownSideBar = ({
    nameWorkspaces,
    onMouseEnter,
    onMouseLeave,
-   onClickSubMenuItems,
+   clickBoards,
 }) => {
    return (
       <DropDownContainer>
          <p>{nameWorkspaces}</p>
          <DropDownBlock onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            {SubMenuItems.map((item) => {
-               return (
-                  <li key={item.title} onClick={() => onClickSubMenuItems}>
-                     <SvgGenerator color="white" id={item.iconId} />
-                     <span>{item.title}</span>
-                     <SvgGenerator color="white" id={item.iconPlus} />
-                     <SvgGenerator color="white" id={item.iconArrowDown} />
-                  </li>
-               )
-            })}
+            <li onClick={clickBoards}>
+               <SvgGenerator color="white" id={1} />
+               <span>Boards</span>
+               <SvgGenerator color="white" id="plus" />
+               <SvgGenerator color="white" id="arrowDown" />
+            </li>
+            <li>
+               <SvgGenerator color="white" id={3} />
+               <span>Participants</span>
+            </li>
+            <li>
+               <SvgGenerator color="white" id={5} />
+               <span>Setting</span>
+            </li>
          </DropDownBlock>
       </DropDownContainer>
    )
@@ -41,7 +44,7 @@ const DropDownContainer = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
-   z-index: 1;
+   z-index: 300;
    p {
       width: 97px;
       font-size: 12px;
@@ -55,8 +58,8 @@ const DropDownContainer = styled.div`
 
 const DropDownBlock = styled.div`
    position: relative;
-   width: 180px;
-   height: 95px;
+   width: 17vw;
+   height: 17vh;
    background-color: #222222;
    border-radius: 15px;
    padding: 15px;

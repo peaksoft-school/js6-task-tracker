@@ -1,74 +1,70 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
-import IconButton from "./IconButton"
+import { useDispatch } from "react-redux"
+import CustomIcons from "./TaskCard/CustomIcons"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
-import ReusableDropDown from "./ReusableDropDown"
-import openMenuIcon from "../../assets/icons/Favouritesmenuicon.svg"
+import sadStar from "../../assets/svg/sadStar.svg"
+import { addWorkspacesToFavourites } from "../../store/workspacesSlice"
+import { addBoardToFavourites } from "../../store/boardSlice"
 
-function FavouritesWallpaper({ listBoard }) {
-   const [favourites, setFavourites] = useState(listBoard)
-   const [open, setOpen] = useState(true)
-
-   const removeFavourites = (id) => {
-      const removeItem = favourites.filter((item) => item.id !== id)
-      setFavourites(removeItem)
+function FavouritesWallpaper({ favourites }) {
+   const dispatch = useDispatch()
+   const deleteWorkspacesInFavourites = (id, title) => {
+      if (title === "WORKSPACE") {
+         dispatch(addWorkspacesToFavourites({ id, dispatch }))
+      } else if (title === "BOARD") {
+         dispatch(
+            addBoardToFavourites({
+               id,
+               dispatch,
+            })
+         )
+      }
    }
 
    return (
-      <>
-         <OpenMenu onClick={() => setOpen(!open)}>
-            Favourites <span>({favourites.length})</span>
-            <img src={openMenuIcon} alt="Icon" />
-         </OpenMenu>
-
-         {open && (
-            <ReusableDropDown showState width="351px">
-               <Container>
-                  <h3>Favourites </h3>
-                  {favourites.map((item) => (
-                     <Card key={item.id}>
-                        {item.url && <Wallpaper src={item.url} />}
-                        <TitleBox>
-                           <Title>{item.titleCard}</Title>
-                           <Name>{item.nameBoard}</Name>
-                        </TitleBox>
-                        <IconBox>
-                           <IconButton
-                              onClick={() => removeFavourites(item.id)}
-                              width="17px"
-                              height="17px"
-                              iconSvg={FavouritesIcon}
-                           />
-                        </IconBox>
-                     </Card>
-                  ))}
-               </Container>
-            </ReusableDropDown>
+      <Container>
+         {favourites.length === 0 ? (
+            <Empty>
+               <p>Favorites empty</p>
+               <CustomIcons src={sadStar} />
+            </Empty>
+         ) : (
+            <h3>Favourites</h3>
          )}
-      </>
+         {favourites.map((item) => {
+            return (
+               <Card key={item.id}>
+                  {item.background !== "The workspace can not have photo" && (
+                     <Wallpaper backgroundImage={item.background} />
+                  )}
+                  <TitleBox>
+                     <p>{item.name}</p>
+                     <p>{item.workspaceOrBoard}</p>
+                  </TitleBox>
+                  <CustomIcons
+                     onClick={() =>
+                        deleteWorkspacesInFavourites(
+                           item.id,
+                           item.workspaceOrBoard
+                        )
+                     }
+                     src={FavouritesIcon}
+                  />
+               </Card>
+            )
+         })}
+      </Container>
    )
 }
 
 export default FavouritesWallpaper
-const OpenMenu = styled.div`
-   position: relative;
-   width: 102px;
-   height: 20px;
-   font-weight: 500;
-   display: flex;
-   align-items: center;
-   gap: 5px;
-   cursor: pointer;
-   img {
-      position: absolute;
-      right: -15px;
-   }
-`
 
 const Container = styled.div`
    margin: auto;
+   overflow: scroll;
    width: 100%;
-   height: 100%;
+   max-height: 600px;
    display: flex;
    flex-direction: column;
    gap: 16px;
@@ -83,49 +79,40 @@ const Container = styled.div`
       text-align: center;
    }
 `
-
 const Card = styled.div`
-   line-height: 16px;
-   position: relative;
-   width: 321px;
-   height: 38px;
-   gap: 10px;
    display: flex;
-   margin: 0 auto;
+   align-items: center;
+   justify-content: space-between;
+   width: 341px;
+   height: 50px;
    border-radius: 8px;
-   background-color: white;
 `
-const Wallpaper = styled.img`
-   width: 84px;
-   height: 38px;
+const Wallpaper = styled.div`
+   width: 100px;
+   background-image: url(${(props) => props.backgroundImage});
+   background: ${(props) => props.backgroundImage};
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: 40px;
    border-radius: 8px;
 `
 const TitleBox = styled.div`
-   width: 227px;
-   height: 38px;
-   line-height: 20px;
+   width: 200px;
    p {
-      margin: 0;
+      &:last-child {
+         box-sizing: border-box;
+         color: #919191;
+      }
    }
 `
-
-const Title = styled.p`
-   font-size: 16px;
-   box-sizing: border-box;
-   font-weight: 400;
-   font-style: normal;
-`
-const Name = styled.p`
-   font-size: 14px;
-   box-sizing: border-box;
-   color: #919191;
-`
-const IconBox = styled.span`
-   position: absolute;
-   right: -7px;
-   height: 38px;
+const Empty = styled.div`
+   text-align: center;
+   p {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+   }
    img {
-      position: absolute;
-      top: 10.5px;
+      width: 100px;
+      height: 100px;
    }
 `

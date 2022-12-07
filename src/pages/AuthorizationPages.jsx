@@ -19,7 +19,7 @@ const AuthorizationPages = () => {
    const params = useParams()
    const { isLoading } = useSelector((state) => state.auth)
    const { pathname } = useLocation()
-   const IamInRegistration = pathname === "/"
+   const IamInRegistration = pathname === "/signup"
 
    const authWithGoogleHandler = () => {
       dispatch(authWithGoogle({ navigate }))
@@ -33,7 +33,7 @@ const AuthorizationPages = () => {
          <ContainerForm>
             {typeof params.id === "undefined" && (
                <>
-                  <Title> {IamInRegistration ? "Sign In" : "Sign Up"} </Title>
+                  <Title> {IamInRegistration ? "Sign Up" : "Sign Up"} </Title>
                   <AuthWithGoogleButton onClick={authWithGoogleHandler} />
 
                   <TextOr>or</TextOr>
@@ -47,7 +47,7 @@ const AuthorizationPages = () => {
                   {IamInRegistration
                      ? "You already have an account?"
                      : "Not a member?"}
-                  <Link to={IamInRegistration ? "/login" : "/"}>
+                  <Link to={IamInRegistration ? "/login" : "/signup"}>
                      {IamInRegistration ? "Log in" : "Sign up now"}
                   </Link>
                </NavigationText>
@@ -108,4 +108,5 @@ const NavigationText = styled.p`
 `
 const AuthWithGoogleButton = styled(GoogleButton)`
    border: 5px solid red;
+   margin-top: 10px;
 `

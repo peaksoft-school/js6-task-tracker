@@ -20,7 +20,7 @@ const CssTextField = styled(TextField)({
    "& .MuiOutlinedInput-root": {
       "& fieldset": {
          border: "1px solid #BDBDBD",
-         borderRadius: 3,
+         borderRadius: 13,
       },
       "&:hover fieldset": {
          border: "1px solid #0079BF",
@@ -34,7 +34,6 @@ const CssTextField = styled(TextField)({
 export default function Input({ label, type, id, ref, ...other }) {
    return (
       <CssTextField
-         ref={ref}
          {...other}
          fullWidth
          size="small"
