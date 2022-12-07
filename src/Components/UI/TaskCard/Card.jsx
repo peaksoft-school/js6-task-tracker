@@ -1,16 +1,17 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react"
 import styled from "styled-components"
 import CustomIcons from "./CustomIcons"
+import { Labels } from "../../../utilits/constants/Constants"
 import EditIcon from "../../../assets/icons/Icon Shape (1).svg"
 import comentIcon from "../../../assets/icons/Comment.svg"
-import { Labels } from "../../../utilits/constants/Constants"
 import timeIcon from "../../../assets/icons/Real World Icon.svg"
 import descriptionIcon from "../../../assets/icons/Typography Icon (1).svg"
 import peopleIcon from "../../../assets/icons/people.svg"
 import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
-import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
+import DisplayFlex from "../../../layout/DisplayFlex"
 
-const Card = ({ showInnerTaskCard }) => {
+const Card = ({ showInnerTaskCard, cards }) => {
    const [showLabel, setShowLabel] = useState(false)
    const showLabelHandler = () => {
       setShowLabel(!showLabel)
@@ -18,7 +19,7 @@ const Card = ({ showInnerTaskCard }) => {
 
    return (
       <StyledCard>
-         <BlockLables>
+         <DisplayFlex margin="5px" FW="wrap" gap="5px">
             {Labels.map((item) => (
                <Label
                   showLabel={showLabel}
@@ -26,11 +27,11 @@ const Card = ({ showInnerTaskCard }) => {
                   onClick={showLabelHandler}
                   color={item.color}
                >
-                  {showLabel ? item.text : ""}
+                  {showLabel ? item.text : null}
                </Label>
             ))}
-         </BlockLables>
-         <TitleCard>Движение кылыш керек</TitleCard>
+         </DisplayFlex>
+         <TitleCard>{cards.title}</TitleCard>
          <CustomIcons
             onClick={() => showInnerTaskCard("true")}
             edit="edit"
@@ -39,19 +40,27 @@ const Card = ({ showInnerTaskCard }) => {
             top="15px"
             right="7px"
          />
-         <DisplayFlexJCSB>
+         <DisplayFlex padding="4px" JK="space-between">
             <p>
                <CustomIcons src={timeIcon} /> 2 month
             </p>
-            <DisplayFlexJCSB width="160px">
+            <DisplayFlex JK="flex-end" gap="10px">
                <CustomIcons src={descriptionIcon} />
                <CustomIcons src={comentIcon} />
                <CustomIcons src={completeIcon} />
-               <span>1/3</span>
-               <CustomIcons src={peopleIcon} />
-               <span>5</span>
-            </DisplayFlexJCSB>
-         </DisplayFlexJCSB>
+               {cards.numberOfSubTasks === 0 ? (
+                  <span>
+                     {cards.numberOfCompletedSubTask}/{cards.numberOfSubTasks}
+                  </span>
+               ) : null}
+               {cards.numberOfMembers === 0 ? (
+                  <>
+                     <CustomIcons src={peopleIcon} />
+                     <span>{cards.numberOfMembers}</span>
+                  </>
+               ) : null}
+            </DisplayFlex>
+         </DisplayFlex>
       </StyledCard>
    )
 }
@@ -63,9 +72,9 @@ const StyledCard = styled.div`
    width: 100%;
    border-radius: 4px;
    border: none;
-   padding: 13px 3px 13px 3px;
+   padding: 5px 3px 5px 3px;
    margin: 0 0 5px 0;
-   font-size: 18px !important;
+   font-size: 1rem !important;
    background-color: white;
    margin-top: 10px;
    &:hover {
@@ -104,12 +113,6 @@ const Label = styled.label`
    -moz-transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
    -o-transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
    transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
-`
-const BlockLables = styled.div`
-   display: flex;
-   flex-wrap: wrap;
-   gap: 6px;
-   margin-bottom: 10px;
 `
 const TitleCard = styled.h2`
    font-size: 1.2rem;

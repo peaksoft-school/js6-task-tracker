@@ -2,14 +2,17 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
-import actionTrueSvg from "../assets/icons/actionTrue.svg"
-import actionFalseSvg from "../assets/icons/actionFalse.svg"
-import UserAvatar from "./UI/UserAvatar"
-import avatar from "../assets/svg/userAvatar.svg"
+import actionTrueSvg from "../../assets/icons/actionTrue.svg"
+import actionFalseSvg from "../../assets/icons/actionFalse.svg"
+import UserAvatar from "../UI/UserAvatar"
+import avatar from "../../assets/svg/userAvatar.svg"
 import {
    addWorkspacesToFavourites,
    getWorkspacesId,
-} from "../store/workspacesSlice"
+} from "../../store/workspacesSlice"
+import LoadingSpinner from "../UI/LoadingSpinner"
+import TextForEmpty from "../UI/TextForEmpty"
+import empty from "../../assets/images/emptyBox.webp"
 
 const TableWorkspaces = () => {
    const dispatch = useDispatch()
@@ -35,9 +38,22 @@ const TableWorkspaces = () => {
             </tr>
          </thead>
 
+         {workspaces.loading && workspaces.workspaces.length === 0 ? (
+            <LoadingSpinner top="28%" left="46%" />
+         ) : null}
+
+         {!workspaces.loading && workspaces.workspaces.length === 0 ? (
+            <>
+               <TextForEmpty top="30%" left="41%">
+                  You don t have workspaces
+               </TextForEmpty>
+               <EmptyBox src={empty} alt="empty box" />
+            </>
+         ) : null}
+
          {workspaces.workspaces.map((item, index) => {
             return (
-               <thead key={item.id}>
+               <tbody key={item.id}>
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
                      <td>{index}</td>
                      <td onClick={() => getWorkspaceByIdPlusNavigate(item.id)}>
@@ -58,7 +74,7 @@ const TableWorkspaces = () => {
                         />
                      </td>
                   </WorkspacesItem>
-               </thead>
+               </tbody>
             )
          })}
       </Table>
@@ -79,6 +95,9 @@ const Table = styled.table`
       &:first-child {
          padding-left: 20px;
       }
+      &:nth-child(2) {
+         padding-left: 12px;
+      }
    }
    th:last-child,
    td:last-child {
@@ -91,6 +110,7 @@ const Table = styled.table`
    }
    td:nth-child(2) {
       width: 60vw;
+      padding-left: 12px;
       span {
          color: #0073de;
          cursor: pointer;
@@ -117,4 +137,12 @@ const Table = styled.table`
 const WorkspacesItem = styled.tr`
    height: 50px;
    background-color: ${({ itemIndex }) => itemIndex && "#F3F3F3;"};
+`
+const EmptyBox = styled.img`
+   position: absolute;
+   left: 41%;
+   top: 28%;
+   width: 250px;
+   height: 250px;
+   opacity: 0.4;
 `

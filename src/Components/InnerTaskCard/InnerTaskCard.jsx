@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { TextareaAutosize } from "@mui/material"
 import React from "react"
 import ProgressBar from "../UI/ProgressBar"
-import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
+import DisplayFlexJCSB from "../../layout/DisplayFlex"
 import { Labels } from "../../utilits/constants/Constants"
 import closeIcon from "../../assets/icons/closeWhite.svg"
 import Button from "../UI/Button"
@@ -29,7 +29,6 @@ const InnerTaskCard = ({ toggle }) => {
                   })}
                   <CustomIcons src={plusIcon} />
                </BlockLabels>
-
                <Text>Description</Text>
                <AddDescription />
                <Block>

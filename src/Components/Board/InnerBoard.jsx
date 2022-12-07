@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -17,6 +18,7 @@ import {
    loadingToastifyAction,
    errorToastifyAction,
    successToastifyAction,
+   warningToastifyAction,
 } from "../../store/toastifySlice"
 
 const InnerBoard = () => {
@@ -25,10 +27,7 @@ const InnerBoard = () => {
    const { boardId } = useParams()
    const dispatch = useDispatch()
    const [columns, setColumns] = useState([])
-
-   useEffect(() => {
-      dispatch(getBoardByIdQuery(boardId))
-   }, [])
+   const [loading, setLoading] = useState(true)
 
    // ПОЛУЧИТЬ КОЛОНЫ ИЗ БАЗА ДАННЫХ
    const getColumnsInDataBase = async (id) => {
@@ -36,9 +35,21 @@ const InnerBoard = () => {
          const { data } = await axiosInstance.get(
             `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/column/${id}`
          )
-         return setColumns(data)
+         setColumns(data)
+         return setLoading(false)
       } catch (error) {
          return console.log(error.message)
+      }
+   }
+   // УДАЛИТЬ КОЛОНУ
+   const deleteColumnHandler = async (id) => {
+      try {
+         dispatch(loadingToastifyAction())
+         const response = await axiosInstance.delete(`/api/column/${id}`)
+         getColumnsInDataBase(boardId)
+         return dispatch(warningToastifyAction("Deleted column"))
+      } catch (error) {
+         return console.log(error)
       }
    }
    // СОЗДАТЬ НОВУЮ КОЛОНУ
@@ -59,8 +70,9 @@ const InnerBoard = () => {
    }
 
    useEffect(() => {
+      dispatch(getBoardByIdQuery(boardId))
       getColumnsInDataBase(boardId)
-   }, [createNewColumn])
+   }, [boardId])
 
    return (
       <Container backgroundImage={boards.boardById.background}>
@@ -70,7 +82,7 @@ const InnerBoard = () => {
                   <CustomIcons top="3px" position="absolute" src={EditIcon} />
                   <h3>{boards.boardById.title}</h3>
                   <p>
-                     Columns: <span>24</span>
+                     Columns: <span>{+columns.length}</span>
                   </p>
                </LeftBlock>
                <RightBlock>
@@ -80,10 +92,12 @@ const InnerBoard = () => {
             </InfoBoard>
             <ContainerColumns>
                <TaskCard
+                  loading={loading}
                   createColumn={createNewColumn}
                   changeColumn={setColumns}
                   columns={columns}
                   openInnerTaskCard={toggle}
+                  deleteColumnHandler={deleteColumnHandler}
                />
                <Modal
                   isOpen={stateModal === "true"}
@@ -143,7 +157,7 @@ const LeftBlock = styled.div`
       font-size: 1.4rem;
    }
    span {
-      background-color: gray;
+      background-color: #b7b5b5;
       padding: 0 8px 0 8px;
       border-radius: 10px;
    }

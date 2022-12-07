@@ -42,7 +42,7 @@ export const addBoardToFavourites = createAsyncThunk(
          const { data } = await axiosInstance.put(
             `/api/boards/make-favorite/${id}`
          )
-         dispatch(getBoards("26"))
+         dispatch(getBoards(data.workspaceId))
          dispatch(getFavourites())
          if (data.isFavorite) {
             dispatch(
@@ -79,15 +79,26 @@ export const boardSlice = createSlice({
    initialState: {
       board: [],
       boardById: {},
+      loading: false,
    },
    reducers: {
+      clearBoards: (state) => {
+         state.board = []
+      },
       clearBoardById: (state) => {
          state.boardById = {}
       },
    },
    extraReducers: {
+      [getBoards.pending]: (state) => {
+         state.loading = true
+      },
       [getBoards.fulfilled]: (state, actions) => {
          state.board = actions.payload
+         state.loading = false
+      },
+      [getBoards.rejected]: (state) => {
+         state.loading = false
       },
       [getBoardByIdQuery.fulfilled]: (state, actions) => {
          state.boardById = actions.payload
@@ -95,4 +106,4 @@ export const boardSlice = createSlice({
    },
 })
 
-export const { clearBoardById } = boardSlice.actions
+export const { clearBoards, clearBoardById } = boardSlice.actions

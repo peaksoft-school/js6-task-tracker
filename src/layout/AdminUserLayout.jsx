@@ -7,6 +7,7 @@ import Layout from "./Layout"
 import Boards from "../Components/Board/Boards"
 import InnerBoard from "../Components/Board/InnerBoard"
 import { getAllWorkspaces } from "../store/workspacesSlice"
+import { clearBoards } from "../store/boardSlice"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
@@ -23,6 +24,10 @@ const AdminUserLayout = () => {
    useEffect(() => {
       dispatch(getAllWorkspaces())
    }, [])
+
+   useEffect(() => {
+      if (pathname === "/admin/allWorkspaces") dispatch(clearBoards())
+   }, [pathname])
 
    return (
       <Layout role={role}>

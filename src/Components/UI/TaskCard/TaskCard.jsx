@@ -1,36 +1,42 @@
-import React, { useState } from "react"
+/* eslint-disable react/no-array-index-key */
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import TextareaAutosize from "@mui/base/TextareaAutosize"
 // import Button from "../Button"
 import threePoint from "../../../assets/icons/threePoint.svg"
-import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
+import DisplayFlex from "../../../layout/DisplayFlex"
 import CustomIcons from "./CustomIcons"
-import { Columns } from "../../../utilits/constants/Constants"
-import AddButton from "./AddButtonColumn"
 // import close from "../../../assets/icons/Vectorclose.svg"
 import Card from "./Card"
 // import Input from "../Input"
 import CloseButton from "../CloseButton"
 import Input from "../Input"
 import Button from "../Button"
-import { useActiveIndex } from "../../../utilits/hooks/useActiveIndex"
+import { useToggle } from "../../../utilits/hooks/useToggle"
+import { axiosInstance } from "../../../api/axiosInstance"
+import Skeleton from "./Skeleton"
+import ReusableDropDown from "../ReusableDropDown"
 
 const TaskCard = ({
    openInnerTaskCard,
    columns,
    changeColumn,
    createColumn,
+   loading,
+   deleteColumnHandler,
 }) => {
-   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
+   const [cards, setCards] = useState([])
+   const [nameNewColumn, setNameNewColumn] = useState()
+   const { setActive, isActive } = useToggle()
 
    const titleColumnHandler = ({ target: { name, value } }) => {
       const newColumns = [...columns]
       newColumns[name].columnName = value
       return changeColumn(newColumns)
    }
-   const [nameNewColumn, setNameNewColumn] = useState()
 
-   // const changeColumn = async () => {
+   // ИЗМЕНИТЬ НАЗВАНИЕ КОЛОНЫ
+   // const changeColumn = async (id) => {
    //    try {
    //       const response = await axiosInstance()
    //    } catch (error) {
@@ -38,47 +44,103 @@ const TaskCard = ({
    //    }
    // }
 
-   const createColumnHandler = () => {
-      createColumn(nameNewColumn)
-      getActiveIndexHandler("0")
+   // ПОЛУЧИТЬ КАРТОЧКИ ИЗ БАЗЫ ДАННЫХ
+   const getCardsInDataBase = async () => {
+      try {
+         const { data } = await axiosInstance.get(`/api/cards/column/${24}`)
+         return setCards(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
 
-   return Columns.length > 0 ? (
-      <DisplayFlexJCSB alignItems="flex-start" flexStart="flex-start">
-         {columns.map((item, index) => {
-            return (
-               <CardColumn key={item.id}>
-                  <CustomIcons
-                     src={threePoint}
-                     position="absolute"
-                     top="15px"
-                     right="14px"
-                  />
+   useEffect(() => {
+      getCardsInDataBase()
+   }, [])
 
-                  <TitleColumn
-                     aria-label="empty textarea"
-                     value={item.columnName}
-                     onChange={titleColumnHandler}
-                     name={`${index}`}
-                     placeholder="Название колонки"
-                  />
-                  <ContainerCard>
-                     <Card showInnerTaskCard={openInnerTaskCard} />
-                  </ContainerCard>
+   const createColumnHandler = () => {
+      createColumn(nameNewColumn)
+      setActive("nothing")
+   }
 
-                  <AddCardButton>+ Add a card</AddCardButton>
-               </CardColumn>
-            )
-         })}
-         {isActiveDropDown !== "5" ? (
-            <AddColumnButton onClick={() => getActiveIndexHandler("5")}>
-               + Add a column{" "}
+   const getActiveIndexDropDownHandler = (id) => {
+      setActive(
+         isActive !== `DropDownColumnById=${id}`
+            ? `DropDownColumnById=${id}`
+            : "nothing"
+      )
+   }
+
+   return (
+      <DisplayFlex AI="flex-start" gap="10px">
+         {loading
+            ? [...new Array(6)].map((item, index) => <Skeleton key={index} />)
+            : columns?.map((item, index) => {
+                 return (
+                    <CardColumn key={item.id}>
+                       <ReusableDropDown
+                          width="290px"
+                          top="40px"
+                          left="260px"
+                          showState={
+                             isActive === `DropDownColumnById=${item.id}`
+                          }
+                       >
+                          <ListInDropDown>
+                             <p>Actions</p>
+                             <li>Add card</li>
+                             <li onClick={() => deleteColumnHandler(item.id)}>
+                                Delete a column
+                             </li>
+                             <hr />
+                             <li>Delete all cards in this column</li>
+
+                             <li>Archive all cards in this column</li>
+                             <hr />
+                             <li>Archive this column</li>
+                          </ListInDropDown>
+                       </ReusableDropDown>
+                       <CustomIcons
+                          onClick={() =>
+                             getActiveIndexDropDownHandler(`${item.id}`)
+                          }
+                          src={threePoint}
+                          position="absolute"
+                          top="15px"
+                          right="14px"
+                       />
+                       <TitleColumn
+                          aria-label="empty textarea"
+                          value={item.columnName}
+                          onChange={titleColumnHandler}
+                          name={`${index}`}
+                          placeholder="Название колонки"
+                       />
+                       <ContainerCard>
+                          {cards.map((item) => {
+                             return (
+                                <Card
+                                   cards={item}
+                                   showInnerTaskCard={openInnerTaskCard}
+                                />
+                             )
+                          })}
+                       </ContainerCard>
+
+                       <AddCardButton>+ Add a card</AddCardButton>
+                    </CardColumn>
+                 )
+              })}
+
+         {isActive !== "inputAddColumn" ? (
+            <AddColumnButton onClick={() => setActive("inputAddColumn")}>
+               + Add a column
             </AddColumnButton>
          ) : null}
-         {isActiveDropDown === "5" ? (
+         {isActive === "inputAddColumn" ? (
             <BlockInputCreateColumn>
                <p>Name of the column</p>
-               <CloseButton onClick={() => getActiveIndexHandler("0")} />
+               <CloseButton onClick={() => setActive("nothing")} />
                <Input
                   onChange={(e) => setNameNewColumn(e.target.value)}
                   placeholder="Name"
@@ -88,9 +150,7 @@ const TaskCard = ({
                </Button>
             </BlockInputCreateColumn>
          ) : null}
-      </DisplayFlexJCSB>
-   ) : (
-      <AddButton>+ Add a Column</AddButton>
+      </DisplayFlex>
    )
 }
 
@@ -167,5 +227,32 @@ const BlockInputCreateColumn = styled.div`
    }
    Button {
       margin: 8px 0 0 170px;
+   }
+`
+const ListInDropDown = styled.ul`
+   list-style: none;
+   padding: 12px 0;
+   p {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 400;
+   }
+   li {
+      margin: 6px 0 0 0;
+      padding: 5px 0 5px 20px;
+      font-size: 1.1rem;
+      font-weight: 300;
+      cursor: pointer;
+      &:hover {
+         background: #f2f2f2;
+      }
+      &:last-child {
+         margin-bottom: 4px;
+      }
+   }
+   hr {
+      width: 230px;
+      border: 0.8px solid #dfe2e7;
+      margin: 5px 0 5px 18px;
    }
 `

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
@@ -13,7 +13,6 @@ import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 import { showSideBarAction } from "../../store/sideBarSlice"
-import { clearBoardById, getBoards } from "../../store/boardSlice"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
 import Modal from "../../Components/UI/Modal"
@@ -25,7 +24,6 @@ const SideBar = () => {
    const { pathname } = useLocation()
    const { showSideBar } = useSelector((state) => state.showSideBar)
    const { workspaces } = useSelector((state) => state.workspaces)
-   const [showModal, setShowModal] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [activeSideBar, setActiveSideBar] = useState("boards")
@@ -36,9 +34,10 @@ const SideBar = () => {
       stateDropDown: false,
       isMenuHovered: false,
    })
-   useEffect(() => {
-      dispatch(getBoards(workspaceId))
-   }, [])
+   const [settingModal, setSettingModal] = useState({
+      showModal: false,
+      showDropDown: false,
+   })
 
    // CLICKS DROP DOWN AND SUB MENU
    const getWorkspacesIdHandler = (id) => {
@@ -67,7 +66,6 @@ const SideBar = () => {
          pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
       )
          navigate(`/admin/workspaces/${workspaceId}/boards`)
-      dispatch(clearBoardById())
    }
    // CLICK SIDE BAR ITEMS
    const onClickSideBarItem = (path) => {
@@ -197,14 +195,24 @@ const SideBar = () => {
                   </SideBarItem>
                )
             })}
-            <ContainerNavItem onClick={() => setShowModal(true)}>
+            <ContainerNavItem
+               onClick={() =>
+                  setSettingModal({ ...settingModal, showModal: true })
+               }
+            >
                <SvgGenerator id={5} />
                {showSideBar && <span>Settings</span>}
             </ContainerNavItem>
-            <Modal onClose={() => setShowModal(false)} isOpen={showModal}>
+            <Modal
+               onClose={() =>
+                  setSettingModal({ ...settingModal, showModal: false })
+               }
+               isOpen={settingModal.showModal}
+            >
                <Settings
+                  settingModal={settingModal}
+                  setSettingModal={setSettingModal}
                   nameWorkspaces={placeOfWorkSpace[0]?.name}
-                  closeModal={() => setShowModal(false)}
                />
             </Modal>
             <Line stateSideBar={showSideBar} marginLeft />

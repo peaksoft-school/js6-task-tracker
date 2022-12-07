@@ -13,14 +13,14 @@ import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
 import Notifications from "../assets/svg/NotificationIcon.svg"
 import { axiosInstance } from "../api/axiosInstance"
-import { useActiveIndex } from "../utilits/hooks/useActiveIndex"
+import { useToggle } from "../utilits/hooks/useToggle"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 
 function Header() {
    const { favourites, workspaces } = useSelector((state) => state)
    const dispatch = useDispatch()
-   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
+   const { isActive, setActive } = useToggle()
    const [notification, setNotification] = useState([])
 
    const getNotificationHandler = async () => {
@@ -41,7 +41,7 @@ function Header() {
    }, [])
 
    const openDropDownFavouritesHandler = () => {
-      getActiveIndexHandler(isActiveDropDown !== "1" ? "1" : "0")
+      setActive(isActive !== "favourites" ? "favourites" : "nothing")
    }
 
    return (
@@ -61,7 +61,7 @@ function Header() {
             <DropDown
                top="7vh"
                left="20.5vw"
-               showState={isActiveDropDown === "1"}
+               showState={isActive === "favourites"}
                width="380px"
                height="600px"
             >
@@ -76,14 +76,16 @@ function Header() {
 
             <NotificationIconContainer
                onClick={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "2" ? "2" : "0")
+                  setActive(
+                     isActive !== "notification" ? "notification" : "nothing"
+                  )
                }
             >
                <img src={Notifications} alt="" />
                {notification.length > 0 && <span>{notification.length}</span>}
             </NotificationIconContainer>
             <DropDown
-               showState={isActiveDropDown === "2"}
+               showState={isActive === "notification"}
                width="390px"
                height="90vh"
                top="60px"
@@ -95,14 +97,14 @@ function Header() {
             <UserAvatar
                src={avatarPhoto}
                click={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "3" ? "3" : "0")
+                  setActive(isActive !== "profile" ? "profile" : "nothing")
                }
             />
             <DropDown
                width="150px"
                top="50px"
                right="80px"
-               showState={isActiveDropDown === "3"}
+               showState={isActive === "profile"}
             >
                <ProfileLogout>
                   <Link to="profile">

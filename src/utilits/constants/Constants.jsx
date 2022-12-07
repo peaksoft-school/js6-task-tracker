@@ -46,7 +46,7 @@ export const Columns = [
    },
 ]
 export const COLORS = [
-   "linear-gradient(toright, #8e2de2, #4a00e0)",
+   "#67e7a3",
    "#B04632",
    "#385f38",
    "#D29034",

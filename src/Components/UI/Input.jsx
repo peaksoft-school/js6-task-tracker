@@ -17,6 +17,10 @@ const CssTextField = styled(TextField)({
    "& .MuiInput-underline:after": {
       borderBottomColor: "green",
    },
+   "& .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill":
+      {
+         borderRadius: 13,
+      },
    "& .MuiOutlinedInput-root": {
       "& fieldset": {
          border: "1px solid #BDBDBD",
