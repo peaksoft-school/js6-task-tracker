@@ -82,7 +82,7 @@ export const deleteWorkspaceById = createAsyncThunk(
       try {
          dispatch(loadingToastifyAction())
          const response = await axiosInstance.delete(
-            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/workspace/${workspaceId}`
+            `/api/workspace/${workspaceId}`
          )
          navigate("/admin/allWorkspaces")
          dispatch(warningToastifyAction(`Deleted workspace`))

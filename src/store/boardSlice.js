@@ -74,6 +74,23 @@ export const getBoardByIdQuery = createAsyncThunk(
    }
 )
 
+// УДАЛИТЬ BOARD
+export const deleteBoardById = createAsyncThunk(
+   "delete/board",
+   async (value) => {
+      const { boardId, dispatch, navigate, workspaceId } = value
+      try {
+         dispatch(loadingToastifyAction())
+         const response = await axiosInstance.delete(`/api/boards/${boardId}`)
+         dispatch(warningToastifyAction(`Deleted board`))
+         navigate(`/admin/workspaces/${workspaceId}/boards`)
+         return console.log(response)
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+)
+
 export const boardSlice = createSlice({
    name: "board",
    initialState: {

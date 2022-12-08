@@ -1,111 +1,112 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import React, { useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import TaskCard from "../UI/TaskCard/TaskCard"
-import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
-import Modal from "../UI/Modal"
-import useOpenClose from "../../utilits/hooks/useOpenClose"
-import { getBoardByIdQuery } from "../../store/boardSlice"
+import colorsVariant from "../../assets/images/rightImage.jpg"
+import imageVariant from "../../assets/images/leftImage.png"
+
+import { getBoardByIdQuery, deleteBoardById } from "../../store/boardSlice"
 import CustomIcons from "../UI/TaskCard/CustomIcons"
 import EditIcon from "../../assets/icons/Icon Shape (1).svg"
 import openMenu from "../../assets/icons/openMenu.svg"
 import star from "../../assets/icons/star.svg"
-import { axiosInstance } from "../../api/axiosInstance"
-import {
-   loadingToastifyAction,
-   errorToastifyAction,
-   successToastifyAction,
-   warningToastifyAction,
-} from "../../store/toastifySlice"
+import Columns from "../UI/TaskCard/Columns"
+import { useToggle } from "../../utilits/hooks/useToggle"
+import ReusableDropDown from "../UI/ReusableDropDown"
+import CloseButton from "../UI/CloseButton"
+import Arrow from "../UI/Arrow"
+import DisplayFlex from "../../layout/DisplayFlex"
+import image from "../../assets/images/variant.svg"
 
 const InnerBoard = () => {
-   const { showSideBar, boards } = useSelector((state) => state)
-   const { stateModal, toggle } = useOpenClose()
-   const { boardId } = useParams()
    const dispatch = useDispatch()
-   const [columns, setColumns] = useState([])
-   const [loading, setLoading] = useState(true)
-
-   // ПОЛУЧИТЬ КОЛОНЫ ИЗ БАЗА ДАННЫХ
-   const getColumnsInDataBase = async (id) => {
-      try {
-         const { data } = await axiosInstance.get(
-            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/column/${id}`
-         )
-         setColumns(data)
-         return setLoading(false)
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
-   // УДАЛИТЬ КОЛОНУ
-   const deleteColumnHandler = async (id) => {
-      try {
-         dispatch(loadingToastifyAction())
-         const response = await axiosInstance.delete(`/api/column/${id}`)
-         getColumnsInDataBase(boardId)
-         return dispatch(warningToastifyAction("Deleted column"))
-      } catch (error) {
-         return console.log(error)
-      }
-   }
-   // СОЗДАТЬ НОВУЮ КОЛОНУ
-   const createNewColumn = async (nameNewColumn) => {
-      try {
-         dispatch(loadingToastifyAction())
-         const { data } = await axiosInstance.post("/api/column", {
-            columnName: nameNewColumn,
-            boardId,
-         })
-         getColumnsInDataBase(boardId)
-         return dispatch(
-            successToastifyAction(`Your created column ${data.columnName}`)
-         )
-      } catch (error) {
-         return dispatch(errorToastifyAction(error.message))
-      }
-   }
+   const navigate = useNavigate()
+   const { boardId, workspaceId } = useParams()
+   const { showSideBar, boards } = useSelector((state) => state)
+   const { isActive, setActive } = useToggle()
 
    useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
-      getColumnsInDataBase(boardId)
    }, [boardId])
+
+   const deleteBoardHandler = () => {
+      dispatch(deleteBoardById({ navigate, boardId, workspaceId, dispatch }))
+   }
 
    return (
       <Container backgroundImage={boards.boardById.background}>
          <ContainerInfoBoardColumn showSideBar={showSideBar.showSideBar}>
-            <InfoBoard>
+            <DisplayFlex
+               width="100%"
+               margin="100px 0 0 0"
+               JK="space-between"
+               AI="center"
+            >
                <LeftBlock>
                   <CustomIcons top="3px" position="absolute" src={EditIcon} />
                   <h3>{boards.boardById.title}</h3>
                   <p>
-                     Columns: <span>{+columns.length}</span>
+                     Columns: <span>0</span>
                   </p>
                </LeftBlock>
-               <RightBlock>
+               <DisplayFlex width="40%" JK="space-between" margin="0 30px 0 0">
                   <img src={star} alt="star" />
-                  <img src={openMenu} alt="open menu" />
-               </RightBlock>
-            </InfoBoard>
+                  <img
+                     onClick={() => setActive("menu")}
+                     src={openMenu}
+                     alt="open menu"
+                  />
+                  <ReusableDropDown
+                     width="350px"
+                     padding="15px 0 5px 0"
+                     showState={isActive === "menu"}
+                     right="15px"
+                  >
+                     <CloseButton onClick={() => setActive("nothing")} />
+                     <Block>
+                        <p>Menu</p>
+                        <li onClick={() => setActive("colorsOrImage")}>
+                           Change the background
+                           <img src={image} alt="mountain" />
+                        </li>
+                        <li>
+                           In arhive <span>34</span>
+                        </li>
+                        <li onClick={deleteBoardHandler}>Delete this board</li>
+                     </Block>
+                  </ReusableDropDown>
+
+                  <ReusableDropDown
+                     width="350px"
+                     padding="0 7px 15px 3px"
+                     showState={isActive === "colorsOrImage"}
+                     right="15px"
+                  >
+                     <Arrow
+                        margin="10px 0 0 5px"
+                        onClick={() => setActive("menu")}
+                     />
+                     <p
+                        style={{
+                           textAlign: "center",
+                           margin: "-30px 0 6px 0",
+                           fontSize: "1.2rem",
+                        }}
+                     >
+                        Change the background
+                     </p>
+                     <CloseButton onClick={() => setActive("nothing")} />
+                     <img
+                        style={{ margin: "8px 10px 0 5px" }}
+                        src={imageVariant}
+                        alt="colors"
+                     />
+                     <img src={colorsVariant} alt="images" />
+                  </ReusableDropDown>
+               </DisplayFlex>
+            </DisplayFlex>
             <ContainerColumns>
-               <TaskCard
-                  loading={loading}
-                  createColumn={createNewColumn}
-                  changeColumn={setColumns}
-                  columns={columns}
-                  openInnerTaskCard={toggle}
-                  deleteColumnHandler={deleteColumnHandler}
-               />
-               <Modal
-                  isOpen={stateModal === "true"}
-                  onClose={toggle}
-                  fullWidth="95vw"
-               >
-                  <InnerTaskCard toggle={toggle} />
-               </Modal>
+               <Columns />
             </ContainerColumns>
          </ContainerInfoBoardColumn>
       </Container>
@@ -124,14 +125,6 @@ const Container = styled.div`
    background-color: ${(props) => props.backgroundImage};
    background-repeat: no-repeat;
    background-size: cover;
-`
-const InfoBoard = styled.div`
-   width: 100%;
-   height: 13vh;
-   margin-top: 80px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
 `
 const ContainerColumns = styled.div`
    width: 100%;
@@ -162,9 +155,27 @@ const LeftBlock = styled.div`
       border-radius: 10px;
    }
 `
-const RightBlock = styled.div`
-   display: flex;
-   width: 40%;
-   justify-content: space-between;
-   margin-right: 30px;
+const Block = styled.ul`
+   p {
+      text-align: center;
+   }
+   li {
+      width: 100%;
+      cursor: pointer;
+      padding: 7px 17px;
+      &:hover {
+         background-color: #f2f2f2;
+      }
+      &:nth-child(2) {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+      }
+      span {
+         background: #b2b2b2;
+         padding: 0 6px;
+         color: white;
+         border-radius: 10px;
+      }
+   }
 `

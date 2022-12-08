@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import CustomIcons from "./CustomIcons"
 import { Labels } from "../../../utilits/constants/Constants"
@@ -10,62 +10,95 @@ import descriptionIcon from "../../../assets/icons/Typography Icon (1).svg"
 import peopleIcon from "../../../assets/icons/people.svg"
 import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
 import DisplayFlex from "../../../layout/DisplayFlex"
+import { axiosInstance } from "../../../api/axiosInstance"
+import Modal from "../Modal"
+import InnerTaskCard from "../../InnerTaskCard/InnerTaskCard"
+import { useToggle } from "../../../utilits/hooks/useToggle"
 
-const Card = ({ showInnerTaskCard, cards }) => {
+const Cards = () => {
+   const [cards, setCards] = useState([])
    const [showLabel, setShowLabel] = useState(false)
    const showLabelHandler = () => {
       setShowLabel(!showLabel)
    }
+   const { isActive, setActive } = useToggle()
 
+   // ПОЛУЧИТЬ КАРТОЧКИ ИЗ БАЗЫ ДАННЫХ
+   const getCardsInDataBase = async () => {
+      try {
+         const { data } = await axiosInstance.get(`/api/cards/column/${24}`)
+         return setCards(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
+   useEffect(() => {
+      getCardsInDataBase()
+   }, [])
    return (
-      <StyledCard>
-         <DisplayFlex margin="5px" FW="wrap" gap="5px">
-            {Labels.map((item) => (
-               <Label
-                  showLabel={showLabel}
-                  key={item.id}
-                  onClick={showLabelHandler}
-                  color={item.color}
-               >
-                  {showLabel ? item.text : null}
-               </Label>
-            ))}
-         </DisplayFlex>
-         <TitleCard>{cards.title}</TitleCard>
-         <CustomIcons
-            onClick={() => showInnerTaskCard("true")}
-            edit="edit"
-            src={EditIcon}
-            position="absolute"
-            top="15px"
-            right="7px"
-         />
-         <DisplayFlex padding="4px" JK="space-between">
-            <p>
-               <CustomIcons src={timeIcon} /> 2 month
-            </p>
-            <DisplayFlex JK="flex-end" gap="10px">
-               <CustomIcons src={descriptionIcon} />
-               <CustomIcons src={comentIcon} />
-               <CustomIcons src={completeIcon} />
-               {cards.numberOfSubTasks === 0 ? (
-                  <span>
-                     {cards.numberOfCompletedSubTask}/{cards.numberOfSubTasks}
-                  </span>
-               ) : null}
-               {cards.numberOfMembers === 0 ? (
-                  <>
-                     <CustomIcons src={peopleIcon} />
-                     <span>{cards.numberOfMembers}</span>
-                  </>
-               ) : null}
-            </DisplayFlex>
-         </DisplayFlex>
-      </StyledCard>
+      <ContainerCard>
+         {cards.map((item) => {
+            return (
+               <StyledCard key={item.id}>
+                  <DisplayFlex margin="5px" FW="wrap" gap="5px">
+                     {Labels.map((item) => (
+                        <Label
+                           showLabel={showLabel}
+                           key={item.id}
+                           onClick={showLabelHandler}
+                           color={item.color}
+                        >
+                           {showLabel ? item.text : null}
+                        </Label>
+                     ))}
+                  </DisplayFlex>
+                  <TitleCard>{item.title}</TitleCard>
+                  <CustomIcons
+                     onClick={() => setActive("InnerTaskCard")}
+                     edit="edit"
+                     src={EditIcon}
+                     position="absolute"
+                     top="15px"
+                     right="7px"
+                  />
+                  <DisplayFlex padding="4px" JK="space-between">
+                     <p>
+                        <CustomIcons src={timeIcon} /> 2 month
+                     </p>
+                     <DisplayFlex JK="flex-end" gap="10px">
+                        <CustomIcons src={descriptionIcon} />
+                        <CustomIcons src={comentIcon} />
+                        <CustomIcons src={completeIcon} />
+                        {item.numberOfSubTasks === 0 ? (
+                           <span>
+                              {item.numberOfCompletedSubTask}/
+                              {item.numberOfSubTasks}
+                           </span>
+                        ) : null}
+                        {item.numberOfMembers === 0 ? (
+                           <>
+                              <CustomIcons src={peopleIcon} />
+                              <span>{item.numberOfMembers}</span>
+                           </>
+                        ) : null}
+                     </DisplayFlex>
+                  </DisplayFlex>
+               </StyledCard>
+            )
+         })}
+         <Modal
+            onClose={() => setActive("nothing")}
+            fullWidth="95vw"
+            isOpen={isActive === "InnerTaskCard"}
+         >
+            <InnerTaskCard toggle={() => setActive("nothing")} />
+         </Modal>
+      </ContainerCard>
    )
 }
 
-export default Card
+export default Cards
 
 const StyledCard = styled.div`
    position: relative;
@@ -98,6 +131,10 @@ const StyledCard = styled.div`
       font-size: 17px;
       color: #919191;
    }
+`
+const ContainerCard = styled.div`
+   max-height: 57vh;
+   overflow: scroll;
 `
 const Label = styled.label`
    width: ${(props) => !props.showLabel && "4vw"};

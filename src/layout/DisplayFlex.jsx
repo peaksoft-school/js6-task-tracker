@@ -44,12 +44,12 @@ export default DisplayFlex
 
 const StyledDisplayFlex = styled.div`
    display: flex;
+   height: ${(props) => props.heigth};
    justify-content: ${(props) => props.JK};
    flex-direction: ${(props) => props.FD};
    flex-wrap: ${(props) => props.FW};
    align-items: ${(props) => props.AI};
    width: ${(props) => props.width};
-   height: ${(props) => props.heigth};
    gap: ${(props) => props.gap};
    border: ${(props) => props.border};
    margin: ${(props) => props.margin};

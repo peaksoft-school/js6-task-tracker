@@ -1,14 +1,16 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import TextareaAutosize from "@mui/base/TextareaAutosize"
+import { useParams } from "react-router-dom"
+import { useDispatch } from "react-redux"
 // import Button from "../Button"
+// import close from "../../../assets/icons/Vectorclose.svg"
+// import Input from "../Input"
 import threePoint from "../../../assets/icons/threePoint.svg"
 import DisplayFlex from "../../../layout/DisplayFlex"
 import CustomIcons from "./CustomIcons"
-// import close from "../../../assets/icons/Vectorclose.svg"
-import Card from "./Card"
-// import Input from "../Input"
 import CloseButton from "../CloseButton"
 import Input from "../Input"
 import Button from "../Button"
@@ -16,53 +18,30 @@ import { useToggle } from "../../../utilits/hooks/useToggle"
 import { axiosInstance } from "../../../api/axiosInstance"
 import Skeleton from "./Skeleton"
 import ReusableDropDown from "../ReusableDropDown"
+import {
+   loadingToastifyAction,
+   errorToastifyAction,
+   successToastifyAction,
+   warningToastifyAction,
+} from "../../../store/toastifySlice"
+import Cards from "./Card"
 
-const TaskCard = ({
-   openInnerTaskCard,
-   columns,
-   changeColumn,
-   createColumn,
-   loading,
-   deleteColumnHandler,
-}) => {
-   const [cards, setCards] = useState([])
+const Columns = () => {
+   const [columns, setColumns] = useState([])
+   const dispatch = useDispatch()
+   const [loading, setLoading] = useState(true)
+   const { boardId } = useParams()
    const [nameNewColumn, setNameNewColumn] = useState()
    const { setActive, isActive } = useToggle()
 
    const titleColumnHandler = ({ target: { name, value } }) => {
       const newColumns = [...columns]
       newColumns[name].columnName = value
-      return changeColumn(newColumns)
+      return setColumns(newColumns)
    }
 
-   // ИЗМЕНИТЬ НАЗВАНИЕ КОЛОНЫ
-   // const changeColumn = async (id) => {
-   //    try {
-   //       const response = await axiosInstance()
-   //    } catch (error) {
-   //       return console.log(error.message)
-   //    }
-   // }
-
-   // ПОЛУЧИТЬ КАРТОЧКИ ИЗ БАЗЫ ДАННЫХ
-   const getCardsInDataBase = async () => {
-      try {
-         const { data } = await axiosInstance.get(`/api/cards/column/${24}`)
-         return setCards(data)
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
-
-   useEffect(() => {
-      getCardsInDataBase()
-   }, [])
-
-   const createColumnHandler = () => {
-      createColumn(nameNewColumn)
-      setActive("nothing")
-   }
-
+   console.log(columns)
+   // ОТКРЫТЬ DROP DOWN КОЛОНЫ
    const getActiveIndexDropDownHandler = (id) => {
       setActive(
          isActive !== `DropDownColumnById=${id}`
@@ -70,6 +49,50 @@ const TaskCard = ({
             : "nothing"
       )
    }
+   // ПОЛУЧИТЬ КОЛОНЫ ИЗ БАЗА ДАННЫХ
+   const getColumnsInDataBase = async (id) => {
+      try {
+         const { data } = await axiosInstance.get(
+            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/column/${id}`
+         )
+         setColumns(data)
+         return setLoading(false)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // УДАЛИТЬ КОЛОНУ
+   const deleteColumnHandler = async (id) => {
+      try {
+         dispatch(loadingToastifyAction())
+         const response = await axiosInstance.delete(`/api/column/${id}`)
+         getColumnsInDataBase(boardId)
+         return dispatch(warningToastifyAction("Deleted column"))
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+   // СОЗДАТЬ НОВУЮ КОЛОНУ
+   const createNewColumn = async () => {
+      try {
+         dispatch(loadingToastifyAction())
+         const { data } = await axiosInstance.post("/api/column", {
+            columnName: nameNewColumn,
+            boardId,
+         })
+         getColumnsInDataBase(boardId)
+         setActive("nothing")
+         return dispatch(
+            successToastifyAction(`Your created column ${data.columnName}`)
+         )
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+
+   useEffect(() => {
+      getColumnsInDataBase(boardId)
+   }, [boardId])
 
    return (
       <DisplayFlex AI="flex-start" gap="10px">
@@ -94,7 +117,6 @@ const TaskCard = ({
                              </li>
                              <hr />
                              <li>Delete all cards in this column</li>
-
                              <li>Archive all cards in this column</li>
                              <hr />
                              <li>Archive this column</li>
@@ -116,17 +138,7 @@ const TaskCard = ({
                           name={`${index}`}
                           placeholder="Название колонки"
                        />
-                       <ContainerCard>
-                          {cards.map((item) => {
-                             return (
-                                <Card
-                                   cards={item}
-                                   showInnerTaskCard={openInnerTaskCard}
-                                />
-                             )
-                          })}
-                       </ContainerCard>
-
+                       <Cards />
                        <AddCardButton>+ Add a card</AddCardButton>
                     </CardColumn>
                  )
@@ -145,7 +157,7 @@ const TaskCard = ({
                   onChange={(e) => setNameNewColumn(e.target.value)}
                   placeholder="Name"
                />
-               <Button padding="5px 28px" onClick={createColumnHandler}>
+               <Button padding="5px 28px" onClick={createNewColumn}>
                   Create
                </Button>
             </BlockInputCreateColumn>
@@ -154,7 +166,7 @@ const TaskCard = ({
    )
 }
 
-export default TaskCard
+export default Columns
 
 const CardColumn = styled.div`
    position: relative;
@@ -171,10 +183,6 @@ const CardColumn = styled.div`
       font-size: 1.1rem;
       cursor: pointer;
    }
-`
-const ContainerCard = styled.div`
-   max-height: 57vh;
-   overflow: scroll;
 `
 const AddCardButton = styled.span`
    font-size: 16px;
