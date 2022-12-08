@@ -198,3 +198,36 @@ export const PhotoArray = [
       colors: "#CBCBCB",
    },
 ]
+
+export const members = [
+   {
+      id: 1,
+      name: "SalazxcvzxcvSalamat",
+      Email: "salamat@gmail.com",
+      role: "Admin",
+   },
+   {
+      id: 2,
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: "Admin",
+   },
+   {
+      id: 3,
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: "Admin",
+   },
+   {
+      id: 4,
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: "Member",
+   },
+   {
+      id: 5,
+      name: "Salamat Salamat",
+      Email: "salamat@gmail.com",
+      role: "Member",
+   },
+]
