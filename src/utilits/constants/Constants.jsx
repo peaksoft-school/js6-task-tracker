@@ -183,10 +183,3 @@ export const tableData = [
       icon: emptyStar,
    },
 ]
-export const PhotoArray = [
-   {
-      id: 1,
-      nameWallpaper: "First",
-      colors: "#CBCBCB",
-   },
-]

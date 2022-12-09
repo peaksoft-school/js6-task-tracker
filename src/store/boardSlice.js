@@ -73,7 +73,6 @@ export const getBoardByIdQuery = createAsyncThunk(
       }
    }
 )
-
 // УДАЛИТЬ BOARD
 export const deleteBoardById = createAsyncThunk(
    "delete/board",

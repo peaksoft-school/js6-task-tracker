@@ -15,68 +15,71 @@ import Modal from "../Modal"
 import InnerTaskCard from "../../InnerTaskCard/InnerTaskCard"
 import { useToggle } from "../../../utilits/hooks/useToggle"
 
-const Cards = () => {
-   const [cards, setCards] = useState([])
-   const [showLabel, setShowLabel] = useState(false)
-   const showLabelHandler = () => {
-      setShowLabel(!showLabel)
-   }
+const Cards = ({ cards }) => {
+   const [cardById, setCardById] = useState()
    const { isActive, setActive } = useToggle()
 
-   // ПОЛУЧИТЬ КАРТОЧКИ ИЗ БАЗЫ ДАННЫХ
-   const getCardsInDataBase = async () => {
+   const getCardById = async (id) => {
       try {
-         const { data } = await axiosInstance.get(`/api/cards/column/${24}`)
-         return setCards(data)
+         const { data } = await axiosInstance.get(`/api/cards/${id}`)
+         setActive(`${id}`)
+         return setCardById(data)
       } catch (error) {
          return console.log(error.message)
       }
    }
 
    useEffect(() => {
-      getCardsInDataBase()
+      getCardById(isActive)
    }, [])
+
    return (
       <ContainerCard>
-         {cards.map((item) => {
+         {cards?.map((item) => {
             return (
                <StyledCard key={item.id}>
-                  <DisplayFlex margin="5px" FW="wrap" gap="5px">
-                     {Labels.map((item) => (
+                  <DisplayFlex FW="wrap" gap="5px">
+                     {item.labelResponses.map((item) => (
                         <Label
-                           showLabel={showLabel}
+                           showLabel={isActive === "showLabel"}
                            key={item.id}
-                           onClick={showLabelHandler}
+                           onClick={() => setActive("showLabel")}
                            color={item.color}
                         >
-                           {showLabel ? item.text : null}
+                           {isActive === "showLabel" ? item.text : null}
                         </Label>
                      ))}
                   </DisplayFlex>
                   <TitleCard>{item.title}</TitleCard>
                   <CustomIcons
-                     onClick={() => setActive("InnerTaskCard")}
+                     onClick={() => getCardById(item.id)}
                      edit="edit"
                      src={EditIcon}
                      position="absolute"
                      top="15px"
                      right="7px"
                   />
-                  <DisplayFlex padding="4px" JK="space-between">
-                     <p>
-                        <CustomIcons src={timeIcon} /> 2 month
-                     </p>
+                  <DisplayFlex
+                     padding="4px"
+                     JK={item.duration ? "space-between" : "flex-end"}
+                  >
+                     {item.duration ? (
+                        <p>
+                           <CustomIcons src={timeIcon} />
+                           {item.duration}
+                        </p>
+                     ) : null}
                      <DisplayFlex JK="flex-end" gap="10px">
                         <CustomIcons src={descriptionIcon} />
                         <CustomIcons src={comentIcon} />
                         <CustomIcons src={completeIcon} />
-                        {item.numberOfSubTasks === 0 ? (
+                        {item.numberOfSubTasks > 0 ? (
                            <span>
                               {item.numberOfCompletedSubTask}/
                               {item.numberOfSubTasks}
                            </span>
                         ) : null}
-                        {item.numberOfMembers === 0 ? (
+                        {item.numberOfMembers > 0 ? (
                            <>
                               <CustomIcons src={peopleIcon} />
                               <span>{item.numberOfMembers}</span>
@@ -84,16 +87,21 @@ const Cards = () => {
                         ) : null}
                      </DisplayFlex>
                   </DisplayFlex>
+                  <Modal
+                     onClose={() => setActive("nothing")}
+                     fullWidth="95vw"
+                     isOpen={isActive === `${item.id}`}
+                  >
+                     <InnerTaskCard
+                        dataCardById={cardById}
+                        toggle={() => setActive("nothing")}
+                        getCardById={getCardById}
+                        isActive={isActive}
+                     />
+                  </Modal>
                </StyledCard>
             )
          })}
-         <Modal
-            onClose={() => setActive("nothing")}
-            fullWidth="95vw"
-            isOpen={isActive === "InnerTaskCard"}
-         >
-            <InnerTaskCard toggle={() => setActive("nothing")} />
-         </Modal>
       </ContainerCard>
    )
 }
@@ -106,10 +114,9 @@ const StyledCard = styled.div`
    border-radius: 4px;
    border: none;
    padding: 5px 3px 5px 3px;
-   margin: 0 0 5px 0;
+   margin: 10px 0 5px 0;
    font-size: 1rem !important;
    background-color: white;
-   margin-top: 10px;
    &:hover {
       background: #f4f5f7;
       img {
@@ -126,6 +133,7 @@ const StyledCard = styled.div`
       align-items: center;
       height: 25px;
       width: 90px;
+      margin: 0;
    }
    span {
       font-size: 17px;

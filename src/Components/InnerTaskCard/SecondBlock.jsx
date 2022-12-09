@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+/* eslint-disable no-undef */
+import React from "react"
 import styled from "styled-components"
 import avatarPhoto from "../../assets/images/avatarPhotoo.jpg"
 import CommentSection from "../UI/CommentSection"
@@ -10,22 +11,17 @@ import DropDown from "../UI/ReusableDropDown"
 import closeSvg from "../../assets/icons/close.svg"
 import Label from "./Label"
 import Input from "../UI/Input"
+import { useToggle } from "../../utilits/hooks/useToggle"
 import searchIcon from "../../assets/svg/SearchIcon.svg"
 import MemberItem from "../UI/MemberItem"
 import avatar from "../../assets/svg/userAvatar.svg"
 import Button from "../UI/Button"
 import CloseButton from "../UI/CloseButton"
-import useOpenClose from "../../utilits/hooks/useOpenClose"
 import DateTimePicker from "../UI/DateTimePicker"
 import CustomIcons from "../UI/TaskCard/CustomIcons"
 
 const SecondBlock = () => {
-   const [activeDropDown, setActiveDropDown] = useState(0)
-   const { isShowing, toggle } = useOpenClose()
-
-   const buttonClick = (id) => {
-      setActiveDropDown(id)
-   }
+   const { isActive, setActive } = useToggle()
 
    return (
       <StyledSecondBlock>
@@ -37,22 +33,22 @@ const SecondBlock = () => {
                      <GrayButton
                         onClick={() => buttonClick(item.id)}
                         iconButton={item.icon}
-                        fullWidth={isShowing && "200px"}
+                        fullWidth={isActive === "showButton" && "200px"}
                      >
-                        {isShowing && item.title}
+                        {isActive === "showButton" && item.title}
                      </GrayButton>
 
-                     {activeDropDown === 1 && (
+                     {isActive === "addMember" && (
                         <DropDown
                            padding="0 10px 10px 20px"
                            borderRadius="10px"
                            width="310px"
-                           showState={activeDropDown === item.id}
+                           showState={isActive === "addMember"}
                         >
                            <ContainerText>
                               <span>Member</span>
                               <CloseButton
-                                 onClick={() => setActiveDropDown(0)}
+                                 onClick={() => setActive("addMember")}
                                  src={closeSvg}
                                  alt="close"
                               />
@@ -61,7 +57,7 @@ const SecondBlock = () => {
                            <ContainerInput>
                               <Input placeholder="Search" />{" "}
                               <CustomIcons
-                                 click={() => setActiveDropDown(0)}
+                                 click={() => setActive(0)}
                                  src={searchIcon}
                                  position="absolute"
                                  alt="search"
@@ -76,9 +72,9 @@ const SecondBlock = () => {
                            </ContainerMemberItem>
                         </DropDown>
                      )}
-                     {activeDropDown === 2 && (
+                     {isActive === "addEstimation" && (
                         <DropDown
-                           showState={activeDropDown === item.id}
+                           showState={isActive === "addEstimation"}
                            top="65px"
                            left="105px"
                            padding="6px 0 0 20px"
@@ -86,7 +82,7 @@ const SecondBlock = () => {
                            <ContainerText>
                               <span>Estimation</span>
                               <CloseButton
-                                 onClick={() => setActiveDropDown(0)}
+                                 onClick={() => setActive("addEstimation")}
                                  src={closeSvg}
                                  alt="close"
                               />
@@ -95,17 +91,17 @@ const SecondBlock = () => {
                            <DateTimePicker />
                         </DropDown>
                      )}
-                     {activeDropDown === 3 && (
+                     {isActive === "addLabel" && (
                         <DropDown
-                           top={isShowing ? "97" : "50px"}
+                           top={isActive === "showButton" ? "97" : "50px"}
                            width="350px"
                            borderRadius="7px"
-                           showState={activeDropDown === item.id}
+                           showState={isActive === "addLabel"}
                         >
                            <ContainerText>
                               <span>Label</span>
                               <CloseButton
-                                 onClick={() => setActiveDropDown(0)}
+                                 onClick={() => setActive("addLabel")}
                                  src={closeSvg}
                                  alt="close"
                               />
@@ -117,19 +113,19 @@ const SecondBlock = () => {
                            <Label color="green" />
                         </DropDown>
                      )}
-                     {activeDropDown === 5 && (
+                     {isActive === "addCheckList" && (
                         <DropDown
                            padding="2px 15px 15px 15px"
                            borderRadius="10px"
-                           top={isShowing ? "140px" : "50px"}
+                           top={isActive === "showButton" ? "140px" : "50px"}
                            height="150px"
                            width="280px"
-                           showState={activeDropDown === item.id}
+                           showState={isActive === "addCheckList"}
                         >
                            <ContainerText>
                               <span>Add checklist</span>
                               <CloseButton
-                                 onClick={() => setActiveDropDown(0)}
+                                 onClick={() => setActive("addCheckList")}
                                  src={closeSvg}
                                  alt="close"
                               />
@@ -152,18 +148,17 @@ const SecondBlock = () => {
          <ContainerButtons>
             <GrayButton
                iconButton={deleteIcon}
-               fullWidth={isShowing && "10rem"}
+               fullWidth={isActive === "showButton" && "10rem"}
             >
-               {isShowing && "Delete"}
+               {isActive === "showButton" && "Delete"}
             </GrayButton>
-            <GrayButton iconButton={fileIcon} fullWidth={isShowing && "10rem"}>
-               {isShowing && "Archived"}
+            <GrayButton iconButton={fileIcon} fullWidth={isActive && "10rem"}>
+               {isActive === "showButton" && "Archived"}
             </GrayButton>
          </ContainerButtons>
          <CommentSection
-            setActiveDropDown={setActiveDropDown}
-            sizeComment={isShowing}
-            sizeCommentHandler={toggle}
+            sizeComment={isActive === "showButton"}
+            setActive={setActive}
             userAvatar={avatarPhoto}
          />
       </StyledSecondBlock>

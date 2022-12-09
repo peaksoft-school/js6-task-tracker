@@ -12,6 +12,7 @@ import threePoint from "../../../assets/icons/threePoint.svg"
 import DisplayFlex from "../../../layout/DisplayFlex"
 import CustomIcons from "./CustomIcons"
 import CloseButton from "../CloseButton"
+import Cards from "./Card"
 import Input from "../Input"
 import Button from "../Button"
 import { useToggle } from "../../../utilits/hooks/useToggle"
@@ -24,7 +25,6 @@ import {
    successToastifyAction,
    warningToastifyAction,
 } from "../../../store/toastifySlice"
-import Cards from "./Card"
 
 const Columns = () => {
    const [columns, setColumns] = useState([])
@@ -40,7 +40,6 @@ const Columns = () => {
       return setColumns(newColumns)
    }
 
-   console.log(columns)
    // ОТКРЫТЬ DROP DOWN КОЛОНЫ
    const getActiveIndexDropDownHandler = (id) => {
       setActive(
@@ -52,10 +51,9 @@ const Columns = () => {
    // ПОЛУЧИТЬ КОЛОНЫ ИЗ БАЗА ДАННЫХ
    const getColumnsInDataBase = async (id) => {
       try {
-         const { data } = await axiosInstance.get(
-            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/column/${id}`
-         )
-         setColumns(data)
+         const { data } = await axiosInstance.get(`/api/column/${id}`)
+         data.columnResponses?.sort((a, b) => (a.id > b.id ? 1 : -1))
+         setColumns(data.columnResponses ? data.columnResponses : [])
          return setLoading(false)
       } catch (error) {
          return console.log(error.message)
@@ -93,7 +91,6 @@ const Columns = () => {
    useEffect(() => {
       getColumnsInDataBase(boardId)
    }, [boardId])
-
    return (
       <DisplayFlex AI="flex-start" gap="10px">
          {loading
@@ -138,7 +135,7 @@ const Columns = () => {
                           name={`${index}`}
                           placeholder="Название колонки"
                        />
-                       <Cards />
+                       <Cards cards={item.columnCards} />
                        <AddCardButton>+ Add a card</AddCardButton>
                     </CardColumn>
                  )
@@ -188,7 +185,7 @@ const AddCardButton = styled.span`
    font-size: 16px;
    line-height: 20px;
    display: block;
-   margin: 15px 0 5px 4px;
+   margin: 5px 0 5px 8px;
 `
 const TitleColumn = styled(TextareaAutosize)`
    border: 5px solid red;

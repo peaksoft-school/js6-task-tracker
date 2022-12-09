@@ -12,19 +12,23 @@ const CommentSection = ({
    userAvatar,
    editHandle,
    deleteHandle,
-   sizeCommentHandler,
-   sizeComment,
+   setActive,
+   isActive,
 }) => {
    return (
       <StyledCommentSection>
          <DisplayFlexJCSB>
             <h3>Comments</h3>
             <CustomIcons
-               click={sizeCommentHandler}
-               src={sizeComment ? arrowIcon : arrowDownComment}
+               click={() =>
+                  setActive(
+                     isActive !== "showButton" ? "showButton" : "nothing"
+                  )
+               }
+               src={isActive === "showButton" ? arrowIcon : arrowDownComment}
             />
          </DisplayFlexJCSB>
-         <ContainerComment sizeComment={sizeComment}>
+         <ContainerComment sizeComment={isActive === "showButton"}>
             <Comment>
                <UserAvatar src={userAvatar} />
                <div>

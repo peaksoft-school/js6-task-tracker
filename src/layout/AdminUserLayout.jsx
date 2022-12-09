@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux"
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom"
 import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
-import Layout from "./Layout"
 import Boards from "../Components/Board/Boards"
 import InnerBoard from "../Components/Board/InnerBoard"
 import { getAllWorkspaces } from "../store/workspacesSlice"
 import { clearBoards } from "../store/boardSlice"
+import Header from "../Components/Header"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
@@ -30,7 +30,8 @@ const AdminUserLayout = () => {
    }, [pathname])
 
    return (
-      <Layout role={role}>
+      <>
+         <Header role={role} />
          <Routes>
             <Route path="allWorkspaces" element={<Workspaces role={role} />} />
             <Route
@@ -54,7 +55,7 @@ const AdminUserLayout = () => {
             </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
-      </Layout>
+      </>
    )
 }
 

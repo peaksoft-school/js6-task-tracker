@@ -1,6 +1,6 @@
+import React from "react"
 import styled from "styled-components"
 import { TextareaAutosize } from "@mui/material"
-import React from "react"
 import ProgressBar from "../UI/ProgressBar"
 import DisplayFlexJCSB from "../../layout/DisplayFlex"
 import { Labels } from "../../utilits/constants/Constants"
@@ -11,13 +11,13 @@ import plusIcon from "../../assets/icons/whitePlus.svg"
 import SecondBlock from "./SecondBlock"
 import CloseButton from "../UI/CloseButton"
 
-const InnerTaskCard = ({ toggle }) => {
+const InnerTaskCard = ({ toggle, dataCardById }) => {
    return (
       <Container>
          <CloseButton onClick={() => toggle("false")} />
          <DisplayFlexJCSB>
             <FirstBlock>
-               <TitleCard>Какая то задача которую нужно выполнить</TitleCard>
+               <TitleCard>{dataCardById?.title}</TitleCard>
                <Text>Labels</Text>
                <BlockLabels>
                   {Labels.map((item) => {
