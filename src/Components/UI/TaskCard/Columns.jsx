@@ -12,7 +12,6 @@ import threePoint from "../../../assets/icons/threePoint.svg"
 import DisplayFlex from "../../../layout/DisplayFlex"
 import CustomIcons from "./CustomIcons"
 import CloseButton from "../CloseButton"
-import Cards from "./Card"
 import Input from "../Input"
 import Button from "../Button"
 import { useToggle } from "../../../utilits/hooks/useToggle"
@@ -25,14 +24,22 @@ import {
    successToastifyAction,
    warningToastifyAction,
 } from "../../../store/toastifySlice"
+import { useGetInputValue } from "../../../utilits/hooks/useGetInputValue"
+import Cards from "./Card"
+import useTwoActive from "../../../utilits/hooks/useTwoActive"
+import InnerTaskCard from "../../InnerTaskCard/InnerTaskCard"
+import Modal from "../Modal"
 
-const Columns = () => {
+const Columns = ({ getDataInArchive }) => {
    const [columns, setColumns] = useState([])
-   const dispatch = useDispatch()
    const [loading, setLoading] = useState(true)
+   const [cardById, setCardById] = useState()
+   const [nameNewColumn, setNameNewColumn] = useState("")
+   const { inputValue, setInputValueHandler } = useGetInputValue()
+   const dispatch = useDispatch()
    const { boardId } = useParams()
-   const [nameNewColumn, setNameNewColumn] = useState()
    const { setActive, isActive } = useToggle()
+   const { setTwoActive, firstActive } = useTwoActive()
 
    const titleColumnHandler = ({ target: { name, value } }) => {
       const newColumns = [...columns]
@@ -79,20 +86,91 @@ const Columns = () => {
             boardId,
          })
          getColumnsInDataBase(boardId)
-         setActive("nothing")
-         return dispatch(
+         dispatch(
             successToastifyAction(`Your created column ${data.columnName}`)
          )
+         setActive("nothing")
+         setNameNewColumn("")
+         return null
       } catch (error) {
          return dispatch(errorToastifyAction(error.message))
       }
+   }
+   // СОЗДАТЬ НОВУЮ КАРТОЧКУ
+   const createCardToColumn = async (id) => {
+      try {
+         dispatch(loadingToastifyAction("...Loading"))
+
+         const { data } = await axiosInstance.post("/api/cards", {
+            columnId: id,
+            title: inputValue,
+            description: "",
+         })
+         dispatch(successToastifyAction(`Created card a ${data.title}`))
+         setActive("nothing")
+         getColumnsInDataBase(boardId)
+         setInputValueHandler("")
+         return null
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // ДОБАВИТЬ В АРХИВ ВСЕ КАРТОЧКИ
+   const addToArchiveAllCards = async (columnId) => {
+      try {
+         dispatch(loadingToastifyAction("...Loading"))
+         const response = await axiosInstance.put(
+            `/api/column/archive-column-cards/${columnId}`
+         )
+         getDataInArchive()
+         setActive("nothing")
+         getColumnsInDataBase(boardId)
+         dispatch(warningToastifyAction("Archived all cards"))
+         return console.log(response)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // УДАЛИТЬ ВСЕ КАРТОЧКИ
+   const deleteAllCardsInColumn = async (columnId) => {
+      try {
+         dispatch(loadingToastifyAction("...Loading"))
+         const response = await axiosInstance.delete(
+            `/api/column/delete-cards/${columnId}`
+         )
+         setActive("nothing")
+         getColumnsInDataBase(boardId)
+         dispatch(warningToastifyAction("Deleted all cards"))
+         return null
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
+   // ПОЛУЧИТЬ BOARD ПО ID
+   const getCardById = async (id) => {
+      try {
+         const { data } = await axiosInstance.get(`/api/cards/${id}`)
+         setTwoActive(`${data.id}`)
+         return setCardById(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   const openInputCreateCard = (columnId) => {
+      setActive(`addCardTyColumnById=${columnId}`)
+   }
+
+   const dragStarted = (e) => {
+      console.log(e)
    }
 
    useEffect(() => {
       getColumnsInDataBase(boardId)
    }, [boardId])
+
    return (
-      <DisplayFlex AI="flex-start" gap="10px">
+      <DisplayFlex heigth="75vh" AI="flex-start" gap="10px">
          {loading
             ? [...new Array(6)].map((item, index) => <Skeleton key={index} />)
             : columns?.map((item, index) => {
@@ -108,13 +186,21 @@ const Columns = () => {
                        >
                           <ListInDropDown>
                              <p>Actions</p>
-                             <li>Add card</li>
+                             <li onClick={() => openInputCreateCard(item.id)}>
+                                Add card
+                             </li>
                              <li onClick={() => deleteColumnHandler(item.id)}>
                                 Delete a column
                              </li>
                              <hr />
-                             <li>Delete all cards in this column</li>
-                             <li>Archive all cards in this column</li>
+                             <li
+                                onClick={() => deleteAllCardsInColumn(item.id)}
+                             >
+                                Delete all cards in this column
+                             </li>
+                             <li onClick={() => addToArchiveAllCards(item.id)}>
+                                Archive all cards in this column
+                             </li>
                              <hr />
                              <li>Archive this column</li>
                           </ListInDropDown>
@@ -135,8 +221,57 @@ const Columns = () => {
                           name={`${index}`}
                           placeholder="Название колонки"
                        />
-                       <Cards cards={item.columnCards} />
-                       <AddCardButton>+ Add a card</AddCardButton>
+                       <Cards
+                          onDragStart={dragStarted}
+                          getCardById={getCardById}
+                          cardById={cardById}
+                          activeAddCardButton={
+                             isActive === `addCardTyColumnById=${item.id}`
+                          }
+                          cards={item.columnCards}
+                       />
+                       <Modal
+                          onClose={() => setTwoActive("nothing")}
+                          fullWidth="95vw"
+                          isOpen={firstActive === `${cardById?.id}`}
+                       >
+                          <InnerTaskCard
+                             getCardById={getCardById}
+                             dataCardById={cardById}
+                             firstActive={firstActive}
+                             setTwoActive={setTwoActive}
+                          />
+                       </Modal>
+
+                       {isActive === `addCardTyColumnById=${item.id}` ? (
+                          <AddCardContainer>
+                             <Input
+                                onChange={(e) => setInputValueHandler(e)}
+                                autoFocus
+                             />
+                             <Button
+                                onClick={() =>
+                                   inputValue.length > 0 &&
+                                   createCardToColumn(item.id)
+                                }
+                                fullWidth="150px"
+                                fullHeight="38px"
+                             >
+                                Add a card
+                             </Button>
+                             <CloseButton
+                                right="100px"
+                                top="54px"
+                                onClick={() => setActive("nothing")}
+                             />
+                          </AddCardContainer>
+                       ) : (
+                          <AddCardButton
+                             onClick={() => openInputCreateCard(item.id)}
+                          >
+                             + Add a card
+                          </AddCardButton>
+                       )}
                     </CardColumn>
                  )
               })}
@@ -154,7 +289,10 @@ const Columns = () => {
                   onChange={(e) => setNameNewColumn(e.target.value)}
                   placeholder="Name"
                />
-               <Button padding="5px 28px" onClick={createNewColumn}>
+               <Button
+                  padding="5px 28px"
+                  onClick={() => nameNewColumn.length > 0 && createNewColumn()}
+               >
                   Create
                </Button>
             </BlockInputCreateColumn>
@@ -167,8 +305,8 @@ export default Columns
 
 const CardColumn = styled.div`
    position: relative;
-   width: 320px;
-   max-height: 82vh;
+   width: 310px;
+   max-height: 77vh;
    padding: 1rem 1rem 0.6rem 0.75rem;
    background: #e6e6e6;
    border-radius: 8px;
@@ -182,10 +320,10 @@ const CardColumn = styled.div`
    }
 `
 const AddCardButton = styled.span`
-   font-size: 16px;
+   font-size: 1.3rem !important;
    line-height: 20px;
    display: block;
-   margin: 5px 0 5px 8px;
+   margin: 12px 0 5px 8px;
 `
 const TitleColumn = styled(TextareaAutosize)`
    border: 5px solid red;
@@ -205,8 +343,8 @@ const AddColumnButton = styled.button`
    border-radius: 10px;
    font-size: 1.2rem;
    border: none;
-   background: #e6e6e6;
    cursor: pointer;
+   color: black;
    &:hover {
       background: #c7c7c7;
    }
@@ -221,6 +359,7 @@ const BlockInputCreateColumn = styled.div`
    height: 130px;
    padding: 8px;
    border-radius: 6px;
+   border: 2px solid violet;
    p {
       color: gray;
       margin: 0 0 5px 5px;
@@ -259,5 +398,19 @@ const ListInDropDown = styled.ul`
       width: 230px;
       border: 0.8px solid #dfe2e7;
       margin: 5px 0 5px 18px;
+   }
+`
+const AddCardContainer = styled.div`
+   position: relative;
+   margin-top: 7px;
+   Button {
+      margin-top: 5px;
+   }
+   Input {
+      margin-top: 2px;
+   }
+   img {
+      width: 20px;
+      height: 20px;
    }
 `

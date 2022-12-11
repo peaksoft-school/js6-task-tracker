@@ -202,6 +202,7 @@ const SvgGenerator = ({ id, activeColor, color, click }) => {
          </svg>
       )
    }
+
    return (
       <Icon id={id} color={color} activeColor={activeColor}>
          {svg}

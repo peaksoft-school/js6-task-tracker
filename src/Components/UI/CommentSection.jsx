@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React from "react"
 import styled from "styled-components"
 import UserAvatar from "./UserAvatar"
 import CustomIcons from "./TaskCard/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
-import DisplayFlexJCSB from "../../layout/DisplayFlex"
+import DisplayFlex from "../../layout/DisplayFlex"
 import arrowDownComment from "../../assets/svg/ArrowComment.svg"
+import Input from "./Input"
 
 const CommentSection = ({
    comment,
@@ -12,24 +14,20 @@ const CommentSection = ({
    userAvatar,
    editHandle,
    deleteHandle,
-   setActive,
-   isActive,
+   showComment,
+   setShowComment,
 }) => {
    return (
       <StyledCommentSection>
-         <DisplayFlexJCSB>
+         <DisplayFlex JK="space-between">
             <h3>Comments</h3>
             <CustomIcons
-               click={() =>
-                  setActive(
-                     isActive !== "showButton" ? "showButton" : "nothing"
-                  )
-               }
-               src={isActive === "showButton" ? arrowIcon : arrowDownComment}
+               onClick={() => setShowComment(!showComment)}
+               src={showComment ? arrowIcon : arrowDownComment}
             />
-         </DisplayFlexJCSB>
-         <ContainerComment sizeComment={isActive === "showButton"}>
-            <Comment>
+         </DisplayFlex>
+         <ContainerComment sizeComment={showComment}>
+            {/* <Comment>
                <UserAvatar src={userAvatar} />
                <div>
                   <p>Nazira Nazirova</p>
@@ -45,7 +43,10 @@ const CommentSection = ({
                      </BlockEditDeleteButton>
                   </div>
                </div>
-            </Comment>
+            </Comment> */}
+            <ContainerInput>
+               <Input placeholder="Write a comment" />
+            </ContainerInput>
          </ContainerComment>
       </StyledCommentSection>
    )
@@ -54,8 +55,8 @@ const CommentSection = ({
 export default CommentSection
 
 const StyledCommentSection = styled.div`
+   width: 33vw;
    position: relative;
-   width: 430px;
    background: #f4f5f7;
    padding: 1rem;
    border-radius: 8px;
@@ -66,10 +67,11 @@ const StyledCommentSection = styled.div`
    }
 `
 const ContainerComment = styled.div`
+   position: relative;
    overflow: scroll;
    max-height: ${(props) => (props.sizeComment ? "340px" : "428px")};
+   min-height: ${(props) => (props.sizeComment ? "34.2vh" : "47vh")};
 `
-
 const Comment = styled.div`
    display: flex;
    border-bottom: 1px solid #e4e4e4;
@@ -77,6 +79,7 @@ const Comment = styled.div`
    line-height: 18px;
    font-size: 1rem;
    padding: 0 0 1rem 0;
+   margin: 7px 0 7px 0;
    img {
       margin-right: 10px;
    }
@@ -105,8 +108,16 @@ const BlockEditDeleteButton = styled.div`
       margin-right: 1rem;
    }
 `
-
 const CommentText = styled.p`
    width: 23vw;
    margin: 0.5rem 0 0.5rem 0;
+`
+const ContainerInput = styled.div`
+   position: fixed;
+   right: 4.5vw;
+   width: 32vw;
+   bottom: 20px;
+   Input {
+      background: #f4f5f7 !important;
+   }
 `

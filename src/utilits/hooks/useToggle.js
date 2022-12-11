@@ -7,6 +7,5 @@ export const useToggle = () => {
    const setActive = (whatIsActive) => {
       setSearchParams({ isActive: whatIsActive })
    }
-
    return { setActive, isActive }
 }

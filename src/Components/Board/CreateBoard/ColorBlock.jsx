@@ -31,7 +31,7 @@ const ColorBlock = ({
                   padding="5px 10px 0 10px"
                >
                   <h4>Color</h4>
-                  <DisplayFlex width="23vw" FW="wrap" JK="space-between">
+                  <DisplayFlex FW="wrap" JK="space-between">
                      {typeof color === "object" &&
                         color.map((item) => {
                            return (

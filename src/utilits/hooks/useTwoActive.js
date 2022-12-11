@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom"
 
 const useTwoActive = () => {
-   const [searchParams, setSearchParams] = useSearchParams()
+   const [searchParams, setSearchParams] = useSearchParams("nothing")
 
    const firstActive = searchParams.get("firstActive")
    const secondActive = searchParams.get("secondActive")

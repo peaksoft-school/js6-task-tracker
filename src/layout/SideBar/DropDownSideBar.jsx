@@ -15,8 +15,6 @@ const DropDownSideBar = ({
             <li onClick={clickBoards}>
                <SvgGenerator color="white" id={1} />
                <span>Boards</span>
-               <SvgGenerator color="white" id="plus" />
-               <SvgGenerator color="white" id="arrowDown" />
             </li>
             <li>
                <SvgGenerator color="white" id={3} />
@@ -35,7 +33,7 @@ export default DropDownSideBar
 
 const DropDownContainer = styled.div`
    position: absolute;
-   left: 60px;
+   left: 90px;
    top: 5px;
    width: 140px;
    height: 50px;
@@ -48,18 +46,17 @@ const DropDownContainer = styled.div`
    p {
       width: 97px;
       font-size: 12px;
-      padding: 4px 0 4px 0;
+      padding: 7px 4px 7px 4px;
       text-align: center;
       background-color: #222222;
       border-radius: 18px;
       margin: 0 0 5px 0;
    }
 `
-
 const DropDownBlock = styled.div`
    position: relative;
-   width: 17vw;
-   height: 17vh;
+   width: 250px;
+   height: 120px;
    background-color: #222222;
    border-radius: 15px;
    padding: 15px;
@@ -70,7 +67,8 @@ const DropDownBlock = styled.div`
       align-items: center;
       margin-bottom: 3px;
       span {
-         margin: 0 55px 5px 8px;
+         width: 100px;
+         margin-left: -10px;
       }
    }
 `

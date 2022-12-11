@@ -8,6 +8,7 @@ import InnerBoard from "../Components/Board/InnerBoard"
 import { getAllWorkspaces } from "../store/workspacesSlice"
 import { clearBoards } from "../store/boardSlice"
 import Header from "../Components/Header"
+import Participants from "../Components/Participants"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
@@ -46,12 +47,7 @@ const AdminUserLayout = () => {
                      <h1 style={{ margin: "150px 0 0 300px" }}>All Issues</h1>
                   }
                />
-               <Route
-                  path="participants"
-                  element={
-                     <h1 style={{ margin: "150px 0 0 300px" }}>Participants</h1>
-                  }
-               />
+               <Route path="participants" element={<Participants />} />
             </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>

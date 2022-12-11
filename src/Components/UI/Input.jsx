@@ -6,6 +6,8 @@ import TextField from "@mui/material/TextField"
 const CssTextField = styled(TextField)({
    "& .MuiInputBase-input": {
       width: "100%",
+      backgroundColor: "white",
+      borderRadius: 13,
    },
    "& label.Mui-focused": {
       color: "#919191",

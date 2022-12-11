@@ -38,7 +38,6 @@ const SideBar = () => {
       showModal: false,
       showDropDown: false,
    })
-
    // CLICKS DROP DOWN AND SUB MENU
    const getWorkspacesIdHandler = (id) => {
       dispatch(getWorkspacesId({ id, navigate, dispatch }))
@@ -177,10 +176,10 @@ const SideBar = () => {
                               }
                            />
                            {showSideBar ? (
-                              <>
+                              <ContainerSideBarItem>
                                  <span>{item.title}</span>
                                  {item.amount && <span>{item.amount})</span>}
-                              </>
+                              </ContainerSideBarItem>
                            ) : null}
                         </ContainerNavItem>
                         {showSideBar ? renderSVGs(item, index) : null}
@@ -327,16 +326,20 @@ const ContainerNavItem = styled(Link)`
 `
 const HeaderSideBar = styled.div`
    width: 100%;
-   height: 40px;
    display: flex;
    align-items: center;
    p {
+      position: absolute;
+      left: 50px;
       width: 160px;
       font-size: 1.3rem;
-      margin-left: 25px;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+         display: none;
+      }
    }
    img {
-      margin-left: 2.4rem;
+      margin: 0 0 8px 2.4rem;
    }
 `
 const SideBarItem = styled.li`
@@ -352,6 +355,9 @@ const SideBarItem = styled.li`
    }
    &:nth-child(2) {
       padding-top: 1rem;
+   }
+   span {
+      width: 100%;
    }
 `
 const SideBarTitleBlock = styled.div`
@@ -372,6 +378,10 @@ const SideBarTitleBlock = styled.div`
       position: relative;
    }
 `
+const ContainerSideBarItem = styled.div`
+   position: absolute;
+   left: 65px;
+`
 const WorkspacesItem = styled.li`
    display: flex;
    flex-wrap: wrap;
@@ -387,8 +397,11 @@ const WorkspacesItem = styled.li`
       border-bottom-right-radius: 20px;
    }
    span {
+      width: 100%;
+      position: absolute;
+      left: 65px;
       text-align: start;
-      margin-left: 10px;
+      transition: all 0.35s ease-out;
    }
 `
 const ShowSideBarButton = styled.img`
