@@ -109,7 +109,7 @@ const Columns = ({ getDataInArchive }) => {
          setActive("nothing")
          getColumnsInDataBase(boardId)
          setInputValueHandler("")
-         return null
+         return console.log(data, "data")
       } catch (error) {
          return console.log(error.message)
       }
@@ -135,7 +135,7 @@ const Columns = ({ getDataInArchive }) => {
       try {
          dispatch(loadingToastifyAction("...Loading"))
          const response = await axiosInstance.delete(
-            `/api/column/delete-cards/${columnId}`
+            `/api/column/cards/${columnId}`
          )
          setActive("nothing")
          getColumnsInDataBase(boardId)
@@ -165,42 +165,69 @@ const Columns = ({ getDataInArchive }) => {
 
    // ВСЕ ФУНКЦИИ DRAG AND DROP
 
-   // const [currentColumn, setCurrentColumn] = useState(null)
-   // const [currentItem, setCurrentItem] = useState(null)
+   const [currentColumn, setCurrentColumn] = useState(null)
+   const [currentItem, setCurrentItem] = useState(null)
+   const [boardIdSelet, setBoardIdSelect] = useState()
 
-   // const dragStartHandler = (e, column, item) => {
-   //    setCurrentColumn(column)
-   //    setCurrentItem(item)
-   // }
+   const dragStartHandler = (e, column, item) => {
+      // setBoardIdSelect(item.id)
 
-   // const dragOverHandler = (e) => {
-   //    e.preventDefault()
-   // }
-
-   // const dropHandler = (e, column, item) => {
-   //    e.preventDefault()
-   //    console.log(column.columnCards)
-   //    const currentIndex = currentColumn.columnCards.indexOf(currentItem)
-   //    currentColumn.columnCards.splice(currentIndex, 1)
-   //    const dropIndex = column.columnCards.indexOf(item)
-   //    column.columnCards.splice(dropIndex + 1, 0, currentItem)
-
-   //    setColumns(
-   //       columns.map((c) => {
-   //          if (c.id === column.id) {
-   //             return column
-   //          }
-   //          if (c.id === currentColumn.id) {
-   //             return currentColumn
-   //          }
-   //          return c
-   //       })
-   //    )
-   // }
-
-   const dragStartHandler = (e, id) => {
-      console.log(id)
+      setCurrentColumn(column)
+      setCurrentItem(item)
    }
+
+   const dragOverHandler = (e) => {
+      e.preventDefault()
+   }
+
+   const dropHandler = (e, column, item) => {
+      // console.log(column, "column")
+      // console.log(item, "item")
+      // e.preventDefault()
+      // const currentIndex = currentColumn.columnCards.indexOf(currentItem)
+      // currentColumn.columnCards.splice(currentIndex, 1)
+      // const dropIndex = column.columnCards.indexOf(item)
+      // column.columnCards.splice(dropIndex + 1, 0, currentItem)
+      // setColumns(
+      //    columns.map((c) => {
+      //       if (c.id === column.id) {
+      //          return column
+      //       }
+      //       if (c.id === currentColumn.id) {
+      //          return currentColumn
+      //       }
+      //       return c
+      //    })
+      // )
+   }
+
+   const dropCardHandler = async (e, column) => {
+      // try {
+      //    const response = await axiosInstance(
+      //       `/api/cards/move-card/${boardIdSelet}/${column.id}`
+      //    )
+      //    getColumnsInDataBase(boardId)
+      //    return console.log(response)
+      // } catch (error) {
+      //    return console.log(error.message)
+      // }
+      column.columnCards.push(currentItem)
+      const currentIndex = currentColumn.columnCards.indexOf(currentItem)
+      currentColumn.columnCards.splice(currentIndex, 1)
+      setColumns(
+         columns.map((c) => {
+            if (c.id === column.id) {
+               return column
+            }
+            if (c.id === currentColumn.id) {
+               return currentColumn
+            }
+            return c
+         })
+      )
+   }
+
+   console.log(columns, "columns")
 
    return (
       <DisplayFlex heigth="75vh" AI="flex-start" gap="10px">
@@ -208,7 +235,11 @@ const Columns = ({ getDataInArchive }) => {
             ? [...new Array(6)].map((item, index) => <Skeleton key={index} />)
             : columns?.map((item, index) => {
                  return (
-                    <CardColumn droppable key={item.id}>
+                    <CardColumn
+                       onDragOver={(e) => dragOverHandler(e)}
+                       onDrop={(e) => dropCardHandler(e, item)}
+                       key={item.id}
+                    >
                        <ReusableDropDown
                           width="290px"
                           top="40px"
@@ -256,8 +287,8 @@ const Columns = ({ getDataInArchive }) => {
                        />
                        <Cards
                           dragStartHandler={dragStartHandler}
-                          //   dropHandler={dropHandler}
-                          //   dragOverHandler={dragOverHandler}
+                          dropHandler={dropHandler}
+                          dragOverHandler={dragOverHandler}
                           columnItem={item}
                           getCardById={getCardById}
                           cardById={cardById}

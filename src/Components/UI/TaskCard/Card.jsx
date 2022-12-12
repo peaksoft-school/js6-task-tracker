@@ -25,7 +25,7 @@ const Cards = ({
          <StyledCard
             draggable
             onDragOver={(e) => dragOverHandler(e)}
-            onDragStart={(e) => dragStartHandler(e, item.id)}
+            onDragStart={(e) => dragStartHandler(e, columnItem, item)}
             onDropCapture={(e) => dropHandler(e, columnItem, item)}
             isArchive={item.isArchive}
             key={item.id}
