@@ -17,7 +17,8 @@ const ColorsOrImagesDropDown = ({
          right="10px"
          showState={isActive === active}
          width="350px"
-         animationTrue
+         animation
+         padding="9px 0 5px 0"
       >
          <HeaderDropDown
             goBack="colorsOrImage"

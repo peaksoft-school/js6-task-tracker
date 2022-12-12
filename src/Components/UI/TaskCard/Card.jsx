@@ -10,14 +10,23 @@ import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
 import DisplayFlex from "../../../layout/DisplayFlex"
 import { useToggle } from "../../../utilits/hooks/useToggle"
 
-const Cards = ({ cards, activeAddCardButton, getCardById, onDragStart }) => {
+const Cards = ({
+   cards,
+   activeAddCardButton,
+   getCardById,
+   dragOverHandler,
+   columnItem,
+   dragStartHandler,
+   dropHandler,
+}) => {
    const { isActive, setActive } = useToggle()
-
    const renderCard = (item) => {
       return (
          <StyledCard
             draggable
-            onDragStart={(e) => onDragStart(e)}
+            onDragOver={(e) => dragOverHandler(e)}
+            onDragStart={(e) => dragStartHandler(e, item.id)}
+            onDropCapture={(e) => dropHandler(e, columnItem, item)}
             isArchive={item.isArchive}
             key={item.id}
          >

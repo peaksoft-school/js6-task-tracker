@@ -67,11 +67,12 @@ const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
          />
          <ReusableDropDown
             width="350px"
-            padding="15px 0 17px 0"
+            padding="18px 0 17px 0"
             showState={isActive === "menu"}
             right="15px"
+            animation
          >
-            <CloseButton onClick={() => setActive("nothing")} />
+            <CloseButton top="23px" onClick={() => setActive("nothing")} />
             <Block>
                <p>Menu</p>
                <li onClick={() => setActive("colorsOrImage")}>
@@ -86,9 +87,10 @@ const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
          </ReusableDropDown>
          <ReusableDropDown
             width="350px"
-            padding="0 14px 15px 14px"
+            padding="8px 14px 15px 14px"
             right="15px"
             showState={isActive === "archived"}
+            animation
          >
             <HeaderDropDown title="Archived" goBack="menu" />
             <Cards
@@ -111,10 +113,11 @@ const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
          </ReusableDropDown>
          <ReusableDropDown
             width="350px"
-            padding="0 7px 15px 3px"
+            padding="9px 7px 15px 3px"
             showState={isActive === "colorsOrImage"}
             right="15px"
             height="200px"
+            animation
          >
             <HeaderDropDown title="Change the background" goBack="menu" />
             <img
@@ -152,6 +155,7 @@ export default Menu
 const Block = styled.ul`
    p {
       text-align: center;
+      margin-bottom: 5px;
    }
    li {
       width: 100%;

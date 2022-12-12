@@ -17,7 +17,7 @@ const HeaderDropDown = ({ title, goBack }) => {
          >
             {title}
          </p>
-         <CloseButton onClick={() => setActive("nothing")} />
+         <CloseButton top="22px" onClick={() => setActive("nothing")} />
       </>
    )
 }

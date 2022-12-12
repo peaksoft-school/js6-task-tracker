@@ -70,11 +70,13 @@ const InnerBoard = () => {
                   getCardById={getCardById}
                />
             </DisplayFlex>
-            <Columns
-               getDataInArchive={getDataInArchive}
-               cardById={cardById}
-               getCardById={getCardById}
-            />
+            <ContainerColumns>
+               <Columns
+                  getDataInArchive={getDataInArchive}
+                  cardById={cardById}
+                  getCardById={getCardById}
+               />
+            </ContainerColumns>
          </ContainerInfoBoardColumn>
          <Modal
             onClose={() => setTwoActive("nothing")}
@@ -125,4 +127,12 @@ const LeftBlock = styled.div`
       padding: 0 8px 0 8px;
       border-radius: 10px;
    }
+`
+const ContainerColumns = styled.div`
+   width: 100%;
+   overflow: scroll;
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   height: 76vh;
 `

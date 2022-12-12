@@ -46,7 +46,6 @@ const Columns = ({ getDataInArchive }) => {
       newColumns[name].columnName = value
       return setColumns(newColumns)
    }
-
    // ОТКРЫТЬ DROP DOWN КОЛОНЫ
    const getActiveIndexDropDownHandler = (id) => {
       setActive(
@@ -146,7 +145,6 @@ const Columns = ({ getDataInArchive }) => {
          return console.log(error.message)
       }
    }
-
    // ПОЛУЧИТЬ BOARD ПО ID
    const getCardById = async (id) => {
       try {
@@ -161,13 +159,48 @@ const Columns = ({ getDataInArchive }) => {
       setActive(`addCardTyColumnById=${columnId}`)
    }
 
-   const dragStarted = (e) => {
-      console.log(e)
-   }
-
    useEffect(() => {
       getColumnsInDataBase(boardId)
    }, [boardId])
+
+   // ВСЕ ФУНКЦИИ DRAG AND DROP
+
+   // const [currentColumn, setCurrentColumn] = useState(null)
+   // const [currentItem, setCurrentItem] = useState(null)
+
+   // const dragStartHandler = (e, column, item) => {
+   //    setCurrentColumn(column)
+   //    setCurrentItem(item)
+   // }
+
+   // const dragOverHandler = (e) => {
+   //    e.preventDefault()
+   // }
+
+   // const dropHandler = (e, column, item) => {
+   //    e.preventDefault()
+   //    console.log(column.columnCards)
+   //    const currentIndex = currentColumn.columnCards.indexOf(currentItem)
+   //    currentColumn.columnCards.splice(currentIndex, 1)
+   //    const dropIndex = column.columnCards.indexOf(item)
+   //    column.columnCards.splice(dropIndex + 1, 0, currentItem)
+
+   //    setColumns(
+   //       columns.map((c) => {
+   //          if (c.id === column.id) {
+   //             return column
+   //          }
+   //          if (c.id === currentColumn.id) {
+   //             return currentColumn
+   //          }
+   //          return c
+   //       })
+   //    )
+   // }
+
+   const dragStartHandler = (e, id) => {
+      console.log(id)
+   }
 
    return (
       <DisplayFlex heigth="75vh" AI="flex-start" gap="10px">
@@ -175,7 +208,7 @@ const Columns = ({ getDataInArchive }) => {
             ? [...new Array(6)].map((item, index) => <Skeleton key={index} />)
             : columns?.map((item, index) => {
                  return (
-                    <CardColumn key={item.id}>
+                    <CardColumn droppable key={item.id}>
                        <ReusableDropDown
                           width="290px"
                           top="40px"
@@ -222,7 +255,10 @@ const Columns = ({ getDataInArchive }) => {
                           placeholder="Название колонки"
                        />
                        <Cards
-                          onDragStart={dragStarted}
+                          dragStartHandler={dragStartHandler}
+                          //   dropHandler={dropHandler}
+                          //   dragOverHandler={dragOverHandler}
+                          columnItem={item}
                           getCardById={getCardById}
                           cardById={cardById}
                           activeAddCardButton={
@@ -359,7 +395,6 @@ const BlockInputCreateColumn = styled.div`
    height: 130px;
    padding: 8px;
    border-radius: 6px;
-   border: 2px solid violet;
    p {
       color: gray;
       margin: 0 0 5px 5px;

@@ -10,6 +10,7 @@ const ReusableDropDown = ({
    children,
    showState,
    right,
+   animation,
 }) => {
    return (
       showState && (
@@ -20,6 +21,7 @@ const ReusableDropDown = ({
             left={left}
             width={width}
             height={height}
+            animaiton={animation}
          >
             {children}
          </DropDownContainer>
@@ -54,4 +56,5 @@ const DropDownContainer = styled.div`
    -moz-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    animation: ${animationDropDown} 0.06s linear alternate;
+   animation: ${(props) => !props.animaiton && "none"} !important;
 `
