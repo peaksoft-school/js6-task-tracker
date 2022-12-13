@@ -5,12 +5,13 @@ import { TextareaAutosize } from "@mui/material"
 import ProgressBar from "../UI/ProgressBar"
 import closeIcon from "../../assets/icons/closeWhite.svg"
 import Button from "../UI/Button"
-import CustomIcons from "../UI/TaskCard/CustomIcons"
+import CustomIcons from "../Column/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
 import SecondBlock from "./SecondBlock"
 import CloseButton from "../UI/CloseButton"
 import ContainerButtons from "../UI/ContainerButtons"
 import DisplayFlex from "../../layout/DisplayFlex"
+import { useColumnQuery } from "../../api/useColumnQuery"
 
 const InnerTaskCard = ({
    dataCardById,
@@ -22,9 +23,13 @@ const InnerTaskCard = ({
       getCardById(firstActive)
    }, [])
 
+   const closeInnerTaskCardAndGetColumn = () => {
+      setTwoActive("nothing")
+   }
+
    return (
       <DisplayFlex FD="column">
-         <CloseButton onClick={() => setTwoActive("nothing")} />
+         <CloseButton onClick={() => closeInnerTaskCardAndGetColumn()} />
          <DisplayFlex>
             <FirstBlock>
                <TitleCard>{dataCardById?.title}</TitleCard>

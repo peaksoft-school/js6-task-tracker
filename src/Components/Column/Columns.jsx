@@ -8,33 +8,42 @@ import { useDispatch } from "react-redux"
 // import Button from "../Button"
 // import close from "../../../assets/icons/Vectorclose.svg"
 // import Input from "../Input"
-import threePoint from "../../../assets/icons/threePoint.svg"
-import DisplayFlex from "../../../layout/DisplayFlex"
+import threePoint from "../../assets/icons/threePoint.svg"
+import DisplayFlex from "../../layout/DisplayFlex"
 import CustomIcons from "./CustomIcons"
-import CloseButton from "../CloseButton"
-import Input from "../Input"
-import Button from "../Button"
-import { useToggle } from "../../../utilits/hooks/useToggle"
-import { axiosInstance } from "../../../api/axiosInstance"
+import CloseButton from "../UI/CloseButton"
+import Input from "../UI/Input"
+import Button from "../UI/Button"
+import { useToggle } from "../../utilits/hooks/useToggle"
+import { axiosInstance } from "../../api/axiosInstance"
 import Skeleton from "./Skeleton"
-import ReusableDropDown from "../ReusableDropDown"
+import ReusableDropDown from "../UI/ReusableDropDown"
 import {
    loadingToastifyAction,
    errorToastifyAction,
    successToastifyAction,
    warningToastifyAction,
-} from "../../../store/toastifySlice"
-import { useGetInputValue } from "../../../utilits/hooks/useGetInputValue"
+} from "../../store/toastifySlice"
+import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import Cards from "./Card"
-import useTwoActive from "../../../utilits/hooks/useTwoActive"
-import InnerTaskCard from "../../InnerTaskCard/InnerTaskCard"
-import Modal from "../Modal"
+import useTwoActive from "../../utilits/hooks/useTwoActive"
+import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
+import Modal from "../UI/Modal"
+import { useColumnQuery } from "../../api/useColumnQuery"
 
 const Columns = ({ getDataInArchive }) => {
-   const [columns, setColumns] = useState([])
-   const [loading, setLoading] = useState(true)
+   const {
+      deleteColumnHandler,
+      columns,
+      getColumnsInDataBase,
+      loading,
+      setColumns,
+      setNameNewColumn,
+      nameNewColumn,
+      createNewColumn,
+      deleteAllCardsInColumn,
+   } = useColumnQuery()
    const [cardById, setCardById] = useState()
-   const [nameNewColumn, setNameNewColumn] = useState("")
    const { inputValue, setInputValueHandler } = useGetInputValue()
    const dispatch = useDispatch()
    const { boardId } = useParams()
@@ -53,47 +62,6 @@ const Columns = ({ getDataInArchive }) => {
             ? `DropDownColumnById=${id}`
             : "nothing"
       )
-   }
-   // ПОЛУЧИТЬ КОЛОНЫ ИЗ БАЗА ДАННЫХ
-   const getColumnsInDataBase = async (id) => {
-      try {
-         const { data } = await axiosInstance.get(`/api/column/${id}`)
-         data.columnResponses?.sort((a, b) => (a.id > b.id ? 1 : -1))
-         setColumns(data.columnResponses ? data.columnResponses : [])
-         return setLoading(false)
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
-   // УДАЛИТЬ КОЛОНУ
-   const deleteColumnHandler = async (id) => {
-      try {
-         dispatch(loadingToastifyAction())
-         const response = await axiosInstance.delete(`/api/column/${id}`)
-         getColumnsInDataBase(boardId)
-         return dispatch(warningToastifyAction("Deleted column"))
-      } catch (error) {
-         return console.log(error)
-      }
-   }
-   // СОЗДАТЬ НОВУЮ КОЛОНУ
-   const createNewColumn = async () => {
-      try {
-         dispatch(loadingToastifyAction())
-         const { data } = await axiosInstance.post("/api/column", {
-            columnName: nameNewColumn,
-            boardId,
-         })
-         getColumnsInDataBase(boardId)
-         dispatch(
-            successToastifyAction(`Your created column ${data.columnName}`)
-         )
-         setActive("nothing")
-         setNameNewColumn("")
-         return null
-      } catch (error) {
-         return dispatch(errorToastifyAction(error.message))
-      }
    }
    // СОЗДАТЬ НОВУЮ КАРТОЧКУ
    const createCardToColumn = async (id) => {
@@ -130,21 +98,6 @@ const Columns = ({ getDataInArchive }) => {
          return console.log(error.message)
       }
    }
-   // УДАЛИТЬ ВСЕ КАРТОЧКИ
-   const deleteAllCardsInColumn = async (columnId) => {
-      try {
-         dispatch(loadingToastifyAction("...Loading"))
-         const response = await axiosInstance.delete(
-            `/api/column/cards/${columnId}`
-         )
-         setActive("nothing")
-         getColumnsInDataBase(boardId)
-         dispatch(warningToastifyAction("Deleted all cards"))
-         return null
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
    // ПОЛУЧИТЬ BOARD ПО ID
    const getCardById = async (id) => {
       try {
@@ -160,8 +113,8 @@ const Columns = ({ getDataInArchive }) => {
    }
 
    useEffect(() => {
-      getColumnsInDataBase(boardId)
-   }, [boardId])
+      getColumnsInDataBase()
+   }, [boardId, getCardById])
 
    // ВСЕ ФУНКЦИИ DRAG AND DROP
 

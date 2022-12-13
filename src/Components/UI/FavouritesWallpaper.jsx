@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import CustomIcons from "./TaskCard/CustomIcons"
+import CustomIcons from "../Column/CustomIcons"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
 import sadStar from "../../assets/svg/sadStar.svg"
 import { addWorkspacesToFavourites } from "../../store/workspacesSlice"

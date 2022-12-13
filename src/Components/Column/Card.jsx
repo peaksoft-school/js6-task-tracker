@@ -1,14 +1,14 @@
 import React from "react"
 import styled from "styled-components"
 import CustomIcons from "./CustomIcons"
-import EditIcon from "../../../assets/icons/Icon Shape (1).svg"
-import comentIcon from "../../../assets/icons/Comment.svg"
-import timeIcon from "../../../assets/icons/Real World Icon.svg"
-import descriptionIcon from "../../../assets/icons/Typography Icon (1).svg"
-import peopleIcon from "../../../assets/icons/people.svg"
-import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
-import DisplayFlex from "../../../layout/DisplayFlex"
-import { useToggle } from "../../../utilits/hooks/useToggle"
+import EditIcon from "../../assets/icons/Icon Shape (1).svg"
+import comentIcon from "../../assets/icons/Comment.svg"
+import timeIcon from "../../assets/icons/Real World Icon.svg"
+import descriptionIcon from "../../assets/icons/Typography Icon (1).svg"
+import peopleIcon from "../../assets/icons/people.svg"
+import completeIcon from "../../assets/icons/UI and Keyboard Icon.svg"
+import DisplayFlex from "../../layout/DisplayFlex"
+import { useToggle } from "../../utilits/hooks/useToggle"
 
 const Cards = ({
    cards,
