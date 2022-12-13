@@ -227,8 +227,6 @@ const Columns = ({ getDataInArchive }) => {
       )
    }
 
-   console.log(columns, "columns")
-
    return (
       <DisplayFlex heigth="75vh" AI="flex-start" gap="10px">
          {loading

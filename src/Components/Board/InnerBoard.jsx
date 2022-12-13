@@ -83,6 +83,7 @@ const InnerBoard = () => {
             fullWidth="95vw"
             isOpen={firstActive === `${cardById?.id}`}
          >
+            {firstActive === `${cardById?.id}`}
             <InnerTaskCard
                getCardById={getCardById}
                dataCardById={cardById}

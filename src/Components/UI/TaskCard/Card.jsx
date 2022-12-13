@@ -35,10 +35,14 @@ const Cards = ({
                   <Label
                      showLabel={isActive === "showLabel"}
                      key={item.id}
-                     onClick={() => setActive("showLabel")}
+                     onClick={() =>
+                        setActive(
+                           isActive !== "showLabel" ? "showLabel" : "nothing"
+                        )
+                     }
                      color={item.color}
                   >
-                     {isActive === "showLabel" ? item.text : null}
+                     {isActive === "showLabel" ? item.description : null}
                   </Label>
                ))}
             </DisplayFlex>

@@ -38,7 +38,8 @@ const InnerTaskCard = ({
                   {dataCardById?.labelResponses.map((item) => {
                      return (
                         <Label color={item.color}>
-                           {item.text} <img src={closeIcon} alt="close" />
+                           {item.description}
+                           <CloseButton top="7px" />
                         </Label>
                      )
                   })}
@@ -59,7 +60,10 @@ const InnerTaskCard = ({
                   widthProgressPercent={90}
                />
             </FirstBlock>
-            <SecondBlock isArchive={dataCardById?.isArchive} />
+            <SecondBlock
+               getCardById={getCardById}
+               dataCardById={dataCardById}
+            />
          </DisplayFlex>
       </DisplayFlex>
    )
@@ -76,10 +80,12 @@ const FirstBlock = styled.div`
    height: 73vh;
 `
 const Label = styled.li`
+   position: relative;
    background-color: ${(props) => props.color};
    color: white;
-   padding: 0.2rem 0.7rem 0.2rem 0.7rem;
+   padding: 0.2rem 2.5rem 0.2rem 0.7rem;
    border-radius: 4px;
+   list-style: none;
 `
 const AddDescription = styled(TextareaAutosize)`
    width: 55vw;

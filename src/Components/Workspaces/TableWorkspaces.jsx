@@ -27,6 +27,8 @@ const TableWorkspaces = () => {
       dispatch(getWorkspacesId({ id, navigate }))
    }
 
+   console.log(workspaces)
+
    return (
       <Table>
          <thead>
@@ -66,7 +68,9 @@ const TableWorkspaces = () => {
                      </td>
                      <td>
                         <img
-                           src={item.action ? actionTrueSvg : actionFalseSvg}
+                           src={
+                              item.isFavorite ? actionTrueSvg : actionFalseSvg
+                           }
                            onClick={() =>
                               addToFavouritesWorkspacesHandler(item.id)
                            }

@@ -8,7 +8,6 @@ import { GrayButtonsInnerTaskCard } from "../../utilits/constants/Constants"
 import GrayButton from "../UI/GrayButtons"
 import DropDown from "../UI/ReusableDropDown"
 import closeSvg from "../../assets/icons/close.svg"
-import Label from "./Label"
 import Input from "../UI/Input"
 import searchIcon from "../../assets/svg/SearchIcon.svg"
 import MemberItem from "../UI/MemberItem"
@@ -19,10 +18,12 @@ import DateTimePicker from "../UI/DateTimePicker"
 import CustomIcons from "../UI/TaskCard/CustomIcons"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import DisplayFlex from "../../layout/DisplayFlex"
+import AddLabel from "./Label"
 
-const SecondBlock = ({ isArchive }) => {
+const SecondBlock = ({ dataCardById, getCardById }) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
+
    return (
       <StyledSecondBlock>
          <p>Add</p>
@@ -108,11 +109,12 @@ const SecondBlock = ({ isArchive }) => {
                               alt="close"
                            />
                         </ContainerText>
-
-                        <Label color="orange" />
-                        <Label color="red" />
-                        <Label color="blue" />
-                        <Label color="green" />
+                        <AddLabel
+                           getCardById={getCardById}
+                           firstActive={firstActive}
+                           setTwoActive={setTwoActive}
+                           dataCardById={dataCardById}
+                        />
                      </DropDown>
 
                      <DropDown
@@ -153,7 +155,10 @@ const SecondBlock = ({ isArchive }) => {
             >
                {showComment && "Delete"}
             </GrayButton>
-            <GrayButton fullWidth={showComment && "13rem"} archived={isArchive}>
+            <GrayButton
+               fullWidth={showComment && "13rem"}
+               archived={dataCardById?.isArchive}
+            >
                <svg
                   width="21"
                   height="17"
@@ -164,7 +169,7 @@ const SecondBlock = ({ isArchive }) => {
                >
                   <path
                      d="M0.313379 2.42866L0.277925 1.69231C0.277925 0.757672 1.08048 0 2.07048 0H5.36122C5.83663 0 6.29257 0.178296 6.62874 0.495666L7.37124 1.19664C7.70741 1.51401 8.16335 1.69231 8.63877 1.69231H12.2073C13.2614 1.69231 14.0879 2.54679 13.9925 3.53783L13.4221 9.46091C13.3382 10.3326 12.5641 11 11.6369 11H2.36305C1.43594 11 0.661802 10.3326 0.577865 9.46091L0.00750762 3.53783C-0.0319781 3.12778 0.0863757 2.7411 0.313379 2.42866ZM1.7927 2.53846C1.26566 2.53846 0.852386 2.9657 0.900102 3.46122L1.47046 9.3843C1.51243 9.82014 1.8995 10.1538 2.36305 10.1538H11.6369C12.1005 10.1538 12.4876 9.82014 12.5295 9.3843L13.0999 3.46122C13.1476 2.9657 12.7343 2.53846 12.2073 2.53846H1.7927ZM5.99498 1.09399C5.8269 0.935302 5.59893 0.846154 5.36122 0.846154H2.07048C1.58113 0.846154 1.18338 1.21639 1.17436 1.67634L1.18 1.79355C1.37073 1.72811 1.57695 1.69231 1.7927 1.69231H6.62874L5.99498 1.09399Z"
-                     fill={isArchive ? "white" : "#BEBFBF"}
+                     fill={dataCardById?.isArchive ? "white" : "#BEBFBF"}
                   />
                </svg>
                {showComment && "Archived"}
