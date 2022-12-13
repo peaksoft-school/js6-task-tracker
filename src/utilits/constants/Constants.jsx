@@ -257,6 +257,10 @@ export const colorsLabel = [
    "#bcea4d",
    "#12574f",
    "#4bd779",
-   "#ff7400",
    "#f1b270",
+   "#FFF8DC",
+   "#008B8B",
+   "#8B008B",
+   "#FF8C00",
+   "#FFD700",
 ]

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -14,12 +15,14 @@ import useTwoActive from "../../utilits/hooks/useTwoActive"
 import { axiosInstance } from "../../api/axiosInstance"
 
 const InnerBoard = () => {
+   const [columns, setColumns] = useState([])
+   const [cardById, setCardById] = useState()
+   const [loading, setLoading] = useState(false)
+   const [archiveData, setArchiveData] = useState([])
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { showSideBar, boards } = useSelector((state) => state)
    const { setTwoActive, firstActive } = useTwoActive()
-   const [cardById, setCardById] = useState()
-   const [archiveData, setArchiveData] = useState([])
 
    const getCardById = async (id) => {
       try {
@@ -40,6 +43,11 @@ const InnerBoard = () => {
       } catch (error) {
          return console.log(error.message)
       }
+   }
+
+   const updateColumnAndCloseModal = () => {
+      // getColumnsInDataBase()
+      setTwoActive("nothing")
    }
 
    useEffect(() => {
@@ -64,6 +72,7 @@ const InnerBoard = () => {
                   </p>
                </LeftBlock>
                <Menu
+                  updateColumnAndCloseModal={updateColumnAndCloseModal}
                   getDataInArchive={getDataInArchive}
                   archiveData={archiveData}
                   cardById={cardById}
@@ -72,9 +81,15 @@ const InnerBoard = () => {
             </DisplayFlex>
             <ContainerColumns>
                <Columns
+                  // getColumnsInDataBase={getColumnsInDataBase}
+                  updateColumnAndCloseModal={updateColumnAndCloseModal}
                   getDataInArchive={getDataInArchive}
                   cardById={cardById}
                   getCardById={getCardById}
+                  columns={columns}
+                  setColumns={setColumns}
+                  loading={loading}
+                  setLoading={setLoading}
                />
             </ContainerColumns>
          </ContainerInfoBoardColumn>

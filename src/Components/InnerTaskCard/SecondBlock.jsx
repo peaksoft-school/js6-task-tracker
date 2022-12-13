@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import avatarPhoto from "../../assets/images/avatarPhotoo.jpg"
 import CommentSection from "../UI/CommentSection"
@@ -19,10 +20,54 @@ import CustomIcons from "../Column/CustomIcons"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import DisplayFlex from "../../layout/DisplayFlex"
 import AddLabel from "./Label"
+import { axiosInstance } from "../../api/axiosInstance"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   warningToastifyAction,
+} from "../../store/toastifySlice"
 
-const SecondBlock = ({ dataCardById, getCardById }) => {
+const SecondBlock = ({
+   dataCardById,
+   getCardById,
+   updateColumnAndCloseModal,
+}) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
+   const dispatch = useDispatch()
+
+   // УДАЛИТЬ КАРТОЧКУ
+   const deleteCardHandlerById = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.delete(
+            `/api/cards/${dataCardById.id}`
+         )
+         if (response.status === 200)
+            dispatch(warningToastifyAction("Deleted card"))
+         return updateColumnAndCloseModal()
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+   // ДОБАВИТЬ В АРХИВ
+   const sendToArchiveCard = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.put(
+            `/api/cards/archive/${dataCardById.id}`
+         )
+         if (response.status === 200)
+            dispatch(warningToastifyAction("added to archive"))
+         return updateColumnAndCloseModal()
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+
+   const getDateTimeValue = (data) => {
+      console.log(data)
+   }
 
    return (
       <StyledSecondBlock>
@@ -90,7 +135,7 @@ const SecondBlock = ({ dataCardById, getCardById }) => {
                            />
                         </ContainerText>
 
-                        <DateTimePicker />
+                        <DateTimePicker getDateTimeValue={getDateTimeValue} />
                      </DropDown>
 
                      <DropDown
@@ -150,12 +195,14 @@ const SecondBlock = ({ dataCardById, getCardById }) => {
          <p>Actions</p>
          <DisplayFlex gap="10px" margin="15px 0 15px 0">
             <GrayButton
+               onClick={() => deleteCardHandlerById()}
                iconButton={deleteIcon}
                fullWidth={showComment && "13rem"}
             >
                {showComment && "Delete"}
             </GrayButton>
             <GrayButton
+               onClick={() => sendToArchiveCard()}
                fullWidth={showComment && "13rem"}
                archived={dataCardById?.isArchive}
             >

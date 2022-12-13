@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import TextareaAutosize from "@mui/base/TextareaAutosize"
@@ -29,31 +29,89 @@ import Cards from "./Card"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
 import Modal from "../UI/Modal"
-import { useColumnQuery } from "../../api/useColumnQuery"
 
-const Columns = ({ getDataInArchive }) => {
-   const {
-      deleteColumnHandler,
-      columns,
-      getColumnsInDataBase,
-      loading,
-      setColumns,
-      setNameNewColumn,
-      nameNewColumn,
-      createNewColumn,
-      deleteAllCardsInColumn,
-   } = useColumnQuery()
+const Columns = ({
+   getDataInArchive,
+   updateColumnAndCloseModal,
+   // columns,
+   // setColumns,
+   // loading,
+   // getColumnsInDataBase,
+}) => {
    const [cardById, setCardById] = useState()
    const { inputValue, setInputValueHandler } = useGetInputValue()
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { setActive, isActive } = useToggle()
    const { setTwoActive, firstActive } = useTwoActive()
+   const [nameNewColumn, setNameNewColumn] = useState("")
+
+   const [columns, setColumns] = useState([])
+   const [loading, setLoading] = useState(false)
+
+   const getColumnsInDataBase = async () => {
+      try {
+         const { data } = await axiosInstance.get(`/api/column/${boardId}`)
+         setColumns(data.columnResponses ? data.columnResponses : [])
+         return setLoading(false)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   useEffect(() => {
+      getColumnsInDataBase()
+   }, [])
 
    const titleColumnHandler = ({ target: { name, value } }) => {
       const newColumns = [...columns]
       newColumns[name].columnName = value
       return setColumns(newColumns)
+   }
+
+   // СОЗДАТЬ НОВУЮ КОЛОНУ
+   const createNewColumn = async () => {
+      try {
+         dispatch(loadingToastifyAction())
+         const { data } = await axiosInstance.post("/api/column", {
+            columnName: nameNewColumn,
+            boardId,
+         })
+         getColumnsInDataBase(boardId)
+         dispatch(
+            successToastifyAction(`Your created column ${data.columnName}`)
+         )
+         setActive("nothing")
+         setNameNewColumn("")
+         return null
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+   // УДАЛИТЬ КОЛОНУ
+   const deleteColumnHandler = async (id) => {
+      try {
+         dispatch(loadingToastifyAction())
+         const response = await axiosInstance.delete(`/api/column/${id}`)
+         getColumnsInDataBase(boardId)
+         return dispatch(warningToastifyAction("Deleted column"))
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+   // УДАЛИТЬ ВСЕ КАРТОЧКИ
+   const deleteAllCardsInColumn = async (columnId) => {
+      try {
+         dispatch(loadingToastifyAction("...Loading"))
+         const response = await axiosInstance.delete(
+            `/api/column/cards/${columnId}`
+         )
+         setActive("nothing")
+         getColumnsInDataBase(boardId)
+         dispatch(warningToastifyAction("Deleted all cards"))
+         return null
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
    // ОТКРЫТЬ DROP DOWN КОЛОНЫ
    const getActiveIndexDropDownHandler = (id) => {
@@ -108,13 +166,10 @@ const Columns = ({ getDataInArchive }) => {
          return console.log(error.message)
       }
    }
+
    const openInputCreateCard = (columnId) => {
       setActive(`addCardTyColumnById=${columnId}`)
    }
-
-   useEffect(() => {
-      getColumnsInDataBase()
-   }, [boardId, getCardById])
 
    // ВСЕ ФУНКЦИИ DRAG AND DROP
 
@@ -128,11 +183,9 @@ const Columns = ({ getDataInArchive }) => {
       setCurrentColumn(column)
       setCurrentItem(item)
    }
-
    const dragOverHandler = (e) => {
       e.preventDefault()
    }
-
    const dropHandler = (e, column, item) => {
       // console.log(column, "column")
       // console.log(item, "item")
@@ -153,7 +206,6 @@ const Columns = ({ getDataInArchive }) => {
       //    })
       // )
    }
-
    const dropCardHandler = async (e, column) => {
       // try {
       //    const response = await axiosInstance(
@@ -254,6 +306,9 @@ const Columns = ({ getDataInArchive }) => {
                           isOpen={firstActive === `${cardById?.id}`}
                        >
                           <InnerTaskCard
+                             updateColumnAndCloseModal={
+                                updateColumnAndCloseModal
+                             }
                              getCardById={getCardById}
                              dataCardById={cardById}
                              firstActive={firstActive}

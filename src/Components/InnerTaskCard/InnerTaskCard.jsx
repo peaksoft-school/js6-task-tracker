@@ -11,25 +11,21 @@ import SecondBlock from "./SecondBlock"
 import CloseButton from "../UI/CloseButton"
 import ContainerButtons from "../UI/ContainerButtons"
 import DisplayFlex from "../../layout/DisplayFlex"
-import { useColumnQuery } from "../../api/useColumnQuery"
 
 const InnerTaskCard = ({
    dataCardById,
    firstActive,
    getCardById,
    setTwoActive,
+   updateColumnAndCloseModal,
 }) => {
    useEffect(() => {
       getCardById(firstActive)
    }, [])
 
-   const closeInnerTaskCardAndGetColumn = () => {
-      setTwoActive("nothing")
-   }
-
    return (
       <DisplayFlex FD="column">
-         <CloseButton onClick={() => closeInnerTaskCardAndGetColumn()} />
+         <CloseButton onClick={() => updateColumnAndCloseModal()} />
          <DisplayFlex>
             <FirstBlock>
                <TitleCard>{dataCardById?.title}</TitleCard>
@@ -58,6 +54,7 @@ const InnerTaskCard = ({
                   titleGrayButton="Cancel"
                   titleBlueButton="Save"
                   paddingButton="8px 40px 10px 40px"
+                  widthBlueButton="130px"
                />
                <ProgressBar
                   tasks={9}
@@ -66,6 +63,7 @@ const InnerTaskCard = ({
                />
             </FirstBlock>
             <SecondBlock
+               updateColumnAndCloseModal={updateColumnAndCloseModal}
                getCardById={getCardById}
                dataCardById={dataCardById}
             />
