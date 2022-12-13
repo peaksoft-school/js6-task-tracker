@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react"
-import styled, { keyframes } from "styled-components"
+import React, { useEffect } from "react"
+import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { useParams, useNavigate } from "react-router-dom"
 import openMenu from "../../assets/icons/openMenu.svg"
@@ -8,7 +8,6 @@ import star from "../../assets/icons/star.svg"
 import { useToggle } from "../../utilits/hooks/useToggle"
 import ReusableDropDown from "../UI/ReusableDropDown"
 import CloseButton from "../UI/CloseButton"
-import Arrow from "../UI/Arrow"
 import image from "../../assets/images/variant.svg"
 import colorsVariant from "../../assets/images/rightImage.jpg"
 import imageVariant from "../../assets/images/leftImage.png"
@@ -19,17 +18,12 @@ import { axiosInstance } from "../../api/axiosInstance"
 import ColorsOrImagesDropDown from "./ColorsOrImagesDropDown"
 import HeaderDropDown from "./HeaderDropDown"
 import Cards from "../Column/Card"
-import useTwoActive from "../../utilits/hooks/useTwoActive"
-import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
-import Modal from "../UI/Modal"
 
-const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
+const Menu = ({ getCardById, cardById, archiveData }) => {
    const navigate = useNavigate()
    const { boardId, workspaceId } = useParams()
    const dispatch = useDispatch()
    const { isActive, setActive } = useToggle()
-   const { setTwoActive } = useTwoActive()
-   const { firstActive } = useTwoActive()
 
    // ИЗМЕНИТЬ ФОН BOARD
    const changeBackgroundBoard = async (item) => {
@@ -48,10 +42,6 @@ const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
          return console.log(error.message)
       }
    }
-
-   useEffect(() => {
-      getDataInArchive()
-   }, [])
 
    const deleteBoardHandler = () => {
       dispatch(deleteBoardById({ navigate, boardId, workspaceId, dispatch }))
@@ -80,7 +70,12 @@ const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
                   <img src={image} alt="mountain" />
                </li>
                <li onClick={() => setActive("archived")}>
-                  In arhive <span>{archiveData?.archivedCards?.length}</span>
+                  In arhive{" "}
+                  <span>
+                     {archiveData?.archivedCards?.length > 0
+                        ? archiveData?.archivedCards?.length
+                        : "0"}
+                  </span>
                </li>
                <li onClick={deleteBoardHandler}>Delete this board</li>
             </Block>
@@ -98,18 +93,6 @@ const Menu = ({ getCardById, cardById, getDataInArchive, archiveData }) => {
                getCardById={getCardById}
                cards={archiveData.archivedCards}
             />
-            <Modal
-               onClose={() => setTwoActive("nothing")}
-               fullWidth="95vw"
-               isOpen={firstActive === `${cardById?.id}`}
-            >
-               <InnerTaskCard
-                  getCardById={getCardById}
-                  dataCardById={cardById}
-                  firstActive={firstActive}
-                  setTwoActive={setTwoActive}
-               />
-            </Modal>
          </ReusableDropDown>
          <ReusableDropDown
             width="350px"

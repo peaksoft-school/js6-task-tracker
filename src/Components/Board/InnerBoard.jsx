@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -15,15 +14,24 @@ import useTwoActive from "../../utilits/hooks/useTwoActive"
 import { axiosInstance } from "../../api/axiosInstance"
 
 const InnerBoard = () => {
-   const [columns, setColumns] = useState([])
    const [cardById, setCardById] = useState()
-   const [loading, setLoading] = useState(false)
    const [archiveData, setArchiveData] = useState([])
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { showSideBar, boards } = useSelector((state) => state)
    const { setTwoActive, firstActive } = useTwoActive()
+   const [columns, setColumns] = useState([])
+   const [loading, setLoading] = useState(true)
 
+   const getColumnsInDataBase = async () => {
+      try {
+         const { data } = await axiosInstance.get(`/api/column/${boardId}`)
+         setColumns(data.columnResponses ? data.columnResponses : [])
+         return setLoading(false)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
    const getCardById = async (id) => {
       try {
          const { data } = await axiosInstance.get(`/api/cards/${id}`)
@@ -33,7 +41,6 @@ const InnerBoard = () => {
          return console.log(error.message)
       }
    }
-
    const getDataInArchive = async () => {
       try {
          const { data } = await axiosInstance.get(
@@ -44,11 +51,14 @@ const InnerBoard = () => {
          return console.log(error.message)
       }
    }
-
    const updateColumnAndCloseModal = () => {
-      // getColumnsInDataBase()
+      getColumnsInDataBase()
       setTwoActive("nothing")
    }
+
+   useEffect(() => {
+      getColumnsInDataBase()
+   }, [boardId])
 
    useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
@@ -68,11 +78,10 @@ const InnerBoard = () => {
                   <CustomIcons top="3px" position="absolute" src={EditIcon} />
                   <h3>{boards.boardById.title}</h3>
                   <p>
-                     Columns: <span>0</span>
+                     Columns: <span>{columns?.length}</span>
                   </p>
                </LeftBlock>
                <Menu
-                  updateColumnAndCloseModal={updateColumnAndCloseModal}
                   getDataInArchive={getDataInArchive}
                   archiveData={archiveData}
                   cardById={cardById}
@@ -81,15 +90,13 @@ const InnerBoard = () => {
             </DisplayFlex>
             <ContainerColumns>
                <Columns
-                  // getColumnsInDataBase={getColumnsInDataBase}
-                  updateColumnAndCloseModal={updateColumnAndCloseModal}
                   getDataInArchive={getDataInArchive}
+                  getColumnsInDataBase={getColumnsInDataBase}
                   cardById={cardById}
                   getCardById={getCardById}
                   columns={columns}
                   setColumns={setColumns}
                   loading={loading}
-                  setLoading={setLoading}
                />
             </ContainerColumns>
          </ContainerInfoBoardColumn>
@@ -100,10 +107,10 @@ const InnerBoard = () => {
          >
             {firstActive === `${cardById?.id}`}
             <InnerTaskCard
+               updateColumnAndCloseModal={updateColumnAndCloseModal}
+               getDataInArchive={getDataInArchive}
                getCardById={getCardById}
                dataCardById={cardById}
-               firstActive={firstActive}
-               setTwoActive={setTwoActive}
             />
          </Modal>
       </Container>
@@ -118,6 +125,7 @@ const Container = styled.div`
    flex-direction: column;
    align-items: flex-end;
    height: 100vh;
+   padding-right: 30px;
    background-image: url(${(props) => props.backgroundImage});
    background-color: ${(props) => props.backgroundImage};
    background-repeat: no-repeat;

@@ -37,7 +37,7 @@ export default Button
 const StyledButton = styled.button`
    background-color: ${(props) => (props.color ? props.color : "#0079BF")};
    border: none;
-   padding: ${(props) => props.padding};
+   padding: ${(props) => (props.padding ? props.padding : "0 23px 0 23px")};
    font-weight: 300;
    width: ${(props) => props.width && props.width};
    height: ${(props) => props.fullHeight && props.fullHeight};

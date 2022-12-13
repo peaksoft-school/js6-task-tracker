@@ -83,7 +83,7 @@ const CreateWorkspaces = ({ toggle }) => {
             clickBlueButton={sendData}
             titleBlueButton="Create"
             titleGrayButton="Cancel"
-            paddingButton="0 40px 0 40px"
+            paddingBlueButton="0 40px 0 40px"
          />
       </>
    )

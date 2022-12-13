@@ -114,7 +114,7 @@ const CommentText = styled.p`
 `
 const ContainerInput = styled.div`
    position: fixed;
-   right: 4.5vw;
+   right: 3.6vw;
    width: 32vw;
    bottom: 20px;
    Input {

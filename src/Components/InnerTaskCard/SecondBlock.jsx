@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
+import { useParams } from "react-router-dom"
 import avatarPhoto from "../../assets/images/avatarPhotoo.jpg"
 import CommentSection from "../UI/CommentSection"
 import deleteIcon from "../../assets/icons/delete.svg"
@@ -24,18 +26,52 @@ import { axiosInstance } from "../../api/axiosInstance"
 import {
    errorToastifyAction,
    loadingToastifyAction,
+   successToastifyAction,
    warningToastifyAction,
 } from "../../store/toastifySlice"
+import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
+import { useData } from "../../utilits/hooks/useData"
 
 const SecondBlock = ({
    dataCardById,
    getCardById,
    updateColumnAndCloseModal,
+   getDataInArchive,
 }) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
    const dispatch = useDispatch()
+   const { workspaceId } = useParams()
+   const { data, setData } = useData()
 
+   // ПОИСК УЧАСТНИКОВ ДЛЯ КАРТОЧКУ
+   const searchMembersQuery = async (value) => {
+      try {
+         const { data } = await axiosInstance.get(
+            `/api/members/search/${workspaceId}?email=${value}`
+         )
+         return setData(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // ДОБАВИТЬ УЧАСТНИКА В КАРТОЧКУ
+   const assignMemberToCard = async (userId) => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const { data } = await axiosInstance.post(
+            `/api/members/assign/${userId}/${dataCardById.id}`
+         )
+         dispatch(
+            successToastifyAction(
+               `${data.firstName}${data.lastName} added to card`
+            )
+         )
+         return null
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
    // УДАЛИТЬ КАРТОЧКУ
    const deleteCardHandlerById = async () => {
       dispatch(loadingToastifyAction("...Loading"))
@@ -59,6 +95,7 @@ const SecondBlock = ({
          )
          if (response.status === 200)
             dispatch(warningToastifyAction("added to archive"))
+         getDataInArchive()
          return updateColumnAndCloseModal()
       } catch (error) {
          return dispatch(errorToastifyAction(error.message))
@@ -102,7 +139,12 @@ const SecondBlock = ({
                         </ContainerText>
 
                         <ContainerInput>
-                           <Input placeholder="Search" />
+                           <Input
+                              onChange={(e) =>
+                                 searchMembersQuery(e.target.value)
+                              }
+                              placeholder="Search"
+                           />
                            <CustomIcons
                               src={searchIcon}
                               position="absolute"
@@ -112,17 +154,32 @@ const SecondBlock = ({
                            />
                         </ContainerInput>
                         <ContainerMemberItem>
-                           <MemberItem photoUser={avatar} />
-                           <MemberItem photoUser={avatar} />
-                           <MemberItem photoUser={avatar} />
+                           {data.length > 0 ? (
+                              data.map((item) => {
+                                 return (
+                                    <MemberItem
+                                       onClick={() =>
+                                          assignMemberToCard(item.id)
+                                       }
+                                       firstname={item.firstName}
+                                       lastName={item.lastName}
+                                       image={item.image}
+                                       email={item.email}
+                                    />
+                                 )
+                              })
+                           ) : (
+                              <p>Ничего не найдено</p>
+                           )}
                         </ContainerMemberItem>
                      </DropDown>
 
                      <DropDown
+                        width="310px"
                         showState={secondActive === "Estimation"}
-                        top="65px"
-                        left="105px"
-                        padding="6px 0 0 20px"
+                        top="0px"
+                        left="95px"
+                        padding="5px 3px 20px 10px"
                      >
                         <ContainerText>
                            <span>Estimation</span>
@@ -235,7 +292,7 @@ const SecondBlock = ({
 export default SecondBlock
 
 const StyledSecondBlock = styled.div`
-   width: 80vw;
+   width: 76vw;
    position: relative;
    margin-right: 15px;
 `

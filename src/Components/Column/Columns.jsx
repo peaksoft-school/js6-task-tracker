@@ -27,45 +27,38 @@ import {
 import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import Cards from "./Card"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
-import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
-import Modal from "../UI/Modal"
 
 const Columns = ({
    getDataInArchive,
-   updateColumnAndCloseModal,
-   // columns,
-   // setColumns,
-   // loading,
-   // getColumnsInDataBase,
+   columns,
+   setColumns,
+   loading,
+   getColumnsInDataBase,
+   getCardById,
+   cardById,
 }) => {
-   const [cardById, setCardById] = useState()
    const { inputValue, setInputValueHandler } = useGetInputValue()
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { setActive, isActive } = useToggle()
-   const { setTwoActive, firstActive } = useTwoActive()
+   const { firstActive } = useTwoActive()
    const [nameNewColumn, setNameNewColumn] = useState("")
 
-   const [columns, setColumns] = useState([])
-   const [loading, setLoading] = useState(false)
-
-   const getColumnsInDataBase = async () => {
+   const titleColumnHandler = (e) => {
+      const newColumns = [...columns]
+      newColumns[e.target.name].columnName = e.target.value
+      return setColumns(newColumns)
+   }
+   const changeTitleColumnQuery = async (e, id) => {
       try {
-         const { data } = await axiosInstance.get(`/api/column/${boardId}`)
-         setColumns(data.columnResponses ? data.columnResponses : [])
-         return setLoading(false)
+         const response = await axiosInstance.put("/api/column", {
+            id,
+            newTitle: e.target.value,
+         })
+         return console.log(response)
       } catch (error) {
          return console.log(error.message)
       }
-   }
-   useEffect(() => {
-      getColumnsInDataBase()
-   }, [])
-
-   const titleColumnHandler = ({ target: { name, value } }) => {
-      const newColumns = [...columns]
-      newColumns[name].columnName = value
-      return setColumns(newColumns)
    }
 
    // СОЗДАТЬ НОВУЮ КОЛОНУ
@@ -156,16 +149,6 @@ const Columns = ({
          return console.log(error.message)
       }
    }
-   // ПОЛУЧИТЬ BOARD ПО ID
-   const getCardById = async (id) => {
-      try {
-         const { data } = await axiosInstance.get(`/api/cards/${id}`)
-         setTwoActive(`${data.id}`)
-         return setCardById(data)
-      } catch (error) {
-         return console.log(error.message)
-      }
-   }
 
    const openInputCreateCard = (columnId) => {
       setActive(`addCardTyColumnById=${columnId}`)
@@ -232,6 +215,10 @@ const Columns = ({
       )
    }
 
+   useEffect(() => {
+      getCardById(firstActive)
+   }, [])
+
    return (
       <DisplayFlex heigth="75vh" AI="flex-start" gap="10px">
          {loading
@@ -240,7 +227,7 @@ const Columns = ({
                  return (
                     <CardColumn
                        onDragOver={(e) => dragOverHandler(e)}
-                       onDrop={(e) => dropCardHandler(e, item)}
+                       onDrop={(e) => dropCardHandler(e, item.id)}
                        key={item.id}
                     >
                        <ReusableDropDown
@@ -284,9 +271,10 @@ const Columns = ({
                        <TitleColumn
                           aria-label="empty textarea"
                           value={item.columnName}
-                          onChange={titleColumnHandler}
+                          onChange={(e) => titleColumnHandler(e, item.id)}
                           name={`${index}`}
                           placeholder="Название колонки"
+                          onBlur={(e) => changeTitleColumnQuery(e, item.id)}
                        />
                        <Cards
                           dragStartHandler={dragStartHandler}
@@ -300,21 +288,6 @@ const Columns = ({
                           }
                           cards={item.columnCards}
                        />
-                       <Modal
-                          onClose={() => setTwoActive("nothing")}
-                          fullWidth="95vw"
-                          isOpen={firstActive === `${cardById?.id}`}
-                       >
-                          <InnerTaskCard
-                             updateColumnAndCloseModal={
-                                updateColumnAndCloseModal
-                             }
-                             getCardById={getCardById}
-                             dataCardById={cardById}
-                             firstActive={firstActive}
-                             setTwoActive={setTwoActive}
-                          />
-                       </Modal>
 
                        {isActive === `addCardTyColumnById=${item.id}` ? (
                           <AddCardContainer>
@@ -456,7 +429,7 @@ const ListInDropDown = styled.ul`
    li {
       margin: 6px 0 0 0;
       padding: 5px 0 5px 20px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 300;
       cursor: pointer;
       &:hover {

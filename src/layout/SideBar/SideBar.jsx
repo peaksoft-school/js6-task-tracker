@@ -417,7 +417,7 @@ const ShowSideBarButton = styled.img`
 `
 const ContainerWorkspaces = styled.ul`
    margin-bottom: 30px;
-   max-height: 42vh;
+   max-height: 45vh;
 `
 const Line = styled.hr`
    width: ${(props) => (props.stateSideBar ? "180px" : "45px")};
