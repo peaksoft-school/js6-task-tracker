@@ -4,12 +4,11 @@ import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import deleteSVG from "../assets/svg/Delete.svg"
 import Modal from "./UI/Modal"
-import { members } from "../utilits/constants/Constants"
 import { axiosInstance } from "../api/axiosInstance"
+import DisplayFlex from "../layout/DisplayFlex"
 
 function Participants() {
    const [isOpen, setIsOpen] = useState(false)
-   const [membersArray, setMembersArray] = useState(members)
    const [user, setUser] = useState([])
    const { showSideBar } = useSelector((state) => state.showSideBar)
    const { workspaceId } = useParams()
@@ -28,84 +27,85 @@ function Participants() {
       getUserHandler()
    }, [])
 
-   const deleteItemHanlder = (id) => {
-      const newArray = membersArray.filter((item) => item.id !== id)
-      setMembersArray(newArray)
-   }
-
    return (
-      <Parents showSideBar={showSideBar}>
-         <Button>
-            <Title>
-               <h1>View all issues</h1>
-               <select>
-                  <option>Role</option>
-                  <option>All</option>
-                  <option>Admin</option>
-                  <option>Member</option>
-               </select>
-            </Title>
+      <DisplayFlex
+         width="100%"
+         JK="flex-end"
+         padding="12px 16px 0 0"
+         margin="80px 24px 0 24px"
+      >
+         <Parents showSideBar={showSideBar}>
+            <Button>
+               <Title>
+                  <h1>View all issues</h1>
+                  <select>
+                     <option>Role</option>
+                     <option>All</option>
+                     <option>Admin</option>
+                     <option>Member</option>
+                  </select>
+               </Title>
 
-            <button type="button" onClick={() => setIsOpen(true)}>
-               Create
-            </button>
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-               <h1>MNADNODOAD</h1>
-            </Modal>
-         </Button>
-         <br />
-         <Total>
-            <p>Total: {user.length > 0 && <span>{user.length}</span>}</p>
-         </Total>
-         <Table>
-            <thead>
-               <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-               </tr>
-            </thead>
-            <hr />
+               <button type="button" onClick={() => setIsOpen(true)}>
+                  Create
+               </button>
+               <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                  <h1>MNADNODOAD</h1>
+               </Modal>
+            </Button>
+            <Total>
+               <p>Total: {user.length > 0 && <span>{user.length}</span>}</p>
+            </Total>
+            <Hr />
+            <Table>
+               <thead>
+                  <tr>
+                     <th>Name</th>
+                     <th>Email</th>
+                     <th>Role</th>
+                  </tr>
+               </thead>
 
-            {user.map((item, index) => {
-               return (
-                  <ParticipantItem background={index % 2 !== 0}>
-                     <tr>
-                        <td>{item.name}</td>
-                        <td>{item.Email}</td>
-                        <td>
-                           <div>
-                              <li>{item.role}</li>
-                              <img
-                                 src={deleteSVG}
-                                 alt=""
-                                 onClick={() => deleteItemHanlder(item.id)}
-                              />
-                           </div>
-                        </td>
-                     </tr>
-                  </ParticipantItem>
-               )
-            })}
-         </Table>
-      </Parents>
+               {user.map((item, index) => {
+                  return (
+                     <ParticipantItem background={index % 2 !== 0}>
+                        <tr>
+                           <td>{item.firstName}</td>
+                           <td>{item.email}</td>
+                           <td>
+                              <div>
+                                 <li>{item.role}</li>
+                                 <img
+                                    src={deleteSVG}
+                                    alt=""
+                                    onClick={() => item.id}
+                                 />
+                              </div>
+                           </td>
+                        </tr>
+                     </ParticipantItem>
+                  )
+               })}
+            </Table>
+         </Parents>
+      </DisplayFlex>
    )
 }
 
 export default Participants
 
 const Parents = styled.div`
-   padding: 22px 16px;
-   width: ${(props) => (props.showSideBar ? "80%" : "90%")}!important;
-   transition: all 0.35s ease-out;
-   border: 2px solid red;
+   width: ${(props) => (props.showSideBar ? "1216px" : "100%")}!important;
+   margin: ${(props) => (props.showSideBar ? "0" : "0 0 0 110px")}!important;
+   transition: all 0.01ms ease-out;
 `
 const Title = styled.div`
+   width: 289px;
+   height: 36px;
    display: flex;
-   flex-direction: row;
-   justify-content: center;
    align-items: center;
-   gap: 52px;
+   justify-content: space-between;
+   margin: 17px 0 0 16px;
    h1 {
       font-size: 20px;
       line-height: 25px;
@@ -117,6 +117,7 @@ const Title = styled.div`
       border-radius: 8px;
       display: flex;
       padding: 8px;
+      outline: none;
    }
    option {
       font-weight: 400;
@@ -125,9 +126,17 @@ const Title = styled.div`
       color: #111111;
    }
 `
+const Hr = styled.hr`
+   position: relative;
+   top: 50px;
+   border-color: #d7d7d7;
+   border-top: none;
+   border-left: none;
+   border-right: none;
+`
 const Total = styled.div`
-   padding: 8px 0;
-   margin-top: -30px;
+   margin: 2px 0 0 16px;
+
    p {
       display: flex;
       gap: 8px;
@@ -146,17 +155,19 @@ const Total = styled.div`
    }
 `
 const Button = styled.div`
+   width: 100%;
+   position: relative;
    display: flex;
    justify-content: space-between;
    align-items: center;
-   width: 1146px;
    button {
-      margin-left: 700px;
       width: 77px;
       height: 34px;
+      position: absolute;
+      top: 16px;
+      right: 16px;
       background: #0079bf;
       border-radius: 24px;
-      font-weight: 400;
       font-size: 14px;
       line-height: 18px;
       letter-spacing: 0.02em;
@@ -166,29 +177,28 @@ const Button = styled.div`
    }
 `
 const ParticipantItem = styled.tbody`
-   border: 1px solid black;
    background-color: ${(props) => props.background && "#E6E6E6"};
 `
 const Table = styled.table`
-   width: 1146px;
+   width: 100%;
+   border-collapse: collapse;
    margin-top: 22px;
-   hr {
+   .border {
+      width: ${(props) => (props.showSideBar ? "1246px" : "1356px")}!important;
       position: absolute;
       border-bottom: none;
       border-left: none;
       border-right: none;
-      width: 1146px;
    }
    th {
+      border: 0px solid transparent;
       font-weight: 600;
       font-size: 14px;
       line-height: 18px;
       padding-right: 22px;
    }
    td {
-      padding-top: 30px;
-      justify-content: center;
-      padding-bottom: 20px;
+      padding: 22px 0 22px 0;
    }
    th,
    td {
@@ -196,8 +206,9 @@ const Table = styled.table`
       font-size: 16px;
       line-height: 20px;
       color: #000000;
+
       :first-child {
-         width: 600px;
+         width: 650px;
       }
       :last-child {
          text-align: end;
