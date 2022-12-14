@@ -12,6 +12,7 @@ function Participants() {
    const [user, setUser] = useState([])
    const { showSideBar } = useSelector((state) => state.showSideBar)
    const { workspaceId } = useParams()
+   // Post
    const getUserHandler = async () => {
       try {
          const { data } = await axiosInstance.get(
@@ -22,10 +23,25 @@ function Participants() {
          return console.log(error)
       }
    }
+   // Delete
+   const deleteParticipants = async (userId) => {
+      try {
+         const { data } = await axiosInstance.delete(
+            `/api/participant/workspace/${userId}/${workspaceId}`
+         )
+         console.log(data)
+         return null
+      } catch (error) {
+         return console.log(error)
+      }
+   }
 
+   // FilteredUsert
    useEffect(() => {
       getUserHandler()
    }, [])
+
+   console.log(user)
 
    return (
       <DisplayFlex
@@ -40,9 +56,13 @@ function Participants() {
                   <h1>View all issues</h1>
                   <select>
                      <option>Role</option>
-                     <option>All</option>
-                     <option>Admin</option>
-                     <option>Member</option>
+                     <option onClick={() => filteredHandler(user)}>All</option>
+                     <option onClick={() => filteredHandler("ADMIN")}>
+                        Admin
+                     </option>
+                     <option onClick={() => filteredHandler("USER")}>
+                        User
+                     </option>
                   </select>
                </Title>
 
@@ -66,19 +86,20 @@ function Participants() {
                   </tr>
                </thead>
 
-               {user.map((item, index) => {
+               {user.map((values) => {
+                  const { firstName, email, role, id } = values
                   return (
-                     <ParticipantItem background={index % 2 !== 0}>
+                     <ParticipantItem background={values % 2 !== 0}>
                         <tr>
-                           <td>{item.firstName}</td>
-                           <td>{item.email}</td>
+                           <td>{firstName}</td>
+                           <td>{email}</td>
                            <td>
                               <div>
-                                 <li>{item.role}</li>
+                                 <li>{role}</li>
                                  <img
                                     src={deleteSVG}
                                     alt=""
-                                    onClick={() => item.id}
+                                    onClick={() => deleteParticipants(id)}
                                  />
                               </div>
                            </td>
@@ -95,9 +116,9 @@ function Participants() {
 export default Participants
 
 const Parents = styled.div`
-   width: ${(props) => (props.showSideBar ? "1216px" : "100%")}!important;
+   width: ${(props) => (props.showSideBar ? "78vw" : "88vw")}!important;
    margin: ${(props) => (props.showSideBar ? "0" : "0 0 0 110px")}!important;
-   transition: all 0.01ms ease-out;
+   transition: all 0.35s ease-out;
 `
 const Title = styled.div`
    width: 289px;
@@ -177,7 +198,7 @@ const Button = styled.div`
    }
 `
 const ParticipantItem = styled.tbody`
-   background-color: ${(props) => props.background && "#E6E6E6"};
+   background-color: ${(props) => props.background && "white"};
 `
 const Table = styled.table`
    width: 100%;
