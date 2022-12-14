@@ -7,7 +7,6 @@ import Modal from "./UI/Modal"
 import { members } from "../utilits/constants/Constants"
 import { axiosInstance } from "../api/axiosInstance"
 
-
 function Participants() {
    const [isOpen, setIsOpen] = useState(false)
    const [membersArray, setMembersArray] = useState(members)
