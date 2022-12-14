@@ -8,7 +8,7 @@ import timeIcon from "../../../assets/icons/Real World Icon.svg"
 import descriptionIcon from "../../../assets/icons/Typography Icon (1).svg"
 import peopleIcon from "../../../assets/icons/people.svg"
 import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
-import DisplayFlexJCSB from "../../../layout/DisplayFlex"
+import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
 
 const Card = ({ showInnerTaskCard }) => {
    const [showLabel, setShowLabel] = useState(false)

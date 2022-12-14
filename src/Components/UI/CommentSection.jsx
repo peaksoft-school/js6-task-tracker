@@ -3,7 +3,7 @@ import styled from "styled-components"
 import UserAvatar from "./UserAvatar"
 import CustomIcons from "./TaskCard/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
-import DisplayFlexJCSB from "../../layout/DisplayFlex"
+import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
 import arrowDownComment from "../../assets/svg/ArrowComment.svg"
 
 const CommentSection = ({

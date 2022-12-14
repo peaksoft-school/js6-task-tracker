@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import DisplayFlexJCSB from "../../../layout/DisplayFlex"
+import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
 import Galochka from "../../../assets/svg/Galochka.svg"
 import ReusableDropDown from "../../UI/ReusableDropDown"
 
