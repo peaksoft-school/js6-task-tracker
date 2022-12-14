@@ -1,21 +1,41 @@
-import React, { useState } from "react"
 import styled from "styled-components"
+import React, { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 import deleteSVG from "../assets/svg/Delete.svg"
 import Modal from "./UI/Modal"
-import { useActiveIndex } from "../hooks/useActiveIndex"
 import { members } from "../utilits/constants/Constants"
+import { axiosInstance } from "../api/axiosInstance"
 
-function Participants({ total }) {
+
+function Participants() {
    const [isOpen, setIsOpen] = useState(false)
-   const { activeIndex, getActiveIndexHandler } = useActiveIndex()
    const [membersArray, setMembersArray] = useState(members)
+   const [user, setUser] = useState([])
+   const { showSideBar } = useSelector((state) => state.showSideBar)
+   const { workspaceId } = useParams()
+   const getUserHandler = async () => {
+      try {
+         const { data } = await axiosInstance.get(
+            `/api/participant/workspace-participants/${workspaceId}`
+         )
+         return setUser(data)
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+
+   useEffect(() => {
+      getUserHandler()
+   }, [])
+
    const deleteItemHanlder = (id) => {
       const newArray = membersArray.filter((item) => item.id !== id)
       setMembersArray(newArray)
    }
 
    return (
-      <Parents>
+      <Parents showSideBar={showSideBar}>
          <Button>
             <Title>
                <h1>View all issues</h1>
@@ -34,10 +54,9 @@ function Participants({ total }) {
                <h1>MNADNODOAD</h1>
             </Modal>
          </Button>
+         <br />
          <Total>
-            <p>
-               Total: <span>{total}82</span>
-            </p>
+            <p>Total: {user.length > 0 && <span>{user.length}</span>}</p>
          </Total>
          <Table>
             <thead>
@@ -49,7 +68,7 @@ function Participants({ total }) {
             </thead>
             <hr />
 
-            {membersArray.map((item, index) => {
+            {user.map((item, index) => {
                return (
                   <ParticipantItem background={index % 2 !== 0}>
                      <tr>
@@ -57,15 +76,7 @@ function Participants({ total }) {
                         <td>{item.Email}</td>
                         <td>
                            <div>
-                              <li
-                                 onClick={() =>
-                                    getActiveIndexHandler(
-                                       item.id !== activeIndex ? item.id : 0
-                                    )
-                                 }
-                              >
-                                 {item.role}
-                              </li>
+                              <li>{item.role}</li>
                               <img
                                  src={deleteSVG}
                                  alt=""
@@ -85,15 +96,16 @@ function Participants({ total }) {
 export default Participants
 
 const Parents = styled.div`
-   position: absolute;
-   left: 300px;
+   padding: 22px 16px;
+   width: ${(props) => (props.showSideBar ? "80%" : "90%")}!important;
+   transition: all 0.35s ease-out;
+   border: 2px solid red;
 `
 const Title = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   padding: 9px 14px 9px 16px;
    gap: 52px;
    h1 {
       font-size: 20px;
@@ -115,17 +127,16 @@ const Title = styled.div`
    }
 `
 const Total = styled.div`
-   display: flex;
-   flex-direction: start;
-   justify-content: start;
-   padding: 0px 18px;
+   padding: 8px 0;
    margin-top: -30px;
-   gap: 8px;
    p {
+      display: flex;
+      gap: 8px;
       font-weight: 400;
       font-size: 16px;
       line-height: 20px;
       color: #919191;
+      text-align: center;
    }
    span {
       background: #b2b2b2;
@@ -161,14 +172,19 @@ const ParticipantItem = styled.tbody`
 `
 const Table = styled.table`
    width: 1146px;
+   margin-top: 22px;
    hr {
       position: absolute;
+      border-bottom: none;
+      border-left: none;
+      border-right: none;
       width: 1146px;
    }
    th {
       font-weight: 600;
       font-size: 14px;
       line-height: 18px;
+      padding-right: 22px;
    }
    td {
       padding-top: 30px;
