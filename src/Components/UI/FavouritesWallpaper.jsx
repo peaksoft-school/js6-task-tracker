@@ -1,14 +1,20 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import CustomIcons from "../Column/CustomIcons"
 import FavouritesIcon from "../../assets/icons/FavouritesIcon.svg"
 import sadStar from "../../assets/svg/sadStar.svg"
-import { addWorkspacesToFavourites } from "../../store/workspacesSlice"
+import {
+   addWorkspacesToFavourites,
+   getWorkspacesId,
+} from "../../store/workspacesSlice"
 import { addBoardToFavourites } from "../../store/boardSlice"
 
 function FavouritesWallpaper({ favourites }) {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
+
    const deleteWorkspacesInFavourites = (id, title) => {
       if (title === "WORKSPACE") {
          dispatch(addWorkspacesToFavourites({ id, dispatch }))
@@ -19,6 +25,14 @@ function FavouritesWallpaper({ favourites }) {
                dispatch,
             })
          )
+      }
+   }
+
+   const getByIdBoardAndWorkspacesPlusNavigate = (title, id) => {
+      if (title === "WORKSPACE") {
+         dispatch(getWorkspacesId({ id, navigate }))
+      } else if (title === "BOARD") {
+         console.log("done")
       }
    }
 
@@ -38,7 +52,14 @@ function FavouritesWallpaper({ favourites }) {
                   {item.background !== "The workspace can not have photo" && (
                      <Wallpaper backgroundImage={item.background} />
                   )}
-                  <TitleBox>
+                  <TitleBox
+                     onClick={() =>
+                        getByIdBoardAndWorkspacesPlusNavigate(
+                           item.workspaceOrBoard,
+                           item.workspaceOrBoardID
+                        )
+                     }
+                  >
                      <p>{item.name}</p>
                      <p>{item.workspaceOrBoard}</p>
                   </TitleBox>
@@ -98,6 +119,7 @@ const Wallpaper = styled.div`
 `
 const TitleBox = styled.div`
    width: 200px;
+   cursor: pointer;
    p {
       &:last-child {
          box-sizing: border-box;

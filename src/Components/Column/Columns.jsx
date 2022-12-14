@@ -154,65 +154,25 @@ const Columns = ({
       setActive(`addCardTyColumnById=${columnId}`)
    }
 
-   // ВСЕ ФУНКЦИИ DRAG AND DROP
-
-   const [currentColumn, setCurrentColumn] = useState(null)
-   const [currentItem, setCurrentItem] = useState(null)
+   //  ФУНКЦИИ DRAG AND DROP
    const [boardIdSelet, setBoardIdSelect] = useState()
 
    const dragStartHandler = (e, column, item) => {
-      // setBoardIdSelect(item.id)
-
-      setCurrentColumn(column)
-      setCurrentItem(item)
+      setBoardIdSelect(item.id)
    }
    const dragOverHandler = (e) => {
       e.preventDefault()
    }
-   const dropHandler = (e, column, item) => {
-      // console.log(column, "column")
-      // console.log(item, "item")
-      // e.preventDefault()
-      // const currentIndex = currentColumn.columnCards.indexOf(currentItem)
-      // currentColumn.columnCards.splice(currentIndex, 1)
-      // const dropIndex = column.columnCards.indexOf(item)
-      // column.columnCards.splice(dropIndex + 1, 0, currentItem)
-      // setColumns(
-      //    columns.map((c) => {
-      //       if (c.id === column.id) {
-      //          return column
-      //       }
-      //       if (c.id === currentColumn.id) {
-      //          return currentColumn
-      //       }
-      //       return c
-      //    })
-      // )
-   }
-   const dropCardHandler = async (e, column) => {
-      // try {
-      //    const response = await axiosInstance(
-      //       `/api/cards/move-card/${boardIdSelet}/${column.id}`
-      //    )
-      //    getColumnsInDataBase(boardId)
-      //    return console.log(response)
-      // } catch (error) {
-      //    return console.log(error.message)
-      // }
-      column.columnCards.push(currentItem)
-      const currentIndex = currentColumn.columnCards.indexOf(currentItem)
-      currentColumn.columnCards.splice(currentIndex, 1)
-      setColumns(
-         columns.map((c) => {
-            if (c.id === column.id) {
-               return column
-            }
-            if (c.id === currentColumn.id) {
-               return currentColumn
-            }
-            return c
-         })
-      )
+   const dropCardHandler = async (e, id) => {
+      try {
+         const response = await axiosInstance(
+            `/api/cards/move-card/${boardIdSelet}/${id}`
+         )
+         getColumnsInDataBase(boardId)
+         return console.log(response)
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
 
    useEffect(() => {
@@ -278,7 +238,6 @@ const Columns = ({
                        />
                        <Cards
                           dragStartHandler={dragStartHandler}
-                          dropHandler={dropHandler}
                           dragOverHandler={dragOverHandler}
                           columnItem={item}
                           getCardById={getCardById}

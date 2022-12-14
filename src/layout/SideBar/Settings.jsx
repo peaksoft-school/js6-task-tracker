@@ -2,10 +2,15 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
+
 import ContainerButtons from "../../Components/UI/ContainerButtons"
 import Input from "../../Components/UI/Input"
 import ReusableDropDown from "../../Components/UI/ReusableDropDown"
-import { deleteWorkspaceById } from "../../store/workspacesSlice"
+import {
+   deleteWorkspaceById,
+   changeTitleWorkspace,
+   getWorkspacesId,
+} from "../../store/workspacesSlice"
 
 const Settings = ({ nameWorkspaces, settingModal, setSettingModal }) => {
    const { workspaceId } = useParams()
@@ -13,8 +18,10 @@ const Settings = ({ nameWorkspaces, settingModal, setSettingModal }) => {
    const dispatch = useDispatch()
    const [name, setName] = useState(nameWorkspaces)
 
-   const changeNameWorkspacesHandler = () => {
-      console.log(name)
+   const changeNameWorkspacesHandler = async () => {
+      dispatch(
+         changeTitleWorkspace({ workspaceId, name, dispatch, getWorkspacesId })
+      )
       setSettingModal({ ...settingModal, showModal: false })
    }
 

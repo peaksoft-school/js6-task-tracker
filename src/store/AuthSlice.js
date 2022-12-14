@@ -43,13 +43,9 @@ export const resetPassword = createAsyncThunk(
       const { userId, newPassword, navigate } = value
       try {
          const { data } = await resetPasswordQuery({ userId, newPassword })
-         const newData = {
-            ...data,
-            jwt: data.jwtToken,
-         }
-         if (data) localStorageHelpers.saveData(USER_KEY, newData)
-         navigate(PATH_IN_ROLES[data.role].path)
-         return newData
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
+         navigate(`${PATH_IN_ROLES[data.role].path}`)
+         return data
       } catch (error) {
          return rejectWithValue(error.message)
       }
@@ -100,7 +96,7 @@ export const forgotPassword = createAsyncThunk(
       }
    }
 )
-
+// ВЫЙТИ
 export const logout = createAsyncThunk("logout", async () => {
    localStorageHelpers.removeData(USER_KEY)
 })

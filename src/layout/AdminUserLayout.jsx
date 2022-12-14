@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom"
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
 import Boards from "../Components/Board/Boards"
@@ -15,7 +15,6 @@ const AdminUserLayout = () => {
    const navigate = useNavigate()
    const dispatch = useDispatch()
    const { pathname } = useLocation()
-
    useEffect(() => {
       if (pathname === "/admin/*" || pathname === "/user/*") {
          navigate("allWorkspaces")

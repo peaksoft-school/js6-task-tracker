@@ -49,7 +49,7 @@ export const addWorkspacesToFavourites = createAsyncThunk(
          )
          dispatch(getAllWorkspaces())
          dispatch(getFavourites())
-         if (data.action) {
+         if (data.isFavorite) {
             dispatch(successToastifyAction(`Added to favorites ${data.name} `))
          } else {
             dispatch(warningToastifyAction(`Deleted in favorites ${data.name}`))
@@ -67,7 +67,9 @@ export const getWorkspacesId = createAsyncThunk(
       const { id, navigate } = value
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
-         navigate(`/admin/workspaces/${data.id}/boards`)
+         if (navigate) {
+            navigate(`/admin/workspaces/${data.id}/boards`)
+         }
          return data
       } catch (error) {
          return console.log(error)
@@ -80,16 +82,33 @@ export const deleteWorkspaceById = createAsyncThunk(
    async (value) => {
       const { workspaceId, dispatch, navigate } = value
       try {
-         dispatch(loadingToastifyAction())
          const response = await axiosInstance.delete(
             `/api/workspace/${workspaceId}`
          )
          navigate("/admin/allWorkspaces")
-         dispatch(warningToastifyAction(`Deleted workspace`))
          dispatch(getAllWorkspaces())
          return console.log(response)
       } catch (error) {
-         return dispatch(errorToastifyAction(error.message))
+         dispatch(errorToastifyAction("Error"))
+         return console.log(error.message)
+      }
+   }
+)
+
+// ИЗМЕНИТЬ TITLE WORKSPACE
+export const changeTitleWorkspace = createAsyncThunk(
+   "changeTitle/workspace",
+   async (value) => {
+      const { workspaceId, name } = value
+      try {
+         const { data } = await axiosInstance.put("/api/workspace", {
+            id: workspaceId,
+            newTitle: name,
+         })
+         console.log(data, "data")
+         return data
+      } catch (error) {
+         return console.log(error.message)
       }
    }
 )
@@ -100,6 +119,7 @@ export const workspacesSlice = createSlice({
       workspaces: [],
       workspaceById: {},
       loading: false,
+      idToast: 0,
    },
    reducers: {},
    extraReducers: {

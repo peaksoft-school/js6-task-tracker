@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
+import TimeAgo from "react-timeago"
 import UserAvatar from "./UserAvatar"
 import CustomIcons from "../Column/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
 import DisplayFlex from "../../layout/DisplayFlex"
 import arrowDownComment from "../../assets/svg/ArrowComment.svg"
 import Input from "./Input"
+import { axiosInstance } from "../../api/axiosInstance"
+import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
+import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
 
 const CommentSection = ({
    comment,
@@ -16,7 +20,75 @@ const CommentSection = ({
    deleteHandle,
    showComment,
    setShowComment,
+   dataCardById,
 }) => {
+   const [commentValue, setCommentValue] = useState("")
+   const { show, toggle } = useTemporaryToggle()
+   const [comments, setComments] = useState([])
+
+   // ПОЛУЧИТЬ КОМЕНТАРИИ КАРТОЧКИ
+   const getAllComments = async () => {
+      try {
+         const { data } = await axiosInstance(
+            `/api/comments/card/${dataCardById.id}`
+         )
+         data?.sort((a, b) => b.id - a.id)
+         return setComments(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // ДОБАВИТЬ НОВЫЙ КОМЕНТАРИЙ
+   const addedComment = async (e) => {
+      e.preventDefault()
+      try {
+         const { data } = await axiosInstance.post(
+            `/api/comments/card/${dataCardById.id}`,
+            {
+               text: commentValue,
+            }
+         )
+         getAllComments()
+         return setCommentValue("")
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // УДАЛИТЬ КОМЕНТАРИЙ
+   const deleteComment = async (commentId) => {
+      try {
+         const response = await axiosInstance.delete(
+            `/api/comments/${commentId}`
+         )
+         getAllComments()
+         return null
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // ИЗМЕНИТЬ КОМЕНТАРИЙ
+   const changeValueHandler = async (e) => {
+      const newComments = [...comments]
+      newComments[e.target.name].text = e.target.value
+      return setComments(newComments)
+   }
+
+   const editCommentQuery = async (e, Id) => {
+      try {
+         const response = await axiosInstance.put(`/api/comments/${Id}`, {
+            text: e.target.value,
+         })
+         getAllComments()
+         return console.log(response)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
+   useEffect(() => {
+      getAllComments()
+   }, [])
+
    return (
       <StyledCommentSection>
          <DisplayFlex JK="space-between">
@@ -27,25 +99,54 @@ const CommentSection = ({
             />
          </DisplayFlex>
          <ContainerComment sizeComment={showComment}>
-            {/* <Comment>
-               <UserAvatar src={userAvatar} />
-               <div>
-                  <p>Nazira Nazirova</p>
-                  <CommentText>
-                     {comment} I will do it only in a week,after the
-                  </CommentText>
+            {comments?.length > 0 &&
+               comments?.map((item, index) => {
+                  return (
+                     <Comment>
+                        <UserAvatar src={item.image} />
+                        <div>
+                           <p>
+                              {item.commentedUserResponse.firstName}
+                              {"    "}
+                              {item.commentedUserResponse.lastName}
+                           </p>
+                           {show ? (
+                              <CommentInput
+                                 onChange={(e) => changeValueHandler(e)}
+                                 onBlur={(e) => editCommentQuery(e, item.id)}
+                                 value={item.text}
+                                 name={`${index}`}
+                              />
+                           ) : (
+                              <CommentText>{item.text}</CommentText>
+                           )}
 
-                  <div>
-                     <span>{dateAdded} 12 sep ,2021 / 6:30pm</span>
-                     <BlockEditDeleteButton>
-                        <p onClick={editHandle}>Edit</p>
-                        <p onClick={deleteHandle}>Delete</p>
-                     </BlockEditDeleteButton>
-                  </div>
-               </div>
-            </Comment> */}
+                           <DisplayFlex
+                              width="25vw"
+                              margin="9px 0 0 0"
+                              JK="space-between"
+                           >
+                              <TimeAgo date={new Date()} />
+                              <BlockEditDeleteButton>
+                                 <p onClick={toggle}>Edit</p>
+                                 <p onClick={() => deleteComment(item.id)}>
+                                    Delete
+                                 </p>
+                              </BlockEditDeleteButton>
+                           </DisplayFlex>
+                        </div>
+                     </Comment>
+                  )
+               })}
+
             <ContainerInput>
-               <Input placeholder="Write a comment" />
+               <form onSubmit={addedComment}>
+                  <Input
+                     value={commentValue}
+                     onChange={(e) => setCommentValue(e.target.value)}
+                     placeholder="Write a comment"
+                  />
+               </form>
             </ContainerInput>
          </ContainerComment>
       </StyledCommentSection>
@@ -103,6 +204,7 @@ const Comment = styled.div`
 `
 const BlockEditDeleteButton = styled.div`
    cursor: pointer;
+   margin-left: 48px;
    text-decoration: underline;
    p {
       margin-right: 1rem;
@@ -110,7 +212,7 @@ const BlockEditDeleteButton = styled.div`
 `
 const CommentText = styled.p`
    width: 23vw;
-   margin: 0.5rem 0 0.5rem 0;
+   margin: 0.5rem 0 0rem 0;
 `
 const ContainerInput = styled.div`
    position: fixed;
@@ -120,4 +222,7 @@ const ContainerInput = styled.div`
    Input {
       background: #f4f5f7 !important;
    }
+`
+const CommentInput = styled.input`
+   width: 200px;
 `

@@ -13,18 +13,32 @@ import ContainerButtons from "../UI/ContainerButtons"
 import DisplayFlex from "../../layout/DisplayFlex"
 import avatar from "../../assets/svg/userAvatar.svg"
 import UserAvatar from "../UI/UserAvatar"
+import { axiosInstance } from "../../api/axiosInstance"
 
 const InnerTaskCard = ({
    dataCardById,
    getCardById,
    updateColumnAndCloseModal,
    getDataInArchive,
+   firstActive,
 }) => {
    const updateColumnAndCloseModalHandler = () => {
       updateColumnAndCloseModal()
    }
 
    const firstEightMembers = dataCardById?.memberResponses.slice(0, 8)
+
+   const deleteLabelInInnerTaskCard = async (id) => {
+      try {
+         const response = await axiosInstance.delete(
+            `/api/labels/${dataCardById.id}`
+         )
+         getCardById(firstActive)
+         return console.log(response)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
 
    return (
       <DisplayFlex FD="column">
@@ -43,7 +57,12 @@ const InnerTaskCard = ({
                      return (
                         <Label color={item.color}>
                            {item.description}
-                           <CloseButton top="9px" />
+                           <CloseButton
+                              top="9px"
+                              onClick={() =>
+                                 deleteLabelInInnerTaskCard(item.id)
+                              }
+                           />
                         </Label>
                      )
                   })}

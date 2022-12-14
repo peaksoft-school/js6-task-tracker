@@ -280,6 +280,7 @@ const SecondBlock = ({
             </GrayButton>
          </DisplayFlex>
          <CommentSection
+            dataCardById={dataCardById}
             sizeComment={secondActive === "showButton"}
             userAvatar={avatarPhoto}
             showComment={showComment}

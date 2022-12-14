@@ -17,7 +17,6 @@ const Cards = ({
    dragOverHandler,
    columnItem,
    dragStartHandler,
-   dropHandler,
 }) => {
    const { isActive, setActive } = useToggle()
    const renderCard = (item) => {
@@ -26,7 +25,6 @@ const Cards = ({
             draggable
             onDragOver={(e) => dragOverHandler(e)}
             onDragStart={(e) => dragStartHandler(e, columnItem, item)}
-            onDropCapture={(e) => dropHandler(e, columnItem, item)}
             isArchive={item.isArchive}
             key={item.id}
          >

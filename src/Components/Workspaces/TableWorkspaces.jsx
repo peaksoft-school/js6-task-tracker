@@ -27,8 +27,6 @@ const TableWorkspaces = () => {
       dispatch(getWorkspacesId({ id, navigate }))
    }
 
-   console.log(workspaces)
-
    return (
       <Table>
          <thead>
