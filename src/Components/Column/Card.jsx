@@ -7,7 +7,7 @@ import timeIcon from "../../assets/icons/Real World Icon.svg"
 import descriptionIcon from "../../assets/icons/Typography Icon (1).svg"
 import peopleIcon from "../../assets/icons/people.svg"
 import completeIcon from "../../assets/icons/UI and Keyboard Icon.svg"
-import DisplayFlex from "../../layout/DisplayFlexJCSB"
+import DisplayFlex from "../../layout/DisplayFlex"
 import { useToggle } from "../../utilits/hooks/useToggle"
 
 const Cards = ({
