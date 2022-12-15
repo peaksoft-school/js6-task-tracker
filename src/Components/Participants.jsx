@@ -56,14 +56,9 @@ function Participants() {
       getUserHandler()
    }, [])
 
-   console.log(user)
-
    const userList = React.useMemo(() => {
-      console.log("worked")
       return filteredUsers || user
    }, [filteredUsers, user])
-
-   console.log(userList)
 
    return (
       <DisplayFlex
