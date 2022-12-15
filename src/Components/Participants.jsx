@@ -11,6 +11,7 @@ function Participants() {
    const [isOpen, setIsOpen] = useState(false)
    const [user, setUser] = useState([])
    const { showSideBar } = useSelector((state) => state.showSideBar)
+   const [filteredUsers, setFilteredUsers] = useState(null)
    const { workspaceId } = useParams()
    // Post
    const getUserHandler = async () => {
@@ -23,25 +24,46 @@ function Participants() {
          return console.log(error)
       }
    }
+
    // Delete
    const deleteParticipants = async (userId) => {
       try {
-         const { data } = await axiosInstance.delete(
+         await axiosInstance.delete(
             `/api/participant/workspace/${userId}/${workspaceId}`
          )
-         console.log(data)
-         return null
+         return setUser(user)
       } catch (error) {
          return console.log(error)
       }
    }
 
    // FilteredUsert
+   const handleFilterUsers = (req) => {
+      if (req === "ALL") {
+         setFilteredUsers(() => {
+            return null
+         })
+      } else {
+         setFilteredUsers(
+            user.filter((item) => {
+               return item.role === req
+            })
+         )
+      }
+   }
+   // UseEffect
    useEffect(() => {
       getUserHandler()
    }, [])
 
    console.log(user)
+
+   const userList = React.useMemo(() => {
+      console.log("worked")
+      return filteredUsers || user
+   }, [filteredUsers, user])
+
+   console.log(userList)
 
    return (
       <DisplayFlex
@@ -54,15 +76,10 @@ function Participants() {
             <Button>
                <Title>
                   <h1>View all issues</h1>
-                  <select>
-                     <option>Role</option>
-                     <option onClick={() => filteredHandler(user)}>All</option>
-                     <option onClick={() => filteredHandler("ADMIN")}>
-                        Admin
-                     </option>
-                     <option onClick={() => filteredHandler("USER")}>
-                        User
-                     </option>
+                  <select onChange={(e) => handleFilterUsers(e.target.value)}>
+                     <option value="ALL">All</option>
+                     <option value="ADMIN">Admin</option>
+                     <option value="USER">User</option>
                   </select>
                </Title>
 
@@ -86,7 +103,7 @@ function Participants() {
                   </tr>
                </thead>
 
-               {user.map((values) => {
+               {userList.map((values) => {
                   const { firstName, email, role, id } = values
                   return (
                      <ParticipantItem background={values % 2 !== 0}>
