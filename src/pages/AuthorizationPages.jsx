@@ -27,7 +27,6 @@ const AuthorizationPages = () => {
    return (
       <AuthorizationContainer>
          <LogoTaskTracker src={logoTaskTracker} alt="Task Tracker" />
-         <AuthWithGoogleButton />
          <ContainerForm>
             {typeof params.id === "undefined" && (
                <>
