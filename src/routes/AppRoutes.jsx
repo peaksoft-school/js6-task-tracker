@@ -1,5 +1,11 @@
 import React from "react"
-import { Navigate, Route, Routes } from "react-router-dom"
+import {
+   Navigate,
+   Route,
+   Routes,
+   useLocation,
+   useParams,
+} from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
 import AuthorizationPages from "../pages/AuthorizationPages"
 import SignUp from "../Components/Authorizaiton/SignUp"
@@ -8,6 +14,10 @@ import Login from "../Components/Authorizaiton/Login"
 import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
 
 const AppRoutes = () => {
+   const { pathname } = useLocation()
+   const params = useParams()
+   console.log(params)
+   console.log(pathname)
    return (
       <Routes>
          <Route path="/" element={<AuthorizationPages />}>
@@ -15,11 +25,11 @@ const AppRoutes = () => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login/:id" element={<ForgotPassword />} />
-            <Route
-               path="/192.168.0.152:3000/:role/:where/:whereId"
-               element={<AuthorizationPages />}
-            />
          </Route>
+         <Route
+            path="signIn/:role/:where/:whereId"
+            element={<AuthorizationPages />}
+         />
          <Route
             path="allWorkspaces/*"
             element={<PrivateRoute COMPONENT={<AdminUserLayout />} />}

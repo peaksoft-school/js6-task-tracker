@@ -95,9 +95,13 @@ export const forgotPassword = createAsyncThunk(
    }
 )
 // ВЫЙТИ
-export const logout = createAsyncThunk("logout", async () => {
-   localStorageHelpers.removeData(USER_KEY)
-})
+export const logout = createAsyncThunk(
+   "logout",
+   async ({ dispatch, clearWorkspaces }) => {
+      localStorageHelpers.removeData(USER_KEY)
+      dispatch(clearWorkspaces())
+   }
+)
 
 const UserInfoInLocalStorage = localStorageHelpers.getData(USER_KEY)
 

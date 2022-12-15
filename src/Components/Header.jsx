@@ -18,6 +18,7 @@ import { useToggle } from "../utilits/hooks/useToggle"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 import DisplayFlex from "../layout/DisplayFlex"
+import { clearWorkspaces } from "../store/workspacesSlice"
 
 function Header() {
    const { favourites, workspaces } = useSelector((state) => state)
@@ -181,7 +182,13 @@ function Header() {
                   <Link to="profile">
                      <p>Profile</p>
                   </Link>
-                  <p onClick={() => dispatch(logout())}>Logout</p>
+                  <p
+                     onClick={() =>
+                        dispatch(logout({ dispatch, clearWorkspaces }))
+                     }
+                  >
+                     Logout
+                  </p>
                </ProfileLogout>
             </DropDown>
          </DisplayFlex>

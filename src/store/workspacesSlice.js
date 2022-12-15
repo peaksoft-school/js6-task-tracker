@@ -119,7 +119,11 @@ export const workspacesSlice = createSlice({
       loading: false,
       idToast: 0,
    },
-   reducers: {},
+   reducers: {
+      clearWorkspaces: (state) => {
+         state.workspaces = []
+      },
+   },
    extraReducers: {
       [getAllWorkspaces.pending]: (state) => {
          state.loading = true
@@ -141,3 +145,5 @@ export const workspacesSlice = createSlice({
       },
    },
 })
+
+export const { clearWorkspaces } = workspacesSlice.actions
