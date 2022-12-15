@@ -13,7 +13,6 @@ import { getFavourites } from "./FavouritesSlice"
 export const getBoards = createAsyncThunk("get/board", async (id) => {
    try {
       const { data } = await axiosInstance.get(`/api/boards/list/${id}`)
-      data.sort((a, b) => (a.id > b.id ? 1 : -1))
       return data
    } catch (error) {
       return console.log(error.message)
@@ -82,7 +81,7 @@ export const deleteBoardById = createAsyncThunk(
          dispatch(loadingToastifyAction())
          const response = await axiosInstance.delete(`/api/boards/${boardId}`)
          dispatch(warningToastifyAction(`Deleted board`))
-         navigate(`/admin/workspaces/${workspaceId}/boards`)
+         navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
          return console.log(response)
       } catch (error) {
          return dispatch(errorToastifyAction(error.message))

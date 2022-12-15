@@ -1,32 +1,22 @@
-import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import React from "react"
 import styled from "styled-components"
+
 import ContainerButtons from "../../Components/UI/ContainerButtons"
 import Input from "../../Components/UI/Input"
 import ReusableDropDown from "../../Components/UI/ReusableDropDown"
-import { deleteWorkspaceById } from "../../store/workspacesSlice"
 
-const Settings = ({ nameWorkspaces, settingModal, setSettingModal }) => {
-   const { workspaceId } = useParams()
-   const navigate = useNavigate()
-   const dispatch = useDispatch()
-   const [name, setName] = useState(nameWorkspaces)
-
-   const changeNameWorkspacesHandler = () => {
-      console.log(name)
-      setSettingModal({ ...settingModal, showModal: false })
-   }
-
-   const deleteWorkspaceHandler = () => {
-      dispatch(deleteWorkspaceById({ workspaceId, dispatch, navigate }))
-      setSettingModal({ ...settingModal, showModal: false })
-   }
-
+const Settings = ({
+   settingModal,
+   setSettingModal,
+   changeNameWorkspacesHandler,
+   deleteWorkspaceHandler,
+   name,
+   setName,
+}) => {
    return (
       <ContainerSettings>
          <h3>Setting</h3>
-         <Input value={name} onChange={(e) => setName(e.target.value)} />
+         <Input value={name} onChange={(e) => setName(e)} />
          <p
             onClick={() =>
                setSettingModal({ ...settingModal, showDropDown: true })
@@ -74,6 +64,7 @@ const ContainerSettings = styled.div`
    h3 {
       font-weight: 400;
       text-align: center;
+      margin: 0 0 8px 0;
    }
    p {
       color: red;

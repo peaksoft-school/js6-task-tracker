@@ -104,7 +104,7 @@ function CreateBoard({ setTwoActive, secondActive }) {
             clickBlueButton={createWorkspacesHandler}
             titleBlueButton="Create Board"
             titleGrayButton="Cancel"
-            paddingButton="0 20px 0 20px"
+            paddingBlueButton="0 20px 0 20px"
          />
       </Container>
    )

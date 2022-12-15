@@ -9,7 +9,6 @@ import {
 } from "./toastifySlice"
 import { axiosInstance } from "../api/axiosInstance"
 import { getFavourites } from "./FavouritesSlice"
-
 // ПОЛУЧИТЬ WORSKPACES ИЗ БАЗЫ ДАННЫХ
 export const getAllWorkspaces = createAsyncThunk("workspaces", async () => {
    try {
@@ -49,7 +48,7 @@ export const addWorkspacesToFavourites = createAsyncThunk(
          )
          dispatch(getAllWorkspaces())
          dispatch(getFavourites())
-         if (data.action) {
+         if (data.isFavorite) {
             dispatch(successToastifyAction(`Added to favorites ${data.name} `))
          } else {
             dispatch(warningToastifyAction(`Deleted in favorites ${data.name}`))
@@ -64,10 +63,12 @@ export const addWorkspacesToFavourites = createAsyncThunk(
 export const getWorkspacesId = createAsyncThunk(
    "getWorkspace/ById",
    async (value) => {
-      const { id, navigate } = value
+      const { id, navigate, where } = value
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
-         navigate(`/admin/workspaces/${data.id}/boards`)
+         if (navigate) {
+            navigate(`/allWorkspaces/workspaces/${id}/${where}`)
+         }
          return data
       } catch (error) {
          return console.log(error)
@@ -80,16 +81,32 @@ export const deleteWorkspaceById = createAsyncThunk(
    async (value) => {
       const { workspaceId, dispatch, navigate } = value
       try {
-         dispatch(loadingToastifyAction())
          const response = await axiosInstance.delete(
             `/api/workspace/${workspaceId}`
          )
-         navigate("/admin/allWorkspaces")
-         dispatch(warningToastifyAction(`Deleted workspace`))
+         navigate("/allWorkspaces")
          dispatch(getAllWorkspaces())
          return console.log(response)
       } catch (error) {
-         return dispatch(errorToastifyAction(error.message))
+         dispatch(errorToastifyAction("Error"))
+         return console.log(error.message)
+      }
+   }
+)
+// ИЗМЕНИТЬ TITLE WORKSPACE
+export const changeTitleWorkspace = createAsyncThunk(
+   "changeTitle/workspace",
+   async (value) => {
+      const { workspaceId, name, dispatch } = value
+      try {
+         const { data } = await axiosInstance.put("/api/workspace", {
+            id: workspaceId,
+            newTitle: name,
+         })
+         dispatch(getAllWorkspaces())
+         return data
+      } catch (error) {
+         return console.log(error.message)
       }
    }
 )
@@ -100,6 +117,7 @@ export const workspacesSlice = createSlice({
       workspaces: [],
       workspaceById: {},
       loading: false,
+      idToast: 0,
    },
    reducers: {},
    extraReducers: {
@@ -115,6 +133,11 @@ export const workspacesSlice = createSlice({
       },
       [getWorkspacesId.fulfilled]: (state, actions) => {
          state.workspaceById = actions.payload
+      },
+      [changeTitleWorkspace.fulfilled]: (state, actions) => {
+         if (actions.payload.id === state.workspaceById.id) {
+            state.workspaceById = actions.payload
+         }
       },
    },
 })
