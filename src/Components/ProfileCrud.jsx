@@ -13,7 +13,7 @@ import ReusableDropDown from "./UI/ReusableDropDown"
 import { validationSchema } from "./Authorizaiton/Validation"
 import Modal from "./UI/Modal"
 import { axiosInstance } from "../api/axiosInstance"
-import { successToastify } from "../utilits/helpers/reactToastifyHelpers"
+// import { successToastify } from "../utilits/helpers/reactToastifyHelpers"
 
 function ProfileCrud() {
    const [profileData, setProfileData] = useState({})
@@ -32,29 +32,21 @@ function ProfileCrud() {
          confirmPassword: "",
       },
       validationSchema,
-      onSubmit: async (userInfo, onSubmitProps) => {
+      onSubmit: async () => {
          const formData = new FormData()
-         formData.append("firstName", userInfo.firstName)
-         formData.append("lastName", userInfo.lastName)
-         formData.append("email", userInfo.email)
-         formData.append("password", userInfo.password)
-         formData.append("confirmPassword", userInfo.confirmPassword)
-         formData.append("confirmPassword", userInfo.image)
+         formData.append("file", selectedFile)
 
-         await axiosInstance
-            .put("api/profile", userInfo)
-            .then(() => {
-               successToastify(23, "success")
-               onSubmitProps.resetForm()
-               // formik.setValues((prev) => ({
-               //    ...prev,
-               //    password: "",
-               //    confirmPassword: "",
-               // }))
-            })
-            .catch((err) => console.log(err))
-
-         console.log(userInfo)
+         const res = await axiosInstance.post("api/file", formData, {
+            headers: {
+               "Content-Type": "application/json",
+               Accept: "application/json",
+               charset: "utf8",
+               withCredentials: false,
+            },
+         })
+         console.log(res)
+         // const newData = {...userInfo, image: res}
+         // await  axiosInstance.put("api/profile", formData)
       },
    })
    const { isValid } = formik
@@ -70,6 +62,7 @@ function ProfileCrud() {
                password: "",
                confirmPassword: "",
             })
+            setPreview(data?.image)
             return setProfileData(data)
          } catch (error) {
             return console.log(error.message)
@@ -93,10 +86,8 @@ function ProfileCrud() {
          setSelectedFile(undefined)
          return
       }
-      console.log(elem)
       setSelectedFile(elem.target.files[0])
    }
-   console.log(selectedFile)
    return (
       <Container>
          <TopBox>
@@ -106,7 +97,6 @@ function ProfileCrud() {
          <MidBox>
             <div className="profile">
                <Avatar
-                  onBeforeFileLoad={onSelectFile}
                   onClick={() => setOpen(!open)}
                   src={preview}
                   editIcon={Pen}
@@ -139,6 +129,7 @@ function ProfileCrud() {
                         src={src}
                         onCrop={onCrop}
                         onClose={onClose}
+                        onBeforeFileLoad={onSelectFile}
                      />
 
                      <Button
