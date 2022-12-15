@@ -4,24 +4,22 @@ import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import { COLORS, BackImage } from "../../../utilits/constants/Constants"
 import Input from "../../UI/Input"
-import DisplayFlexJCSB from "../../../layout/DisplayFlex"
-import { useActiveIndex } from "../../../utilits/hooks/useActiveIndex"
-import ImageBlock from "./ImageBlock"
+import DisplayFlex from "../../../layout/DisplayFlex"
 import ColorBlock from "./ColorBlock"
 import { createBoard } from "../../../store/boardSlice"
+import ImageBlock from "./ImageBlock"
 import { useValidation } from "../../../utilits/hooks/useValidation"
 import ContainerButtons from "../../UI/ContainerButtons"
 
-function CreateBoard({ toggle }) {
+function CreateBoard({ setTwoActive, secondActive }) {
    const dispatch = useDispatch()
    const { workspaceId } = useParams()
    const initialValue =
       "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
 
    const [selectedBoard, setSelectedBoard] = useState(initialValue)
-   const [titleBoard, setTitleBoard] = useState("")
-   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
    const { isValid, validHandler } = useValidation()
+   const [titleBoard, setTitleBoard] = useState("")
 
    const selectedBoardHandler = (value) => {
       setSelectedBoard(value)
@@ -35,7 +33,7 @@ function CreateBoard({ toggle }) {
       }
       if (readyData.title.trim().length > 0) {
          dispatch(createBoard({ readyData, dispatch }))
-         toggle("false")
+         setTwoActive("nothing", "nothing")
       }
       if (readyData.title.trim().length === 0) {
          validHandler(true)
@@ -59,40 +57,50 @@ function CreateBoard({ toggle }) {
          />
          <ErrorText>{isValid && "required field"} </ErrorText>
          <h3>Add background</h3>
-         <DisplayFlexJCSB>
+         <DisplayFlex JK="space-between">
             <p>Photo</p>
             <p
                onClick={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "4" ? "4" : "0")
+                  setTwoActive(
+                     "modalCreateBoard",
+                     secondActive !== "imagesDropDown"
+                        ? "imagesDropDown"
+                        : "nothing"
+                  )
                }
             >
                See more
             </p>
-         </DisplayFlexJCSB>
+         </DisplayFlex>
          <ImageBlock
             selectedBoardHandler={selectedBoardHandler}
             selectedBoard={selectedBoard}
-            activeIndex={isActiveDropDown}
+            secondActive={secondActive}
             BackImage={BackImage}
          />
-         <DisplayFlexJCSB>
+         <DisplayFlex JK="space-between">
             <p>Colors</p>
             <p
                onClick={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "5" ? "5" : "0")
+                  setTwoActive(
+                     "modalCreateBoard",
+                     secondActive !== "colorsDropDown"
+                        ? "colorsDropDown"
+                        : "nothing"
+                  )
                }
             >
                See more
             </p>
-         </DisplayFlexJCSB>
+         </DisplayFlex>
          <ColorBlock
             selectedBoardHandler={selectedBoardHandler}
             selectedBoard={selectedBoard}
-            activeIndex={isActiveDropDown}
+            secondActive={secondActive}
             COLORS={COLORS}
          />
          <ContainerButtons
-            clickGrayButton={() => toggle("false")}
+            clickGrayButton={() => setTwoActive("nothing", "nothing")}
             clickBlueButton={createWorkspacesHandler}
             titleBlueButton="Create Board"
             titleGrayButton="Cancel"

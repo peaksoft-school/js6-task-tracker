@@ -1,75 +1,108 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import CustomIcons from "./CustomIcons"
 import EditIcon from "../../../assets/icons/Icon Shape (1).svg"
 import comentIcon from "../../../assets/icons/Comment.svg"
-import { Labels } from "../../../utilits/constants/Constants"
 import timeIcon from "../../../assets/icons/Real World Icon.svg"
 import descriptionIcon from "../../../assets/icons/Typography Icon (1).svg"
 import peopleIcon from "../../../assets/icons/people.svg"
 import completeIcon from "../../../assets/icons/UI and Keyboard Icon.svg"
-import DisplayFlexJCSB from "../../../layout/DisplayFlex"
+import DisplayFlex from "../../../layout/DisplayFlex"
+import { useToggle } from "../../../utilits/hooks/useToggle"
 
-const Card = ({ showInnerTaskCard }) => {
-   const [showLabel, setShowLabel] = useState(false)
-   const showLabelHandler = () => {
-      setShowLabel(!showLabel)
+const Cards = ({
+   cards,
+   activeAddCardButton,
+   getCardById,
+   dragOverHandler,
+   columnItem,
+   dragStartHandler,
+   dropHandler,
+}) => {
+   const { isActive, setActive } = useToggle()
+   const renderCard = (item) => {
+      return (
+         <StyledCard
+            draggable
+            onDragOver={(e) => dragOverHandler(e)}
+            onDragStart={(e) => dragStartHandler(e, columnItem, item)}
+            onDropCapture={(e) => dropHandler(e, columnItem, item)}
+            isArchive={item.isArchive}
+            key={item.id}
+         >
+            <DisplayFlex FW="wrap" gap="5px">
+               {item.labelResponses.map((item) => (
+                  <Label
+                     showLabel={isActive === "showLabel"}
+                     key={item.id}
+                     onClick={() => setActive("showLabel")}
+                     color={item.color}
+                  >
+                     {isActive === "showLabel" ? item.text : null}
+                  </Label>
+               ))}
+            </DisplayFlex>
+            <TitleCard>{item.title}</TitleCard>
+            <CustomIcons
+               onClick={() => getCardById(item.id)}
+               edit="edit"
+               src={EditIcon}
+               position="absolute"
+               top="15px"
+               right="7px"
+            />
+            <DisplayFlex
+               padding="4px"
+               JK={item.duration ? "space-between" : "flex-end"}
+            >
+               {item.duration ? (
+                  <p>
+                     <CustomIcons src={timeIcon} />
+                     {item.duration}
+                  </p>
+               ) : null}
+               <DisplayFlex JK="flex-end" gap="10px">
+                  <CustomIcons src={descriptionIcon} />
+                  <CustomIcons src={comentIcon} />
+                  <CustomIcons src={completeIcon} />
+                  {item.numberOfSubTasks > 0 ? (
+                     <span>
+                        {item.numberOfCompletedSubTask}/{item.numberOfSubTasks}
+                     </span>
+                  ) : null}
+                  {item.numberOfMembers > 0 ? (
+                     <>
+                        <CustomIcons src={peopleIcon} />
+                        <span>{item.numberOfMembers}</span>
+                     </>
+                  ) : null}
+               </DisplayFlex>
+            </DisplayFlex>
+         </StyledCard>
+      )
    }
-
    return (
-      <StyledCard>
-         <BlockLables>
-            {Labels.map((item) => (
-               <Label
-                  showLabel={showLabel}
-                  key={item.id}
-                  onClick={showLabelHandler}
-                  color={item.color}
-               >
-                  {showLabel ? item.text : ""}
-               </Label>
-            ))}
-         </BlockLables>
-         <TitleCard>Движение кылыш керек</TitleCard>
-         <CustomIcons
-            onClick={() => showInnerTaskCard("true")}
-            edit="edit"
-            src={EditIcon}
-            position="absolute"
-            top="15px"
-            right="7px"
-         />
-         <DisplayFlexJCSB>
-            <p>
-               <CustomIcons src={timeIcon} /> 2 month
-            </p>
-            <DisplayFlexJCSB width="160px">
-               <CustomIcons src={descriptionIcon} />
-               <CustomIcons src={comentIcon} />
-               <CustomIcons src={completeIcon} />
-               <span>1/3</span>
-               <CustomIcons src={peopleIcon} />
-               <span>5</span>
-            </DisplayFlexJCSB>
-         </DisplayFlexJCSB>
-      </StyledCard>
+      <ContainerCard activeAddCardButton={activeAddCardButton}>
+         {cards?.map((item) => {
+            return renderCard(item)
+         })}
+      </ContainerCard>
    )
 }
 
-export default Card
+export default Cards
 
-const StyledCard = styled.p`
+const StyledCard = styled.div`
    position: relative;
    width: 100%;
    border-radius: 4px;
    border: none;
-   padding: 0.6rem;
-   margin: 0 0 5px 0;
-   font-size: 18px !important;
-   background-color: white;
-   margin-top: 10px;
+   padding: 5px 3px 5px 3px;
+   margin: 10px 0 5px 0;
+   font-size: 1rem !important;
+   background-color: ${(props) => (props.isArchive ? "#F4F4F4" : "white")};
    &:hover {
-      background: #f4f5f7;
+      background: ${(props) => (!props.isArchive ? "white" : null)};
       img {
          display: block;
       }
@@ -84,16 +117,21 @@ const StyledCard = styled.p`
       align-items: center;
       height: 25px;
       width: 90px;
+      margin: 0;
    }
    span {
       font-size: 17px;
       color: #919191;
    }
 `
+const ContainerCard = styled.div`
+   max-height: ${(props) => (props.activeAddCardButton ? "50vh" : "58vh")};
+   overflow: scroll;
+`
 const Label = styled.label`
-   width: ${(props) => !props.showLabel && "4.8vw"};
-   height: ${(props) => !props.showLabel && "1vh"};
-   padding: ${(props) => props.showLabel && "2px 5px"};
+   width: ${(props) => !props.showLabel && "4vw"};
+   height: ${(props) => !props.showLabel && "0.6vh"};
+   padding: ${(props) => props.showLabel && "1px 7px"};
    background-color: ${(props) => props.color};
    font-size: 14px;
    cursor: pointer;
@@ -105,14 +143,6 @@ const Label = styled.label`
    -o-transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
    transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
 `
-
-const BlockLables = styled.div`
-   display: flex;
-   flex-wrap: wrap;
-   gap: 6px;
-   margin-bottom: 10px;
-`
-
 const TitleCard = styled.h2`
    font-size: 1.2rem;
    margin: 0.8rem 0.3rem;

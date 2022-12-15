@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
@@ -13,7 +13,6 @@ import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 import { showSideBarAction } from "../../store/sideBarSlice"
-import { clearBoardById, getBoards } from "../../store/boardSlice"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
 import Modal from "../../Components/UI/Modal"
@@ -25,7 +24,6 @@ const SideBar = () => {
    const { pathname } = useLocation()
    const { showSideBar } = useSelector((state) => state.showSideBar)
    const { workspaces } = useSelector((state) => state.workspaces)
-   const [showModal, setShowModal] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [activeSideBar, setActiveSideBar] = useState("boards")
@@ -36,10 +34,10 @@ const SideBar = () => {
       stateDropDown: false,
       isMenuHovered: false,
    })
-   useEffect(() => {
-      dispatch(getBoards(workspaceId))
-   }, [])
-
+   const [settingModal, setSettingModal] = useState({
+      showModal: false,
+      showDropDown: false,
+   })
    // CLICKS DROP DOWN AND SUB MENU
    const getWorkspacesIdHandler = (id) => {
       dispatch(getWorkspacesId({ id, navigate, dispatch }))
@@ -67,7 +65,6 @@ const SideBar = () => {
          pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
       )
          navigate(`/admin/workspaces/${workspaceId}/boards`)
-      dispatch(clearBoardById())
    }
    // CLICK SIDE BAR ITEMS
    const onClickSideBarItem = (path) => {
@@ -130,7 +127,6 @@ const SideBar = () => {
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
       )
-
    const renderSVGs = (item) =>
       item.id === 1 && (
          <SvgGenerator
@@ -180,10 +176,10 @@ const SideBar = () => {
                               }
                            />
                            {showSideBar ? (
-                              <>
+                              <ContainerSideBarItem>
                                  <span>{item.title}</span>
                                  {item.amount && <span>{item.amount})</span>}
-                              </>
+                              </ContainerSideBarItem>
                            ) : null}
                         </ContainerNavItem>
                         {showSideBar ? renderSVGs(item, index) : null}
@@ -198,14 +194,24 @@ const SideBar = () => {
                   </SideBarItem>
                )
             })}
-            <ContainerNavItem onClick={() => setShowModal(true)}>
+            <ContainerNavItem
+               onClick={() =>
+                  setSettingModal({ ...settingModal, showModal: true })
+               }
+            >
                <SvgGenerator id={5} />
                {showSideBar && <span>Settings</span>}
             </ContainerNavItem>
-            <Modal onClose={() => setShowModal(false)} isOpen={showModal}>
+            <Modal
+               onClose={() =>
+                  setSettingModal({ ...settingModal, showModal: false })
+               }
+               isOpen={settingModal.showModal}
+            >
                <Settings
+                  settingModal={settingModal}
+                  setSettingModal={setSettingModal}
                   nameWorkspaces={placeOfWorkSpace[0]?.name}
-                  closeModal={() => setShowModal(false)}
                />
             </Modal>
             <Line stateSideBar={showSideBar} marginLeft />
@@ -320,16 +326,20 @@ const ContainerNavItem = styled(Link)`
 `
 const HeaderSideBar = styled.div`
    width: 100%;
-   height: 40px;
    display: flex;
    align-items: center;
    p {
+      position: absolute;
+      left: 50px;
       width: 160px;
       font-size: 1.3rem;
-      margin-left: 25px;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+         display: none;
+      }
    }
    img {
-      margin-left: 2.4rem;
+      margin: 0 0 8px 2.4rem;
    }
 `
 const SideBarItem = styled.li`
@@ -345,6 +355,9 @@ const SideBarItem = styled.li`
    }
    &:nth-child(2) {
       padding-top: 1rem;
+   }
+   span {
+      width: 100%;
    }
 `
 const SideBarTitleBlock = styled.div`
@@ -365,6 +378,10 @@ const SideBarTitleBlock = styled.div`
       position: relative;
    }
 `
+const ContainerSideBarItem = styled.div`
+   position: absolute;
+   left: 65px;
+`
 const WorkspacesItem = styled.li`
    display: flex;
    flex-wrap: wrap;
@@ -380,8 +397,11 @@ const WorkspacesItem = styled.li`
       border-bottom-right-radius: 20px;
    }
    span {
+      width: 100%;
+      position: absolute;
+      left: 65px;
       text-align: start;
-      margin-left: 10px;
+      transition: all 0.35s ease-out;
    }
 `
 const ShowSideBarButton = styled.img`

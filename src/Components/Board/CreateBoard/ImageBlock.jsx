@@ -1,17 +1,17 @@
 import React from "react"
 import styled from "styled-components"
-import DisplayFlexJCSB from "../../../layout/DisplayFlex"
+import DisplayFlex from "../../../layout/DisplayFlex"
 import ReusableDropDown from "../../UI/ReusableDropDown"
 import Galochka from "../../../assets/svg/Galochka.svg"
 
 const ImageBlock = ({
    selectedBoardHandler,
    selectedBoard,
-   activeIndex,
+   secondActive,
    BackImage,
 }) => {
    return (
-      <DisplayFlexJCSB>
+      <DisplayFlex JK="space-between">
          {BackImage.map((item) => {
             return (
                <>
@@ -31,10 +31,10 @@ const ImageBlock = ({
                         left="487px"
                         padding="8px"
                         height="580px"
-                        showState={activeIndex === "4"}
+                        showState={secondActive === "imagesDropDown"}
                      >
                         <h4>Photo</h4>
-                        <ContainerBlock>
+                        <DisplayFlex FW="wrap" JK="center" gap="5px">
                            {item.map((photo) => {
                               return (
                                  <StyledImageBlock
@@ -48,13 +48,13 @@ const ImageBlock = ({
                                  </StyledImageBlock>
                               )
                            })}
-                        </ContainerBlock>
+                        </DisplayFlex>
                      </ReusableDropDown>
                   )}
                </>
             )
          })}
-      </DisplayFlexJCSB>
+      </DisplayFlex>
    )
 }
 
@@ -63,12 +63,6 @@ export default ImageBlock
 const Check = styled.img`
    width: 25px !important;
    height: 25px !important;
-`
-const ContainerBlock = styled.div`
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: center;
-   gap: 5px;
 `
 const StyledImageBlock = styled.div`
    width: 145px;

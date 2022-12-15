@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from "react-redux"
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom"
 import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
-import Layout from "./Layout"
 import Boards from "../Components/Board/Boards"
 import InnerBoard from "../Components/Board/InnerBoard"
 import { getAllWorkspaces } from "../store/workspacesSlice"
+import { clearBoards } from "../store/boardSlice"
+import Header from "../Components/Header"
+import Participants from "../Components/Participants"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
@@ -24,8 +26,13 @@ const AdminUserLayout = () => {
       dispatch(getAllWorkspaces())
    }, [])
 
+   useEffect(() => {
+      if (pathname === "/admin/allWorkspaces") dispatch(clearBoards())
+   }, [pathname])
+
    return (
-      <Layout role={role}>
+      <>
+         <Header role={role} />
          <Routes>
             <Route path="allWorkspaces" element={<Workspaces role={role} />} />
             <Route
@@ -40,16 +47,11 @@ const AdminUserLayout = () => {
                      <h1 style={{ margin: "150px 0 0 300px" }}>All Issues</h1>
                   }
                />
-               <Route
-                  path="participants"
-                  element={
-                     <h1 style={{ margin: "150px 0 0 300px" }}>Participants</h1>
-                  }
-               />
+               <Route path="participants" element={<Participants />} />
             </Route>
             <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
-      </Layout>
+      </>
    )
 }
 

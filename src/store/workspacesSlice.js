@@ -9,7 +9,6 @@ import {
 } from "./toastifySlice"
 import { axiosInstance } from "../api/axiosInstance"
 import { getFavourites } from "./FavouritesSlice"
-import { getBoards } from "./boardSlice"
 
 // ПОЛУЧИТЬ WORSKPACES ИЗ БАЗЫ ДАННЫХ
 export const getAllWorkspaces = createAsyncThunk("workspaces", async () => {
@@ -65,11 +64,10 @@ export const addWorkspacesToFavourites = createAsyncThunk(
 export const getWorkspacesId = createAsyncThunk(
    "getWorkspace/ById",
    async (value) => {
-      const { id, navigate, dispatch } = value
+      const { id, navigate } = value
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          navigate(`/admin/workspaces/${data.id}/boards`)
-         dispatch(getBoards(id))
          return data
       } catch (error) {
          return console.log(error)
@@ -84,7 +82,7 @@ export const deleteWorkspaceById = createAsyncThunk(
       try {
          dispatch(loadingToastifyAction())
          const response = await axiosInstance.delete(
-            `http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com/api/workspace/${workspaceId}`
+            `/api/workspace/${workspaceId}`
          )
          navigate("/admin/allWorkspaces")
          dispatch(warningToastifyAction(`Deleted workspace`))
@@ -101,11 +99,19 @@ export const workspacesSlice = createSlice({
    initialState: {
       workspaces: [],
       workspaceById: {},
+      loading: false,
    },
    reducers: {},
    extraReducers: {
+      [getAllWorkspaces.pending]: (state) => {
+         state.loading = true
+      },
       [getAllWorkspaces.fulfilled]: (state, actions) => {
          state.workspaces = actions.payload
+         state.loading = false
+      },
+      [getAllWorkspaces.rejected]: (state) => {
+         state.loading = false
       },
       [getWorkspacesId.fulfilled]: (state, actions) => {
          state.workspaceById = actions.payload

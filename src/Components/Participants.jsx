@@ -1,13 +1,12 @@
+/* eslint-disable no-undef */
 import React, { useState } from "react"
 import styled from "styled-components"
 import deleteSVG from "../assets/svg/Delete.svg"
-import Modal from "./UI/Modal"
-import { useActiveIndex } from "../hooks/useActiveIndex"
 import { members } from "../utilits/constants/Constants"
+import DisplayFlex from "../layout/DisplayFlex"
+import Button from "./UI/Button"
 
 function Participants({ total }) {
-   const [isOpen, setIsOpen] = useState(false)
-   const { activeIndex, getActiveIndexHandler } = useActiveIndex()
    const [membersArray, setMembersArray] = useState(members)
    const deleteItemHanlder = (id) => {
       const newArray = membersArray.filter((item) => item.id !== id)
@@ -16,7 +15,12 @@ function Participants({ total }) {
 
    return (
       <Parents>
-         <Button>
+         <DisplayFlex
+            width="100%"
+            heigth="100px"
+            JK="space-between"
+            AI="center"
+         >
             <Title>
                <h1>View all issues</h1>
                <select>
@@ -27,13 +31,15 @@ function Participants({ total }) {
                </select>
             </Title>
 
-            <button type="button" onClick={() => setIsOpen(true)}>
+            <Button
+               fullWidth="130px"
+               type="button"
+               fullHeight="40px"
+               onClick={() => setIsOpen(true)}
+            >
                Create
-            </button>
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-               <h1>MNADNODOAD</h1>
-            </Modal>
-         </Button>
+            </Button>
+         </DisplayFlex>
          <Total>
             <p>
                Total: <span>{total}82</span>
@@ -85,15 +91,16 @@ function Participants({ total }) {
 export default Participants
 
 const Parents = styled.div`
-   position: absolute;
-   left: 300px;
+   margin: 100px 10px 0 135px;
+   position: relative;
+   width: 100%;
+   height: 100%;
 `
 const Title = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   padding: 9px 14px 9px 16px;
    gap: 52px;
    h1 {
       font-size: 20px;
@@ -118,7 +125,6 @@ const Total = styled.div`
    display: flex;
    flex-direction: start;
    justify-content: start;
-   padding: 0px 18px;
    margin-top: -30px;
    gap: 8px;
    p {
@@ -135,35 +141,13 @@ const Total = styled.div`
       color: white;
    }
 `
-const Button = styled.div`
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   width: 1146px;
-   button {
-      margin-left: 700px;
-      width: 77px;
-      height: 34px;
-      background: #0079bf;
-      border-radius: 24px;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 18px;
-      letter-spacing: 0.02em;
-      color: #ffffff;
-      border: none;
-      cursor: pointer;
-   }
-`
 const ParticipantItem = styled.tbody`
-   border: 1px solid black;
    background-color: ${(props) => props.background && "#E6E6E6"};
 `
 const Table = styled.table`
-   width: 1146px;
+   width: 100%;
    hr {
       position: absolute;
-      width: 1146px;
    }
    th {
       font-weight: 600;
@@ -171,9 +155,8 @@ const Table = styled.table`
       line-height: 18px;
    }
    td {
-      padding-top: 30px;
+      padding: 15px 0 15px 0;
       justify-content: center;
-      padding-bottom: 20px;
    }
    th,
    td {
