@@ -84,7 +84,7 @@ const InnerTaskCard = ({
                         {firstEightMembers.map((item) => {
                            return <UserAvatar src={avatar} />
                         })}
-                        {dataCardById.memberResponses.length > 0 ? (
+                        {dataCardById.memberResponses.length > 8 ? (
                            <div>
                               +{+dataCardById.memberResponses.length - 8}
                            </div>

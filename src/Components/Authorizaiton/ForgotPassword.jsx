@@ -10,7 +10,8 @@ import { validationConfirmPassword } from "./Validation"
 
 const ForgotPassword = () => {
    const dispatch = useDispatch()
-   const { id } = useParams()
+   const params = useParams()
+   console.log(params)
    const navigate = useNavigate()
 
    const formik = useFormik({
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
       onSubmit: (value) => {
          return dispatch(
             resetPassword({
-               userId: +id,
+               userId: +params.id,
                newPassword: value.password,
                navigate,
             })

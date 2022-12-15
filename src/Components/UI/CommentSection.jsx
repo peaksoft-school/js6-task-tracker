@@ -1,7 +1,10 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 import TimeAgo from "react-timeago"
+import TextareaAutosize from "react-textarea-autosize"
 import UserAvatar from "./UserAvatar"
 import CustomIcons from "../Column/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
@@ -23,8 +26,9 @@ const CommentSection = ({
    dataCardById,
 }) => {
    const [commentValue, setCommentValue] = useState("")
-   const { show, toggle } = useTemporaryToggle()
    const [comments, setComments] = useState([])
+   const textAreaRef = useRef([])
+   const [activeInput, setActiveInput] = useState(null)
 
    // ПОЛУЧИТЬ КОМЕНТАРИИ КАРТОЧКИ
    const getAllComments = async () => {
@@ -67,19 +71,19 @@ const CommentSection = ({
       }
    }
    // ИЗМЕНИТЬ КОМЕНТАРИЙ
-   const changeValueHandler = async (e) => {
+   const changeValueHandler = (e) => {
       const newComments = [...comments]
       newComments[e.target.name].text = e.target.value
       return setComments(newComments)
    }
 
-   const editCommentQuery = async (e, Id) => {
+   const changeComment = async (e, id) => {
       try {
-         const response = await axiosInstance.put(`/api/comments/${Id}`, {
+         const response = await axiosInstance.put(`/api/comments/${id}`, {
             text: e.target.value,
          })
-         getAllComments()
-         return console.log(response)
+         setActiveInput(0)
+         return getAllComments()
       } catch (error) {
          return console.log(error.message)
       }
@@ -102,7 +106,7 @@ const CommentSection = ({
             {comments?.length > 0 &&
                comments?.map((item, index) => {
                   return (
-                     <Comment>
+                     <Comment key={item.id}>
                         <UserAvatar src={item.image} />
                         <div>
                            <p>
@@ -110,12 +114,14 @@ const CommentSection = ({
                               {"    "}
                               {item.commentedUserResponse.lastName}
                            </p>
-                           {show ? (
-                              <CommentInput
+                           {activeInput === item.id ? (
+                              <StyledTextAreaAutoSize
+                                 ref={textAreaRef}
                                  onChange={(e) => changeValueHandler(e)}
-                                 onBlur={(e) => editCommentQuery(e, item.id)}
+                                 onBlur={(e) => changeComment(e, item.id)}
                                  value={item.text}
                                  name={`${index}`}
+                                 autoFocus
                               />
                            ) : (
                               <CommentText>{item.text}</CommentText>
@@ -128,7 +134,17 @@ const CommentSection = ({
                            >
                               <TimeAgo date={new Date()} />
                               <BlockEditDeleteButton>
-                                 <p onClick={toggle}>Edit</p>
+                                 <p
+                                    onClick={() =>
+                                       setActiveInput(
+                                          activeInput !== item.id
+                                             ? item.id
+                                             : null
+                                       )
+                                    }
+                                 >
+                                    Edit
+                                 </p>
                                  <p onClick={() => deleteComment(item.id)}>
                                     Delete
                                  </p>
@@ -170,8 +186,8 @@ const StyledCommentSection = styled.div`
 const ContainerComment = styled.div`
    position: relative;
    overflow: scroll;
-   max-height: ${(props) => (props.sizeComment ? "340px" : "428px")};
-   min-height: ${(props) => (props.sizeComment ? "34.2vh" : "47vh")};
+   max-height: ${(props) => (props.sizeComment ? "51vh" : "62.6vh")};
+   min-height: ${(props) => (props.sizeComment ? "34.3vh" : "45.8vh")};
 `
 const Comment = styled.div`
    display: flex;
@@ -211,8 +227,11 @@ const BlockEditDeleteButton = styled.div`
    }
 `
 const CommentText = styled.p`
-   width: 23vw;
+   width: 20vw;
    margin: 0.5rem 0 0rem 0;
+   padding: 4px 0 4px 8px;
+   font-size: 1.1rem;
+   line-height: 22px;
 `
 const ContainerInput = styled.div`
    position: fixed;
@@ -223,6 +242,14 @@ const ContainerInput = styled.div`
       background: #f4f5f7 !important;
    }
 `
-const CommentInput = styled.input`
-   width: 200px;
+const StyledTextAreaAutoSize = styled(TextareaAutosize)`
+   width: 20vw;
+   background: #f4f5f7;
+   margin: 0.5rem 0 0rem 0;
+   padding: 4px 0 4px 8px;
+   font-size: 1.1rem;
+   border: none;
+   &:focus {
+      background-color: white;
+   }
 `

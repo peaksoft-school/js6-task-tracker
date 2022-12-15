@@ -105,7 +105,6 @@ export const changeTitleWorkspace = createAsyncThunk(
             id: workspaceId,
             newTitle: name,
          })
-         console.log(data, "data")
          return data
       } catch (error) {
          return console.log(error.message)
@@ -134,6 +133,9 @@ export const workspacesSlice = createSlice({
          state.loading = false
       },
       [getWorkspacesId.fulfilled]: (state, actions) => {
+         state.workspaceById = actions.payload
+      },
+      [changeTitleWorkspace.fulfilled]: (state, actions) => {
          state.workspaceById = actions.payload
       },
    },

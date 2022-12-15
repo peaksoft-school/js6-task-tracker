@@ -73,11 +73,11 @@ export const authWithGoogle = createAsyncThunk(
       const { navigate } = value
       try {
          const { user } = await signInWithPopup(auth, provider)
+         console.log(user.accessToken)
          const { data } = await authWithGoogleQuery(user.accessToken)
 
          if (data) localStorageHelpers.saveData(USER_KEY, data)
          navigate(PATH_IN_ROLES[data.role].path)
-
          return data
       } catch (error) {
          return rejectWithValue(error)

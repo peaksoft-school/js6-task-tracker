@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
@@ -22,10 +22,16 @@ import { getWorkspacesId } from "../../store/workspacesSlice"
 const SideBar = () => {
    const { workspaceId, boardId } = useParams()
    const { pathname } = useLocation()
-   const { showSideBar } = useSelector((state) => state.showSideBar)
-   const { workspaces } = useSelector((state) => state.workspaces)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { showSideBar } = useSelector((state) => state.showSideBar)
+   const { workspaces, workspaceById } = useSelector(
+      (state) => state.workspaces
+   )
+   useEffect(() => {
+      dispatch(getWorkspacesId({ id: workspaceId }))
+   }, [])
+
    const [activeSideBar, setActiveSideBar] = useState("boards")
    const [showSubMenu, setShowSubMenu] = useState({})
    const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
@@ -139,11 +145,15 @@ const SideBar = () => {
       (item) => item.id === +workspaceId
    )
 
+   const navigateParticipants = (id) => {
+      navigate(`/admin/workspaces/${id}/participants`)
+   }
+
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
          <HeaderSideBar>
             {renderHeaderSideBar()}
-            <p>{showSideBar && placeOfWorkSpace[0]?.name}</p>
+            <p>{showSideBar && workspaceById?.name}</p>
             <ShowSideBarButton
                showSideBar={showSideBar}
                onClick={showSideBarHandler}
@@ -257,6 +267,9 @@ const SideBar = () => {
                               <SubMenu
                                  clickBoards={() =>
                                     getWorkspacesIdHandler(item.id)
+                                 }
+                                 clickParticipants={() =>
+                                    navigateParticipants(item.id)
                                  }
                               />
                            )}

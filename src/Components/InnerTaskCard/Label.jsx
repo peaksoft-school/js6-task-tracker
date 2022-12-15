@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react"
 import styled from "styled-components"
+import TextareaAutosize from "react-textarea-autosize"
 import DisplayFlex from "../../layout/DisplayFlex"
 import Input from "../UI/Input"
 import { colorsLabel } from "../../utilits/constants/Constants"
@@ -18,35 +19,41 @@ const AddLabel = ({ dataCardById, setTwoActive, firstActive, getCardById }) => {
       {
          id: 1,
          title: "Done",
-         color: "green",
+         color: "#51e2f5",
       },
       {
          id: 2,
          title: "Code review",
-         color: "blue",
+         color: "#8B008B",
       },
       {
          id: 3,
          title: "kick back",
-         color: "red",
+         color: "#4bd779",
       },
       {
          id: 4,
          title: "in progress",
-         color: "violet",
+         color: "#FFD700",
       },
    ]
 
-   const [selectedLabelColors, setSelectedLabelColor] = useState("#51e2f5")
-   const [inputValue, setInputValue] = useState("")
-   const [editLabel, setEditLabel] = useState(0)
+   const [selectedLabelColors, setSelectedLabelColor] = useState("")
+   const [readyLabels, setReadyLabels] = useState(readyLabel)
 
-   const addLabelToCard = async () => {
+   const changeValueLabel = (e) => {
+      const newLabel = [...readyLabels]
+      if (e.target.value.length < 70) {
+         newLabel[e.target.name].title = e.target.value
+      }
+      return setReadyLabels(newLabel)
+   }
+
+   const addLabelToCard = async (e) => {
       try {
          const response = await axiosInstance.post("/api/labels", {
-            cardId: dataCardById.id,
-            description: inputValue,
-            color: "RED",
+            description: e.target.value,
+            color: selectedLabelColors,
          })
          getCardById(firstActive)
          setTwoActive(firstActive, "nothing")
@@ -59,7 +66,7 @@ const AddLabel = ({ dataCardById, setTwoActive, firstActive, getCardById }) => {
    return (
       <DisplayFlex AI="center" FD="column" padding="0 7px 15px 7px">
          <DisplayFlex margin="5px 5px 0 0" FD="column">
-            {readyLabel.map((item) => {
+            {readyLabels.map((item, index) => {
                return (
                   <>
                      <DisplayFlex>
@@ -67,9 +74,7 @@ const AddLabel = ({ dataCardById, setTwoActive, firstActive, getCardById }) => {
                            {item.title}
                         </ReadyLabel>
                         <img
-                           onClick={() =>
-                              setEditLabel(editLabel !== item.id ? item.id : 0)
-                           }
+                           onClick={() => setSelectedLabelColor(item.color)}
                            src={editIcon}
                            alt="pencil"
                         />
@@ -80,12 +85,14 @@ const AddLabel = ({ dataCardById, setTwoActive, firstActive, getCardById }) => {
                         padding="20px 15px 20px 15px"
                         top="0"
                         left="0"
-                        showState={editLabel === item.id}
+                        showState={selectedLabelColors}
                      >
-                        <Input
+                        <StyledTextArea
+                           selectedColor={selectedLabelColors}
                            value={item.title}
                            label="Title label"
-                           onChange={(e) => setInputValue(e.target.value)}
+                           onChange={(e) => changeValueLabel(e)}
+                           name={`${index}`}
                         />
                         <DisplayFlex
                            margin="20px 2px 14px 10px"
@@ -123,7 +130,10 @@ const AddLabel = ({ dataCardById, setTwoActive, firstActive, getCardById }) => {
                            titleGrayButton="Cancel"
                            widthGrayButton="90px"
                            widthBlueButton="90px"
-                           clickGrayButton={() => setEditLabel(0)}
+                           clickGrayButton={() => setSelectedLabelColor("")}
+                           clickBlueButton={(e) => {
+                              addLabelToCard(e)
+                           }}
                         />
                      </ReusableDropDown>
                   </>
@@ -144,4 +154,15 @@ const ReadyLabel = styled.div`
    border-radius: 6px;
    margin: 4px 7px 4px 0;
    padding: 4px 0 0 10px;
+`
+const StyledTextArea = styled(TextareaAutosize)`
+   background-color: ${(props) => props.selectedColor};
+   width: 23vw;
+   padding: 8px 15px 8px 15px;
+   border-radius: 8px;
+   font-size: 1.2rem;
+   color: white;
+   border: none;
+   outline: none;
+   margin-left: 5px;
 `

@@ -19,9 +19,7 @@ const Settings = ({ nameWorkspaces, settingModal, setSettingModal }) => {
    const [name, setName] = useState(nameWorkspaces)
 
    const changeNameWorkspacesHandler = async () => {
-      dispatch(
-         changeTitleWorkspace({ workspaceId, name, dispatch, getWorkspacesId })
-      )
+      dispatch(changeTitleWorkspace({ workspaceId, name, getWorkspacesId }))
       setSettingModal({ ...settingModal, showModal: false })
    }
 
@@ -81,6 +79,7 @@ const ContainerSettings = styled.div`
    h3 {
       font-weight: 400;
       text-align: center;
+      margin: 0 0 8px 0;
    }
    p {
       color: red;

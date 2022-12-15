@@ -12,6 +12,8 @@ import Modal from "../UI/Modal"
 import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import { axiosInstance } from "../../api/axiosInstance"
+import { useToggle } from "../../utilits/hooks/useToggle"
+import ChangeBoard from "./ChangeBoard"
 
 const InnerBoard = () => {
    const [cardById, setCardById] = useState()
@@ -20,6 +22,7 @@ const InnerBoard = () => {
    const { boardId } = useParams()
    const { showSideBar, boards } = useSelector((state) => state)
    const { setTwoActive, firstActive } = useTwoActive()
+   const { setActive, isActive } = useToggle()
    const [columns, setColumns] = useState([])
    const [loading, setLoading] = useState(true)
 
@@ -75,12 +78,23 @@ const InnerBoard = () => {
                AI="center"
             >
                <LeftBlock>
-                  <CustomIcons top="3px" position="absolute" src={EditIcon} />
+                  <CustomIcons
+                     onClick={() => setActive("modalChangeTitle")}
+                     top="3px"
+                     position="absolute"
+                     src={EditIcon}
+                  />
                   <h3>{boards.boardById.title}</h3>
                   <p>
                      Columns: <span>{columns?.length}</span>
                   </p>
                </LeftBlock>
+               <Modal
+                  onClose={() => setActive("nothing")}
+                  isOpen={isActive === "modalChangeTitle"}
+               >
+                  <ChangeBoard setActive={() => setActive("nothing")} />
+               </Modal>
                <Menu
                   getDataInArchive={getDataInArchive}
                   archiveData={archiveData}
