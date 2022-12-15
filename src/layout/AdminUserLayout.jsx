@@ -6,12 +6,9 @@ import Workspaces from "../Components/Workspaces/Workspaces"
 import Boards from "../Components/Board/Boards"
 import InnerBoard from "../Components/Board/InnerBoard"
 import { getAllWorkspaces } from "../store/workspacesSlice"
-<<<<<<< HEAD
-=======
+import Participants from "../Components/Participants"
 import { clearBoards } from "../store/boardSlice"
 import Header from "../Components/Header"
->>>>>>> 344092612c73c4fa07949dad60ffcbf24679563c
-import Participants from "../Components/Participants"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
