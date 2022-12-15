@@ -1,28 +1,29 @@
 import React from "react"
 import styled from "styled-components"
 import SvgGenerator from "../../Components/UI/SvgGenerator"
-import { SubMenuItems } from "../../utilits/constants/Constants"
 
 const DropDownSideBar = ({
    nameWorkspaces,
    onMouseEnter,
    onMouseLeave,
-   onClickSubMenuItems,
+   clickBoards,
 }) => {
    return (
       <DropDownContainer>
          <p>{nameWorkspaces}</p>
          <DropDownBlock onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            {SubMenuItems.map((item) => {
-               return (
-                  <li key={item.title} onClick={() => onClickSubMenuItems}>
-                     <SvgGenerator color="white" id={item.iconId} />
-                     <span>{item.title}</span>
-                     <SvgGenerator color="white" id={item.iconPlus} />
-                     <SvgGenerator color="white" id={item.iconArrowDown} />
-                  </li>
-               )
-            })}
+            <li onClick={clickBoards}>
+               <SvgGenerator color="white" id={1} />
+               <span>Boards</span>
+            </li>
+            <li>
+               <SvgGenerator color="white" id={3} />
+               <span>Participants</span>
+            </li>
+            <li>
+               <SvgGenerator color="white" id={5} />
+               <span>Setting</span>
+            </li>
          </DropDownBlock>
       </DropDownContainer>
    )
@@ -32,7 +33,7 @@ export default DropDownSideBar
 
 const DropDownContainer = styled.div`
    position: absolute;
-   left: 60px;
+   left: 90px;
    top: 5px;
    width: 140px;
    height: 50px;
@@ -41,22 +42,21 @@ const DropDownContainer = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
-   z-index: 1;
+   z-index: 300;
    p {
       width: 97px;
       font-size: 12px;
-      padding: 4px 0 4px 0;
+      padding: 7px 4px 7px 4px;
       text-align: center;
       background-color: #222222;
       border-radius: 18px;
       margin: 0 0 5px 0;
    }
 `
-
 const DropDownBlock = styled.div`
    position: relative;
-   width: 17vw;
-   height: 17vh;
+   width: 250px;
+   height: 120px;
    background-color: #222222;
    border-radius: 15px;
    padding: 15px;
@@ -67,7 +67,8 @@ const DropDownBlock = styled.div`
       align-items: center;
       margin-bottom: 3px;
       span {
-         margin: 0 55px 5px 8px;
+         width: 100px;
+         margin-left: -10px;
       }
    }
 `

@@ -8,7 +8,7 @@ import PasswordInput from "../UI/PasswordInput"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import { login } from "../../store/AuthSlice"
-import ForgotPasswordBlock from "../ForgotPasswordBlock"
+import ForgotPasswordBlock from "./ForgotPasswordBlock"
 
 const Login = () => {
    const [showModal, setShowModal] = useState(false)
@@ -55,7 +55,7 @@ const Login = () => {
             <span onClick={showCloseModalHandler}> Forgot password ?</span>
          </TextForgotPassword>
          <Modal
-            fullWidth="520px"
+            fullWidth="530px"
             onClose={showCloseModalHandler}
             isOpen={showModal}
          >

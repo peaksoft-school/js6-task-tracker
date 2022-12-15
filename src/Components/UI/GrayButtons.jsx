@@ -17,7 +17,7 @@ const GrayButton = ({
          icon={iconButton}
          onClick={onClick}
       >
-         <Icon src={iconButton} /> {children}
+         {iconButton && <Icon src={iconButton} />} {children}
       </StyledGrayButton>
    )
 }

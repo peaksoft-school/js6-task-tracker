@@ -6,6 +6,8 @@ import TextField from "@mui/material/TextField"
 const CssTextField = styled(TextField)({
    "& .MuiInputBase-input": {
       width: "100%",
+      backgroundColor: "white",
+      borderRadius: 13,
    },
    "& label.Mui-focused": {
       color: "#919191",
@@ -17,6 +19,10 @@ const CssTextField = styled(TextField)({
    "& .MuiInput-underline:after": {
       borderBottomColor: "green",
    },
+   "& .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill":
+      {
+         borderRadius: 13,
+      },
    "& .MuiOutlinedInput-root": {
       "& fieldset": {
          border: "1px solid #BDBDBD",

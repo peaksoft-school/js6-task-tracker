@@ -1,68 +1,57 @@
-import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { Route, Routes, useNavigate } from "react-router-dom"
-import { axiosInstance } from "../api/axiosInstance"
-import Board from "../Components/Board"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom"
+import AllBoards from "../Components/Board/AllBoards"
 import Workspaces from "../Components/Workspaces/Workspaces"
-import Layout from "./Layout"
-import { getWorkspacesQuery } from "../api/auth"
-import ProfileCrud from "../Components/ProfileCrud"
+import Boards from "../Components/Board/Boards"
+import InnerBoard from "../Components/Board/InnerBoard"
+import { getAllWorkspaces } from "../store/workspacesSlice"
+import { clearBoards } from "../store/boardSlice"
+import Header from "../Components/Header"
+import Participants from "../Components/Participants"
 
 const AdminUserLayout = () => {
-   const [workspacesById, setWorkspacesById] = useState([])
-   const [workspaces, setWorkspaces] = useState([])
    const { role } = useSelector((state) => state.auth.userInfo)
-   const link = window.location.href
    const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { pathname } = useLocation()
 
    useEffect(() => {
-      if (
-         link === "http://localhost:3000/admin/*" ||
-         link === "http://localhost:3000/user/*"
-      ) {
-         navigate("workspaces")
+      if (pathname === "/admin/*" || pathname === "/user/*") {
+         navigate("allWorkspaces")
       }
    }, [])
 
-   const getWorkspacesId = async (id) => {
-      try {
-         const { data } = await axiosInstance.get(`/api/workspace/${id}`)
-         setWorkspacesById(data)
-         return navigate(`board/${data.name}`)
-      } catch (error) {
-         return console.log(error)
-      }
-   }
-   const getWorkspacesInDataBase = async () => {
-      try {
-         const { data } = await getWorkspacesQuery()
-         return setWorkspaces(data)
-      } catch (error) {
-         return error.message
-      }
-   }
+   useEffect(() => {
+      dispatch(getAllWorkspaces())
+   }, [])
+
+   useEffect(() => {
+      if (pathname === "/admin/allWorkspaces") dispatch(clearBoards())
+   }, [pathname])
 
    return (
-      <Layout workspaces={workspaces} role={role}>
+      <>
+         <Header role={role} />
          <Routes>
+            <Route path="allWorkspaces" element={<Workspaces role={role} />} />
             <Route
-               path="workspaces/*"
-               element={
-                  <Workspaces
-                     getWorkspacesInDataBase={getWorkspacesInDataBase}
-                     workspaces={workspaces}
-                     getWorkspacesId={getWorkspacesId}
-                     role={role}
-                  />
-               }
-            />
-            <Route path="profile" element={<ProfileCrud />} />
-            <Route
-               path="board/*"
-               element={<Board workspacesById={workspacesById} role={role} />}
-            />
+               path="workspaces/:workspaceId/*"
+               element={<AllBoards role={role} />}
+            >
+               <Route path="boards" element={<Boards role={role} />} />
+               <Route path="boards/:boardId" element={<InnerBoard />} />
+               <Route
+                  path="allissues"
+                  element={
+                     <h1 style={{ margin: "150px 0 0 300px" }}>All Issues</h1>
+                  }
+               />
+               <Route path="participants" element={<Participants />} />
+            </Route>
+            <Route path="profile" element={<h1>Profile</h1>} />
          </Routes>
-      </Layout>
+      </>
    )
 }
 

@@ -1,45 +1,33 @@
 import React from "react"
 import styled from "styled-components"
 import { Outlet } from "react-router-dom"
-import useOpenClose from "../../hooks/useOpenClose"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateWorkspaces from "./CreateWorkspace"
-import TableWorkspaces from "../TableWorkspaces"
+import TableWorkspaces from "./TableWorkspaces"
+import useOpenClose from "../../utilits/hooks/useOpenClose"
 
-const Workspaces = ({
-   getFavorites,
-   role,
-   getWorkspacesId,
-   workspaces,
-   getWorkspacesInDataBase,
-}) => {
-   const { toggle, isShowing } = useOpenClose()
-
+const Workspaces = ({ getFavorites, role }) => {
+   const { toggle, stateModal } = useOpenClose()
    return (
       <ContainerWorkspaces>
          <BlockWorkspaces>
             <Block>
                <h2>Workspaces</h2>
                {role === "ADMIN" && (
-                  <Button onClick={toggle} fullHeight="40px" fullWidth="100px">
+                  <Button
+                     onClick={() => toggle("true")}
+                     fullHeight="40px"
+                     fullWidth="100px"
+                  >
                      Create
                   </Button>
                )}
             </Block>
-            <Modal onClose={toggle} isOpen={isShowing}>
-               <CreateWorkspaces
-                  getWorkspaces={getWorkspacesInDataBase}
-                  toggle={toggle}
-               />
+            <Modal onClose={toggle} isOpen={stateModal === "true"}>
+               <CreateWorkspaces toggle={toggle} />
             </Modal>
-            <TableWorkspaces
-               getWorkspacesId={getWorkspacesId}
-               updateWorkspaces={getWorkspacesInDataBase}
-               workspaces={workspaces}
-               toggle={toggle}
-               getFavorites={getFavorites}
-            />
+            <TableWorkspaces getFavorites={getFavorites} />
          </BlockWorkspaces>
          <Outlet />
       </ContainerWorkspaces>
@@ -68,4 +56,5 @@ const ContainerWorkspaces = styled.div`
    display: flex;
    justify-content: center;
    margin-top: 20px;
+   margin-top: 100px;
 `

@@ -4,11 +4,13 @@ body {
    padding: 0;
    box-sizing: border-box;
    width: 100vw;
-   background-color: #f8f8f8;
 }
 ::placeholder {
    font-family: "Nunito", sans-serif;
    color: #afafaf;
+}
+ul {
+   list-style: none;
 }
 code {
    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

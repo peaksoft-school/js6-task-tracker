@@ -1,27 +1,38 @@
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { useState } from "react"
-import { DefaultStarIcon, ActiveStarIcon } from "../../assets/icons/index"
+import { useParams } from "react-router-dom"
+import { addBoardToFavourites } from "../../store/boardSlice"
+import activeStarIcon from "../../assets/icons/favourite-active.svg"
+import defaultStarIcon from "../../assets/icons/favourite-default.svg"
+import CustomIcons from "./TaskCard/CustomIcons"
+import LoadingSpinner from "./LoadingSpinner"
 
-function WallpaperBoardCard({ PhotoArray, ref, onHandlerImg }) {
-   const [inputViewOnOff, setInputViewOnOff] = useState(false)
-   function handleViewOnOff() {
-      setInputViewOnOff((prevState) => !prevState)
+function WallpaperBoardCard({ getBoardById }) {
+   const { workspaceId } = useParams()
+   const dispatch = useDispatch()
+   const { board, loading } = useSelector((state) => state.boards)
+
+   const addBoardToFavouritesHandler = (id) => {
+      dispatch(addBoardToFavourites({ id, dispatch, workspaceId }))
    }
-
    return (
-      <CardThemeBox ref={ref}>
-         {PhotoArray.map((item) => {
+      <CardThemeBox>
+         {loading && board.length === 0 ? (
+            <LoadingSpinner top="6%" left="40%" />
+         ) : null}
+
+         {board?.map((item) => {
             return (
-               <CardTheme
-                  backgroundImage={item.photo}
-                  style={{ background: item.colors }}
-                  key={item.id}
-                  onClick={() => onHandlerImg(item.photo, item.colors)}
-               >
-                  <span>{item.nameWallpaper}</span>
-                  {item.photo && <Img src={item.photo} />}
-                  <IconContainer onClick={() => handleViewOnOff()}>
-                     {inputViewOnOff ? <DefaultStarIcon /> : <ActiveStarIcon />}
+               <CardTheme backgroundImage={item.background} key={item.id}>
+                  <Block onClick={() => getBoardById(item.id)}>
+                     <span>{item.title}</span>
+                  </Block>
+                  <IconContainer
+                     onClick={() => addBoardToFavouritesHandler(item.id)}
+                  >
+                     <CustomIcons
+                        src={item.isFavorite ? activeStarIcon : defaultStarIcon}
+                     />
                   </IconContainer>
                </CardTheme>
             )
@@ -40,17 +51,20 @@ const CardThemeBox = styled.div`
    display: grid;
    grid-template-columns: repeat(4, 1fr);
    grid-template-rows: repeat(5, 1fr);
-   grid-column-gap: 9px;
-   grid-row-gap: 9px;
+   grid-column-gap: 1px;
+   grid-row-gap: 8px;
+   height: 80vh;
 `
-
 const CardTheme = styled.div`
    position: relative;
-   width: 100%;
+   width: 98%;
    color: #ffffff;
+   background-image: url(${(props) => props.backgroundImage});
+   background: ${(props) => props.backgroundImage};
+   background-repeat: no-repeat;
+   background-size: cover;
    height: 130px;
    border-radius: 8px;
-
    span {
       position: absolute;
       left: 17px;
@@ -59,14 +73,13 @@ const CardTheme = styled.div`
       font-weight: 500;
    }
 `
-const Img = styled.img`
-   border-radius: 8px;
-   width: 100%;
+const Block = styled.div`
+   width: 88%;
    height: 100%;
 `
-
 const IconContainer = styled("div")`
    position: absolute;
-   bottom: 12.44px;
+   bottom: 8px;
    right: 12.44px;
+   cursor: pointer;
 `

@@ -1,80 +1,79 @@
+/* eslint-disable no-unused-vars */
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { TextareaAutosize } from "@mui/material"
-import React from "react"
 import ProgressBar from "../UI/ProgressBar"
-import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
-import { Labels } from "../../utilits/constants/Constants"
 import closeIcon from "../../assets/icons/closeWhite.svg"
 import Button from "../UI/Button"
 import CustomIcons from "../UI/TaskCard/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
 import SecondBlock from "./SecondBlock"
+import CloseButton from "../UI/CloseButton"
+import ContainerButtons from "../UI/ContainerButtons"
+import DisplayFlex from "../../layout/DisplayFlex"
 
-const InnerTaskCard = () => {
+const InnerTaskCard = ({
+   dataCardById,
+   firstActive,
+   getCardById,
+   setTwoActive,
+}) => {
+   useEffect(() => {
+      getCardById(firstActive)
+   }, [])
+
    return (
-      <Container>
-         <DisplayFlexJCSB>
+      <DisplayFlex FD="column">
+         <CloseButton onClick={() => setTwoActive("nothing")} />
+         <DisplayFlex>
             <FirstBlock>
-               <TitleCard>Какая то задача которую нужно выполнить</TitleCard>
-               <Text>Labels</Text>
-               <BlockLabels>
-                  {Labels.map((item) => {
+               <TitleCard>{dataCardById?.title}</TitleCard>
+               <DisplayFlex FW="wrap" gap="0.5rem">
+                  {dataCardById?.labelResponses.length !== 0 ? (
+                     <Text>Labels</Text>
+                  ) : (
+                     ""
+                  )}
+
+                  {dataCardById?.labelResponses.map((item) => {
                      return (
                         <Label color={item.color}>
                            {item.text} <img src={closeIcon} alt="close" />
                         </Label>
                      )
                   })}
-                  <CustomIcons src={plusIcon} />
-               </BlockLabels>
 
+                  <CustomIcons src={plusIcon} />
+               </DisplayFlex>
                <Text>Description</Text>
                <AddDescription />
-               <Block>
-                  <Button
-                     hover="none"
-                     active="none"
-                     fullHeight="5vh"
-                     fullWidth="8vw"
-                     color="#F0F0F0"
-                  >
-                     Cancel
-                  </Button>
-                  <Button fullHeight="5vh" fullWidth="8vw">
-                     Save
-                  </Button>
-               </Block>
-
+               <ContainerButtons
+                  width="55vw"
+                  titleGrayButton="Cancel"
+                  titleBlueButton="Save"
+                  paddingButton="8px 40px 10px 40px"
+               />
                <ProgressBar
                   tasks={9}
                   completedTasks={10}
                   widthProgressPercent={90}
                />
             </FirstBlock>
-            <SecondBlock />
-         </DisplayFlexJCSB>
-      </Container>
+            <SecondBlock isArchive={dataCardById?.isArchive} />
+         </DisplayFlex>
+      </DisplayFlex>
    )
 }
 
 export default InnerTaskCard
 
-const Container = styled.div`
-   display: flex;
-   flex-direction: column;
-`
 const TitleCard = styled.h3`
    font-weight: 500;
 `
 const FirstBlock = styled.div`
    width: 130vw;
-   height: 90vh;
    overflow: scroll;
-`
-const BlockLabels = styled.ul`
-   display: flex;
-   flex-wrap: wrap;
-   gap: 0.5rem;
+   height: 73vh;
 `
 const Label = styled.li`
    background-color: ${(props) => props.color};
@@ -84,6 +83,7 @@ const Label = styled.li`
 `
 const AddDescription = styled(TextareaAutosize)`
    width: 55vw;
+   min-height: 17vh;
    font-size: 1.1rem;
    resize: none;
    padding: 3px 3px 3px 8px;
@@ -92,12 +92,4 @@ const AddDescription = styled(TextareaAutosize)`
 `
 const Text = styled.p`
    color: gray;
-`
-const Block = styled.div`
-   width: 55vw;
-   display: flex;
-   justify-content: flex-end;
-   button {
-      margin-left: 0.8rem;
-   }
 `
