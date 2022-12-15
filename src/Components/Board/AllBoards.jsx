@@ -4,6 +4,8 @@ import SideBar from "../../layout/SideBar/SideBar"
 import DisplayFlex from "../../layout/DisplayFlex"
 
 const AllBoards = () => {
+   console.log("done")
+
    return (
       <DisplayFlex width="100%" JK="space-between">
          <SideBar />

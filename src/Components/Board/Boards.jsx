@@ -29,7 +29,7 @@ const Boards = ({ role }) => {
    }
 
    useEffect(() => {
-      if (pathname === `/admin/workspaces/${workspaceId}/boards`) {
+      if (pathname === `/allWorkspaces/workspaces/${workspaceId}/boards`) {
          dispatch(clearBoardById())
       }
    }, [])

@@ -68,7 +68,7 @@ const InnerBoard = () => {
    }, [boardId])
 
    return (
-      <Container backgroundImage={boards.boardById.background}>
+      <Container backgroundImage={boards?.boardById?.background}>
          <ContainerInfoBoardColumn showSideBar={showSideBar.showSideBar}>
             <DisplayFlex
                width="100%"
@@ -84,7 +84,7 @@ const InnerBoard = () => {
                      position="absolute"
                      src={EditIcon}
                   />
-                  <h3>{boards.boardById.title}</h3>
+                  <h3>{boards?.boardById?.title}</h3>
                   <p>
                      Columns: <span>{columns?.length}</span>
                   </p>

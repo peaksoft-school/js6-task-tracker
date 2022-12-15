@@ -9,7 +9,6 @@ import {
 } from "./toastifySlice"
 import { axiosInstance } from "../api/axiosInstance"
 import { getFavourites } from "./FavouritesSlice"
-
 // ПОЛУЧИТЬ WORSKPACES ИЗ БАЗЫ ДАННЫХ
 export const getAllWorkspaces = createAsyncThunk("workspaces", async () => {
    try {
@@ -64,11 +63,11 @@ export const addWorkspacesToFavourites = createAsyncThunk(
 export const getWorkspacesId = createAsyncThunk(
    "getWorkspace/ById",
    async (value) => {
-      const { id, navigate } = value
+      const { id, navigate, where } = value
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          if (navigate) {
-            navigate(`/admin/workspaces/${data.id}/boards`)
+            navigate(`/allWorkspaces/workspaces/${id}/${where}`)
          }
          return data
       } catch (error) {
@@ -85,7 +84,7 @@ export const deleteWorkspaceById = createAsyncThunk(
          const response = await axiosInstance.delete(
             `/api/workspace/${workspaceId}`
          )
-         navigate("/admin/allWorkspaces")
+         navigate("/allWorkspaces")
          dispatch(getAllWorkspaces())
          return console.log(response)
       } catch (error) {
@@ -94,17 +93,17 @@ export const deleteWorkspaceById = createAsyncThunk(
       }
    }
 )
-
 // ИЗМЕНИТЬ TITLE WORKSPACE
 export const changeTitleWorkspace = createAsyncThunk(
    "changeTitle/workspace",
    async (value) => {
-      const { workspaceId, name } = value
+      const { workspaceId, name, dispatch } = value
       try {
          const { data } = await axiosInstance.put("/api/workspace", {
             id: workspaceId,
             newTitle: name,
          })
+         dispatch(getAllWorkspaces())
          return data
       } catch (error) {
          return console.log(error.message)
@@ -136,7 +135,9 @@ export const workspacesSlice = createSlice({
          state.workspaceById = actions.payload
       },
       [changeTitleWorkspace.fulfilled]: (state, actions) => {
-         state.workspaceById = actions.payload
+         if (actions.payload.id === state.workspaceById.id) {
+            state.workspaceById = actions.payload
+         }
       },
    },
 })

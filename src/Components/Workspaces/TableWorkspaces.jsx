@@ -18,13 +18,12 @@ const TableWorkspaces = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { workspaces } = useSelector((state) => state)
-
    const addToFavouritesWorkspacesHandler = (id) => {
       dispatch(addWorkspacesToFavourites({ id, dispatch }))
    }
 
    const getWorkspaceByIdPlusNavigate = (id) => {
-      dispatch(getWorkspacesId({ id, navigate }))
+      dispatch(getWorkspacesId({ id, navigate, where: "boards" }))
    }
 
    return (

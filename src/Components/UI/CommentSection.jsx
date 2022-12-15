@@ -78,6 +78,7 @@ const CommentSection = ({
    }
 
    const changeComment = async (e, id) => {
+      e.preventDefault()
       try {
          const response = await axiosInstance.put(`/api/comments/${id}`, {
             text: e.target.value,
@@ -114,18 +115,20 @@ const CommentSection = ({
                               {"    "}
                               {item.commentedUserResponse.lastName}
                            </p>
-                           {activeInput === item.id ? (
-                              <StyledTextAreaAutoSize
-                                 ref={textAreaRef}
-                                 onChange={(e) => changeValueHandler(e)}
-                                 onBlur={(e) => changeComment(e, item.id)}
-                                 value={item.text}
-                                 name={`${index}`}
-                                 autoFocus
-                              />
-                           ) : (
-                              <CommentText>{item.text}</CommentText>
-                           )}
+                           <form onSubmit={(e) => changeComment(e, item.id)}>
+                              {activeInput === item.id ? (
+                                 <StyledTextAreaAutoSize
+                                    ref={textAreaRef}
+                                    onChange={(e) => changeValueHandler(e)}
+                                    onBlur={(e) => changeComment(e, item.id)}
+                                    value={item.text}
+                                    name={`${index}`}
+                                    autoFocus
+                                 />
+                              ) : (
+                                 <CommentText>{item.text}</CommentText>
+                              )}
+                           </form>
 
                            <DisplayFlex
                               width="25vw"

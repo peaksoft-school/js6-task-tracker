@@ -11,7 +11,6 @@ import { validationConfirmPassword } from "./Validation"
 const ForgotPassword = () => {
    const dispatch = useDispatch()
    const params = useParams()
-   console.log(params)
    const navigate = useNavigate()
 
    const formik = useFormik({

@@ -13,7 +13,7 @@ import {
    forgotPasswordQuery,
    resetPasswordQuery,
 } from "../api/auth.js"
-import { PATH_IN_ROLES } from "../utilits/constants/general"
+// import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
 import {
    successToastify,
@@ -28,8 +28,7 @@ export const signUp = createAsyncThunk(
       try {
          const { data } = await signUpRequest(userInfo)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
-
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -44,7 +43,7 @@ export const resetPassword = createAsyncThunk(
       try {
          const { data } = await resetPasswordQuery({ userId, newPassword })
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(`${PATH_IN_ROLES[data.role].path}`)
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error.message)
@@ -59,7 +58,7 @@ export const login = createAsyncThunk(
       try {
          const { data } = await loginRequest(userData)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -73,11 +72,10 @@ export const authWithGoogle = createAsyncThunk(
       const { navigate } = value
       try {
          const { user } = await signInWithPopup(auth, provider)
-         console.log(user.accessToken)
          const { data } = await authWithGoogleQuery(user.accessToken)
 
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)

@@ -81,7 +81,7 @@ export const deleteBoardById = createAsyncThunk(
          dispatch(loadingToastifyAction())
          const response = await axiosInstance.delete(`/api/boards/${boardId}`)
          dispatch(warningToastifyAction(`Deleted board`))
-         navigate(`/admin/workspaces/${workspaceId}/boards`)
+         navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
          return console.log(response)
       } catch (error) {
          return dispatch(errorToastifyAction(error.message))

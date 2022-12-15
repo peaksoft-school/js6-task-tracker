@@ -8,7 +8,7 @@ import {
    useParams,
 } from "react-router-dom"
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
 import imageLogin from "../assets/images/ImageLogin.png"
 import { authWithGoogle } from "../store/AuthSlice"
@@ -17,7 +17,6 @@ const AuthorizationPages = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const params = useParams()
-   const { isLoading } = useSelector((state) => state.auth)
    const { pathname } = useLocation()
    const IamInRegistration = pathname === "/signup"
 
@@ -27,9 +26,8 @@ const AuthorizationPages = () => {
 
    return (
       <AuthorizationContainer>
-         {isLoading && <h1>Загрузка</h1>}
          <LogoTaskTracker src={logoTaskTracker} alt="Task Tracker" />
-
+         <AuthWithGoogleButton />
          <ContainerForm>
             {typeof params.id === "undefined" && (
                <>
