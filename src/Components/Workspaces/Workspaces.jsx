@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom"
 import Button from "../UI/Button"
 import Modal from "../UI/Modal"
 import CreateWorkspaces from "./CreateWorkspace"
-import TableWorkspaces from "../TableWorkspaces"
+import TableWorkspaces from "./TableWorkspaces"
 import useOpenClose from "../../utilits/hooks/useOpenClose"
 
 const Workspaces = ({ getFavorites, role }) => {

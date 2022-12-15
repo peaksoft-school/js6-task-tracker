@@ -43,60 +43,6 @@ function Notification({ notification }) {
                         onClick={() => console.log("hello")}
                      />
                   </StyledNotificationItem>
-                  <NotificationBoard key={item.id}>
-                     <BlueIcon />
-                     <img
-                        src="https://wallpapercave.com/dwp1x/wp4810861.jpg"
-                        alt="boardPhoto"
-                     />
-                     <h3>Titl of the board</h3>
-                     <p>Name of the column</p>
-                  </NotificationBoard>
-                  <StyledNotificationItem>
-                     <div>
-                        <UserAvatar src={avatar} />
-                        <StyledUserName>
-                           <span> {item.firstName}</span>
-                           <span> {item.lastName}</span>
-                        </StyledUserName>
-                     </div>
-
-                     <NotificationText>{item.message}</NotificationText>
-                     <DateAdded date={item.createdAt} />
-
-                     <StyledArrowIcon
-                        rotate="180deg"
-                        src={arrowRight}
-                        onClick={() => console.log("hello")}
-                     />
-                  </StyledNotificationItem>
-                  <NotificationBoard key={item.id}>
-                     <BlueIcon />
-                     <img
-                        src="https://wallpapercave.com/dwp1x/wp4810861.jpg"
-                        alt="boardPhoto"
-                     />
-                     <h3>Titl of the board</h3>
-                     <p>Name of the column</p>
-                  </NotificationBoard>
-                  <StyledNotificationItem>
-                     <div>
-                        <UserAvatar src={avatar} />
-                        <StyledUserName>
-                           <span> {item.firstName}</span>
-                           <span> {item.lastName}</span>
-                        </StyledUserName>
-                     </div>
-
-                     <NotificationText>{item.message}</NotificationText>
-                     <DateAdded date={item.createdAt} />
-
-                     <StyledArrowIcon
-                        rotate="180deg"
-                        src={arrowRight}
-                        onClick={() => console.log("hello")}
-                     />
-                  </StyledNotificationItem>
                </>
             )
          })}

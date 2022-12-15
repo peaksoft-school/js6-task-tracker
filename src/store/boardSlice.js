@@ -42,7 +42,7 @@ export const addBoardToFavourites = createAsyncThunk(
          const { data } = await axiosInstance.put(
             `/api/boards/make-favorite/${id}`
          )
-         dispatch(getBoards("26"))
+         dispatch(getBoards(data.workspaceId))
          dispatch(getFavourites())
          if (data.isFavorite) {
             dispatch(
@@ -73,21 +73,48 @@ export const getBoardByIdQuery = createAsyncThunk(
       }
    }
 )
+// УДАЛИТЬ BOARD
+export const deleteBoardById = createAsyncThunk(
+   "delete/board",
+   async (value) => {
+      const { boardId, dispatch, navigate, workspaceId } = value
+      try {
+         dispatch(loadingToastifyAction())
+         const response = await axiosInstance.delete(`/api/boards/${boardId}`)
+         dispatch(warningToastifyAction(`Deleted board`))
+         navigate(`/admin/workspaces/${workspaceId}/boards`)
+         return console.log(response)
+      } catch (error) {
+         return dispatch(errorToastifyAction(error.message))
+      }
+   }
+)
 
 export const boardSlice = createSlice({
    name: "board",
    initialState: {
       board: [],
       boardById: {},
+      loading: false,
    },
    reducers: {
+      clearBoards: (state) => {
+         state.board = []
+      },
       clearBoardById: (state) => {
          state.boardById = {}
       },
    },
    extraReducers: {
+      [getBoards.pending]: (state) => {
+         state.loading = true
+      },
       [getBoards.fulfilled]: (state, actions) => {
          state.board = actions.payload
+         state.loading = false
+      },
+      [getBoards.rejected]: (state) => {
+         state.loading = false
       },
       [getBoardByIdQuery.fulfilled]: (state, actions) => {
          state.boardById = actions.payload
@@ -95,4 +122,4 @@ export const boardSlice = createSlice({
    },
 })
 
-export const { clearBoardById } = boardSlice.actions
+export const { clearBoards, clearBoardById } = boardSlice.actions

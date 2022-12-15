@@ -44,17 +44,9 @@ export const Columns = [
       id: 1,
       titleColumn: "Придумать что-то чтобы измениь мир",
    },
-   {
-      id: 2,
-      titleColumn: "Придумать что-то чтобы измениь мир",
-   },
-   {
-      id: 3,
-      titleColumn: "Придумать что-то чтобы измениь мир",
-   },
 ]
 export const COLORS = [
-   "#6d96ff",
+   "#67e7a3",
    "#B04632",
    "#385f38",
    "#D29034",
@@ -73,11 +65,11 @@ export const COLORS = [
    ],
 ]
 export const BackImage = [
-   "https://images.unsplash.com/photo-1669207805234-51bdb6f3bfe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-   "https://images.unsplash.com/photo-1667594049406-25f6a193c50d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80",
-   "https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+   "https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80",
+   "https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+   "https://images.unsplash.com/photo-1494319921810-2fab6cce50a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80",
    [
-      "https://images.unsplash.com/photo-1668805585915-0a8b56aecfef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1650821264189-243591106727?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
       "https://images.unsplash.com/photo-1575497230541-b4668dbc9072?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
       "https://images.unsplash.com/photo-1529258057921-2ac593ee4d04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
       "https://images.unsplash.com/photo-1502161254066-6c74afbf07aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
@@ -198,7 +190,6 @@ export const PhotoArray = [
       colors: "#CBCBCB",
    },
 ]
-
 export const members = [
    {
       id: 1,

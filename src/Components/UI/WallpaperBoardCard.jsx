@@ -5,17 +5,22 @@ import { addBoardToFavourites } from "../../store/boardSlice"
 import activeStarIcon from "../../assets/icons/favourite-active.svg"
 import defaultStarIcon from "../../assets/icons/favourite-default.svg"
 import CustomIcons from "./TaskCard/CustomIcons"
+import LoadingSpinner from "./LoadingSpinner"
 
 function WallpaperBoardCard({ getBoardById }) {
    const { workspaceId } = useParams()
    const dispatch = useDispatch()
-   const { board } = useSelector((state) => state.boards)
+   const { board, loading } = useSelector((state) => state.boards)
 
    const addBoardToFavouritesHandler = (id) => {
       dispatch(addBoardToFavourites({ id, dispatch, workspaceId }))
    }
    return (
       <CardThemeBox>
+         {loading && board.length === 0 ? (
+            <LoadingSpinner top="6%" left="40%" />
+         ) : null}
+
          {board?.map((item) => {
             return (
                <CardTheme backgroundImage={item.background} key={item.id}>

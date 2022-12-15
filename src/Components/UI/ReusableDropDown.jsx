@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 
 const ReusableDropDown = ({
    width,
@@ -10,6 +10,7 @@ const ReusableDropDown = ({
    children,
    showState,
    right,
+   animation,
 }) => {
    return (
       showState && (
@@ -20,6 +21,7 @@ const ReusableDropDown = ({
             left={left}
             width={width}
             height={height}
+            animaiton={animation}
          >
             {children}
          </DropDownContainer>
@@ -29,6 +31,14 @@ const ReusableDropDown = ({
 
 export default ReusableDropDown
 
+const animationDropDown = keyframes`
+    from {
+        margin-right: -300px;
+    }
+    to { 
+        margin-right: 0;
+    }
+`
 const DropDownContainer = styled.div`
    background-color: white;
    padding: ${(props) => props.padding};
@@ -45,4 +55,6 @@ const DropDownContainer = styled.div`
    -webkit-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    -moz-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
+   animation: ${animationDropDown} 0.06s linear alternate;
+   animation: ${(props) => !props.animaiton && "none"} !important;
 `

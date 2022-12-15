@@ -36,7 +36,25 @@ export const signUp = createAsyncThunk(
       }
    }
 )
-
+// УСТАНОВИТЬ НОВЫЙ ПАРОЛЬ
+export const resetPassword = createAsyncThunk(
+   "authorization/resetPassword",
+   async (value, { rejectWithValue }) => {
+      const { userId, newPassword, navigate } = value
+      try {
+         const { data } = await resetPasswordQuery({ userId, newPassword })
+         const newData = {
+            ...data,
+            jwt: data.jwtToken,
+         }
+         if (data) localStorageHelpers.saveData(USER_KEY, newData)
+         navigate(PATH_IN_ROLES[data.role].path)
+         return newData
+      } catch (error) {
+         return rejectWithValue(error.message)
+      }
+   }
+)
 // ВОЙТИ
 export const login = createAsyncThunk(
    "authorizaiton/login",
@@ -52,7 +70,6 @@ export const login = createAsyncThunk(
       }
    }
 )
-
 // РЕГИСТРАЦИЯ ЧЕРЕЗ GOOGLE
 export const authWithGoogle = createAsyncThunk(
    "authorization/withGoogle",
@@ -71,7 +88,6 @@ export const authWithGoogle = createAsyncThunk(
       }
    }
 )
-
 // ПОЛУЧИТЬ ССЫЛКУ
 export const forgotPassword = createAsyncThunk(
    "authorization/forgotPassword",
@@ -81,26 +97,6 @@ export const forgotPassword = createAsyncThunk(
          return response
       } catch (error) {
          return rejectWithValue(error)
-      }
-   }
-)
-
-// УСТАНОВИТЬ НОВЫЙ ПАРОЛЬ
-export const resetPassword = createAsyncThunk(
-   "authorization/resetPassword",
-   async (value, { rejectWithValue }) => {
-      const { userId, newPassword, navigate } = value
-      try {
-         const { data } = await resetPasswordQuery({ userId, newPassword })
-         const newData = {
-            ...data,
-            jwt: data.jwtToken,
-         }
-         if (data.role) localStorageHelpers.saveData(USER_KEY, newData)
-         navigate(PATH_IN_ROLES[data.role].path)
-         return newData
-      } catch (error) {
-         return rejectWithValue(error.message)
       }
    }
 )

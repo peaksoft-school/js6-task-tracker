@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import CustomIcons from "./CustomIcons"
+import CustomIcons from "../UI/TaskCard/CustomIcons"
 import EditIcon from "../../assets/icons/Icon Shape (1).svg"
 import comentIcon from "../../assets/icons/Comment.svg"
 import timeIcon from "../../assets/icons/Real World Icon.svg"
