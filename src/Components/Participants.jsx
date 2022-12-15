@@ -98,10 +98,10 @@ function Participants() {
                   </tr>
                </thead>
 
-               {userList.map((values) => {
+               {userList.map((values, index) => {
                   const { firstName, email, role, id } = values
                   return (
-                     <ParticipantItem background={values % 2 !== 0}>
+                     <ParticipantItem background={index % 2 !== 0}>
                         <tr>
                            <td>{firstName}</td>
                            <td>{email}</td>
@@ -210,7 +210,7 @@ const Button = styled.div`
    }
 `
 const ParticipantItem = styled.tbody`
-   background-color: ${(props) => props.background && "white"};
+   background-color: ${(props) => props.background && "#F0F2F3;"};
 `
 const Table = styled.table`
    width: 100%;
