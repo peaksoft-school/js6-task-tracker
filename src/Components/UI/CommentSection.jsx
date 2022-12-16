@@ -34,7 +34,7 @@ const CommentSection = ({
    const getAllComments = async () => {
       try {
          const { data } = await axiosInstance(
-            `/api/comments/card/${dataCardById.id}`
+            `/api/comments/${dataCardById.id}`
          )
          data?.sort((a, b) => b.id - a.id)
          return setComments(data)
@@ -47,9 +47,10 @@ const CommentSection = ({
       e.preventDefault()
       try {
          const { data } = await axiosInstance.post(
-            `/api/comments/card/${dataCardById.id}`,
+            `/api/comments/${dataCardById.id}`,
             {
                text: commentValue,
+               createdAt: new Date(),
             }
          )
          getAllComments()
@@ -76,12 +77,12 @@ const CommentSection = ({
       newComments[e.target.name].text = e.target.value
       return setComments(newComments)
    }
-
    const changeComment = async (e, id) => {
       e.preventDefault()
       try {
-         const response = await axiosInstance.put(`/api/comments/${id}`, {
-            text: e.target.value,
+         const response = await axiosInstance.put(`/api/comments/`, {
+            id,
+            newTitle: e.target.value,
          })
          setActiveInput(0)
          return getAllComments()
@@ -135,7 +136,7 @@ const CommentSection = ({
                               margin="9px 0 0 0"
                               JK="space-between"
                            >
-                              <TimeAgo date={new Date()} />
+                              <TimeAgo date={item.createdAt} />
                               <BlockEditDeleteButton>
                                  <p
                                     onClick={() =>

@@ -63,11 +63,12 @@ export const addWorkspacesToFavourites = createAsyncThunk(
 export const getWorkspacesId = createAsyncThunk(
    "getWorkspace/ById",
    async (value) => {
-      const { id, navigate, where } = value
+      const { id, navigate, path } = value
+
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          if (navigate) {
-            navigate(`/allWorkspaces/workspaces/${id}/${where}`)
+            navigate(`/allWorkspaces/workspaces/${id}/${path}`)
          }
          return data
       } catch (error) {

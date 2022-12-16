@@ -60,11 +60,8 @@ const InnerBoard = () => {
    }
 
    useEffect(() => {
-      getColumnsInDataBase()
-   }, [boardId])
-
-   useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
+      getColumnsInDataBase()
    }, [boardId])
 
    return (

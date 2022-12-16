@@ -66,7 +66,9 @@ const Cards = ({
                <DisplayFlex JK="flex-end" gap="10px">
                   <CustomIcons src={descriptionIcon} />
                   <CustomIcons src={comentIcon} />
-                  <CustomIcons src={completeIcon} />
+                  {item.numberOfSubTasks > 0 && (
+                     <CustomIcons src={completeIcon} />
+                  )}
                   {item.numberOfSubTasks > 0 ? (
                      <span>
                         {item.numberOfCompletedSubTask}/{item.numberOfSubTasks}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 /* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
@@ -15,6 +16,7 @@ import {
 } from "../api/auth.js"
 // import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
+import { axiosInstance } from "../api/axiosInstance"
 import {
    successToastify,
    errorToastify,
@@ -94,6 +96,30 @@ export const forgotPassword = createAsyncThunk(
       }
    }
 )
+
+export const authWithGoogleInvitedUser = createAsyncThunk(
+   "singinWithGoogle/InvitedUser",
+   async ({ role, workspaceId, navigate }) => {
+      try {
+         const { user } = await signInWithPopup(auth, provider)
+         const isAdmin = role === "ADMIN"
+         const { data } = await axiosInstance.post(
+            `/api/public/authenticate/google/invite-member`,
+            {
+               token: user.accessToken,
+               isAdmin,
+               isBoard: false,
+               workspaceOrBoardId: workspaceId,
+            }
+         )
+         if (data.jwt) localStorageHelpers.saveData(USER_KEY, data)
+         navigate("/allWorkspaces")
+         return data
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+)
 // ВЫЙТИ
 export const logout = createAsyncThunk(
    "logout",
@@ -112,6 +138,7 @@ const initState = {
       email: null,
       idToast: null,
    },
+   loading: false,
 }
 
 export const AuthSlice = createSlice({
@@ -176,6 +203,19 @@ export const AuthSlice = createSlice({
       },
       [logout.fulfilled]: (state) => {
          state.userInfo = initState
+      },
+      [authWithGoogleInvitedUser.pending]: (state) => {
+         state.loading = true
+      },
+      [authWithGoogleInvitedUser.fulfilled]: (state, actions) => {
+         state.loading = false
+         const responseUserData = actions.payload
+         state.userInfo = responseUserData
+         successToastify(state.idToast, `Welcome}`)
+      },
+      [authWithGoogleInvitedUser.rejected]: (state) => {
+         state.loading = false
+         errorToastify(state.idToast, actions.payload.response.data.message)
       },
    },
 })

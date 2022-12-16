@@ -37,6 +37,9 @@ const SecondBlock = ({
    getCardById,
    updateColumnAndCloseModal,
    getDataInArchive,
+   addCheckList,
+   newCheckListTitle,
+   setNewCheckListTitle,
 }) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
@@ -238,10 +241,18 @@ const SecondBlock = ({
                            />
                         </ContainerText>
                         <Input
+                           value={newCheckListTitle}
+                           onChange={(e) =>
+                              setNewCheckListTitle(e.target.value)
+                           }
                            style={{ marginBottom: "10px" }}
                            placeholder="Title"
                         />
-                        <Button fullWidth="250px" fullHeight="33px">
+                        <Button
+                           onClick={() => addCheckList()}
+                           fullWidth="250px"
+                           fullHeight="33px"
+                        >
                            Add checklist
                         </Button>
                      </DropDown>

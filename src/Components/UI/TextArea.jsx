@@ -1,43 +1,34 @@
 import styled from "styled-components"
-import { NotifyIcon, ClockIcon } from "../../assets/icons/index"
+import TextareaAutosize from "react-textarea-autosize"
 
-export const CommentsTextArea = ({
+const TextArea = ({
    placeholder,
    value,
-   setValue,
+   onChange,
    width,
    height,
-   description,
    background,
 }) => {
    return (
-      <TextAreaBlock width={width} height={height}>
-         <ListTextArea
-            background={background}
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-            placeholder={placeholder}
-            cols="10"
-            rows="10"
-         />
-         <IconBox>
-            {description && <NotifyIcon />}
-            {description && <ClockIcon />}
-         </IconBox>
-      </TextAreaBlock>
+      <ListTextArea
+         width={width}
+         height={height}
+         background={background}
+         onChange={onChange}
+         value={value}
+         placeholder={placeholder}
+         cols="10"
+         rows="10"
+      />
    )
 }
-const TextAreaBlock = styled.div`
-   box-sizing: border-box;
-   border: none;
-   position: relative;
+
+export default TextArea
+
+const ListTextArea = styled(TextareaAutosize)`
    width: ${(props) => props.width};
    height: ${(props) => props.height};
-`
-const ListTextArea = styled.textarea`
    box-sizing: border-box;
-   width: 100%;
-   height: 100%;
    font-size: 16px;
    padding: 8px 16px;
    font-weight: 400;
@@ -50,18 +41,5 @@ const ListTextArea = styled.textarea`
    outline: none;
    border: 1px solid #d0d0d0;
    border-radius: 8px;
-`
-
-const IconBox = styled.div`
-   position: absolute;
-   width: 56px;
-   height: 24px;
-   display: flex;
-   gap: 17px;
-   right: 16px;
-   bottom: 8px;
-   img {
-      width: 16px;
-      height: 16px;
-   }
+   margin: 0 0 10px 0;
 `

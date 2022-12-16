@@ -1,23 +1,14 @@
 import React from "react"
-import {
-   Navigate,
-   Route,
-   Routes,
-   useLocation,
-   useParams,
-} from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
 import AuthorizationPages from "../pages/AuthorizationPages"
 import SignUp from "../Components/Authorizaiton/SignUp"
 import AdminUserLayout from "../layout/AdminUserLayout"
 import Login from "../Components/Authorizaiton/Login"
 import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
+import InvitedUser from "../Components/Authorizaiton/InvitedUser"
 
 const AppRoutes = () => {
-   const { pathname } = useLocation()
-   const params = useParams()
-   console.log(params)
-   console.log(pathname)
    return (
       <Routes>
          <Route path="/" element={<AuthorizationPages />}>
@@ -27,8 +18,8 @@ const AppRoutes = () => {
             <Route path="/login/:id" element={<ForgotPassword />} />
          </Route>
          <Route
-            path="signIn/:role/:where/:whereId"
-            element={<AuthorizationPages />}
+            path="signIn/:role/:where/:workspaceId"
+            element={<InvitedUser />}
          />
          <Route
             path="allWorkspaces/*"

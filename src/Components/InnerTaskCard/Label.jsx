@@ -41,6 +41,15 @@ const AddLabel = ({ dataCardById, setTwoActive, firstActive, getCardById }) => {
    const [selectedLabelColors, setSelectedLabelColor] = useState("")
    const [readyLabels, setReadyLabels] = useState(readyLabel)
 
+   const readLabelsInDataBase = async () => {
+      try {
+         const response = await axiosInstance.get()
+         return console.log(response)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
    const changeValueLabel = (e) => {
       const newLabel = [...readyLabels]
       if (e.target.value.length < 70) {
