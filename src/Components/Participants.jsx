@@ -6,9 +6,11 @@ import deleteSVG from "../assets/svg/Delete.svg"
 import Modal from "./UI/Modal"
 import { axiosInstance } from "../api/axiosInstance"
 import DisplayFlex from "../layout/DisplayFlex"
+import { useToggle } from "../utilits/hooks/useToggle"
+import ContainerButtons from "./UI/ContainerButtons"
 
 function Participants() {
-   const [isOpen, setIsOpen] = useState(false)
+   const { isActive, setActive } = useToggle()
    const [user, setUser] = useState([])
    const { showSideBar } = useSelector((state) => state.showSideBar)
    const [filteredUsers, setFilteredUsers] = useState(null)
@@ -31,7 +33,9 @@ function Participants() {
          await axiosInstance.delete(
             `/api/participant/workspace/${userId}/${workspaceId}`
          )
-         return setUser(user)
+         getUserHandler()
+         setActive("nothing")
+         return setUser()
       } catch (error) {
          return console.log(error)
       }
@@ -78,10 +82,16 @@ function Participants() {
                   </select>
                </Title>
 
-               <button type="button" onClick={() => setIsOpen(true)}>
+               <button
+                  type="button"
+                  onClick={() => setActive("openCreatModal")}
+               >
                   Create
                </button>
-               <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+               <Modal
+                  isOpen={isActive === "openCreatModal"}
+                  onClose={() => setActive("nothing")}
+               >
                   <h1>MNADNODOAD</h1>
                </Modal>
             </Button>
@@ -94,14 +104,14 @@ function Participants() {
                   <tr>
                      <th>Name</th>
                      <th>Email</th>
-                     <th>Role</th>
+                     <th className="role">Role</th>
                   </tr>
                </thead>
 
                {userList.map((values, index) => {
                   const { firstName, email, role, id } = values
                   return (
-                     <ParticipantItem background={index % 2 !== 0}>
+                     <ParticipantItem key={id} background={index % 2 !== 0}>
                         <tr>
                            <td>{firstName}</td>
                            <td>{email}</td>
@@ -111,11 +121,35 @@ function Participants() {
                                  <img
                                     src={deleteSVG}
                                     alt=""
-                                    onClick={() => deleteParticipants(id)}
+                                    onClick={() => setActive("modalDelete")}
                                  />
                               </div>
                            </td>
                         </tr>
+                        <Modal
+                           fullWidth="230px"
+                           onClose={() => setActive("nothing")}
+                           isOpen={isActive === "modalDelete"}
+                        >
+                           <p
+                              style={{
+                                 textAlign: "center",
+                                 fontSize: "1.2rem",
+                                 margin: "20px 0 20px 0",
+                              }}
+                           >
+                              Delete participant?
+                           </p>
+                           <ContainerButtons
+                              titleBlueButton="Delete"
+                              titleGrayButton="Cancel"
+                              clickBlueButton={() =>
+                                 deleteParticipants(values.id)
+                              }
+                              clickGrayButton={() => setActive("nothing")}
+                              paddingButton="0 20px 0 20px"
+                           />
+                        </Modal>
                      </ParticipantItem>
                   )
                })}
@@ -128,8 +162,9 @@ function Participants() {
 export default Participants
 
 const Parents = styled.div`
-   width: ${(props) => (props.showSideBar ? "78vw" : "88vw")}!important;
-   margin: ${(props) => (props.showSideBar ? "0" : "0 0 0 110px")}!important;
+   width: ${(props) => (props.showSideBar ? "100vw" : "100vw")}!important;
+   margin: ${(props) =>
+      props.showSideBar ? "0 16px 0 254px" : "0 16px 0 100px"}!important;
    transition: all 0.35s ease-out;
 `
 const Title = styled.div`
@@ -211,6 +246,9 @@ const Button = styled.div`
 `
 const ParticipantItem = styled.tbody`
    background-color: ${(props) => props.background && "#F0F2F3;"};
+   &.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+      background-color: white !important;
+   }
 `
 const Table = styled.table`
    width: 100%;
@@ -223,15 +261,21 @@ const Table = styled.table`
       border-left: none;
       border-right: none;
    }
+   .role {
+      display: flex;
+      position: relative;
+      margin-left: 20%;
+   }
    th {
       border: 0px solid transparent;
       font-weight: 600;
       font-size: 14px;
       line-height: 18px;
-      padding-right: 22px;
+      padding-left: 16px;
    }
    td {
       padding: 22px 0 22px 0;
+      padding-left: 16px;
    }
    th,
    td {
@@ -244,7 +288,6 @@ const Table = styled.table`
          width: 650px;
       }
       :last-child {
-         text-align: end;
       }
    }
    li {
