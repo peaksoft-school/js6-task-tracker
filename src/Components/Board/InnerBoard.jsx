@@ -4,23 +4,37 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import DisplayFlex from "../../layout/DisplayFlex"
 import { getBoardByIdQuery } from "../../store/boardSlice"
-import Columns from "../UI/TaskCard/Columns"
-import CustomIcons from "../UI/TaskCard/CustomIcons"
+import Columns from "../Column/Columns"
+import CustomIcons from "../Column/CustomIcons"
 import EditIcon from "../../assets/icons/Icon Shape (1).svg"
 import Menu from "../Menu/Menu"
 import Modal from "../UI/Modal"
 import InnerTaskCard from "../InnerTaskCard/InnerTaskCard"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import { axiosInstance } from "../../api/axiosInstance"
+import { useToggle } from "../../utilits/hooks/useToggle"
+import ChangeBoard from "./ChangeBoard"
 
 const InnerBoard = () => {
+   const [cardById, setCardById] = useState()
+   const [archiveData, setArchiveData] = useState([])
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { showSideBar, boards } = useSelector((state) => state)
    const { setTwoActive, firstActive } = useTwoActive()
-   const [cardById, setCardById] = useState()
-   const [archiveData, setArchiveData] = useState([])
+   const { setActive, isActive } = useToggle()
+   const [columns, setColumns] = useState([])
+   const [loading, setLoading] = useState(true)
 
+   const getColumnsInDataBase = async () => {
+      try {
+         const { data } = await axiosInstance.get(`/api/column/${boardId}`)
+         setColumns(data.columnResponses ? data.columnResponses : [])
+         return setLoading(false)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
    const getCardById = async (id) => {
       try {
          const { data } = await axiosInstance.get(`/api/cards/${id}`)
@@ -30,7 +44,6 @@ const InnerBoard = () => {
          return console.log(error.message)
       }
    }
-
    const getDataInArchive = async () => {
       try {
          const { data } = await axiosInstance.get(
@@ -41,13 +54,21 @@ const InnerBoard = () => {
          return console.log(error.message)
       }
    }
+   const updateColumnAndCloseModal = () => {
+      getColumnsInDataBase()
+      setTwoActive("nothing")
+   }
+
+   useEffect(() => {
+      getColumnsInDataBase()
+   }, [boardId])
 
    useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
    }, [boardId])
 
    return (
-      <Container backgroundImage={boards.boardById.background}>
+      <Container backgroundImage={boards?.boardById?.background}>
          <ContainerInfoBoardColumn showSideBar={showSideBar.showSideBar}>
             <DisplayFlex
                width="100%"
@@ -57,12 +78,23 @@ const InnerBoard = () => {
                AI="center"
             >
                <LeftBlock>
-                  <CustomIcons top="3px" position="absolute" src={EditIcon} />
-                  <h3>{boards.boardById.title}</h3>
+                  <CustomIcons
+                     onClick={() => setActive("modalChangeTitle")}
+                     top="3px"
+                     position="absolute"
+                     src={EditIcon}
+                  />
+                  <h3>{boards?.boardById?.title}</h3>
                   <p>
-                     Columns: <span>0</span>
+                     Columns: <span>{columns?.length}</span>
                   </p>
                </LeftBlock>
+               <Modal
+                  onClose={() => setActive("nothing")}
+                  isOpen={isActive === "modalChangeTitle"}
+               >
+                  <ChangeBoard setActive={() => setActive("nothing")} />
+               </Modal>
                <Menu
                   getDataInArchive={getDataInArchive}
                   archiveData={archiveData}
@@ -73,8 +105,12 @@ const InnerBoard = () => {
             <ContainerColumns>
                <Columns
                   getDataInArchive={getDataInArchive}
+                  getColumnsInDataBase={getColumnsInDataBase}
                   cardById={cardById}
                   getCardById={getCardById}
+                  columns={columns}
+                  setColumns={setColumns}
+                  loading={loading}
                />
             </ContainerColumns>
          </ContainerInfoBoardColumn>
@@ -83,11 +119,13 @@ const InnerBoard = () => {
             fullWidth="95vw"
             isOpen={firstActive === `${cardById?.id}`}
          >
+            {firstActive === `${cardById?.id}`}
             <InnerTaskCard
+               firstActive={firstActive}
+               updateColumnAndCloseModal={updateColumnAndCloseModal}
+               getDataInArchive={getDataInArchive}
                getCardById={getCardById}
                dataCardById={cardById}
-               firstActive={firstActive}
-               setTwoActive={setTwoActive}
             />
          </Modal>
       </Container>
@@ -102,6 +140,7 @@ const Container = styled.div`
    flex-direction: column;
    align-items: flex-end;
    height: 100vh;
+   padding-right: 30px;
    background-image: url(${(props) => props.backgroundImage});
    background-color: ${(props) => props.backgroundImage};
    background-repeat: no-repeat;

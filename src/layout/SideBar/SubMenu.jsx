@@ -18,7 +18,6 @@ const SubMenu = ({
          <li onClick={clickParticipants}>
             <SvgGenerator id={3} />
             <p>Participants</p>
-            <SvgGenerator id="plus" />
          </li>
          <li onClick={clickSettings}>
             <SvgGenerator id={5} />
