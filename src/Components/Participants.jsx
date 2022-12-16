@@ -14,6 +14,7 @@ function Participants() {
    const [user, setUser] = useState([])
    const { showSideBar } = useSelector((state) => state.showSideBar)
    const [filteredUsers, setFilteredUsers] = useState(null)
+   const [deleteId, setDeleteId] = useState()
    const { workspaceId } = useParams()
    // Post
    const getUserHandler = async () => {
@@ -35,7 +36,7 @@ function Participants() {
          )
          getUserHandler()
          setActive("nothing")
-         return setUser()
+         return setUser(user)
       } catch (error) {
          return console.log(error)
       }
@@ -121,39 +122,40 @@ function Participants() {
                                  <img
                                     src={deleteSVG}
                                     alt=""
-                                    onClick={() => setActive("modalDelete")}
+                                    onClick={() => {
+                                       setDeleteId(id)
+                                       setActive("modalDelete")
+                                    }}
                                  />
                               </div>
                            </td>
                         </tr>
-                        <Modal
-                           fullWidth="230px"
-                           onClose={() => setActive("nothing")}
-                           isOpen={isActive === "modalDelete"}
-                        >
-                           <p
-                              style={{
-                                 textAlign: "center",
-                                 fontSize: "1.2rem",
-                                 margin: "20px 0 20px 0",
-                              }}
-                           >
-                              Delete participant?
-                           </p>
-                           <ContainerButtons
-                              titleBlueButton="Delete"
-                              titleGrayButton="Cancel"
-                              clickBlueButton={() =>
-                                 deleteParticipants(values.id)
-                              }
-                              clickGrayButton={() => setActive("nothing")}
-                              paddingButton="0 20px 0 20px"
-                           />
-                        </Modal>
                      </ParticipantItem>
                   )
                })}
             </Table>
+            <Modal
+               fullWidth="250px"
+               onClose={() => setActive("nothing")}
+               isOpen={isActive === "modalDelete"}
+            >
+               <p
+                  style={{
+                     textAlign: "center",
+                     fontSize: "1.2rem",
+                     margin: "20px 0 20px 0",
+                  }}
+               >
+                  Delete participant?
+               </p>
+               <ContainerButtons
+                  titleBlueButton="Delete"
+                  clickBlueButton={() => deleteParticipants(deleteId)}
+                  titleGrayButton="Cancel"
+                  clickGrayButton={() => setActive("nothing")}
+                  paddingButton="0 20px 0 20px"
+               />
+            </Modal>
          </Parents>
       </DisplayFlex>
    )
@@ -162,9 +164,9 @@ function Participants() {
 export default Participants
 
 const Parents = styled.div`
-   width: ${(props) => (props.showSideBar ? "100vw" : "100vw")}!important;
+   width: ${(props) => (props.showSideBar ? "84vw" : "91vw")}!important;
    margin: ${(props) =>
-      props.showSideBar ? "0 16px 0 254px" : "0 16px 0 100px"}!important;
+      props.showSideBar ? "0 16px 0 250px" : "0 16px 0 100px"}!important;
    transition: all 0.35s ease-out;
 `
 const Title = styled.div`
