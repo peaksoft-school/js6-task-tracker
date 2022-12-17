@@ -181,13 +181,13 @@ const SideBar = () => {
          />
       )
    const renderTitleWorkspaces = () => {
-      const spliceTitle = workspaceById?.name?.slice(0, 18)
+      const spliceTitle = workspaceById?.name?.slice(0, 24)
       return (
          <p>
-            {showSideBar && workspaceById?.name?.length < 18
+            {showSideBar && workspaceById?.name?.length < 24
                ? workspaceById?.name
                : ""}
-            {showSideBar && workspaceById?.name?.length > 18
+            {showSideBar && workspaceById?.name?.length > 24
                ? `${spliceTitle}...`
                : ""}
          </p>
@@ -413,7 +413,7 @@ const HeaderSideBar = styled.div`
    p {
       position: absolute;
       left: 50px;
-      width: 100px;
+      width: 150px;
       font-size: 1.3rem;
       &::-webkit-scrollbar {
          display: none;

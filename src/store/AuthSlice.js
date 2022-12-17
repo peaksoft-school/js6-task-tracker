@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
-/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
@@ -14,7 +12,6 @@ import {
    forgotPasswordQuery,
    resetPasswordQuery,
 } from "../api/auth.js"
-// import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
 import { axiosInstance } from "../api/axiosInstance"
 import {
@@ -97,6 +94,7 @@ export const forgotPassword = createAsyncThunk(
    }
 )
 
+// SIGN UP WITH GOOGLE INVITED USER
 export const authWithGoogleInvitedUser = createAsyncThunk(
    "singinWithGoogle/InvitedUser",
    async ({ role, workspaceId, navigate }) => {
@@ -215,7 +213,6 @@ export const AuthSlice = createSlice({
       },
       [authWithGoogleInvitedUser.rejected]: (state) => {
          state.loading = false
-         errorToastify(state.idToast, actions.payload.response.data.message)
       },
    },
 })

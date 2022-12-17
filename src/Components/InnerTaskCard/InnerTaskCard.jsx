@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import { TextareaAutosize } from "@mui/material"
 import CustomIcons from "../Column/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
@@ -10,7 +12,11 @@ import DisplayFlex from "../../layout/DisplayFlex"
 import avatar from "../../assets/svg/userAvatar.svg"
 import UserAvatar from "../UI/UserAvatar"
 import { axiosInstance } from "../../api/axiosInstance"
-
+import {
+   loadingToastifyAction,
+   successToastifyAction,
+   errorToastifyAction,
+} from "../../store/toastifySlice"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import CheckList from "./CheckList"
 import Arrow from "../UI/Arrow"
@@ -21,6 +27,7 @@ const InnerTaskCard = ({
    updateColumnAndCloseModal,
    getDataInArchive,
 }) => {
+   const dispatch = useDispatch()
    const [checkList, setCheckList] = useState([])
    const [newCheckListTitle, setNewCheckListTitle] = useState("")
    const { setTwoActive, firstActive, secondActive } = useTwoActive()
@@ -39,6 +46,7 @@ const InnerTaskCard = ({
       }
    }
    const addCheckList = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.post(
             `/api/checklists/${dataCardById.id}`,
@@ -49,9 +57,10 @@ const InnerTaskCard = ({
          getAllCheckList()
          setTwoActive(firstActive, "nothing")
          setNewCheckListTitle("")
-         return console.log(response)
+         dispatch(successToastifyAction("Added checklist to card"))
+         return null
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    const deleteLabelInInnerTaskCard = async () => {
@@ -154,6 +163,8 @@ const InnerTaskCard = ({
                ) : null}
 
                <CheckList
+                  dataCardById={dataCardById}
+                  getCardById={getCardById}
                   getAllCheckList={getAllCheckList}
                   checkList={checkList}
                />

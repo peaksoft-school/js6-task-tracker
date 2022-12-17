@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
@@ -31,7 +32,7 @@ const CheckList = ({ checkList, getAllCheckList }) => {
          const response = await axiosInstance.delete(`/api/checklists/${id}`)
          getAllCheckList()
          dispatch(warningToastifyAction("Deleted checklist"))
-         return console.log(response)
+         return null
       } catch (error) {
          return dispatch(errorToastifyAction("Error something went wrong"))
       }
@@ -68,7 +69,7 @@ const CheckList = ({ checkList, getAllCheckList }) => {
          getAllCheckList()
          dispatch(successToastifyAction("Created sub task"))
          setTitleSubTask("")
-         return console.log(response)
+         return null
       } catch (error) {
          return dispatch(errorToastifyAction("Error something went wrong"))
       }
@@ -76,7 +77,7 @@ const CheckList = ({ checkList, getAllCheckList }) => {
    const deleteSubTaskhandler = async (id) => {
       try {
          const response = await axiosInstance.delete(`/api/subtasks/${id}`)
-         return console.log(response)
+         return null
       } catch (error) {
          return console.log(error.message)
       }
@@ -89,7 +90,7 @@ const CheckList = ({ checkList, getAllCheckList }) => {
          )
          getAllCheckList()
          dispatch(successToastifyAction("Completed"))
-         return console.log(response)
+         return null
       } catch (error) {
          return dispatch(errorToastifyAction("Error something went wrong"))
       }
@@ -101,7 +102,7 @@ const CheckList = ({ checkList, getAllCheckList }) => {
          const response = await axiosInstance.put(`/api/subtasks/subtask/${id}`)
          getAllCheckList()
          dispatch(warningToastifyAction("Not completed"))
-         return console.log(response)
+         return null
       } catch (error) {
          return dispatch(errorToastifyAction("Error something went wrong"))
       }

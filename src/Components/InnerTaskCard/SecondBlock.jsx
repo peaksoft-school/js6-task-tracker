@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import { useParams } from "react-router-dom"
@@ -29,7 +29,6 @@ import {
    successToastifyAction,
    warningToastifyAction,
 } from "../../store/toastifySlice"
-import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import { useData } from "../../utilits/hooks/useData"
 
 const SecondBlock = ({
@@ -43,6 +42,7 @@ const SecondBlock = ({
 }) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
+   const [readyLabels, setReadyLabels] = useState([])
    const dispatch = useDispatch()
    const { workspaceId } = useParams()
    const { data, setData } = useData()
@@ -104,10 +104,22 @@ const SecondBlock = ({
          return dispatch(errorToastifyAction(error.message))
       }
    }
-
+   const getReadyLabelsQuery = async () => {
+      try {
+         const { data } = await axiosInstance.get("/api/labels")
+         data?.sort((a, b) => b.id - a.id)
+         return setReadyLabels(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
    const getDateTimeValue = (data) => {
       console.log(data)
    }
+
+   useEffect(() => {
+      getReadyLabelsQuery()
+   }, [])
 
    return (
       <StyledSecondBlock>
@@ -180,7 +192,7 @@ const SecondBlock = ({
                      <DropDown
                         width="310px"
                         showState={secondActive === "Estimation"}
-                        top="0px"
+                        top="-5"
                         left="95px"
                         padding="5px 3px 20px 10px"
                      >
@@ -215,10 +227,13 @@ const SecondBlock = ({
                            />
                         </ContainerText>
                         <AddLabel
-                           getCardById={getCardById}
+                           readyLabels={readyLabels}
+                           getReadyLabelsQuery={getReadyLabelsQuery}
                            firstActive={firstActive}
                            setTwoActive={setTwoActive}
                            dataCardById={dataCardById}
+                           getCardById={getCardById}
+                           setReadyLabels={setReadyLabels}
                         />
                      </DropDown>
 

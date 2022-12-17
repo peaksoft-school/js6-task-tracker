@@ -58,7 +58,6 @@ const InnerBoard = () => {
       getColumnsInDataBase()
       setTwoActive("nothing")
    }
-
    useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
       getColumnsInDataBase()
