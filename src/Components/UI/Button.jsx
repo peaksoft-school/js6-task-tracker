@@ -16,7 +16,6 @@ const Button = ({
 }) => {
    return (
       <StyledButton
-         style={style}
          textColor={textColor}
          type={type}
          width={fullWidth}

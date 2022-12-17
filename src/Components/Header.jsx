@@ -79,7 +79,7 @@ function Header() {
 
                   return (
                      <li key={item.id}>
-                        <UserAvatar src={avatarPhoto} />
+                        <UserAvatar src={UserAvatar} />
                         <span>{item.firstName}</span>
                         <span>{item.lastName}</span>
                      </li>
@@ -165,7 +165,7 @@ function Header() {
             </DropDown>
 
             <UserAvatar
-               src={avatarPhoto}
+               src={UserAvatar}
                click={() =>
                   setActive(isActive !== "profile" ? "profile" : "nothing")
                }

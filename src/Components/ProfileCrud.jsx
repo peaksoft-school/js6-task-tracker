@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Avatar1 from "react-avatar-edit"
@@ -12,16 +14,14 @@ import MemberBoard from "./MemberBoard"
 import ReusableDropDown from "./UI/ReusableDropDown"
 import { validationSchema } from "./Authorizaiton/Validation"
 import Modal from "./UI/Modal"
-import { axiosInstance } from "../api/axiosInstance"
-// import { successToastify } from "../utilits/helpers/reactToastifyHelpers"
 
 function ProfileCrud() {
    const [profileData, setProfileData] = useState({})
    const [open, setOpen] = useState(false)
-   const [selectedFile, setSelectedFile] = useState(null)
    const [src, setSrc] = useState(null)
    const [preview, setPreview] = useState(null)
    const [modalActive, setModalActive] = useState(false)
+
    const formik = useFormik({
       initialValues: {
          image: preview,
@@ -32,43 +32,11 @@ function ProfileCrud() {
          confirmPassword: "",
       },
       validationSchema,
-      onSubmit: async () => {
-         const formData = new FormData()
-         formData.append("file", selectedFile)
-
-         const res = await axiosInstance.post("api/file", formData, {
-            headers: {
-               "Content-Type": "application/json",
-               Accept: "application/json",
-               charset: "utf8",
-               withCredentials: false,
-            },
-         })
-         console.log(res)
-         // const newData = {...userInfo, image: res}
-         // await  axiosInstance.put("api/profile", formData)
+      onSubmit: (userInfo) => {
+         console.log(userInfo)
       },
    })
    const { isValid } = formik
-   useEffect(() => {
-      ;(async () => {
-         try {
-            const { data } = await axiosInstance("/api/profile/me")
-            formik.setValues({
-               image: data?.image,
-               firstName: data?.firstName,
-               lastName: data?.lastName,
-               email: data?.email,
-               password: "",
-               confirmPassword: "",
-            })
-            setPreview(data?.image)
-            return setProfileData(data)
-         } catch (error) {
-            return console.log(error.message)
-         }
-      })()
-   }, [])
 
    const onClose = () => {
       setPreview(null)
