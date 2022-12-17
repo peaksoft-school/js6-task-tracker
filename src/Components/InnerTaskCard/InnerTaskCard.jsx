@@ -16,6 +16,7 @@ import {
    loadingToastifyAction,
    successToastifyAction,
    errorToastifyAction,
+   warningToastifyAction,
 } from "../../store/toastifySlice"
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import CheckList from "./CheckList"
@@ -63,15 +64,17 @@ const InnerTaskCard = ({
          return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
-   const deleteLabelInInnerTaskCard = async () => {
+   const deleteLabelInInnerTaskCard = async (id) => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
-         const response = await axiosInstance.delete(
-            `/api/labels/${dataCardById.id}`
+         const response = await axiosInstance.put(
+            `/api/labels/${dataCardById.id}/${id}`
          )
          getCardById(firstActive)
+         dispatch(warningToastifyAction("Deleted label in card"))
          return console.log(response)
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    const firstEightMembers = dataCardById?.memberResponses.slice(0, 8)
@@ -97,7 +100,7 @@ const InnerTaskCard = ({
                         <Label key={item.id} color={item.color}>
                            {item.description}
                            <CloseButton
-                              top="9px"
+                              top="7px"
                               onClick={() =>
                                  deleteLabelInInnerTaskCard(item.id)
                               }
@@ -197,7 +200,7 @@ const Label = styled.li`
    position: relative;
    background-color: ${(props) => props.color};
    color: white;
-   padding: 0.4rem 2.5rem 0.1rem 0.7rem;
+   padding: 5px 35px 5px 20px;
    border-radius: 4px;
    list-style: none;
 `

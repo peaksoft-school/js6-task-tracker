@@ -174,6 +174,9 @@ const Columns = ({
          return console.log(error.message)
       }
    }
+   const dragLeaveHandler = (e) => {
+      e.preventDefault()
+   }
 
    useEffect(() => {
       getCardById(firstActive)
@@ -189,6 +192,7 @@ const Columns = ({
                        onDragOver={(e) => dragOverHandler(e)}
                        onDrop={(e) => dropCardHandler(e, item.id)}
                        key={item.id}
+                       onDragLeave={(e) => dragLeaveHandler(e)}
                     >
                        <ReusableDropDown
                           width="290px"

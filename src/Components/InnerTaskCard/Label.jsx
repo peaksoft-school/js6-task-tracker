@@ -93,7 +93,7 @@ const AddLabel = ({
          dispatch(successToastifyAction("Added label to card"))
          return null
       } catch (error) {
-         return dispatch(errorToastifyAction("Error something went wrong"))
+         return dispatch(warningToastifyAction("This card already exists"))
       }
    }
    return (

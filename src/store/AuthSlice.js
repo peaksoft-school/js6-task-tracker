@@ -18,6 +18,11 @@ import {
    successToastify,
    errorToastify,
 } from "../utilits/helpers/reactToastifyHelpers"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   successToastifyAction,
+} from "./toastifySlice"
 
 // РЕГИСТРАЦИЯ
 export const signUp = createAsyncThunk(
@@ -93,11 +98,11 @@ export const forgotPassword = createAsyncThunk(
       }
    }
 )
-
 // SIGN UP WITH GOOGLE INVITED USER
 export const authWithGoogleInvitedUser = createAsyncThunk(
    "singinWithGoogle/InvitedUser",
-   async ({ role, workspaceId, navigate }) => {
+   async ({ role, workspaceId, navigate, dispatch }) => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const { user } = await signInWithPopup(auth, provider)
          const isAdmin = role === "ADMIN"
@@ -110,11 +115,15 @@ export const authWithGoogleInvitedUser = createAsyncThunk(
                workspaceOrBoardId: workspaceId,
             }
          )
+
          if (data.jwt) localStorageHelpers.saveData(USER_KEY, data)
          navigate("/allWorkspaces")
+         dispatch(successToastifyAction(`Welcome ${data.firstName}`))
          return data
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(
+            errorToastifyAction("You have forbidden to open popup")
+         )
       }
    }
 )
@@ -206,10 +215,10 @@ export const AuthSlice = createSlice({
          state.loading = true
       },
       [authWithGoogleInvitedUser.fulfilled]: (state, actions) => {
-         state.loading = false
          const responseUserData = actions.payload
          state.userInfo = responseUserData
          successToastify(state.idToast, `Welcome}`)
+         state.loading = false
       },
       [authWithGoogleInvitedUser.rejected]: (state) => {
          state.loading = false
