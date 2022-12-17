@@ -8,21 +8,27 @@ const ContainerButtons = ({
    titleGrayButton,
    clickGrayButton,
    clickBlueButton,
-   paddingButton,
+   paddingBlueButton,
+   widthGrayButton,
+   widthBlueButton,
 }) => {
    return (
       <StyledContainerButton width={width}>
          <Button
             color="#F0F0F0;"
             hover="none"
-            fullWidth="120px"
+            fullWidth={widthGrayButton || "120px"}
             active="none"
             onClick={clickGrayButton}
             textColor=" #919191"
          >
             {titleGrayButton}
          </Button>
-         <Button padding={paddingButton} onClick={clickBlueButton}>
+         <Button
+            fullWidth={widthBlueButton}
+            padding={paddingBlueButton}
+            onClick={clickBlueButton}
+         >
             {titleBlueButton}
          </Button>
       </StyledContainerButton>

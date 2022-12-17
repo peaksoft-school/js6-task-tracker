@@ -295,7 +295,7 @@ const Columns = ({
                   placeholder="Name"
                />
                <Button
-                  padding="5px 28px"
+                  padding="8px 30px 8px 30px"
                   onClick={() => nameNewColumn.length > 0 && createNewColumn()}
                >
                   Create
@@ -331,7 +331,6 @@ const AddCardButton = styled.span`
    margin: 12px 0 5px 8px;
 `
 const TitleColumn = styled(TextareaAutosize)`
-   border: 5px solid red;
    width: 250px;
    border: none;
    background: #e6e6e6;
@@ -362,7 +361,7 @@ const BlockInputCreateColumn = styled.div`
    background: #e6e6e6;
    width: 300px;
    height: 130px;
-   padding: 8px;
+   padding: 12px 8px 15px 8px;
    border-radius: 6px;
    p {
       color: gray;
@@ -374,7 +373,7 @@ const BlockInputCreateColumn = styled.div`
       border-radius: 13px;
    }
    Button {
-      margin: 8px 0 0 170px;
+      margin: 8px 0 0 160px;
    }
 `
 const ListInDropDown = styled.ul`

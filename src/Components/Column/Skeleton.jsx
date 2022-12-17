@@ -1,7 +1,7 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
 import CustomIcons from "./CustomIcons"
-import threePoint from "../../../assets/icons/threePoint.svg"
+import threePoint from "../../assets/icons/threePoint.svg"
 
 const Skeleton = () => {
    return (

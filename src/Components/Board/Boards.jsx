@@ -29,7 +29,7 @@ const Boards = ({ role }) => {
    }
 
    useEffect(() => {
-      if (pathname === `/admin/workspaces/${workspaceId}/boards`) {
+      if (pathname === `/allWorkspaces/workspaces/${workspaceId}/boards`) {
          dispatch(clearBoardById())
       }
    }, [])
@@ -51,8 +51,8 @@ const Boards = ({ role }) => {
                {role === "ADMIN" && (
                   <Button
                      onClick={() => setTwoActive("modalCreateBoard", "nothing")}
-                     fullWidth="190px"
                      fullHeight="37px"
+                     padding="0 30px 0 30px"
                   >
                      Create new board
                   </Button>

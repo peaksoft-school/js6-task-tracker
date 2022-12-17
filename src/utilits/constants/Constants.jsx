@@ -220,3 +220,45 @@ export const members = [
       role: "Member",
    },
 ]
+export const ReadyLabel = [
+   {
+      id: 1,
+      title: "In progress",
+      color: "violet",
+   },
+   {
+      id: 2,
+      title: "Kick back",
+      color: "red",
+   },
+   {
+      id: 3,
+      title: "Complete",
+      color: "green",
+   },
+   {
+      id: 4,
+      title: "Code review",
+      color: "blue",
+   },
+]
+export const colorsLabel = [
+   "#51e2f5",
+   "#9df9ef",
+   "#8458B3",
+   "#ff1d58",
+   "#fff685",
+   "#00DDFF",
+   "#aa505e",
+   "#ff009e",
+   "#6c5cfe",
+   "#bcea4d",
+   "#12574f",
+   "#4bd779",
+   "#f1b270",
+   "#FFF8DC",
+   "#008B8B",
+   "#8B008B",
+   "#FF8C00",
+   "#FFD700",
+]

@@ -13,7 +13,7 @@ import {
    forgotPasswordQuery,
    resetPasswordQuery,
 } from "../api/auth.js"
-import { PATH_IN_ROLES } from "../utilits/constants/general"
+// import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
 import {
    successToastify,
@@ -28,8 +28,7 @@ export const signUp = createAsyncThunk(
       try {
          const { data } = await signUpRequest(userInfo)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
-
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -43,13 +42,9 @@ export const resetPassword = createAsyncThunk(
       const { userId, newPassword, navigate } = value
       try {
          const { data } = await resetPasswordQuery({ userId, newPassword })
-         const newData = {
-            ...data,
-            jwt: data.jwtToken,
-         }
-         if (data) localStorageHelpers.saveData(USER_KEY, newData)
-         navigate(PATH_IN_ROLES[data.role].path)
-         return newData
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
+         if (data.jwt) navigate("/allWorkspaces")
+         return data
       } catch (error) {
          return rejectWithValue(error.message)
       }
@@ -63,7 +58,7 @@ export const login = createAsyncThunk(
       try {
          const { data } = await loginRequest(userData)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -80,8 +75,7 @@ export const authWithGoogle = createAsyncThunk(
          const { data } = await authWithGoogleQuery(user.accessToken)
 
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
-
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
@@ -100,7 +94,7 @@ export const forgotPassword = createAsyncThunk(
       }
    }
 )
-
+// ВЫЙТИ
 export const logout = createAsyncThunk("logout", async () => {
    localStorageHelpers.removeData(USER_KEY)
 })

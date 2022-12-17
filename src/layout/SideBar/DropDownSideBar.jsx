@@ -6,17 +6,18 @@ const DropDownSideBar = ({
    nameWorkspaces,
    onMouseEnter,
    onMouseLeave,
-   clickBoards,
+   navigateBoards,
+   navigateParticipants,
 }) => {
    return (
       <DropDownContainer>
          <p>{nameWorkspaces}</p>
          <DropDownBlock onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            <li onClick={clickBoards}>
+            <li onClick={navigateBoards}>
                <SvgGenerator color="white" id={1} />
                <span>Boards</span>
             </li>
-            <li>
+            <li onClick={navigateParticipants}>
                <SvgGenerator color="white" id={3} />
                <span>Participants</span>
             </li>
@@ -34,7 +35,7 @@ export default DropDownSideBar
 const DropDownContainer = styled.div`
    position: absolute;
    left: 90px;
-   top: 5px;
+   top: 1px;
    width: 140px;
    height: 50px;
    color: white;

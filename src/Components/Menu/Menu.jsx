@@ -18,6 +18,8 @@ import { axiosInstance } from "../../api/axiosInstance"
 import ColorsOrImagesDropDown from "./ColorsOrImagesDropDown"
 import HeaderDropDown from "./HeaderDropDown"
 import Cards from "../Column/Card"
+import GrayButton from "../UI/GrayButtons"
+import filterSvg from "../../assets/icons/filter.svg"
 
 const Menu = ({ getCardById, cardById, archiveData }) => {
    const navigate = useNavigate()
@@ -50,6 +52,10 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
    return (
       <DisplayFlex width="40%" JK="space-between" margin="0 30px 0 0">
          <img src={star} alt="star" />
+         <FilterButton>
+            <img src={filterSvg} alt="filter " /> Filter ( 3 )
+         </FilterButton>
+
          <img
             onClick={() => setActive("menu")}
             src={openMenu}
@@ -70,7 +76,7 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
                   <img src={image} alt="mountain" />
                </li>
                <li onClick={() => setActive("archived")}>
-                  In arhive{" "}
+                  In arhive
                   <span>
                      {archiveData?.archivedCards?.length > 0
                         ? archiveData?.archivedCards?.length
@@ -159,4 +165,15 @@ const Block = styled.ul`
          border-radius: 10px;
       }
    }
+`
+const FilterButton = styled.button`
+   display: flex;
+   align-items: center;
+   gap: 5px;
+   padding: 0 15px 0 15px;
+   border-radius: 20px;
+   border: none;
+   color: #438ab4;
+   font-size: 0.9rem;
+   font-weight: 600;
 `

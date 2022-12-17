@@ -20,10 +20,7 @@ export const toastSlice = createSlice({
          state.toastId = successToastify(state.toastId, actions.payload)
       },
       errorToastifyAction: (state, actions) => {
-         state.toastId = errorToastify(
-            state.toastId,
-            actions.payload.response.data.error
-         )
+         state.toastId = errorToastify(state.toastId, actions.payload)
       },
       warningToastifyAction: (state, actions) => {
          state.toastId = warningToastify(state.toastId, actions.payload)

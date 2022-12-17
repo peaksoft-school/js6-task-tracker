@@ -2,13 +2,15 @@ import styled from "styled-components"
 import React from "react"
 import UserAvatar from "./UserAvatar"
 
-const MemberItem = ({ userGmail, photoUser, userName }) => {
+const MemberItem = ({ email, image, firstname, lastName, onClick }) => {
    return (
-      <StyledMemberItem>
-         <UserAvatar userAvatar={photoUser} />
+      <StyledMemberItem onClick={onClick}>
+         <UserAvatar src={image} />
          <div>
-            <p>{userName}</p>
-            <span>{userGmail}</span>
+            <p>
+               {firstname} {lastName}
+            </p>
+            <span>{email}</span>
          </div>
       </StyledMemberItem>
    )
@@ -19,8 +21,9 @@ export default MemberItem
 const StyledMemberItem = styled.div`
    display: flex;
    align-items: center;
-   width: 310px;
+   width: 280px;
    height: 60px;
+   cursor: pointer;
    div {
       height: 40px;
       margin-left: 20px;

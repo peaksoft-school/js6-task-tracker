@@ -8,7 +8,6 @@ import ContainerButtons from "../UI/ContainerButtons"
 
 const CreateWorkspaces = ({ toggle }) => {
    const dispatch = useDispatch()
-   const link = window.location.href
    const [emails, setEmails] = useState([])
    const [data, setData] = useState({
       email: "",
@@ -29,7 +28,7 @@ const CreateWorkspaces = ({ toggle }) => {
       const readyData = {
          emails: emails.length !== 0 ? emails : [data.email],
          name: data.name,
-         link,
+         link: "192.168.0.152:3000",
       }
       dispatch(createWorkspaces({ readyData, dispatch }))
       toggle("false")
@@ -83,7 +82,7 @@ const CreateWorkspaces = ({ toggle }) => {
             clickBlueButton={sendData}
             titleBlueButton="Create"
             titleGrayButton="Cancel"
-            paddingButton="0 40px 0 40px"
+            paddingBlueButton="0 40px 0 40px"
          />
       </>
    )

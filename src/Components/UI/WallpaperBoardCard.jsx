@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { addBoardToFavourites } from "../../store/boardSlice"
 import activeStarIcon from "../../assets/icons/favourite-active.svg"
 import defaultStarIcon from "../../assets/icons/favourite-default.svg"
-import CustomIcons from "./TaskCard/CustomIcons"
+import CustomIcons from "../Column/CustomIcons"
 import LoadingSpinner from "./LoadingSpinner"
 
 function WallpaperBoardCard({ getBoardById }) {

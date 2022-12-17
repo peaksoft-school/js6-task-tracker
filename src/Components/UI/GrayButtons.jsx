@@ -39,6 +39,7 @@ const StyledGrayButton = styled.button`
    color: ${(props) => (props.archived ? "white" : "gray")};
    border: none;
    padding: ${(props) => props.padding};
+   cursor: pointer;
 `
 
 const Icon = styled.img`

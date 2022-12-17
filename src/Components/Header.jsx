@@ -124,7 +124,7 @@ function Header() {
             margin="0 2.5rem 0 0"
             gap="10px"
          >
-            {pathname !== "/admin/allWorkspaces" ? (
+            {pathname !== "/allWorkspaces" ? (
                <ContainerInput>
                   <Input
                      value={inputValue}
