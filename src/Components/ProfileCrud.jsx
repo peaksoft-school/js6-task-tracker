@@ -82,7 +82,7 @@ function ProfileCrud({ profileData, setProfileData }) {
          <Block>
             <HeaderPhoto src={WallpaperTop} alt="" />
             <AvatarBlock>
-               <StyledAvatar src={imgCrop} />
+               <StyledAvatar src={profileData.image} />
 
                <img
                   onClick={() =>
@@ -110,7 +110,7 @@ function ProfileCrud({ profileData, setProfileData }) {
                </p>
                <p style={{ cursor: "pointer" }}>Remove</p>
             </ReusableDropDown>
-            <Modal fullWidth="430px" isOpen={dialogs}>
+            <Modal onClose={() => setDialogs(false)} isOpen={dialogs}>
                <Avatar
                   width={400}
                   height={300}
