@@ -1,306 +1,286 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
-import Avatar1 from "react-avatar-edit"
-import { useFormik } from "formik"
+import { Form, useFormik } from "formik"
+import Avatar from "react-avatar-edit"
+import { useDispatch } from "react-redux"
 import WallpaperTop from "../assets/svg/WallpaperTopBanner.svg"
-import Avatar from "./UI/Avatar"
-import Pen from "../assets/svg/editIcon.svg"
 import Input from "./UI/Input"
 import PasswordInput from "./UI/PasswordInput"
 import Button from "./UI/Button"
+import { validationConfirmPassword } from "./Authorizaiton/Validation"
 import MemberBoard from "./MemberBoard"
-import ReusableDropDown from "./UI/ReusableDropDown"
-import { validationSchema } from "./Authorizaiton/Validation"
+import DisplayFlex from "../layout/DisplayFlex"
+import initialAvatar from "../assets/images/initialAvatar.jpeg"
+import editIcon from "../assets/svg/avatarEdit.svg"
+import { axiosInstance } from "../api/axiosInstance"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   successToastifyAction,
+} from "../store/toastifySlice"
 import Modal from "./UI/Modal"
+import useTwoActive from "../utilits/hooks/useTwoActive"
+import ReusableDropDown from "./UI/ReusableDropDown"
 
-function ProfileCrud() {
-   const [profileData, setProfileData] = useState({})
-   const [open, setOpen] = useState(false)
-   const [src, setSrc] = useState(null)
-   const [preview, setPreview] = useState(null)
-   const [modalActive, setModalActive] = useState(false)
+function ProfileCrud({ profileData, setProfileData }) {
+   const dispatch = useDispatch()
+   const { firstActive, setTwoActive } = useTwoActive()
+   const [dialogs, setDialogs] = useState(false)
+   const [imgCrop, setImgCrop] = useState(false)
+
+   const onCrop = (view) => {
+      setImgCrop(view)
+   }
+   const onClose = () => {
+      setImgCrop(null)
+   }
+   const saveAvatar = () => {
+      setDialogs(false)
+   }
+   const changeName = (e) => {
+      setProfileData({ ...profileData, firstName: e.target.value })
+   }
+   const changeLastName = (e) => {
+      setProfileData({ ...profileData, lastName: e.target.value })
+   }
+   const changeEmail = (e) => {
+      setProfileData({ ...profileData, email: e.target.value })
+   }
 
    const formik = useFormik({
       initialValues: {
-         image: preview,
-         firstName: "",
-         lastName: "",
-         email: "",
          password: "",
          confirmPassword: "",
       },
-      validationSchema,
-      onSubmit: (userInfo) => {
-         console.log(userInfo)
+      validationSchema: validationConfirmPassword,
+      onSubmit: async (userInfo) => {
+         dispatch(loadingToastifyAction("...Loading"))
+         try {
+            const formData = new FormData()
+            formData.append("file", imgCrop)
+            const response = await axiosInstance.post("/api/file", formData)
+
+            const { data } = await axiosInstance.put("/api/profile", {
+               firstName: profileData.firstName,
+               lastName: profileData.lastName,
+               password: userInfo.password,
+               image: "https://www.shareicon.net/data/512x512/2017/01/06/868320_people_512x512.png",
+            })
+            dispatch(successToastifyAction("Updated profiile"))
+            return setProfileData(data)
+         } catch (error) {
+            return dispatch(errorToastifyAction("Error something went wrong"))
+         }
       },
    })
+
    const { isValid } = formik
 
-   const onClose = () => {
-      setPreview(null)
-   }
-   const onCrop = (view) => {
-      setPreview(view)
-      formik.setFieldValue({ img: view })
-   }
-   const onRemove = () => {
-      setPreview(null)
-   }
-
-   const onSelectFile = (elem) => {
-      if (!elem.target.files || elem.target.files.length === 0) {
-         setSelectedFile(undefined)
-         return
-      }
-      setSelectedFile(elem.target.files[0])
-   }
    return (
       <Container>
-         <TopBox>
-            <img className="top-wallpaper" src={WallpaperTop} alt="" />
-            <a href="f">Workspaces \ Profile</a>
-         </TopBox>
-         <MidBox>
-            <div className="profile">
-               <Avatar
-                  onClick={() => setOpen(!open)}
-                  src={preview}
-                  editIcon={Pen}
-                  alt="MyProfil"
-               />
-               <ReusableDropDown
-                  showState={open}
-                  width="250px"
-                  padding="20px"
-                  height="84px"
-                  top="100px"
-                  left="100px"
-               >
-                  <li onClick={() => setOpen(false)}>
-                     <span onClick={() => setModalActive(true)}>
-                        Change profile photo
-                     </span>
-                     <span onClick={onRemove}>Remove</span>
-                  </li>
-               </ReusableDropDown>
-               <Modal
-                  isOpen={modalActive}
-                  onClose={() => setModalActive(false)}
-               >
-                  <ModalWindow>
-                     <Avatar1
-                        onClick={() => setSrc()}
-                        width={400}
-                        height={300}
-                        src={src}
-                        onCrop={onCrop}
-                        onClose={onClose}
-                        onBeforeFileLoad={onSelectFile}
-                     />
+         <Block>
+            <HeaderPhoto src={WallpaperTop} alt="" />
+            <AvatarBlock>
+               <StyledAvatar src={imgCrop} />
 
-                     <Button
-                        onClick={() => setModalActive(false)}
-                        style={{ cursor: "pointer" }}
-                        fullWidth="90px"
-                        fullHeight="34px"
-                        disabled={!isValid}
-                        type="submit"
-                     >
-                        Confirm
-                     </Button>
-                  </ModalWindow>
-               </Modal>
-               <Name>
-                  {profileData?.firstName} {profileData?.lastName}
-               </Name>
-            </div>
-            <form onSubmit={formik.handleSubmit} className="form" action="">
-               <MiniBoxInput>
-                  <ContainerInputErrorText>
-                     <Input
-                        type="text"
-                        id="firstName"
-                        label="firstName"
-                        value={formik.values.firstName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                     />
-                     {formik.touched.firstName && formik.errors.firstName && (
-                        <ErrorText>{formik.errors.firstName}</ErrorText>
-                     )}
-                  </ContainerInputErrorText>
-                  <ContainerInputErrorText>
-                     <Input
-                        type="text"
-                        id="lastName"
-                        label="LastName"
-                        value={formik.values.lastName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                     />
-                     {formik.touched.lastName && formik.errors.lastName && (
-                        <ErrorText>{formik.errors.lastName}</ErrorText>
-                     )}
-                  </ContainerInputErrorText>
-                  <ContainerInputErrorText>
-                     <Input
-                        type="text"
-                        id="email"
-                        label="Email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                     />
-                     {formik.touched.email && formik.errors.email && (
-                        <ErrorText>{formik.errors.email}</ErrorText>
-                     )}
-                  </ContainerInputErrorText>
-               </MiniBoxInput>
-               <MiniPasswordBox>
-                  <ContainerInputErrorText>
-                     <PasswordInput
-                        id="password"
-                        type="text"
-                        label="Password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                     />
-                     {formik.touched.password && formik.errors.password && (
-                        <ErrorText>{formik.errors.password}</ErrorText>
-                     )}
-                  </ContainerInputErrorText>
-                  <ContainerInputErrorText>
-                     <PasswordInput
-                        id="confirmPassword"
-                        type="text"
-                        label="Repeat password"
-                        value={formik.values.confirmPassword}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                     />
-                     {formik.touched.confirmPassword &&
-                        formik.errors.confirmPassword && (
-                           <ErrorText>
-                              {formik.errors.confirmPassword}
-                           </ErrorText>
-                        )}
-                  </ContainerInputErrorText>
+               <img
+                  onClick={() =>
+                     setTwoActive(
+                        firstActive !== "changeProfile"
+                           ? "changeProfile"
+                           : "nothing"
+                     )
+                  }
+                  src={editIcon}
+                  alt="pencil"
+               />
+            </AvatarBlock>
+            <ReusableDropDown
+               top="180px"
+               left="220px"
+               padding="15px 15px 12px 15px"
+               showState={firstActive === "changeProfile"}
+            >
+               <p
+                  style={{ margin: "0 0 6px 0", cursor: "pointer" }}
+                  onClick={() => setDialogs(true)}
+               >
+                  Change profile photo
+               </p>
+               <p style={{ cursor: "pointer" }}>Remove</p>
+            </ReusableDropDown>
+            <Modal fullWidth="430px" isOpen={dialogs}>
+               <Avatar
+                  width={400}
+                  height={300}
+                  onClose={onClose}
+                  onCrop={onCrop}
+               />
+               <DisplayFlex JK="flex-end" margin="10px 0 0 0">
                   <Button
-                     style={{ cursor: "pointer" }}
-                     fullWidth="64px"
-                     fullHeight="34px"
-                     disabled={!isValid}
-                     type="submit"
+                     fullWidth="180px"
+                     padding="6px 10px"
+                     onClick={saveAvatar}
                   >
                      Save
                   </Button>
-               </MiniPasswordBox>
+               </DisplayFlex>
+            </Modal>
+
+            <form onSubmit={formik.handleSubmit}>
+               <DisplayFlex margin="90px 0 0 50px" width="80vw" gap="45px">
+                  <DisplayFlex FD="column" width="380px" gap="20px">
+                     <Input
+                        placeholder="Name"
+                        type="text"
+                        id="firstName"
+                        value={profileData.firstName}
+                        onChange={(e) => changeName(e)}
+                     />
+                     <Input
+                        placeholder="Last name"
+                        type="text"
+                        id="lastName"
+                        value={profileData.lastName}
+                        onChange={(e) => changeLastName(e)}
+                     />
+                     <Input
+                        placeholder="email"
+                        type="text"
+                        id="email"
+                        value={profileData.email}
+                        onChange={(e) => changeEmail(e)}
+                     />
+                  </DisplayFlex>
+                  <DisplayFlex FD="column" AI="flex-end">
+                     <ContainerInputErrorText>
+                        <PasswordInput
+                           id="password"
+                           type="text"
+                           label="Password"
+                           value={formik.values.password}
+                           onChange={formik.handleChange}
+                           onBlur={formik.handleBlur}
+                        />
+                        {formik.touched.password && formik.errors.password && (
+                           <ErrorText>{formik.errors.password}</ErrorText>
+                        )}
+                     </ContainerInputErrorText>
+
+                     <ContainerInputErrorText>
+                        <PasswordInput
+                           id="confirmPassword"
+                           type="text"
+                           label="Repeat password"
+                           value={formik.values.confirmPassword}
+                           onChange={formik.handleChange}
+                           onBlur={formik.handleBlur}
+                        />
+                        {formik.touched.confirmPassword &&
+                           formik.errors.confirmPassword && (
+                              <ErrorText>
+                                 {formik.errors.confirmPassword}
+                              </ErrorText>
+                           )}
+                     </ContainerInputErrorText>
+                     <DisplayFlex width="150px">
+                        <Button
+                           fullWidth="120px"
+                           padding="6px 10px"
+                           disabled={!isValid}
+                           type="submit"
+                        >
+                           Save
+                        </Button>
+                     </DisplayFlex>
+                  </DisplayFlex>
+               </DisplayFlex>
             </form>
-            <ListProject>
-               <MemberBoard listProject={profileData?.projectResponses} />
-            </ListProject>
-         </MidBox>
+            <CountWorkspaces>
+               Involved in project{" "}
+               <p>{profileData?.projectResponses?.length}</p>
+            </CountWorkspaces>
+
+            <MemberBoard listProject={profileData?.projectResponses} />
+         </Block>
       </Container>
    )
 }
 export default ProfileCrud
-const ModalWindow = styled.div`
-   text-align: center;
-   button {
-      margin-top: 5px;
+
+const Container = styled.div`
+   background-color: #f8f8f8;
+   padding: 90px 0 30px 0;
+`
+const Block = styled.div`
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   background-color: white;
+   margin: 0 auto;
+   border-radius: 20px;
+   width: 95vw;
+   border-top-left-radius: 20px;
+   border-top-right-radius: 20px;
+   min-height: 90vh;
+   padding: 0 0 30px 0;
+   -webkit-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   -moz-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+`
+const CountWorkspaces = styled.p`
+   font-weight: 700;
+   margin: 20px 0 0 50px;
+   display: flex;
+   align-items: center;
+   p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      width: 30px;
+      height: 30px;
+      background-color: #b2b2b2;
+      border-radius: 50%;
+      margin: 0 0 0 10px;
    }
 `
-const ContainerInputErrorText = styled.div`
-   height: 50px;
-   width: 320px;
+const HeaderPhoto = styled.img`
+   width: 100%;
+   border-top-left-radius: 20px;
+   border-top-right-radius: 20px;
+`
+const AvatarBlock = styled.div`
+   position: absolute;
+   top: 100px;
+   left: 100px;
+   border-radius: 50%;
+   img {
+      :last-child {
+         position: absolute;
+         top: 85px;
+         left: 85px;
+      }
+   }
+`
+const StyledAvatar = styled.img`
+   width: 125px;
+   height: 125px;
+   border-radius: 50%;
+   border: 6px solid white;
 `
 const ErrorText = styled.p`
+   width: 100%;
    color: red;
    margin: 0;
    text-align: start;
    font-size: 16px;
-   margin-left: 5px;
 `
-const Container = styled.div`
-   position: absolute;
-   width: 1360px;
-   margin: 16px 80px;
-   background: #ffffff;
-   border-radius: 8px;
-   li {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      gap: 10px;
-   }
-   span {
-      cursor: pointer;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 20px;
-   }
-`
-const TopBox = styled.div`
-   position: relative;
-   width: 100%;
-   a {
-      position: absolute;
-      margin: 20px;
-      left: 0;
-      text-decoration: none;
-   }
-   .top-wallpaper {
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-   }
-`
-const MidBox = styled.div`
-   width: 100%;
-   height: 100%;
-   position: absolute;
-   top: 115px;
-   left: 60px;
-   .form {
-      width: 746px;
-      height: 128px;
-      margin-top: 30px;
-      box-sizing: border-box;
-      display: flex;
-   }
-`
-const Name = styled.p`
-   font-weight: 500;
-   font-size: 20px;
-   line-height: 25px;
-   position: absolute;
-   left: 171px;
-   top: 88px;
-   margin: 0;
-   color: #0d0d0d;
-`
-const MiniBoxInput = styled.form`
-   width: 395px;
-   display: grid;
+const ContainerInputErrorText = styled.div`
+   display: flex;
    flex-direction: column;
-   gap: 16px;
-`
-const MiniPasswordBox = styled.div`
-   width: 321px;
-   display: grid;
-   flex-direction: column;
-   justify-items: end;
-   margin-left: 30px;
-   gap: 16px;
-`
-const ListProject = styled.div`
-   margin-top: 34px;
-   span {
-      font-weight: 500;
-      font-size: 16px;
-      color: #111111;
-   }
+   height: 60px;
+   width: 350px;
 `

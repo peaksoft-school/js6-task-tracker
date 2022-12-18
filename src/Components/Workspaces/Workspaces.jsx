@@ -41,6 +41,9 @@ const BlockWorkspaces = styled.div`
    border-radius: 15px;
    padding-bottom: 20px;
    background-color: white;
+   -webkit-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   -moz-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
 `
 const Block = styled.div`
    display: flex;
@@ -56,5 +59,5 @@ const ContainerWorkspaces = styled.div`
    display: flex;
    justify-content: center;
    margin-top: 20px;
-   margin-top: 100px;
+   padding-top: 85px;
 `

@@ -1,96 +1,33 @@
 import styled from "styled-components"
-import Avatar from "react-avatar"
+import DisplayFlex from "../layout/DisplayFlex"
 
 function MemberBoard({ listProject }) {
-   console.log(listProject)
-
    return (
-      <GlobalBox>
-         <Container>
-            <span className="title-list">Involved in project</span>
-            <span className="length-array">{listProject?.length}</span>
-         </Container>
-         <BoardContainer>
-            {listProject?.length > 0 &&
-               listProject.map((item) => {
-                  return (
-                     <Board id={item.id}>
-                        <Avatar
-                           name={item.name}
-                           size="68"
-                           round="10px"
-                           color="#0079BF"
-                        />
-                        <TitleBox>
-                           <p>{item.name}</p>
-                        </TitleBox>
-                     </Board>
-                  )
-               })}
-         </BoardContainer>
-      </GlobalBox>
+      <DisplayFlex padding="20px 0 0 50px" FW="wrap" width="70vw" gap="17px">
+         {listProject?.length > 0 &&
+            listProject.map((item) => {
+               return (
+                  <DisplayFlex width="30vw">
+                     <BlueBlock>{item.name.toUpperCase().charAt(0)}</BlueBlock>
+
+                     <h3 style={{ margin: "20px 0 0 6px" }}>{item.name}</h3>
+                  </DisplayFlex>
+               )
+            })}
+      </DisplayFlex>
    )
 }
 export default MemberBoard
-const GlobalBox = styled.div`
-   width: 746px;
-   height: 328px;
-   position: absolute;
-   margin-top: 32px;
-`
-const Container = styled.div`
-   width: 200px;
-   height: 20px;
+
+const BlueBlock = styled.div`
+   background: #0079bf;
    display: flex;
-   padding: 0px 5px;
-   gap: 6px;
-   .title-list {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 20px;
-      color: #111111;
-   }
-   .length-array {
-      width: 19px;
-      height: 18px;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 18px;
-      text-align: center;
-      color: #ffffff;
-      background: #b2b2b2;
-      border-radius: 18px;
-   }
-`
-const BoardContainer = styled.div`
-   height: 328px;
-   display: flex;
-   flex-direction: column;
-   flex-wrap: wrap;
-   gap: 16px;
-   margin-top: 16px;
-`
-const Board = styled.div`
-   width: 230px;
-   height: 66px;
-   display: flex;
-   border-radius: 10px;
-   img {
-      width: 68px;
-      height: 68px;
-      border-radius: 8px;
-   }
-`
-const TitleBox = styled.div`
-   width: 227px;
-   height: 38px;
-   line-height: 20px;
-   padding: 12px;
-   p {
-      font-weight: 500;
-      font-size: 18px;
-      line-height: 23px;
-      color: #000000;
-      margin-top: 10px;
-   }
+   align-items: center;
+   justify-content: center;
+   width: 70px;
+   height: 70px;
+   border-radius: 8px;
+   font-size: 2.3rem;
+   font-weight: 700;
+   color: white;
 `

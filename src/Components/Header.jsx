@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react"
-import { Link, useLocation, useParams } from "react-router-dom"
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../store/AuthSlice"
@@ -17,10 +17,12 @@ import { useToggle } from "../utilits/hooks/useToggle"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 import DisplayFlex from "../layout/DisplayFlex"
+import initialAvatar from "../assets/images/initialAvatar.jpeg"
 
-function Header() {
+function Header({ profileData }) {
    const { favourites, workspaces } = useSelector((state) => state)
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const { isActive, setActive } = useToggle()
    const [notification, setNotification] = useState([])
    const [searchResponse, setSearchResponse] = useState([])
@@ -95,8 +97,18 @@ function Header() {
    return (
       <ParentDiv>
          <DisplayFlex JK="space-between" width="33vw" height="68px" AI="center">
-            <Logo src={TaskTracker} alt="" />
-            <OpenMenu onClick={openDropDownFavouritesHandler}>
+            <Logo
+               onClick={() => navigate("/allWorkspaces")}
+               src={TaskTracker}
+               alt=""
+            />
+            <OpenMenu
+               onClick={() =>
+                  setActive(
+                     isActive !== "favourites" ? "favourites" : "nothing"
+                  )
+               }
+            >
                Favourites
                <span>
                   <span>(</span>
@@ -165,7 +177,7 @@ function Header() {
             </DropDown>
 
             <UserAvatar
-               src={UserAvatar}
+               src={profileData.image ? profileData.image : initialAvatar}
                click={() =>
                   setActive(isActive !== "profile" ? "profile" : "nothing")
                }
@@ -215,6 +227,7 @@ const SearchIcon = styled.img`
    left: 19px;
 `
 const Logo = styled.img`
+   cursor: pointer;
    padding: 1rem 2.1rem 1rem;
 `
 const NotificationIconContainer = styled.div`
