@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react"
 import styled from "styled-components"
+import axios from "axios"
 import { Form, useFormik } from "formik"
 import Avatar from "react-avatar-edit"
 import { useDispatch } from "react-redux"
@@ -22,6 +23,7 @@ import {
 import Modal from "./UI/Modal"
 import useTwoActive from "../utilits/hooks/useTwoActive"
 import ReusableDropDown from "./UI/ReusableDropDown"
+import { GLOBAL_URL } from "../utilits/constants/Constants"
 
 function ProfileCrud({ profileData, setProfileData }) {
    const dispatch = useDispatch()
@@ -53,22 +55,28 @@ function ProfileCrud({ profileData, setProfileData }) {
          password: "",
          confirmPassword: "",
       },
-      validationSchema: validationConfirmPassword,
       onSubmit: async (userInfo) => {
          dispatch(loadingToastifyAction("...Loading"))
          try {
             const formData = new FormData()
             formData.append("file", imgCrop)
-            const response = await axiosInstance.post("/api/file", formData)
 
-            const { data } = await axiosInstance.put("/api/profile", {
-               firstName: profileData.firstName,
-               lastName: profileData.lastName,
-               password: userInfo.password,
-               image: "",
+            const response = await axios({
+               method: "POST",
+               url: `${GLOBAL_URL}/api/file`,
+               data: formData,
+               headers: { "Content-Type": "multipart/form-data" },
             })
-            dispatch(successToastifyAction("Updated profiile"))
-            return setProfileData(data)
+            console.log(response)
+
+            // const { data } = await axiosInstance.put("/api/profile", {
+            //    firstName: profileData.firstName,
+            //    lastName: profileData.lastName,
+            //    password: userInfo.password,
+            //    image: "",
+            // })
+            // dispatch(successToastifyAction("Updated profiile"))
+            return null
          } catch (error) {
             return dispatch(errorToastifyAction("Error something went wrong"))
          }
@@ -82,7 +90,7 @@ function ProfileCrud({ profileData, setProfileData }) {
          <Block>
             <HeaderPhoto src={WallpaperTop} alt="" />
             <AvatarBlock>
-               <StyledAvatar src={profileData.image} />
+               <StyledAvatar src={imgCrop} />
 
                <img
                   onClick={() =>
@@ -188,7 +196,6 @@ function ProfileCrud({ profileData, setProfileData }) {
                         <Button
                            fullWidth="120px"
                            padding="6px 10px"
-                           disabled={!isValid}
                            type="submit"
                         >
                            Save
