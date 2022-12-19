@@ -10,7 +10,6 @@ import { getAllWorkspaces } from "../store/workspacesSlice"
 import Participants from "../Components/Participants"
 import { clearBoards } from "../store/boardSlice"
 import Header from "../Components/Header"
-import SideBar from "./SideBar/SideBar"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
