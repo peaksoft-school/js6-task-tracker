@@ -54,6 +54,7 @@ const TableBlock = () => {
                <th>Checklist</th>
                <th>Description</th>
             </tr>
+            <Line />
             {testData.map((el) => {
                return (
                   <tr key={el.id}>
@@ -76,12 +77,17 @@ const TableBlock = () => {
 export default TableBlock
 
 const TableBlockStylded = styled.div`
-   border: 2px solid white;
+   width: 100%;
+   position: relative;
+`
+const Line = styled.hr`
+   position: absolute;
+   width: 100%;
+   height: 2px;
 `
 const TableStyled = styled.table`
    th {
       padding: 10px;
-      border-bottom-style: solid;
    }
    td {
       padding: 10px;
@@ -89,5 +95,5 @@ const TableStyled = styled.table`
    }
 `
 const DescriptionStyeld = styled.td`
-   width: 500px;
+   width: 40vw;
 `

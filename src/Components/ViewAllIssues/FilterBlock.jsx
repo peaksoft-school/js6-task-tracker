@@ -11,6 +11,7 @@ import Box from "@mui/material/Box"
 import InputLabel from "@mui/material/InputLabel"
 import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
+import { Checkbox } from "@mui/material"
 
 const FilterBlock = () => {
    const [value, setValue] = React.useState(dayjs("2022-12-07"))
@@ -72,6 +73,7 @@ const FilterBlock = () => {
                </Select>
             </FormControl>
          </Box>
+         <Checkbox />
       </FilterBlockStyled>
    )
 }
@@ -79,7 +81,7 @@ const FilterBlock = () => {
 export default FilterBlock
 
 const FilterBlockStyled = styled.div`
-   width: 1146px;
+   width: 100%;
    display: flex;
    justify-content: space-around;
 `
