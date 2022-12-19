@@ -20,6 +20,7 @@ import HeaderDropDown from "./HeaderDropDown"
 import Cards from "../Column/Card"
 import GrayButton from "../UI/GrayButtons"
 import filterSvg from "../../assets/icons/filter.svg"
+import UserCount from "../UI/UserCount"
 
 const Menu = ({ getCardById, cardById, archiveData }) => {
    const navigate = useNavigate()
@@ -51,6 +52,7 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
 
    return (
       <DisplayFlex width="40%" JK="space-between" margin="0 30px 0 0">
+         <UserCount />
          <img src={star} alt="star" />
          <FilterButton>
             <img src={filterSvg} alt="filter " /> Filter ( 3 )
