@@ -1,107 +1,181 @@
-/* eslint-disable no-undef */
-import React, { useState } from "react"
 import styled from "styled-components"
+import React, { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 import deleteSVG from "../assets/svg/Delete.svg"
-import { members } from "../utilits/constants/Constants"
+import Modal from "./UI/Modal"
+import { axiosInstance } from "../api/axiosInstance"
 import DisplayFlex from "../layout/DisplayFlex"
-import Button from "./UI/Button"
+import { useToggle } from "../utilits/hooks/useToggle"
+import ContainerButtons from "./UI/ContainerButtons"
 
-function Participants({ total }) {
-   const [membersArray, setMembersArray] = useState(members)
-   const deleteItemHanlder = (id) => {
-      const newArray = membersArray.filter((item) => item.id !== id)
-      setMembersArray(newArray)
+function Participants() {
+   const { isActive, setActive } = useToggle()
+   const [user, setUser] = useState([])
+   const { showSideBar } = useSelector((state) => state.showSideBar)
+   const [filteredUsers, setFilteredUsers] = useState(null)
+   const [deleteId, setDeleteId] = useState()
+   const { workspaceId } = useParams()
+   // Post
+   const getUserHandler = async () => {
+      try {
+         const { data } = await axiosInstance.get(
+            `/api/participant/workspace-participants/${workspaceId}`
+         )
+         return setUser(data)
+      } catch (error) {
+         return console.log(error)
+      }
    }
 
+   // Delete
+   const deleteParticipants = async (userId) => {
+      try {
+         await axiosInstance.delete(
+            `/api/participant/workspace/${userId}/${workspaceId}`
+         )
+         getUserHandler()
+         setActive("nothing")
+         return setUser(user)
+      } catch (error) {
+         return console.log(error)
+      }
+   }
+
+   // FilteredUsert
+   const handleFilterUsers = (req) => {
+      if (req === "ALL") {
+         setFilteredUsers(() => {
+            return null
+         })
+      } else {
+         setFilteredUsers(
+            user.filter((item) => {
+               return item.role === req
+            })
+         )
+      }
+   }
+   // UseEffect
+   useEffect(() => {
+      getUserHandler()
+   }, [])
+
+   const userList = React.useMemo(() => {
+      return filteredUsers || user
+   }, [filteredUsers, user])
+
    return (
-      <Parents>
-         <DisplayFlex
-            width="100%"
-            heigth="100px"
-            JK="space-between"
-            AI="center"
-         >
-            <Title>
-               <h1>View all issues</h1>
-               <select>
-                  <option>Role</option>
-                  <option>All</option>
-                  <option>Admin</option>
-                  <option>Member</option>
-               </select>
-            </Title>
+      <DisplayFlex
+         width="100%"
+         JK="flex-end"
+         padding="12px 16px 0 0"
+         margin="80px 24px 0 24px"
+      >
+         <Parents showSideBar={showSideBar}>
+            <Button>
+               <Title>
+                  <h1>View all issues</h1>
+                  <select onChange={(e) => handleFilterUsers(e.target.value)}>
+                     <option value="ALL">All</option>
+                     <option value="ADMIN">Admin</option>
+                     <option value="USER">User</option>
+                  </select>
+               </Title>
 
-            <Button
-               fullWidth="130px"
-               type="button"
-               fullHeight="40px"
-               onClick={() => setIsOpen(true)}
-            >
-               Create
+               <button
+                  type="button"
+                  onClick={() => setActive("openCreatModal")}
+               >
+                  Create
+               </button>
+               <Modal
+                  isOpen={isActive === "openCreatModal"}
+                  onClose={() => setActive("nothing")}
+               >
+                  <h1>MNADNODOAD</h1>
+               </Modal>
             </Button>
-         </DisplayFlex>
-         <Total>
-            <p>
-               Total: <span>{total}82</span>
-            </p>
-         </Total>
-         <Table>
-            <thead>
-               <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-               </tr>
-            </thead>
-            <hr />
+            <Total>
+               <p>Total: {user.length > 0 && <span>{user.length}</span>}</p>
+            </Total>
+            <Hr />
+            <Table>
+               <thead>
+                  <tr>
+                     <th>Name</th>
+                     <th>Email</th>
+                     <th className="role">Role</th>
+                  </tr>
+               </thead>
 
-            {membersArray.map((item, index) => {
-               return (
-                  <ParticipantItem background={index % 2 !== 0}>
-                     <tr>
-                        <td>{item.name}</td>
-                        <td>{item.Email}</td>
-                        <td>
-                           <div>
-                              <li
-                                 onClick={() =>
-                                    getActiveIndexHandler(
-                                       item.id !== activeIndex ? item.id : 0
-                                    )
-                                 }
-                              >
-                                 {item.role}
-                              </li>
-                              <img
-                                 src={deleteSVG}
-                                 alt=""
-                                 onClick={() => deleteItemHanlder(item.id)}
-                              />
-                           </div>
-                        </td>
-                     </tr>
-                  </ParticipantItem>
-               )
-            })}
-         </Table>
-      </Parents>
+               {userList.map((values, index) => {
+                  const { firstName, email, role, id } = values
+                  return (
+                     <ParticipantItem key={id} background={index % 2 !== 0}>
+                        <tr>
+                           <td>{firstName}</td>
+                           <td>{email}</td>
+                           <td>
+                              <div>
+                                 <li>{role}</li>
+                                 <img
+                                    src={deleteSVG}
+                                    alt=""
+                                    onClick={() => {
+                                       setDeleteId(id)
+                                       setActive("modalDelete")
+                                    }}
+                                 />
+                              </div>
+                           </td>
+                        </tr>
+                     </ParticipantItem>
+                  )
+               })}
+            </Table>
+            <Modal
+               fullWidth="250px"
+               onClose={() => setActive("nothing")}
+               isOpen={isActive === "modalDelete"}
+            >
+               <p
+                  style={{
+                     textAlign: "center",
+                     fontSize: "1.2rem",
+                     margin: "20px 0 20px 0",
+                  }}
+               >
+                  Delete participant?
+               </p>
+               <ContainerButtons
+                  titleBlueButton="Delete"
+                  clickBlueButton={() => deleteParticipants(deleteId)}
+                  titleGrayButton="Cancel"
+                  clickGrayButton={() => setActive("nothing")}
+                  paddingButton="0 20px 0 20px"
+               />
+            </Modal>
+         </Parents>
+      </DisplayFlex>
    )
 }
 
 export default Participants
 
 const Parents = styled.div`
-   margin: 100px 10px 0 135px;
-   position: relative;
-   width: 100%;
-   height: 100%;
+   width: ${(props) => (props.showSideBar ? "84vw" : "91vw")}!important;
+   margin: ${(props) =>
+      props.showSideBar ? "0 16px 0 250px" : "0 16px 0 100px"}!important;
+   transition: all 0.35s ease-out;
 `
 const Title = styled.div`
+   width: 289px;
+   height: 36px;
    display: flex;
-   flex-direction: row;
-   justify-content: center;
    align-items: center;
-   gap: 52px;
+   justify-content: space-between;
+   margin: 17px 0 0 16px;
    h1 {
       font-size: 20px;
       line-height: 25px;
@@ -113,6 +187,7 @@ const Title = styled.div`
       border-radius: 8px;
       display: flex;
       padding: 8px;
+      outline: none;
    }
    option {
       font-weight: 400;
@@ -121,17 +196,25 @@ const Title = styled.div`
       color: #111111;
    }
 `
+const Hr = styled.hr`
+   position: relative;
+   top: 50px;
+   border-color: #d7d7d7;
+   border-top: none;
+   border-left: none;
+   border-right: none;
+`
 const Total = styled.div`
-   display: flex;
-   flex-direction: start;
-   justify-content: start;
-   margin-top: -30px;
-   gap: 8px;
+   margin: 2px 0 0 16px;
+
    p {
+      display: flex;
+      gap: 8px;
       font-weight: 400;
       font-size: 16px;
       line-height: 20px;
       color: #919191;
+      text-align: center;
    }
    span {
       background: #b2b2b2;
@@ -141,22 +224,60 @@ const Total = styled.div`
       color: white;
    }
 `
+const Button = styled.div`
+   width: 100%;
+   position: relative;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   button {
+      width: 77px;
+      height: 34px;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #0079bf;
+      border-radius: 24px;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+   }
+`
 const ParticipantItem = styled.tbody`
-   background-color: ${(props) => props.background && "#E6E6E6"};
+   background-color: ${(props) => props.background && "#F0F2F3;"};
+   &.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+      background-color: white !important;
+   }
 `
 const Table = styled.table`
    width: 100%;
-   hr {
+   border-collapse: collapse;
+   margin-top: 22px;
+   .border {
+      width: ${(props) => (props.showSideBar ? "1246px" : "1356px")}!important;
       position: absolute;
+      border-bottom: none;
+      border-left: none;
+      border-right: none;
+   }
+   .role {
+      display: flex;
+      position: relative;
+      margin-left: 20%;
    }
    th {
+      border: 0px solid transparent;
       font-weight: 600;
       font-size: 14px;
       line-height: 18px;
+      padding-left: 16px;
    }
    td {
-      padding: 15px 0 15px 0;
-      justify-content: center;
+      padding: 22px 0 22px 0;
+      padding-left: 16px;
    }
    th,
    td {
@@ -164,11 +285,11 @@ const Table = styled.table`
       font-size: 16px;
       line-height: 20px;
       color: #000000;
+
       :first-child {
-         width: 600px;
+         width: 650px;
       }
       :last-child {
-         text-align: end;
       }
    }
    li {
