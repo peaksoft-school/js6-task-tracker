@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react"
 import styled from "styled-components"
+import axios from "axios"
 import { Form, useFormik } from "formik"
 import Avatar from "react-avatar-edit"
 import { useDispatch } from "react-redux"
@@ -22,6 +23,7 @@ import {
 import Modal from "./UI/Modal"
 import useTwoActive from "../utilits/hooks/useTwoActive"
 import ReusableDropDown from "./UI/ReusableDropDown"
+import { GLOBAL_URL } from "../utilits/constants/Constants"
 
 function ProfileCrud({ profileData, setProfileData }) {
    const dispatch = useDispatch()
@@ -59,7 +61,13 @@ function ProfileCrud({ profileData, setProfileData }) {
          try {
             const formData = new FormData()
             formData.append("file", imgCrop)
-            const response = await axiosInstance.post("/api/file", formData)
+            const response = await axios({
+               method: "post",
+               url: `${GLOBAL_URL}/api/file`,
+               data: formData,
+               headers: { "Content-Type": "multipart/form-data" },
+            })
+            console.log(response)
 
             const { data } = await axiosInstance.put("/api/profile", {
                firstName: profileData.firstName,
