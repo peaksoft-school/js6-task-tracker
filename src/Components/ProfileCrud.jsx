@@ -22,6 +22,7 @@ import {
 import Modal from "./UI/Modal"
 import useTwoActive from "../utilits/hooks/useTwoActive"
 import ReusableDropDown from "./UI/ReusableDropDown"
+import { axiosInstanceFile } from "../api/axiosInstanceFile"
 
 function ProfileCrud({ profileData, setProfileData }) {
    const dispatch = useDispatch()
@@ -57,20 +58,23 @@ function ProfileCrud({ profileData, setProfileData }) {
       onSubmit: async (userInfo) => {
          dispatch(loadingToastifyAction("...Loading"))
          try {
+            console.log(imgCrop)
             const formData = new FormData()
             formData.append("file", imgCrop)
-            const response = await axiosInstance.post("/api/file", formData)
+            console.log(formData)
+            const response = await axiosInstanceFile.post("/api/file", formData)
 
-            const { data } = await axiosInstance.put("/api/profile", {
-               firstName: profileData.firstName,
-               lastName: profileData.lastName,
-               password: userInfo.password,
-               image: "https://www.shareicon.net/data/512x512/2017/01/06/868320_people_512x512.png",
-            })
-            dispatch(successToastifyAction("Updated profiile"))
-            return setProfileData(data)
+            // const { data } = await axiosInstance.put("/api/profile", {
+            //    firstName: profileData.firstName,
+            //    lastName: profileData.lastName,
+            //    password: userInfo.password,
+            //    image: "https://www.shareicon.net/data/512x512/2017/01/06
+            //    868320_people_512x512.png",
+            // })
+            // dispatch(successToastifyAction("Updated profiile"))
+            return console.log(response)
          } catch (error) {
-            return dispatch(errorToastifyAction("Error something went wrong"))
+            return console.log(error.message)
          }
       },
    })
