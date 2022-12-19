@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { getWorkspacesQuery, createWorkspacesQuery } from "../api/auth"
@@ -79,18 +80,19 @@ export const getWorkspacesId = createAsyncThunk(
 // УДАЛИТЬ WORKSPACE
 export const deleteWorkspaceById = createAsyncThunk(
    "delete/workspaces",
+
    async (value) => {
       const { workspaceId, dispatch, navigate } = value
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.delete(
             `/api/workspace/${workspaceId}`
          )
          navigate("/allWorkspaces")
          dispatch(getAllWorkspaces())
-         return console.log(response)
+         return dispatch(warningToastifyAction("Deleted workspace"))
       } catch (error) {
-         dispatch(errorToastifyAction("Error"))
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error"))
       }
    }
 )

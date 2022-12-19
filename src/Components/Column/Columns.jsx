@@ -60,7 +60,6 @@ const Columns = ({
          return console.log(error.message)
       }
    }
-
    // СОЗДАТЬ НОВУЮ КОЛОНУ
    const createNewColumn = async () => {
       try {
