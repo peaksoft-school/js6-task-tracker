@@ -13,7 +13,7 @@ import {
    forgotPasswordQuery,
    resetPasswordQuery,
 } from "../api/auth.js"
-import { PATH_IN_ROLES } from "../utilits/constants/general"
+// import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
 import {
    successToastify,
@@ -28,15 +28,28 @@ export const signUp = createAsyncThunk(
       try {
          const { data } = await signUpRequest(userInfo)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
-
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
       }
    }
 )
-
+// УСТАНОВИТЬ НОВЫЙ ПАРОЛЬ
+export const resetPassword = createAsyncThunk(
+   "authorization/resetPassword",
+   async (value, { rejectWithValue }) => {
+      const { userId, newPassword, navigate } = value
+      try {
+         const { data } = await resetPasswordQuery({ userId, newPassword })
+         if (data) localStorageHelpers.saveData(USER_KEY, data)
+         if (data.jwt) navigate("/allWorkspaces")
+         return data
+      } catch (error) {
+         return rejectWithValue(error.message)
+      }
+   }
+)
 // ВОЙТИ
 export const login = createAsyncThunk(
    "authorizaiton/login",
@@ -45,14 +58,13 @@ export const login = createAsyncThunk(
       try {
          const { data } = await loginRequest(userData)
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
       }
    }
 )
-
 // РЕГИСТРАЦИЯ ЧЕРЕЗ GOOGLE
 export const authWithGoogle = createAsyncThunk(
    "authorization/withGoogle",
@@ -63,15 +75,13 @@ export const authWithGoogle = createAsyncThunk(
          const { data } = await authWithGoogleQuery(user.accessToken)
 
          if (data) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(PATH_IN_ROLES[data.role].path)
-
+         if (data.jwt) navigate("/allWorkspaces")
          return data
       } catch (error) {
          return rejectWithValue(error)
       }
    }
 )
-
 // ПОЛУЧИТЬ ССЫЛКУ
 export const forgotPassword = createAsyncThunk(
    "authorization/forgotPassword",
@@ -84,27 +94,7 @@ export const forgotPassword = createAsyncThunk(
       }
    }
 )
-
-// УСТАНОВИТЬ НОВЫЙ ПАРОЛЬ
-export const resetPassword = createAsyncThunk(
-   "authorization/resetPassword",
-   async (value, { rejectWithValue }) => {
-      const { userId, newPassword, navigate } = value
-      try {
-         const { data } = await resetPasswordQuery({ userId, newPassword })
-         const newData = {
-            ...data,
-            jwt: data.jwtToken,
-         }
-         if (data.role) localStorageHelpers.saveData(USER_KEY, newData)
-         navigate(PATH_IN_ROLES[data.role].path)
-         return newData
-      } catch (error) {
-         return rejectWithValue(error.message)
-      }
-   }
-)
-
+// ВЫЙТИ
 export const logout = createAsyncThunk("logout", async () => {
    localStorageHelpers.removeData(USER_KEY)
 })

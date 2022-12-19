@@ -1,10 +1,19 @@
-import React from "react"
+/* eslint-disable no-return-assign */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
+import TimeAgo from "react-timeago"
+import TextareaAutosize from "react-textarea-autosize"
 import UserAvatar from "./UserAvatar"
-import CustomIcons from "./TaskCard/CustomIcons"
+import CustomIcons from "../Column/CustomIcons"
 import arrowIcon from "../../assets/icons/ArrowIcons.svg"
-import DisplayFlexJCSB from "../../layout/DisplayFlexJCSB"
+import DisplayFlex from "../../layout/DisplayFlex"
 import arrowDownComment from "../../assets/svg/ArrowComment.svg"
+import Input from "./Input"
+import { axiosInstance } from "../../api/axiosInstance"
+import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
+import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
 
 const CommentSection = ({
    comment,
@@ -12,36 +21,152 @@ const CommentSection = ({
    userAvatar,
    editHandle,
    deleteHandle,
-   sizeCommentHandler,
-   sizeComment,
+   showComment,
+   setShowComment,
+   dataCardById,
 }) => {
+   const [commentValue, setCommentValue] = useState("")
+   const [comments, setComments] = useState([])
+   const textAreaRef = useRef([])
+   const [activeInput, setActiveInput] = useState(null)
+
+   // ПОЛУЧИТЬ КОМЕНТАРИИ КАРТОЧКИ
+   const getAllComments = async () => {
+      try {
+         const { data } = await axiosInstance(
+            `/api/comments/card/${dataCardById.id}`
+         )
+         data?.sort((a, b) => b.id - a.id)
+         return setComments(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // ДОБАВИТЬ НОВЫЙ КОМЕНТАРИЙ
+   const addedComment = async (e) => {
+      e.preventDefault()
+      try {
+         const { data } = await axiosInstance.post(
+            `/api/comments/card/${dataCardById.id}`,
+            {
+               text: commentValue,
+            }
+         )
+         getAllComments()
+         return setCommentValue("")
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // УДАЛИТЬ КОМЕНТАРИЙ
+   const deleteComment = async (commentId) => {
+      try {
+         const response = await axiosInstance.delete(
+            `/api/comments/${commentId}`
+         )
+         getAllComments()
+         return null
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+   // ИЗМЕНИТЬ КОМЕНТАРИЙ
+   const changeValueHandler = (e) => {
+      const newComments = [...comments]
+      newComments[e.target.name].text = e.target.value
+      return setComments(newComments)
+   }
+
+   const changeComment = async (e, id) => {
+      e.preventDefault()
+      try {
+         const response = await axiosInstance.put(`/api/comments/${id}`, {
+            text: e.target.value,
+         })
+         setActiveInput(0)
+         return getAllComments()
+      } catch (error) {
+         return console.log(error.message)
+      }
+   }
+
+   useEffect(() => {
+      getAllComments()
+   }, [])
+
    return (
       <StyledCommentSection>
-         <DisplayFlexJCSB>
+         <DisplayFlex JK="space-between">
             <h3>Comments</h3>
             <CustomIcons
-               click={sizeCommentHandler}
-               src={sizeComment ? arrowIcon : arrowDownComment}
+               onClick={() => setShowComment(!showComment)}
+               src={showComment ? arrowIcon : arrowDownComment}
             />
-         </DisplayFlexJCSB>
-         <ContainerComment sizeComment={sizeComment}>
-            <Comment>
-               <UserAvatar src={userAvatar} />
-               <div>
-                  <p>Nazira Nazirova</p>
-                  <CommentText>
-                     {comment} I will do it only in a week,after the
-                  </CommentText>
+         </DisplayFlex>
+         <ContainerComment sizeComment={showComment}>
+            {comments?.length > 0 &&
+               comments?.map((item, index) => {
+                  return (
+                     <Comment key={item.id}>
+                        <UserAvatar src={item.image} />
+                        <div>
+                           <p>
+                              {item.commentedUserResponse.firstName}
+                              {"    "}
+                              {item.commentedUserResponse.lastName}
+                           </p>
+                           <form onSubmit={(e) => changeComment(e, item.id)}>
+                              {activeInput === item.id ? (
+                                 <StyledTextAreaAutoSize
+                                    ref={textAreaRef}
+                                    onChange={(e) => changeValueHandler(e)}
+                                    onBlur={(e) => changeComment(e, item.id)}
+                                    value={item.text}
+                                    name={`${index}`}
+                                    autoFocus
+                                 />
+                              ) : (
+                                 <CommentText>{item.text}</CommentText>
+                              )}
+                           </form>
 
-                  <div>
-                     <span>{dateAdded} 12 sep ,2021 / 6:30pm</span>
-                     <BlockEditDeleteButton>
-                        <p onClick={editHandle}>Edit</p>
-                        <p onClick={deleteHandle}>Delete</p>
-                     </BlockEditDeleteButton>
-                  </div>
-               </div>
-            </Comment>
+                           <DisplayFlex
+                              width="25vw"
+                              margin="9px 0 0 0"
+                              JK="space-between"
+                           >
+                              <TimeAgo date={new Date()} />
+                              <BlockEditDeleteButton>
+                                 <p
+                                    onClick={() =>
+                                       setActiveInput(
+                                          activeInput !== item.id
+                                             ? item.id
+                                             : null
+                                       )
+                                    }
+                                 >
+                                    Edit
+                                 </p>
+                                 <p onClick={() => deleteComment(item.id)}>
+                                    Delete
+                                 </p>
+                              </BlockEditDeleteButton>
+                           </DisplayFlex>
+                        </div>
+                     </Comment>
+                  )
+               })}
+
+            <ContainerInput>
+               <form onSubmit={addedComment}>
+                  <Input
+                     value={commentValue}
+                     onChange={(e) => setCommentValue(e.target.value)}
+                     placeholder="Write a comment"
+                  />
+               </form>
+            </ContainerInput>
          </ContainerComment>
       </StyledCommentSection>
    )
@@ -50,8 +175,8 @@ const CommentSection = ({
 export default CommentSection
 
 const StyledCommentSection = styled.div`
+   width: 33vw;
    position: relative;
-   width: 430px;
    background: #f4f5f7;
    padding: 1rem;
    border-radius: 8px;
@@ -62,10 +187,11 @@ const StyledCommentSection = styled.div`
    }
 `
 const ContainerComment = styled.div`
+   position: relative;
    overflow: scroll;
-   max-height: ${(props) => (props.sizeComment ? "340px" : "428px")};
+   max-height: ${(props) => (props.sizeComment ? "51vh" : "62.6vh")};
+   min-height: ${(props) => (props.sizeComment ? "34.3vh" : "45.8vh")};
 `
-
 const Comment = styled.div`
    display: flex;
    border-bottom: 1px solid #e4e4e4;
@@ -73,6 +199,7 @@ const Comment = styled.div`
    line-height: 18px;
    font-size: 1rem;
    padding: 0 0 1rem 0;
+   margin: 7px 0 7px 0;
    img {
       margin-right: 10px;
    }
@@ -96,13 +223,36 @@ const Comment = styled.div`
 `
 const BlockEditDeleteButton = styled.div`
    cursor: pointer;
+   margin-left: 48px;
    text-decoration: underline;
    p {
       margin-right: 1rem;
    }
 `
-
 const CommentText = styled.p`
-   width: 23vw;
-   margin: 0.5rem 0 0.5rem 0;
+   width: 20vw;
+   margin: 0.5rem 0 0rem 0;
+   padding: 4px 0 4px 8px;
+   font-size: 1.1rem;
+   line-height: 22px;
+`
+const ContainerInput = styled.div`
+   position: fixed;
+   right: 3.6vw;
+   width: 32vw;
+   bottom: 20px;
+   Input {
+      background: #f4f5f7 !important;
+   }
+`
+const StyledTextAreaAutoSize = styled(TextareaAutosize)`
+   width: 20vw;
+   background: #f4f5f7;
+   margin: 0.5rem 0 0rem 0;
+   padding: 4px 0 4px 8px;
+   font-size: 1.1rem;
+   border: none;
+   &:focus {
+      background-color: white;
+   }
 `

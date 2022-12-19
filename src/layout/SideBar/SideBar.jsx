@@ -7,27 +7,37 @@ import SvgGenerator from "../../Components/UI/SvgGenerator"
 import IconButton from "../../Components/UI/IconButton"
 import showSideBarIcon from "../../assets/icons/showSideBar.svg"
 import arrowRight from "../../assets/icons/arrowRight.svg"
-import CustomIcons from "../../Components/UI/TaskCard/CustomIcons"
+import CustomIcons from "../../Components/Column/CustomIcons"
 import BlueIconWorkspaces from "../../assets/icons/BlueIconWorkspaces.svg"
 import SubMenu from "./SubMenu"
 import DropDownSideBar from "./DropDownSideBar"
 import SubMenuBoards from "./SubMenuBoards"
 import { showSideBarAction } from "../../store/sideBarSlice"
-import { clearBoardById, getBoards } from "../../store/boardSlice"
 import arrowDown from "../../assets/icons/arrowDown.svg"
 import arrowUp from "../../assets/icons/ArrowUp.svg"
 import Modal from "../../Components/UI/Modal"
 import Settings from "./Settings"
-import { getWorkspacesId } from "../../store/workspacesSlice"
+import {
+   deleteWorkspaceById,
+   changeTitleWorkspace,
+   getWorkspacesId,
+} from "../../store/workspacesSlice"
 
 const SideBar = () => {
    const { workspaceId, boardId } = useParams()
    const { pathname } = useLocation()
-   const { showSideBar } = useSelector((state) => state.showSideBar)
-   const { workspaces } = useSelector((state) => state.workspaces)
-   const [showModal, setShowModal] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { showSideBar } = useSelector((state) => state.showSideBar)
+   const { workspaces, workspaceById } = useSelector(
+      (state) => state.workspaces
+   )
+   const { userInfo } = useSelector((state) => state.auth)
+
+   useEffect(() => {
+      dispatch(getWorkspacesId({ id: workspaceId }))
+   }, [])
+
    const [activeSideBar, setActiveSideBar] = useState("boards")
    const [showSubMenu, setShowSubMenu] = useState({})
    const [showSubMenuBoards, setShowSubMenuBoards] = useState({})
@@ -36,13 +46,44 @@ const SideBar = () => {
       stateDropDown: false,
       isMenuHovered: false,
    })
-   useEffect(() => {
-      dispatch(getBoards(workspaceId))
-   }, [])
+   const [settingModal, setSettingModal] = useState({
+      showModal: false,
+      showDropDown: false,
+   })
+   const [workspaceByIdForSettings, setWorkspacesByIdForSettings] = useState({})
 
-   // CLICKS DROP DOWN AND SUB MENU
-   const getWorkspacesIdHandler = (id) => {
-      dispatch(getWorkspacesId({ id, navigate, dispatch }))
+   // NAVIGATE FUNCTIONS
+   const navigateParticipants = (id) => {
+      dispatch(getWorkspacesId({ id, navigate, where: "participants" }))
+      setActiveSideBar("participants")
+   }
+   const navigateBoardsWorkspaces = (id) => {
+      dispatch(getWorkspacesId({ id, navigate, where: "boards" }))
+      setActiveSideBar("boards")
+   }
+   // SETTINGS FUNCTIONS
+   const changeNameWorkspacesHandler = async () => {
+      dispatch(
+         changeTitleWorkspace({
+            workspaceId: workspaceByIdForSettings.id,
+            name: workspaceByIdForSettings.name,
+            dispatch,
+         })
+      )
+      setSettingModal({ ...settingModal, showModal: false })
+   }
+   const changeInputValueHandler = (e) => {
+      const newWorkspaceByIdForSettings = { ...workspaceByIdForSettings }
+      newWorkspaceByIdForSettings.name = e.target.value
+      return setWorkspacesByIdForSettings(newWorkspaceByIdForSettings)
+   }
+   const deleteWorkspaceHandler = () => {
+      dispatch(deleteWorkspaceById({ workspaceId, dispatch, navigate }))
+      setSettingModal({ ...settingModal, showModal: false })
+   }
+   const setNameAndOpenModalSettings = (item) => {
+      setWorkspacesByIdForSettings(item)
+      setSettingModal({ ...settingModal, showModal: true })
    }
    // SUB MENU
    const showSubMenuHandler = (item) => {
@@ -61,13 +102,16 @@ const SideBar = () => {
    }
    // КНОПКА НАЗАД
    const goBackHandle = () => {
-      if (pathname === `/admin/workspaces/${workspaceId}/boards`)
-         navigate("/admin/allWorkspaces")
-      else if (
-         pathname === `/admin/workspaces/${workspaceId}/boards/${boardId}`
+      if (
+         pathname ===
+         `/allWorkspaces/workspaces/${workspaceId}/${activeSideBar}`
       )
-         navigate(`/admin/workspaces/${workspaceId}/boards`)
-      dispatch(clearBoardById())
+         navigate("/allWorkspaces")
+      else if (
+         pathname ===
+         `/allWorkspaces/workspaces/${workspaceId}/${activeSideBar}/${boardId}`
+      )
+         navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
    }
    // CLICK SIDE BAR ITEMS
    const onClickSideBarItem = (path) => {
@@ -117,7 +161,8 @@ const SideBar = () => {
                setStateDropDown={setDropDown}
                nameWorkspaces={item.name}
                onMouseLeave={() => onMouseLeaveFromContainerHandler(item.id)}
-               clickBoards={() => getWorkspacesIdHandler(item.id)}
+               navigateBoards={() => navigateBoardsWorkspaces(item.id)}
+               navigateParticipants={() => navigateParticipants(item.id)}
             />
          )
       }
@@ -130,7 +175,6 @@ const SideBar = () => {
       ) : (
          <CustomIcons src={BlueIconWorkspaces} />
       )
-
    const renderSVGs = (item) =>
       item.id === 1 && (
          <SvgGenerator
@@ -139,15 +183,11 @@ const SideBar = () => {
             id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
          />
       )
-   const placeOfWorkSpace = workspaces.filter(
-      (item) => item.id === +workspaceId
-   )
-
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
          <HeaderSideBar>
             {renderHeaderSideBar()}
-            <p>{showSideBar && placeOfWorkSpace[0]?.name}</p>
+            <p>{showSideBar && workspaceById?.name}</p>
             <ShowSideBarButton
                showSideBar={showSideBar}
                onClick={showSideBarHandler}
@@ -180,10 +220,10 @@ const SideBar = () => {
                               }
                            />
                            {showSideBar ? (
-                              <>
+                              <ContainerSideBarItem>
                                  <span>{item.title}</span>
                                  {item.amount && <span>{item.amount})</span>}
-                              </>
+                              </ContainerSideBarItem>
                            ) : null}
                         </ContainerNavItem>
                         {showSideBar ? renderSVGs(item, index) : null}
@@ -198,18 +238,31 @@ const SideBar = () => {
                   </SideBarItem>
                )
             })}
-            <ContainerNavItem onClick={() => setShowModal(true)}>
-               <SvgGenerator id={5} />
-               {showSideBar && <span>Settings</span>}
-            </ContainerNavItem>
-            <Modal onClose={() => setShowModal(false)} isOpen={showModal}>
+            {userInfo.role === "ADMIN" ? (
+               <ContainerNavItem
+                  onClick={() => setNameAndOpenModalSettings(workspaceById)}
+               >
+                  <SvgGenerator id={5} />
+                  {showSideBar && <span>Settings</span>}
+               </ContainerNavItem>
+            ) : null}
+            <Modal
+               onClose={() =>
+                  setSettingModal({ ...settingModal, showModal: false })
+               }
+               isOpen={settingModal.showModal}
+            >
                <Settings
-                  nameWorkspaces={placeOfWorkSpace[0]?.name}
-                  closeModal={() => setShowModal(false)}
+                  deleteWorkspaceHandler={deleteWorkspaceHandler}
+                  changeNameWorkspacesHandler={changeNameWorkspacesHandler}
+                  settingModal={settingModal}
+                  setSettingModal={setSettingModal}
+                  setName={changeInputValueHandler}
+                  name={workspaceByIdForSettings.name}
                />
             </Modal>
             <Line stateSideBar={showSideBar} marginLeft />
-            <ContainerNavItem to="/admin/allWorkspaces">
+            <ContainerNavItem to="/allWorkspaces">
                <SvgGenerator id={6} />
                {showSideBar && <span>Workspaces</span>}
             </ContainerNavItem>
@@ -250,7 +303,13 @@ const SideBar = () => {
                            {showSideBar && showSubMenu[item.id] && (
                               <SubMenu
                                  clickBoards={() =>
-                                    getWorkspacesIdHandler(item.id)
+                                    navigateBoardsWorkspaces(item.id)
+                                 }
+                                 clickParticipants={() =>
+                                    navigateParticipants(item.id)
+                                 }
+                                 clickSettings={() =>
+                                    setNameAndOpenModalSettings(item)
                                  }
                               />
                            )}
@@ -320,16 +379,20 @@ const ContainerNavItem = styled(Link)`
 `
 const HeaderSideBar = styled.div`
    width: 100%;
-   height: 40px;
    display: flex;
    align-items: center;
    p {
+      position: absolute;
+      left: 50px;
       width: 160px;
       font-size: 1.3rem;
-      margin-left: 25px;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+         display: none;
+      }
    }
    img {
-      margin-left: 2.4rem;
+      margin: 0 0 8px 2.4rem;
    }
 `
 const SideBarItem = styled.li`
@@ -345,6 +408,9 @@ const SideBarItem = styled.li`
    }
    &:nth-child(2) {
       padding-top: 1rem;
+   }
+   span {
+      width: 100%;
    }
 `
 const SideBarTitleBlock = styled.div`
@@ -365,6 +431,10 @@ const SideBarTitleBlock = styled.div`
       position: relative;
    }
 `
+const ContainerSideBarItem = styled.div`
+   position: absolute;
+   left: 65px;
+`
 const WorkspacesItem = styled.li`
    display: flex;
    flex-wrap: wrap;
@@ -380,8 +450,11 @@ const WorkspacesItem = styled.li`
       border-bottom-right-radius: 20px;
    }
    span {
+      width: 100%;
+      position: absolute;
+      left: 65px;
       text-align: start;
-      margin-left: 10px;
+      transition: all 0.35s ease-out;
    }
 `
 const ShowSideBarButton = styled.img`
@@ -397,7 +470,7 @@ const ShowSideBarButton = styled.img`
 `
 const ContainerWorkspaces = styled.ul`
    margin-bottom: 30px;
-   max-height: 42vh;
+   max-height: 45vh;
 `
 const Line = styled.hr`
    width: ${(props) => (props.stateSideBar ? "180px" : "45px")};

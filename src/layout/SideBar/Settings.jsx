@@ -1,42 +1,36 @@
-import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import React from "react"
 import styled from "styled-components"
+
 import ContainerButtons from "../../Components/UI/ContainerButtons"
 import Input from "../../Components/UI/Input"
 import ReusableDropDown from "../../Components/UI/ReusableDropDown"
-import { useActiveIndex } from "../../utilits/hooks/useActiveIndex"
-import { deleteWorkspaceById } from "../../store/workspacesSlice"
 
-const Settings = ({ closeModal, nameWorkspaces }) => {
-   const { workspaceId } = useParams()
-   const navigate = useNavigate()
-   const dispatch = useDispatch()
-   const [name, setName] = useState(nameWorkspaces)
-   const { getActiveIndexHandler, isActiveDropDown } = useActiveIndex()
-
-   const changeNameWorkspacesHandler = () => {
-      console.log(name)
-      closeModal("false")
-   }
-
-   const deleteWorkspaceHandler = () => {
-      dispatch(deleteWorkspaceById({ workspaceId, dispatch, navigate }))
-      closeModal("false")
-   }
-
+const Settings = ({
+   settingModal,
+   setSettingModal,
+   changeNameWorkspacesHandler,
+   deleteWorkspaceHandler,
+   name,
+   setName,
+}) => {
    return (
       <ContainerSettings>
          <h3>Setting</h3>
-         <Input value={name} onChange={(e) => setName(e.target.value)} />
-         <p onClick={() => getActiveIndexHandler("5")}>
+         <Input value={name} onChange={(e) => setName(e)} />
+         <p
+            onClick={() =>
+               setSettingModal({ ...settingModal, showDropDown: true })
+            }
+         >
             Delete this workspace?
          </p>
          <ContainerButtons
             paddingButton="0 40px 0 40px"
             titleBlueButton="Save"
             titleGrayButton="Cancel"
-            clickGrayButton={closeModal}
+            clickGrayButton={() =>
+               setSettingModal({ ...settingModal, showModal: false })
+            }
             clickBlueButton={changeNameWorkspacesHandler}
          />
          <ReusableDropDown
@@ -44,13 +38,13 @@ const Settings = ({ closeModal, nameWorkspaces }) => {
             width="380px"
             right="330px"
             top="1px"
-            showState={isActiveDropDown === "5"}
+            showState={settingModal.showDropDown}
          >
             <p>Delete workspaces</p>
             <p>Are yo sure to delete this workspace?</p>
             <ContainerButtons
                clickGrayButton={() =>
-                  getActiveIndexHandler(isActiveDropDown !== "5" ? "5" : "0")
+                  setSettingModal({ ...settingModal, showDropDown: false })
                }
                paddingButton="0 25px 0 25px"
                titleGrayButton="Cancel"
@@ -70,6 +64,7 @@ const ContainerSettings = styled.div`
    h3 {
       font-weight: 400;
       text-align: center;
+      margin: 0 0 8px 0;
    }
    p {
       color: red;

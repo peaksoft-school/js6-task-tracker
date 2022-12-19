@@ -105,7 +105,7 @@ export default function DateTimePicker({ getDateTimeValue }) {
                }}
             />
          </DueDateBlock>
-         <FormControl fullWidth>
+         <FormControl style={{ marginBottom: "10px" }} fullWidth>
             <label htmlFor="demo-simple-select-label">
                Set due date remainder
             </label>
@@ -118,7 +118,7 @@ export default function DateTimePicker({ getDateTimeValue }) {
          </FormControl>
          <Button
             fullWidth="270px"
-            fullHeight="30px"
+            fullHeight="34px"
             onClick={creteTemplateHandler}
          >
             Create a new template
@@ -157,15 +157,27 @@ const DateStyeled = styled.div`
    }
 `
 const Calendar = styled(StaticDatePicker)`
+   .css-epd502 {
+      margin: 0;
+      width: 290px;
+   }
    .css-169iwlq-MuiCalendarPicker-root {
       width: 270px;
       margin: 0;
    }
-   .css-nk89i7-MuiPickersCalendarHeader-root {
-      padding-left: 10px;
+   .css-dplwbx-MuiPickersCalendarHeader-label {
    }
    .css-sf5t6v-PrivatePickersSlideTransition-root-MuiDayPicker-slideTransition {
       min-height: 190px;
+   }
+   .css-1vcokmn-MuiCalendarOrClockPicker-root {
+      width: 290px;
+   }
+   .css-xelq0e-MuiPickerStaticWrapper-content {
+      min-width: 290px;
+   }
+   .css-nk89i7-MuiPickersCalendarHeader-root {
+      padding: 0;
    }
 `
 const DueDateBlock = styled.div`

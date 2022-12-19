@@ -13,16 +13,15 @@ const SubMenu = ({
          {nameWorkspaces}
          <li onClick={clickBoards}>
             <SvgGenerator id={1} />
-            <span>Boards</span>
+            <p>Boards</p>
          </li>
          <li onClick={clickParticipants}>
             <SvgGenerator id={3} />
-            <span>Participants</span>
-            <SvgGenerator id="plus" />
+            <p>Participants</p>
          </li>
          <li onClick={clickSettings}>
             <SvgGenerator id={5} />
-            <span>Setting</span>
+            <p>Setting</p>
          </li>
       </ContainerSubMenu>
    )
@@ -46,7 +45,7 @@ const ContainerSubMenu = styled.ul`
       height: 25px;
       margin: 2px;
    }
-   span {
-      margin: 0 19px 4px 8px;
+   p {
+      margin: 0 19px 4px 9px;
    }
 `

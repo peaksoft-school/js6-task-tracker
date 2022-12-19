@@ -100,7 +100,13 @@ const SignUp = () => {
          </ContainerInputErrorText>
          <QualificationText>
             Creating an account means you re okay with our <br />
-            <a>Terms of Service,Privacy Policy.</a>
+            <a
+               target="_blank"
+               href="https://www.atlassian.com/legal/privacy-policy"
+               rel="noreferrer"
+            >
+               Terms of Service,Privacy Policy.
+            </a>
          </QualificationText>
          <Button
             fullWidth="11rem"
@@ -135,7 +141,7 @@ const ErrorText = styled.p`
    font-size: 16px;
    margin-left: 5px;
 `
-const QualificationText = styled.p`
+const QualificationText = styled.a`
    width: 310px;
    font-size: 0.9rem;
    margin: 0 0 8px 0;

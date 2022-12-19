@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import DisplayFlexJCSB from "../../../layout/DisplayFlexJCSB"
+import DisplayFlex from "../../../layout/DisplayFlex"
 import Galochka from "../../../assets/svg/Galochka.svg"
 import ReusableDropDown from "../../UI/ReusableDropDown"
 
@@ -8,10 +8,10 @@ const ColorBlock = ({
    COLORS,
    selectedBoard,
    selectedBoardHandler,
-   activeIndex,
+   secondActive,
 }) => {
    return (
-      <DisplayFlexJCSB>
+      <DisplayFlex JK="space-between">
          {COLORS.map((color) => (
             <>
                {typeof color === "string" && (
@@ -27,11 +27,11 @@ const ColorBlock = ({
                   width="320px"
                   left="487px"
                   height="400px"
-                  padding="8px 0 0 0"
-                  showState={activeIndex === "5"}
+                  showState={secondActive === "colorsDropDown"}
+                  padding="5px 10px 0 10px"
                >
                   <h4>Color</h4>
-                  <ContainerBlock>
+                  <DisplayFlex FW="wrap" JK="space-between">
                      {typeof color === "object" &&
                         color.map((item) => {
                            return (
@@ -46,22 +46,16 @@ const ColorBlock = ({
                               </StyledColorBlock>
                            )
                         })}
-                  </ContainerBlock>
+                  </DisplayFlex>
                </ReusableDropDown>
             </>
          ))}
-      </DisplayFlexJCSB>
+      </DisplayFlex>
    )
 }
 
 export default ColorBlock
 
-const ContainerBlock = styled.div`
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: center;
-   gap: 5px;
-`
 const Check = styled.img`
    width: 25px !important;
    height: 25px !important;

@@ -1,10 +1,10 @@
 import { useFormik } from "formik"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
-import { forgotPassword } from "../store/AuthSlice"
-import Button from "./UI/Button"
-import { validationEmailInForgotPassword } from "./Authorizaiton/Validation"
-import Input from "./UI/Input"
+import { forgotPassword } from "../../store/AuthSlice"
+import Button from "../UI/Button"
+import { validationEmailInForgotPassword } from "./Validation"
+import Input from "../UI/Input"
 
 const ForgotPasswordBlock = ({ showCloseModalHandler }) => {
    const link = window.location.href
@@ -66,6 +66,12 @@ const Block = styled.form`
       padding: 0 0 0 1rem;
       font-size: 1.1rem;
    }
+   h3 {
+      margin-left: 5px;
+   }
+   p {
+      margin: 10px 0 10px 5px;
+   }
 `
 const ContainerInputErrorText = styled.div`
    height: 50px;
@@ -73,7 +79,7 @@ const ContainerInputErrorText = styled.div`
    margin: 0.04rem;
 `
 const ButtonBlock = styled.div`
-   width: 520px;
+   width: 500px;
    display: flex;
    justify-content: flex-end;
    padding: 1rem 0 1rem 0;

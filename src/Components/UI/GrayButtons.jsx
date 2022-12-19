@@ -17,7 +17,7 @@ const GrayButton = ({
          icon={iconButton}
          onClick={onClick}
       >
-         <Icon src={iconButton} /> {children}
+         {iconButton && <Icon src={iconButton} />} {children}
       </StyledGrayButton>
    )
 }
@@ -39,6 +39,7 @@ const StyledGrayButton = styled.button`
    color: ${(props) => (props.archived ? "white" : "gray")};
    border: none;
    padding: ${(props) => props.padding};
+   cursor: pointer;
 `
 
 const Icon = styled.img`
