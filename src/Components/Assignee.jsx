@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import ReusableDropDown from "./UI/ReusableDropDown"
-import CustomIcons from "./UI/TaskCard/CustomIcons"
 import searchIcon from "../assets/svg/SearchIcon.svg"
 import MemberItem from "./UI/MemberItem"
 import photoAvatar from "../assets/images/avatarPhotoo.jpg"
+import CustomIcons from "./Column/CustomIcons"
 
 const Assignee = ({ assigneeMembers, onSearch, searchValue }) => {
    return (
