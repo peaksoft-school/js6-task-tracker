@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import TimeAgo from "react-timeago"
 import TextareaAutosize from "react-textarea-autosize"
 import UserAvatar from "./UserAvatar"
@@ -14,6 +15,10 @@ import Input from "./Input"
 import { axiosInstance } from "../../api/axiosInstance"
 import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
+import {
+   errorToastifyAction,
+   warningToastifyAction,
+} from "../../store/toastifySlice"
 
 const CommentSection = ({
    comment,
@@ -29,6 +34,7 @@ const CommentSection = ({
    const [comments, setComments] = useState([])
    const textAreaRef = useRef([])
    const [activeInput, setActiveInput] = useState(null)
+   const dispatch = useDispatch()
 
    // ПОЛУЧИТЬ КОМЕНТАРИИ КАРТОЧКИ
    const getAllComments = async () => {
@@ -45,6 +51,7 @@ const CommentSection = ({
    // ДОБАВИТЬ НОВЫЙ КОМЕНТАРИЙ
    const addedComment = async (e) => {
       e.preventDefault()
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const { data } = await axiosInstance.post(
             `/api/comments/${dataCardById.id}`,
@@ -54,21 +61,24 @@ const CommentSection = ({
             }
          )
          getAllComments()
+         dispatch(successToastifyAction("Added comment"))
          return setCommentValue("")
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    // УДАЛИТЬ КОМЕНТАРИЙ
    const deleteComment = async (commentId) => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.delete(
             `/api/comments/${commentId}`
          )
          getAllComments()
+         dispatch(warningToastifyAction("Deleted comment"))
          return null
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    // ИЗМЕНИТЬ КОМЕНТАРИЙ
