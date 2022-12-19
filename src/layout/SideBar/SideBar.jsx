@@ -329,7 +329,7 @@ const StyledContainerSideBar = styled.aside`
    display: flex;
    flex-direction: column;
    width: ${(props) => (props.stateSideBar ? "260px" : "110px")};
-   background: rgba(255, 255, 255, 0.7);
+   background: rgba(248, 248, 248, 0.6);
    transition: all 0.35s ease-out;
    padding-top: 1.7rem;
    margin: 0 20px 0 0;

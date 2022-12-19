@@ -10,7 +10,6 @@ import { getAllWorkspaces } from "../store/workspacesSlice"
 import Participants from "../Components/Participants"
 import { clearBoards } from "../store/boardSlice"
 import Header from "../Components/Header"
-import Participants from "../Components/Participants"
 import ProfileCrud from "../Components/ProfileCrud"
 import { axiosInstance } from "../api/axiosInstance"
 
@@ -74,6 +73,5 @@ const AdminUserLayout = () => {
 export default AdminUserLayout
 
 const Container = styled.div`
-   background-color: #f8f8f8;
    min-height: 100vh;
 `
