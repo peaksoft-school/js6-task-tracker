@@ -65,7 +65,7 @@ function ProfileCrud({ profileData, setProfileData }) {
                firstName: profileData.firstName,
                lastName: profileData.lastName,
                password: userInfo.password,
-               image: "https://www.shareicon.net/data/512x512/2017/01/06/868320_people_512x512.png",
+               image: "",
             })
             dispatch(successToastifyAction("Updated profiile"))
             return setProfileData(data)
