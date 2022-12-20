@@ -11,7 +11,7 @@ export const loginRequest = (userData) => {
 }
 export const authWithGoogleQuery = (tokenFromFirebase) => {
    return axiosInstance.post(
-      `/api/public/authenticate/google?token=${tokenFromFirebase}`
+      `/api/public/authenticate/google?tokenId=${tokenFromFirebase}`
    )
 }
 export const forgotPasswordQuery = (value) => {

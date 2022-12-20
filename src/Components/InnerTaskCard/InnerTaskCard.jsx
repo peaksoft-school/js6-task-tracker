@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import { TextareaAutosize } from "@mui/material"
-import ProgressBar from "../UI/ProgressBar"
-import closeIcon from "../../assets/icons/closeWhite.svg"
-import Button from "../UI/Button"
 import CustomIcons from "../Column/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
 import SecondBlock from "./SecondBlock"
@@ -14,32 +12,76 @@ import DisplayFlex from "../../layout/DisplayFlex"
 import avatar from "../../assets/svg/userAvatar.svg"
 import UserAvatar from "../UI/UserAvatar"
 import { axiosInstance } from "../../api/axiosInstance"
+import {
+   loadingToastifyAction,
+   successToastifyAction,
+   errorToastifyAction,
+   warningToastifyAction,
+} from "../../store/toastifySlice"
+import useTwoActive from "../../utilits/hooks/useTwoActive"
+import CheckList from "./CheckList"
+import Arrow from "../UI/Arrow"
 
 const InnerTaskCard = ({
    dataCardById,
    getCardById,
    updateColumnAndCloseModal,
    getDataInArchive,
-   firstActive,
 }) => {
+   const dispatch = useDispatch()
+   const [checkList, setCheckList] = useState([])
+   const [newCheckListTitle, setNewCheckListTitle] = useState("")
+   const { setTwoActive, firstActive, secondActive } = useTwoActive()
    const updateColumnAndCloseModalHandler = () => {
       updateColumnAndCloseModal()
    }
-
-   const firstEightMembers = dataCardById?.memberResponses.slice(0, 8)
-
-   const deleteLabelInInnerTaskCard = async (id) => {
+   const getAllCheckList = async () => {
       try {
-         const response = await axiosInstance.delete(
-            `/api/labels/${dataCardById.id}`
+         const { data } = await axiosInstance(
+            `/api/checklists/${dataCardById.id}`
          )
-         getCardById(firstActive)
-         return console.log(response)
+         data?.sort((a, b) => b.id - a.id)
+         return setCheckList(data)
       } catch (error) {
          return console.log(error.message)
       }
    }
+   const addCheckList = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.post(
+            `/api/checklists/${dataCardById.id}`,
+            {
+               title: newCheckListTitle,
+            }
+         )
+         getAllCheckList()
+         setTwoActive(firstActive, "nothing")
+         setNewCheckListTitle("")
+         dispatch(successToastifyAction("Added checklist to card"))
+         return null
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error something went wrong"))
+      }
+   }
+   const deleteLabelInInnerTaskCard = async (id) => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.put(
+            `/api/labels/${dataCardById.id}/${id}`
+         )
+         getCardById(firstActive)
+         dispatch(warningToastifyAction("Deleted label in card"))
+         return console.log(response)
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error something went wrong"))
+      }
+   }
+   const firstEightMembers = dataCardById?.memberResponses.slice(0, 8)
 
+   useEffect(() => {
+      getAllCheckList()
+   }, [])
    return (
       <DisplayFlex FD="column">
          <CloseButton onClick={() => updateColumnAndCloseModalHandler()} />
@@ -55,10 +97,10 @@ const InnerTaskCard = ({
 
                   {dataCardById?.labelResponses.map((item) => {
                      return (
-                        <Label color={item.color}>
+                        <Label key={item.id} color={item.color}>
                            {item.description}
                            <CloseButton
-                              top="9px"
+                              top="7px"
                               onClick={() =>
                                  deleteLabelInInnerTaskCard(item.id)
                               }
@@ -82,7 +124,7 @@ const InnerTaskCard = ({
                      <Text>Members</Text>
                      <BlockMembers>
                         {firstEightMembers.map((item) => {
-                           return <UserAvatar src={avatar} />
+                           return <UserAvatar key={item.id} src={avatar} />
                         })}
                         {dataCardById.memberResponses.length > 8 ? (
                            <div>
@@ -92,27 +134,52 @@ const InnerTaskCard = ({
                      </BlockMembers>
                   </DisplayFlex>
                </DisplayFlex>
+               <Text
+                  onClick={() =>
+                     setTwoActive(
+                        firstActive,
+                        secondActive !== "Description"
+                           ? "Description"
+                           : "nothing"
+                     )
+                  }
+               >
+                  <Arrow
+                     margin="18px 15px -5px 0"
+                     rotate={
+                        secondActive === "Description" ? "90deg" : "270deg"
+                     }
+                  />
+                  Description
+               </Text>
+               {secondActive === "Description" ? (
+                  <>
+                     <AddDescription />
+                     <ContainerButtons
+                        width="55vw"
+                        titleGrayButton="Cancel"
+                        titleBlueButton="Save"
+                        paddingButton="8px 40px 10px 40px"
+                        widthBlueButton="130px"
+                     />
+                  </>
+               ) : null}
 
-               <Text>Description</Text>
-               <AddDescription />
-               <ContainerButtons
-                  width="55vw"
-                  titleGrayButton="Cancel"
-                  titleBlueButton="Save"
-                  paddingButton="8px 40px 10px 40px"
-                  widthBlueButton="130px"
-               />
-               <ProgressBar
-                  tasks={9}
-                  completedTasks={10}
-                  widthProgressPercent={90}
+               <CheckList
+                  dataCardById={dataCardById}
+                  getCardById={getCardById}
+                  getAllCheckList={getAllCheckList}
+                  checkList={checkList}
                />
             </FirstBlock>
             <SecondBlock
+               addCheckList={addCheckList}
                updateColumnAndCloseModal={updateColumnAndCloseModal}
                getCardById={getCardById}
                dataCardById={dataCardById}
                getDataInArchive={getDataInArchive}
+               setNewCheckListTitle={setNewCheckListTitle}
+               newCheckListTitle={newCheckListTitle}
             />
          </DisplayFlex>
       </DisplayFlex>
@@ -141,7 +208,7 @@ const Label = styled.li`
    position: relative;
    background-color: ${(props) => props.color};
    color: white;
-   padding: 0.4rem 2.5rem 0.1rem 0.7rem;
+   padding: 5px 35px 5px 20px;
    border-radius: 4px;
    list-style: none;
 `
@@ -155,8 +222,9 @@ const AddDescription = styled(TextareaAutosize)`
    border-radius: 7px;
 `
 const Text = styled.p`
+   cursor: pointer;
    color: gray;
-   margin: 6px 0 8px 0;
+   margin: 3px 0 8px 0;
 `
 const Date = styled.div`
    width: 220px;

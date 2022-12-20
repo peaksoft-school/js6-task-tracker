@@ -13,7 +13,7 @@ import logoTaskTracker from "../assets/images/LogoTaskTracker.png"
 import imageLogin from "../assets/images/ImageLogin.png"
 import { authWithGoogle } from "../store/AuthSlice"
 
-const AuthorizationPages = () => {
+const AuthorizationPages = ({ children }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const params = useParams()
@@ -27,6 +27,7 @@ const AuthorizationPages = () => {
    return (
       <AuthorizationContainer>
          <LogoTaskTracker src={logoTaskTracker} alt="Task Tracker" />
+         {children}
          <ContainerForm>
             {typeof params.id === "undefined" && (
                <>

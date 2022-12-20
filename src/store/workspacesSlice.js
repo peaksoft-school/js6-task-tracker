@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { getWorkspacesQuery, createWorkspacesQuery } from "../api/auth"
@@ -63,11 +64,12 @@ export const addWorkspacesToFavourites = createAsyncThunk(
 export const getWorkspacesId = createAsyncThunk(
    "getWorkspace/ById",
    async (value) => {
-      const { id, navigate, where } = value
+      const { id, navigate, path } = value
+
       try {
          const { data } = await axiosInstance.get(`/api/workspace/${id}`)
          if (navigate) {
-            navigate(`/allWorkspaces/workspaces/${id}/${where}`)
+            navigate(`/allWorkspaces/workspaces/${id}/${path}`)
          }
          return data
       } catch (error) {
@@ -78,18 +80,19 @@ export const getWorkspacesId = createAsyncThunk(
 // УДАЛИТЬ WORKSPACE
 export const deleteWorkspaceById = createAsyncThunk(
    "delete/workspaces",
+
    async (value) => {
       const { workspaceId, dispatch, navigate } = value
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.delete(
             `/api/workspace/${workspaceId}`
          )
          navigate("/allWorkspaces")
          dispatch(getAllWorkspaces())
-         return console.log(response)
+         return dispatch(warningToastifyAction("Deleted workspace"))
       } catch (error) {
-         dispatch(errorToastifyAction("Error"))
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error"))
       }
    }
 )
@@ -119,7 +122,11 @@ export const workspacesSlice = createSlice({
       loading: false,
       idToast: 0,
    },
-   reducers: {},
+   reducers: {
+      clearWorkspaces: (state) => {
+         state.workspaces = []
+      },
+   },
    extraReducers: {
       [getAllWorkspaces.pending]: (state) => {
          state.loading = true
@@ -141,3 +148,5 @@ export const workspacesSlice = createSlice({
       },
    },
 })
+
+export const { clearWorkspaces } = workspacesSlice.actions

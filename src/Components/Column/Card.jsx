@@ -66,7 +66,9 @@ const Cards = ({
                <DisplayFlex JK="flex-end" gap="10px">
                   <CustomIcons src={descriptionIcon} />
                   <CustomIcons src={comentIcon} />
-                  <CustomIcons src={completeIcon} />
+                  {item.numberOfSubTasks > 0 && (
+                     <CustomIcons src={completeIcon} />
+                  )}
                   {item.numberOfSubTasks > 0 ? (
                      <span>
                         {item.numberOfCompletedSubTask}/{item.numberOfSubTasks}
@@ -134,14 +136,14 @@ const ContainerCard = styled.div`
    }
 `
 const Label = styled.label`
-   width: ${(props) => !props.showLabel && "4vw"};
-   height: ${(props) => !props.showLabel && "0.6vh"};
-   padding: ${(props) => props.showLabel && "1px 7px"};
+   width: ${(props) => !props.showLabel && "65px"};
+   height: ${(props) => !props.showLabel && "6px"};
+   padding: ${(props) => props.showLabel && "2px 14px"};
    background-color: ${(props) => props.color};
-   font-size: 14px;
+   font-size: 15px;
    cursor: pointer;
    color: white;
-   font-weight: 700;
+   font-weight: 800;
    border-radius: 8px;
    -webkit-transition: width 0.3s 0s ease-out, all 0.5s 0s ease;
    -moz-transition: width 0.3s 0s ease-out, all 0.5s 0s ease;

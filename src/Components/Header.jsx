@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react"
-import { Link, useLocation, useParams } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../store/AuthSlice"
@@ -18,6 +17,7 @@ import { useToggle } from "../utilits/hooks/useToggle"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 import DisplayFlex from "../layout/DisplayFlex"
+import { clearWorkspaces } from "../store/workspacesSlice"
 
 function Header() {
    const { favourites, workspaces } = useSelector((state) => state)
@@ -25,10 +25,7 @@ function Header() {
    const { isActive, setActive } = useToggle()
    const [notification, setNotification] = useState([])
    const [searchResponse, setSearchResponse] = useState([])
-   const [inputValue, setInputValue] = useState("")
    const { pathname } = useLocation()
-   const { workspaceId } = useParams()
-
    const getNotificationHandler = async () => {
       try {
          const { data } = await axiosInstance.get("/api/notifications")
@@ -38,25 +35,24 @@ function Header() {
       }
    }
 
+   const markAsReadNotificaiton = () => {
+      setNotification([])
+      setActive("nothing")
+   }
+
    // ЗАПРОСЫ НА ПОИСКОВИК
 
-   const searchGlobalHandler = async () => {
+   const searchGlobalHandler = async (e) => {
       try {
          setActive("searchDropDown")
          const { data } = await axiosInstance.get(
-            `/api/public/global-search/${workspaceId}?email=${inputValue}`
+            `/api/public/global-search/${workspaces.workspaceById.id}?email=${e.target.value}`
          )
          return setSearchResponse(data)
       } catch (error) {
          return console.log(error.message)
       }
    }
-
-   const changeInputQuery = (searchValue) => {
-      setInputValue(searchValue)
-      searchGlobalHandler()
-   }
-
    useEffect(() => {
       dispatch(getFavourites())
    }, [workspaces])
@@ -67,30 +63,6 @@ function Header() {
 
    const openDropDownFavouritesHandler = () => {
       setActive(isActive !== "favourites" ? "favourites" : "nothing")
-   }
-
-   const renderResponsesSearch = () => {
-      return (
-         <ResponsesSearchBlock>
-            {inputValue.length > 0 && searchResponse.length > 0 ? (
-               searchResponse.map((item) => {
-                  const foundUser = item.firstName
-                     .split("")
-                     .filter((item) => console.log(item))
-
-                  return (
-                     <li key={item.id}>
-                        <UserAvatar src={avatarPhoto} />
-                        <span>{item.firstName}</span>
-                        <span>{item.lastName}</span>
-                     </li>
-                  )
-               })
-            ) : (
-               <p>Nothing found</p>
-            )}
-         </ResponsesSearchBlock>
-      )
    }
 
    return (
@@ -128,9 +100,8 @@ function Header() {
             {pathname !== "/allWorkspaces" ? (
                <ContainerInput>
                   <Input
-                     value={inputValue}
                      onBlur={() => setActive("nothing")}
-                     onChange={(e) => changeInputQuery(e.target.value)}
+                     onChange={(e) => searchGlobalHandler(e)}
                      placeholder="Search"
                   />
                   <SearchIcon src={searchIcon} />
@@ -142,7 +113,21 @@ function Header() {
                right="11.5%"
                top="79%"
             >
-               {renderResponsesSearch()}
+               <ResponsesSearchBlock>
+                  {searchResponse.length > 0 ? (
+                     searchResponse.map((item) => {
+                        return (
+                           <li key={item.id}>
+                              <UserAvatar src={item.image} />
+                              <span>{item.firstName}</span>
+                              <span>{item.lastName}</span>
+                           </li>
+                        )
+                     })
+                  ) : (
+                     <p>Nothing found</p>
+                  )}
+               </ResponsesSearchBlock>
             </DropDown>
 
             <NotificationIconContainer
@@ -157,12 +142,16 @@ function Header() {
             </NotificationIconContainer>
             <DropDown
                showState={isActive === "notification"}
-               width="390px"
+               width="380px"
                height="90vh"
                top="60px"
                right="80px"
+               padding="10px 10px 0 10px"
             >
-               <Notification notification={notification} />
+               <Notification
+                  markAsReadNotificaiton={markAsReadNotificaiton}
+                  notification={notification}
+               />
             </DropDown>
 
             <UserAvatar
@@ -181,7 +170,13 @@ function Header() {
                   <Link to="profile">
                      <p>Profile</p>
                   </Link>
-                  <p onClick={() => dispatch(logout())}>Logout</p>
+                  <p
+                     onClick={() =>
+                        dispatch(logout({ dispatch, clearWorkspaces }))
+                     }
+                  >
+                     Logout
+                  </p>
                </ProfileLogout>
             </DropDown>
          </DisplayFlex>

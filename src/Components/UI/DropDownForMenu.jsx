@@ -1,8 +1,8 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
-import { fadeIn } from "react-animations"
+import { fadeInRightBig } from "react-animations"
 
-const ReusableDropDown = ({
+const DropDownForMenu = ({
    width,
    height,
    top,
@@ -11,6 +11,7 @@ const ReusableDropDown = ({
    children,
    showState,
    right,
+   animation,
 }) => {
    return (
       showState && (
@@ -21,6 +22,7 @@ const ReusableDropDown = ({
             left={left}
             width={width}
             height={height}
+            animaiton={animation}
          >
             {children}
          </DropDownContainer>
@@ -28,9 +30,9 @@ const ReusableDropDown = ({
    )
 }
 
-export default ReusableDropDown
+export default DropDownForMenu
 
-const bounceAnimation = keyframes`${fadeIn}`
+const bounceAnimation = keyframes`${fadeInRightBig}`
 
 const DropDownContainer = styled.div`
    background-color: white;
@@ -48,5 +50,5 @@ const DropDownContainer = styled.div`
    -webkit-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    -moz-box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
    box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
-   animation: 0.2s ${bounceAnimation};
+   animation: 0.3s ${bounceAnimation} !important;
 `
