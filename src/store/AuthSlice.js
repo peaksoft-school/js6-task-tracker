@@ -101,7 +101,7 @@ export const forgotPassword = createAsyncThunk(
 // SIGN UP WITH GOOGLE INVITED USER
 export const authWithGoogleInvitedUser = createAsyncThunk(
    "singinWithGoogle/InvitedUser",
-   async ({ role, workspaceId, navigate, dispatch }) => {
+   async ({ role, workspaceId, navigate, dispatch, boardId }) => {
       dispatch(loadingToastifyAction("...Loading"))
       try {
          const { user } = await signInWithPopup(auth, provider)
@@ -112,12 +112,17 @@ export const authWithGoogleInvitedUser = createAsyncThunk(
                token: user.accessToken,
                isAdmin,
                isBoard: false,
-               workspaceOrBoardId: workspaceId,
+               workspaceOrBoardId: boardId || workspaceId,
             }
          )
-         console.log(data)
          if (data.jwt) localStorageHelpers.saveData(USER_KEY, data)
-         navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
+         if (boardId) {
+            navigate(
+               `/allWorkspaces/workspaces/${workspaceId}/boards/${boardId}`
+            )
+         } else {
+            navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
+         }
          dispatch(successToastifyAction(`Welcome ${data.firstName}`))
          return data
       } catch (error) {

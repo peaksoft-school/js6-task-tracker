@@ -17,7 +17,7 @@ function Invite({ setTwoActive }) {
             "/api/participant/board-invite",
             {
                email: value.email,
-               link: "",
+               link: "192.168.1.210:3002/signIn/",
                role: value.role,
                workspacOrBoardId: boardId,
             }
@@ -25,7 +25,6 @@ function Invite({ setTwoActive }) {
          console.log(data, "response")
          return null
       } catch (error) {
-         console.log(error)
          return error
       }
    }
