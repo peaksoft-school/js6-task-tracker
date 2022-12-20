@@ -2,12 +2,10 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import { TextareaAutosize } from "@mui/material"
 import CustomIcons from "../Column/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
 import SecondBlock from "./SecondBlock"
 import CloseButton from "../UI/CloseButton"
-import ContainerButtons from "../UI/ContainerButtons"
 import DisplayFlex from "../../layout/DisplayFlex"
 import avatar from "../../assets/svg/userAvatar.svg"
 import UserAvatar from "../UI/UserAvatar"
@@ -21,6 +19,8 @@ import {
 import useTwoActive from "../../utilits/hooks/useTwoActive"
 import CheckList from "./CheckList"
 import Arrow from "../UI/Arrow"
+import Description from "./Description"
+import EditIcon from "../../assets/icons/Icon Shape (1).svg"
 
 const InnerTaskCard = ({
    dataCardById,
@@ -151,19 +151,9 @@ const InnerTaskCard = ({
                      }
                   />
                   Description
+                  <CustomIcons top="3px" src={EditIcon} />
                </Text>
-               {secondActive === "Description" ? (
-                  <>
-                     <AddDescription />
-                     <ContainerButtons
-                        width="55vw"
-                        titleGrayButton="Cancel"
-                        titleBlueButton="Save"
-                        paddingButton="8px 40px 10px 40px"
-                        widthBlueButton="130px"
-                     />
-                  </>
-               ) : null}
+               {secondActive === "Description" ? <Description /> : null}
 
                <CheckList
                   dataCardById={dataCardById}
@@ -203,15 +193,6 @@ const Label = styled.li`
    padding: 5px 35px 5px 20px;
    border-radius: 4px;
    list-style: none;
-`
-const AddDescription = styled(TextareaAutosize)`
-   width: 55vw;
-   min-height: 15vh;
-   font-size: 1.1rem;
-   resize: none;
-   padding: 0.5rem 0.3rem 0.3rem 0.5rem;
-   margin: 0 0 10px 0;
-   border-radius: 7px;
 `
 const Text = styled.p`
    cursor: pointer;
