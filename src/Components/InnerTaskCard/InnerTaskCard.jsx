@@ -216,9 +216,9 @@ const Text = styled.p`
    color: gray;
    margin: 3px 0 8px 0;
 `
-const DescriptionText = styled.p`
-   max-width: 50vw;
-   border: 1px solid yellow;
+const DescriptionText = styled.div`
+   max-width: 55vw;
+   min-height: 50px;
 `
 const Date = styled.div`
    width: 220px;

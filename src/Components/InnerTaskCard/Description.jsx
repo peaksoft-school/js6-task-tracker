@@ -1,8 +1,14 @@
 import React from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import TextAreaAutoSize from "react-textarea-autosize"
 import ContainerButtons from "../UI/ContainerButtons"
 import { axiosInstance } from "../../api/axiosInstance"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   successToastifyAction,
+} from "../../store/toastifySlice"
 
 const Description = ({
    dataCardById,
@@ -10,6 +16,7 @@ const Description = ({
    firstActive,
    setTwoActive,
 }) => {
+   const dispatch = useDispatch()
    const changeInputDescription = (e) => {
       const newDataCardById = { ...dataCardById }
       newDataCardById.description = e.target.value
@@ -17,6 +24,7 @@ const Description = ({
    }
 
    const changeDescriptionQuery = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.put("/api/cards", {
             cardId: dataCardById.id,
@@ -24,9 +32,10 @@ const Description = ({
             description: dataCardById.description,
          })
          setTwoActive(firstActive, "nothing")
+         dispatch(successToastifyAction("Description updated"))
          return console.log(response)
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error,something went wrong"))
       }
    }
 
@@ -50,9 +59,7 @@ const Description = ({
 }
 
 export default Description
-const ContainerDesctiption = styled.div`
-   border: 1px solid red;
-`
+const ContainerDesctiption = styled.div``
 const StyledDescription = styled(TextAreaAutoSize)`
    width: 55vw;
    min-height: 15vh;
