@@ -7,6 +7,11 @@ import DisplayFlex from "../../layout/DisplayFlex"
 import ContainerButtons from "../UI/ContainerButtons"
 import Input from "../UI/Input"
 import { getBoardByIdQuery } from "../../store/boardSlice"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   successToastifyAction,
+} from "../../store/toastifySlice"
 
 const ChangeBoard = ({ setActive }) => {
    const { boardId, workspaceId } = useParams()
@@ -14,19 +19,17 @@ const ChangeBoard = ({ setActive }) => {
    const [inputValue, setInputValue] = useState(boardById.title)
    const dispatch = useDispatch()
    const changedNameBoard = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
-         const response = await axiosInstance.put(
-            `/api/boards/title/${boardId}`,
-            {
-               workspaceId,
-               title: inputValue,
-               background: "",
-            }
-         )
+         const response = await axiosInstance.put("/api/boards/title", {
+            id: boardId,
+            newTitle: inputValue,
+         })
          dispatch(getBoardByIdQuery(boardId))
-         return setActive()
+         dispatch(successToastifyAction("Changed title board"))
+         return setActive("nothing")
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
 

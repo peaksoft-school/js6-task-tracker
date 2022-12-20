@@ -27,6 +27,7 @@ const BlockProgressBar = styled.div`
    align-items: center;
    justify-content: space-between;
    height: 5vh;
+   margin-bottom: 13px;
    span {
       font-size: 15px;
       color: #787878;
@@ -50,5 +51,5 @@ const StyledProgress = styled.div`
    height: 1vh;
    background: #0079bf;
    border-radius: 8px;
-   transition: width 1s ease-in-out;
+   transition: width 0.5s ease-in-out;
 `

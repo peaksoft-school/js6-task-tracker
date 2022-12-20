@@ -47,7 +47,6 @@ const Block = styled.div`
    justify-content: space-between;
    height: 50px;
    align-items: center;
-   padding: 20px 20px 0 20px;
    h2 {
       font-weight: 500;
    }

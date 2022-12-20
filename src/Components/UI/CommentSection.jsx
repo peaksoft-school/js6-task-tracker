@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import TimeAgo from "react-timeago"
 import TextareaAutosize from "react-textarea-autosize"
 import UserAvatar from "./UserAvatar"
@@ -14,6 +15,10 @@ import Input from "./Input"
 import { axiosInstance } from "../../api/axiosInstance"
 import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
+import {
+   errorToastifyAction,
+   warningToastifyAction,
+} from "../../store/toastifySlice"
 
 const CommentSection = ({
    comment,
@@ -29,12 +34,13 @@ const CommentSection = ({
    const [comments, setComments] = useState([])
    const textAreaRef = useRef([])
    const [activeInput, setActiveInput] = useState(null)
+   const dispatch = useDispatch()
 
    // ПОЛУЧИТЬ КОМЕНТАРИИ КАРТОЧКИ
    const getAllComments = async () => {
       try {
          const { data } = await axiosInstance(
-            `/api/comments/card/${dataCardById.id}`
+            `/api/comments/${dataCardById.id}`
          )
          data?.sort((a, b) => b.id - a.id)
          return setComments(data)
@@ -45,29 +51,34 @@ const CommentSection = ({
    // ДОБАВИТЬ НОВЫЙ КОМЕНТАРИЙ
    const addedComment = async (e) => {
       e.preventDefault()
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const { data } = await axiosInstance.post(
-            `/api/comments/card/${dataCardById.id}`,
+            `/api/comments/${dataCardById.id}`,
             {
                text: commentValue,
+               createdAt: new Date(),
             }
          )
          getAllComments()
+         dispatch(successToastifyAction("Added comment"))
          return setCommentValue("")
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    // УДАЛИТЬ КОМЕНТАРИЙ
    const deleteComment = async (commentId) => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.delete(
             `/api/comments/${commentId}`
          )
          getAllComments()
+         dispatch(warningToastifyAction("Deleted comment"))
          return null
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    // ИЗМЕНИТЬ КОМЕНТАРИЙ
@@ -76,12 +87,12 @@ const CommentSection = ({
       newComments[e.target.name].text = e.target.value
       return setComments(newComments)
    }
-
    const changeComment = async (e, id) => {
       e.preventDefault()
       try {
-         const response = await axiosInstance.put(`/api/comments/${id}`, {
-            text: e.target.value,
+         const response = await axiosInstance.put(`/api/comments/`, {
+            id,
+            newTitle: e.target.value,
          })
          setActiveInput(0)
          return getAllComments()
@@ -135,7 +146,7 @@ const CommentSection = ({
                               margin="9px 0 0 0"
                               JK="space-between"
                            >
-                              <TimeAgo date={new Date()} />
+                              <TimeAgo date={item.createdAt} />
                               <BlockEditDeleteButton>
                                  <p
                                     onClick={() =>
