@@ -126,8 +126,16 @@ const TitleCard = styled.h3`
 `
 const FirstBlock = styled.div`
    width: 130vw;
-   overflow: scroll;
+   overflow-y: scroll;
    height: 73vh;
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+   ::-webkit-scrollbar-thumb {
+      border-radius: 16px;
+      background-color: #d9d9d9;
+      border: 6px solid white;
+   }
 `
 const Label = styled.li`
    position: relative;

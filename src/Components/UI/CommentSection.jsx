@@ -191,6 +191,14 @@ const ContainerComment = styled.div`
    overflow: scroll;
    max-height: ${(props) => (props.sizeComment ? "51vh" : "62.6vh")};
    min-height: ${(props) => (props.sizeComment ? "34.3vh" : "45.8vh")};
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+   ::-webkit-scrollbar-thumb {
+      border-radius: 16px;
+      background-color: #d9d9d9;
+      border: 6px solid white;
+   }
 `
 const Comment = styled.div`
    display: flex;

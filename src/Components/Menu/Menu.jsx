@@ -20,7 +20,7 @@ import HeaderDropDown from "./HeaderDropDown"
 import Cards from "../Column/Card"
 import GrayButton from "../UI/GrayButtons"
 import filterSvg from "../../assets/icons/filter.svg"
-import UserCount from "../UI/UserCount"
+import UserCount from "../UI/UsersCount"
 
 const Menu = ({ getCardById, cardById, archiveData }) => {
    const navigate = useNavigate()
