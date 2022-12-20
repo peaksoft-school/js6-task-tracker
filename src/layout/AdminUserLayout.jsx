@@ -36,6 +36,7 @@ const AdminUserLayout = () => {
    useEffect(() => {
       if (pathname === "/allWorkspaces") dispatch(clearBoards())
    }, [pathname])
+
    return (
       <Container>
          <Header profileData={profileData} role={role} />
