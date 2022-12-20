@@ -117,6 +117,7 @@ const InnerBoard = () => {
          >
             {firstActive === `${cardById?.id}`}
             <InnerTaskCard
+               setCardById={setCardById}
                firstActive={firstActive}
                updateColumnAndCloseModal={updateColumnAndCloseModal}
                getDataInArchive={getDataInArchive}

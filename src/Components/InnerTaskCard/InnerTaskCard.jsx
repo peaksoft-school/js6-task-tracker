@@ -27,11 +27,13 @@ const InnerTaskCard = ({
    getCardById,
    updateColumnAndCloseModal,
    getDataInArchive,
+   setCardById,
 }) => {
    const dispatch = useDispatch()
    const [checkList, setCheckList] = useState([])
    const [newCheckListTitle, setNewCheckListTitle] = useState("")
    const { setTwoActive, firstActive, secondActive } = useTwoActive()
+
    const updateColumnAndCloseModalHandler = () => {
       updateColumnAndCloseModal()
    }
@@ -82,6 +84,7 @@ const InnerTaskCard = ({
    useEffect(() => {
       getAllCheckList()
    }, [])
+
    return (
       <DisplayFlex FD="column">
          <CloseButton onClick={() => updateColumnAndCloseModalHandler()} />
@@ -151,10 +154,23 @@ const InnerTaskCard = ({
                      }
                   />
                   Description
-                  <CustomIcons top="3px" src={EditIcon} />
+                  <CustomIcons
+                     position="absolute"
+                     right="78%"
+                     top="18px"
+                     src={EditIcon}
+                  />
                </Text>
-               {secondActive === "Description" ? <Description /> : null}
-
+               {secondActive === "Description" ? (
+                  <Description
+                     firstActive={firstActive}
+                     setTwoActive={setTwoActive}
+                     setCardById={setCardById}
+                     dataCardById={dataCardById}
+                  />
+               ) : (
+                  <DescriptionText>{dataCardById.description}</DescriptionText>
+               )}
                <CheckList
                   dataCardById={dataCardById}
                   getCardById={getCardById}
@@ -196,8 +212,13 @@ const Label = styled.li`
 `
 const Text = styled.p`
    cursor: pointer;
+   position: relative;
    color: gray;
    margin: 3px 0 8px 0;
+`
+const DescriptionText = styled.p`
+   max-width: 50vw;
+   border: 1px solid yellow;
 `
 const Date = styled.div`
    width: 220px;
