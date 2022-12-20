@@ -10,7 +10,6 @@ import imageLogin from "../../assets/images/ImageLogin.png"
 import DisplayFlex from "../../layout/DisplayFlex"
 
 const InvitedUser = () => {
-   const { loading } = useSelector((state) => state.auth)
    const { role, workspaceId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()

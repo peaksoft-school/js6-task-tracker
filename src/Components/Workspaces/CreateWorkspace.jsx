@@ -28,7 +28,7 @@ const CreateWorkspaces = ({ toggle }) => {
       const readyData = {
          emails: emails.length !== 0 ? emails : [data.email],
          name: data.name,
-         link: "192.168.0.152/signIn",
+         link: "192.168.1.40:3002/signIn",
       }
       dispatch(createWorkspaces({ readyData, dispatch }))
       toggle("false")

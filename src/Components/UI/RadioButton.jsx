@@ -39,7 +39,7 @@ export default RadioButton
 const RadioGroup = styled.div`
    display: flex;
    gap: 25px;
-   margin: 19px 179px 0 0;
+   margin: 19px 186px 0 0;
    width: 205px;
    height: 24px;
    .real-radio {

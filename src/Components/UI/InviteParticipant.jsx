@@ -20,7 +20,10 @@ function InviteParticipant({ data, setTwoActive, secondActive, firstActive }) {
          <InviteBlock>
             <TitleDrop>
                <p>Participant</p>
-               <CloseDropButton src={closeDrop} />
+               <CloseDropButton
+                  onClick={() => setTwoActive("nothing")}
+                  src={closeDrop}
+               />
             </TitleDrop>
 
             <ContainerInput>
@@ -50,11 +53,11 @@ function InviteParticipant({ data, setTwoActive, secondActive, firstActive }) {
             </ContainerInput>
             <Modal
                isOpen={secondActive === "addNewParticipants"}
-               onClose={() => setTwoActive("nothing", "nothing")}
+               onClose={() => setTwoActive("openListUser", "nothing")}
                width="425px"
                height="202px"
             >
-               <Invite label="Email@gmail.com" />
+               <Invite setTwoActive={setTwoActive} label="Email@gmail.com" />
             </Modal>
          </InviteBlock>
       </div>

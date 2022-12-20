@@ -4,18 +4,25 @@ import styled from "styled-components"
 import { axiosInstance } from "../../api/axiosInstance"
 import Button from "./Button"
 import Input from "./Input"
+import backSvg from "../../assets/svg/backSvg.svg"
+import closeDrop from "../../assets/icons/close.svg"
 import RadioButton from "./RadioButton"
 
-function Invite() {
+function Invite({ setTwoActive }) {
    const [value, setValue] = useState({})
    const { boardId } = useParams()
    const postData = async () => {
       try {
-         await axiosInstance.post("/api/participant/board-invite", {
-            email: value.email,
-            role: value.role,
-            workspacOrBoardId: boardId,
-         })
+         const { data } = await axiosInstance.post(
+            "/api/participant/board-invite",
+            {
+               email: value.email,
+               link: "",
+               role: value.role,
+               workspacOrBoardId: boardId,
+            }
+         )
+         console.log(data, "response")
          return null
       } catch (error) {
          console.log(error)
@@ -24,7 +31,19 @@ function Invite() {
    }
    return (
       <Container>
-         <p>Invite a new participant</p>
+         <TitleDrop>
+            <img
+               onClick={() => setTwoActive("openListUser")}
+               src={backSvg}
+               alt=""
+            />
+            <p>Invite a new participant</p>
+            <img
+               onClick={() => setTwoActive("openListUser")}
+               src={closeDrop}
+               alt=""
+            />
+         </TitleDrop>
          <Box className="box">
             <Input
                label="Example@gmail.com"
@@ -36,11 +55,13 @@ function Invite() {
             />
             <ButtonBox>
                <Button
+                  hover="white"
                   textColor="#919191"
                   fullHeight="34px"
                   fullWidth="77px"
                   color="#F0F0F0"
                   padding="0"
+                  onClick={() => setTwoActive("openListUser", "nothing")}
                >
                   Cansel
                </Button>
@@ -82,4 +103,16 @@ const ButtonBox = styled.div`
    width: 171px;
    height: 34px;
    margin: 16px 0;
+`
+
+const TitleDrop = styled.div`
+   display: flex;
+   margin: 10px 10px 0 10px;
+   justify-content: space-between;
+   p {
+      text-align: center;
+   }
+   img {
+      cursor: pointer;
+   }
 `

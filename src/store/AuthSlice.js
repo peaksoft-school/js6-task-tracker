@@ -115,9 +115,9 @@ export const authWithGoogleInvitedUser = createAsyncThunk(
                workspaceOrBoardId: workspaceId,
             }
          )
-
+         console.log(data)
          if (data.jwt) localStorageHelpers.saveData(USER_KEY, data)
-         navigate("/allWorkspaces")
+         navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
          dispatch(successToastifyAction(`Welcome ${data.firstName}`))
          return data
       } catch (error) {
