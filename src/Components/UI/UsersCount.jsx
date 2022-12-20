@@ -70,9 +70,9 @@ function UserCount({ width, height, top, left }) {
                <MemberItem
                   key={state.id}
                   role={state.role}
-                  photoUser={state.image}
-                  userName={state.firstName}
-                  userGmail={state.email}
+                  image={state.image}
+                  firstname={state.firstName}
+                  email={state.email}
                />
                <MoreInput role={state.role}>
                   {state.role === "ADMIN" ? (
