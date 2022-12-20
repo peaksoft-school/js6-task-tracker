@@ -173,12 +173,11 @@ const CheckList = ({ checkList, getAllCheckList }) => {
                   ) : null}
                   {activeCheckList === item.id && createSubTask ? (
                      <>
-                        <DisplayFlex gap="7px">
-                           <CheckBox margin="3px 0 0 10px" />
+                        <DisplayFlex>
                            <TextArea
                               onChange={(e) => setTitleSubTask(e.target.value)}
                               value={titleSubTask}
-                              width="54vw"
+                              width="57vw"
                            />
                         </DisplayFlex>
                         <ContainerButtons

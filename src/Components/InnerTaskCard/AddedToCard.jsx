@@ -31,7 +31,7 @@ import {
 } from "../../store/toastifySlice"
 import { useData } from "../../utilits/hooks/useData"
 
-const SecondBlock = ({
+const AddedToCard = ({
    dataCardById,
    getCardById,
    updateColumnAndCloseModal,
@@ -39,6 +39,7 @@ const SecondBlock = ({
    addCheckList,
    newCheckListTitle,
    setNewCheckListTitle,
+   updateEstimation,
 }) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
@@ -113,10 +114,20 @@ const SecondBlock = ({
          return console.log(error.message)
       }
    }
-   const getDateTimeValue = (data) => {
-      console.log(data)
+   const setEstimation = async (data) => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.post(
+            `/api/estimation/${dataCardById.id}`,
+            data
+         )
+         dispatch(successToastifyAction("Added estimation"))
+         getCardById(firstActive)
+         return setTwoActive(firstActive, "nothing")
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error"))
+      }
    }
-
    useEffect(() => {
       getReadyLabelsQuery()
    }, [])
@@ -207,7 +218,13 @@ const SecondBlock = ({
                            />
                         </ContainerText>
 
-                        <DateTimePicker getDateTimeValue={getDateTimeValue} />
+                        <DateTimePicker
+                           getDateTimeValue={
+                              dataCardById.estimationResponse.id
+                                 ? updateEstimation
+                                 : setEstimation
+                           }
+                        />
                      </DropDown>
 
                      <DropDown
@@ -316,7 +333,7 @@ const SecondBlock = ({
    )
 }
 
-export default SecondBlock
+export default AddedToCard
 
 const StyledSecondBlock = styled.div`
    width: 76vw;

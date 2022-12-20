@@ -29,11 +29,11 @@ export default function DateTimePicker({ getDateTimeValue }) {
    }
    const creteTemplateHandler = () => {
       const dateData = {
-         startDate: startDate.$d.toLocaleDateString(),
-         dueDate: dueDate.$d.toLocaleDateString(),
-         dueTime: dueTimeValue.target.value,
-         startTime: startTimeValue.target.value,
-         reminder,
+         startDate: startDate?.$d?.toLocaleDateString() || "",
+         dueDate: dueDate?.$d?.toLocaleDateString() || "",
+         dueTime: dueTimeValue?.target?.value || "",
+         startTime: startTimeValue?.target?.value || "",
+         reminder: reminder || "",
       }
       getDateTimeValue(dateData)
    }

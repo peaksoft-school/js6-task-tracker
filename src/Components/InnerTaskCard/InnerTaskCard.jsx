@@ -1,10 +1,11 @@
+/* eslint-disable no-self-compare */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import CustomIcons from "../Column/CustomIcons"
 import plusIcon from "../../assets/icons/whitePlus.svg"
-import SecondBlock from "./SecondBlock"
+import AddedToCard from "./AddedToCard"
 import CloseButton from "../UI/CloseButton"
 import DisplayFlex from "../../layout/DisplayFlex"
 import avatar from "../../assets/svg/userAvatar.svg"
@@ -21,6 +22,8 @@ import CheckList from "./CheckList"
 import Arrow from "../UI/Arrow"
 import Description from "./Description"
 import EditIcon from "../../assets/icons/Icon Shape (1).svg"
+import DateAdded from "../UI/DateAdded"
+import ContainerButtons from "../UI/ContainerButtons"
 
 const InnerTaskCard = ({
    dataCardById,
@@ -32,8 +35,27 @@ const InnerTaskCard = ({
    const dispatch = useDispatch()
    const [checkList, setCheckList] = useState([])
    const [newCheckListTitle, setNewCheckListTitle] = useState("")
+   const [showInputTitle, setShowInputTitle] = useState(false)
    const { setTwoActive, firstActive, secondActive } = useTwoActive()
-
+   const changeTitle = (e) => {
+      const newDataCardById = { ...dataCardById }
+      newDataCardById.title = e.target.value
+      return setCardById(newDataCardById)
+   }
+   const setNewTitle = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.put("/api/cards", {
+            cardId: dataCardById.id,
+            newTitle: dataCardById.title,
+            description: "",
+         })
+         setShowInputTitle(false)
+         return dispatch(successToastifyAction("Updated title"))
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error,something went wrong"))
+      }
+   }
    const updateColumnAndCloseModalHandler = () => {
       updateColumnAndCloseModal()
    }
@@ -81,6 +103,21 @@ const InnerTaskCard = ({
    }
    const firstEightMembers = dataCardById?.memberResponses.slice(0, 8)
 
+   const updateEstimation = async (data) => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.put(
+            `/api/estimation/${dataCardById.id}`,
+            data
+         )
+         getCardById(firstActive)
+         setTwoActive(firstActive, "nothing")
+         return dispatch(successToastifyAction("Updated estimation"))
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error, something went wrong"))
+      }
+   }
+
    useEffect(() => {
       getAllCheckList()
    }, [])
@@ -90,38 +127,75 @@ const InnerTaskCard = ({
          <CloseButton onClick={() => updateColumnAndCloseModalHandler()} />
          <DisplayFlex>
             <FirstBlock>
-               <TitleCard>{dataCardById?.title}</TitleCard>
-               <DisplayFlex FW="wrap" gap="0.5rem">
-                  {dataCardById?.labelResponses.length !== 0 ? (
-                     <Text>Labels</Text>
+               <TitleCard>
+                  <CustomIcons
+                     onClick={() => setShowInputTitle(!showInputTitle)}
+                     position="absolute"
+                     right="96.5%"
+                     top="17px"
+                     src={EditIcon}
+                  />
+                  {showInputTitle ? (
+                     <>
+                        <InputTitle
+                           onChange={(e) => changeTitle(e)}
+                           value={dataCardById?.title}
+                           autoFocus
+                        />
+                        <ContainerButtons
+                           width="50vw"
+                           titleGrayButton="Cancel"
+                           titleBlueButton="Save"
+                           paddingButton="5px 40px 5px 40px"
+                           widthBlueButton="130px"
+                           clickBlueButton={setNewTitle}
+                           clickGrayButton={() => setShowInputTitle(false)}
+                        />
+                     </>
                   ) : (
-                     ""
+                     dataCardById?.title
                   )}
+               </TitleCard>
+               {dataCardById?.labelResponses.length !== 0 ? (
+                  <DisplayFlex margin="10px 0 0 0" gap="0.5rem" FD="column">
+                     <Text>Labels</Text>
+                     <DisplayFlex FW="wrap" gap="0.5rem">
+                        {dataCardById?.labelResponses.map((item) => {
+                           return (
+                              <Label key={item.id} color={item.color}>
+                                 {item.description}
+                                 <CloseButton
+                                    top="7px"
+                                    onClick={() =>
+                                       deleteLabelInInnerTaskCard(item.id)
+                                    }
+                                 />
+                              </Label>
+                           )
+                        })}
+                     </DisplayFlex>
+                  </DisplayFlex>
+               ) : (
+                  ""
+               )}
 
-                  {dataCardById?.labelResponses.map((item) => {
-                     return (
-                        <Label key={item.id} color={item.color}>
-                           {item.description}
-                           <CloseButton
-                              top="7px"
-                              onClick={() =>
-                                 deleteLabelInInnerTaskCard(item.id)
-                              }
-                           />
-                        </Label>
-                     )
-                  })}
-
-                  <CustomIcons src={plusIcon} />
-               </DisplayFlex>
                <DisplayFlex margin="10px 0 0 0" gap="20px">
                   <DisplayFlex FD="column">
                      <Text>Start date</Text>
-                     <Date>Sep 9,2022 at 12:51PM</Date>
+                     <Date>
+                        <DateAdded
+                           date={dataCardById.estimationResponse.startDateTime}
+                        />
+                     </Date>
                   </DisplayFlex>
                   <DisplayFlex FD="column">
                      <Text>Due date</Text>
-                     <Date>Sep 9,2022 at 12:51pm</Date>
+
+                     <Date>
+                        <DateAdded
+                           date={dataCardById.estimationResponse.dueDateTime}
+                        />
+                     </Date>
                   </DisplayFlex>
                   <DisplayFlex FD="column">
                      <Text>Members</Text>
@@ -154,12 +228,6 @@ const InnerTaskCard = ({
                      }
                   />
                   Description
-                  <CustomIcons
-                     position="absolute"
-                     right="78%"
-                     top="18px"
-                     src={EditIcon}
-                  />
                </Text>
                {secondActive === "Description" ? (
                   <Description
@@ -178,7 +246,8 @@ const InnerTaskCard = ({
                   checkList={checkList}
                />
             </FirstBlock>
-            <SecondBlock
+            <AddedToCard
+               updateEstimation={updateEstimation}
                addCheckList={addCheckList}
                updateColumnAndCloseModal={updateColumnAndCloseModal}
                getCardById={getCardById}
@@ -195,7 +264,18 @@ const InnerTaskCard = ({
 export default InnerTaskCard
 
 const TitleCard = styled.h3`
+   min-height: 20px;
    font-weight: 500;
+   margin: 0 0 0 40px;
+   overflow: hidden;
+   word-wrap: break-word;
+`
+const InputTitle = styled.input`
+   min-width: 50vw;
+   height: 40px;
+   font-size: 1.1rem;
+   padding: 0 0 0 10px;
+   margin-bottom: 10px;
 `
 const FirstBlock = styled.div`
    width: 130vw;
@@ -218,7 +298,7 @@ const Text = styled.p`
 `
 const DescriptionText = styled.div`
    max-width: 55vw;
-   min-height: 50px;
+   min-height: 10px;
 `
 const Date = styled.div`
    width: 220px;

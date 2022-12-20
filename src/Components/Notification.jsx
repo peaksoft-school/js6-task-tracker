@@ -12,7 +12,6 @@ function Notification({ notification, markAsReadNotificaiton }) {
             <h3>Notification</h3>
             <span onClick={markAsReadNotificaiton}>Mark as read</span>
          </TitleBlock>
-
          {notification.map((item) => {
             return (
                <>
