@@ -14,6 +14,7 @@ import { getFavourites } from "./FavouritesSlice"
 export const getAllWorkspaces = createAsyncThunk("workspaces", async () => {
    try {
       const { data } = await getWorkspacesQuery()
+      data?.sort((a, b) => a.id - b.id)
       return data
    } catch (error) {
       return console.log(error.message)

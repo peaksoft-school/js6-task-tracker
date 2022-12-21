@@ -29,8 +29,7 @@ function ProfileCrud({ profileData, setProfileData }) {
    const dispatch = useDispatch()
    const { firstActive, setTwoActive } = useTwoActive()
    const [dialogs, setDialogs] = useState(false)
-   const [imgCrop, setImgCrop] = useState(false)
-
+   const [imgCrop, setImgCrop] = useState(null)
    const onCrop = (view) => {
       setImgCrop(view)
    }
@@ -67,7 +66,7 @@ function ProfileCrud({ profileData, setProfileData }) {
                data: formData,
                headers: { "Content-Type": "multipart/form-data" },
             })
-
+            console.log(response, "resposne")
             // const { data } = await axiosInstance.put("/api/profile", {
             //    firstName: profileData.firstName,
             //    lastName: profileData.lastName,

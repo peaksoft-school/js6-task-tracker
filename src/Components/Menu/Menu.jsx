@@ -52,10 +52,6 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
    return (
       <DisplayFlex JK="space-between" width="40%" gap="8px" margin="0 30px 0 0">
          <UserCount />
-         <img src={star} alt="" />
-         <FilterButton>
-            <img src={filterSvg} alt="filter " /> Filter ( 3 )
-         </FilterButton>
 
          <img
             onClick={() => setActive("menu")}
@@ -169,12 +165,11 @@ const Block = styled.ul`
 `
 const FilterButton = styled.button`
    display: flex;
+   padding: 0 10px 0 10px;
    align-items: center;
-   gap: 5px;
-   padding: 0 15px 0 15px;
    border-radius: 20px;
    border: none;
    color: #438ab4;
-   font-size: 0.9rem;
+   font-size: 0.8rem;
    font-weight: 600;
 `
