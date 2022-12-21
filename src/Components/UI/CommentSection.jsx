@@ -178,7 +178,7 @@ const StyledCommentSection = styled.div`
    width: 33vw;
    position: relative;
    background: #f4f5f7;
-   padding: 1rem;
+   padding: 1rem 1rem;
    border-radius: 8px;
    h3 {
       font-size: 0.9rem;
@@ -199,6 +199,7 @@ const ContainerComment = styled.div`
       background-color: #d9d9d9;
       border: 6px solid white;
    }
+   padding-bottom: 30px;
 `
 const Comment = styled.div`
    display: flex;

@@ -24,6 +24,7 @@ const AdminUserLayout = () => {
    useEffect(() => {
       if (pathname === "/allWorkspaces") dispatch(clearBoards())
    }, [pathname])
+
    return (
       <>
          <Header role={role} />
