@@ -115,7 +115,6 @@ const AddedToCard = ({
       }
    }
    const setEstimation = async (data) => {
-      console.log("done set estimation")
       dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.post(
@@ -171,6 +170,7 @@ const AddedToCard = ({
                                  searchMembersQuery(e.target.value)
                               }
                               placeholder="Search"
+                              autoFocus
                            />
                            <CustomIcons
                               src={searchIcon}

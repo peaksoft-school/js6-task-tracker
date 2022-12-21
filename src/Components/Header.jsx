@@ -7,7 +7,6 @@ import { logout } from "../store/AuthSlice"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
 import searchIcon from "../assets/svg/SearchIcon.svg"
-import UserAvatar from "./UI/UserAvatar"
 import Notification from "./Notification"
 import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
@@ -18,7 +17,8 @@ import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 import DisplayFlex from "../layout/DisplayFlex"
 import { clearWorkspaces } from "../store/workspacesSlice"
-import initialAvatar from "../assets/svg/userAvatar.svg"
+import initialAvatar from "../assets/images/initialAvatar.jpeg"
+import UserAvatar from "./UI/UserAvatar"
 
 function Header({ profileData, getNotificationHandler, notification }) {
    const { favourites, workspaces } = useSelector((state) => state)
@@ -159,7 +159,7 @@ function Header({ profileData, getNotificationHandler, notification }) {
             </DropDown>
 
             <UserAvatar
-               src={profileData.image ? profileData.image : initialAvatar}
+               src={profileData.image || initialAvatar}
                click={() =>
                   setActive(isActive !== "profile" ? "profile" : "nothing")
                }

@@ -4,7 +4,7 @@ import { FormControl, OutlinedInput, InputLabel } from "@mui/material"
 import styled from "styled-components"
 import { HidePassword, ShowPassword } from "../../assets/icons/index"
 
-function PasswordInput({ id, label, error, value, onChange, onBlur }) {
+function PasswordInput({ id, label, error, value, onChange, onBlur, right }) {
    const [inputViewOnOff, setInputViewOnOff] = useState(false)
 
    function handleViewOnOff() {
@@ -24,7 +24,7 @@ function PasswordInput({ id, label, error, value, onChange, onBlur }) {
             label={label}
             type={inputViewOnOff ? "text" : "password"}
          />
-         <Icons>
+         <Icons right={right}>
             {inputViewOnOff ? (
                <ShowPassword onClick={() => handleViewOnOff()} />
             ) : (
@@ -41,7 +41,7 @@ const OutlinedInput1 = styled(OutlinedInput)`
 const Icons = styled.span`
    position: absolute;
    top: 28%;
-   right: 4%;
+   right: ${(props) => (props.right ? props.right : "4%")};
 `
 
 const FormControl1 = styled(FormControl)({
