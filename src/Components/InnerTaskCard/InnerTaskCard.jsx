@@ -201,7 +201,12 @@ const InnerTaskCard = ({
                      <Text>Members</Text>
                      <BlockMembers>
                         {firstEightMembers.map((item) => {
-                           return <UserAvatar key={item.id} src={avatar} />
+                           return (
+                              <UserAvatar
+                                 key={item.id}
+                                 src={item.image ? item.image : avatar}
+                              />
+                           )
                         })}
                         {dataCardById.memberResponses.length > 8 ? (
                            <div>
@@ -279,8 +284,9 @@ const InputTitle = styled.input`
 `
 const FirstBlock = styled.div`
    width: 130vw;
-   overflow-y: scroll;
    height: 73vh;
+   padding: 0;
+   overflow: auto;
    ::-webkit-scrollbar {
       width: 20px;
    }

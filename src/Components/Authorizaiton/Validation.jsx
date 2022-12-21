@@ -21,12 +21,12 @@ export const validationSchema = yup.object({
       .string()
       .min(6, "minimum 6 characters")
       .matches(passwordRules, {
-         message: "think of a more complex password",
+         message: "Please add number and capital letter",
       })
       .required("required field"),
    confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), null], "Пароли не совпадают")
+      .oneOf([yup.ref("password"), null], "Passwords do not match")
       .required("required field"),
 })
 

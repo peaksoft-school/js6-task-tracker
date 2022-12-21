@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import avatar from "../assets/svg/womenAvatar.svg"
 import UserAvatar from "./UI/UserAvatar"
 import arrowRight from "../assets/icons/arrowRight.svg"
 import DateAdded from "./UI/DateAdded"
@@ -12,21 +11,19 @@ function Notification({ notification, markAsReadNotificaiton }) {
             <h3>Notification</h3>
             <span onClick={markAsReadNotificaiton}>Mark as read</span>
          </TitleBlock>
-         {notification.map((item) => {
+
+         {notification?.map((item) => {
             return (
                <>
                   <NotificationBoard key={item.id}>
                      <BlueIcon />
-                     <img
-                        src="https://wallpapercave.com/dwp1x/wp4810861.jpg"
-                        alt="boardPhoto"
-                     />
-                     <h3>Titl of the board</h3>
+                     <img src={item.background} alt="boardPhoto" />
+                     <h3>{item.boardTitle}</h3>
                      <p>Name of the column</p>
                   </NotificationBoard>
                   <StyledNotificationItem>
                      <div>
-                        <UserAvatar src={avatar} />
+                        <UserAvatar src={item.image} />
                         <StyledUserName>
                            <span> {item.firstName}</span>
                            <span> {item.lastName}</span>
