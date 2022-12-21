@@ -17,7 +17,7 @@ function Invite({ setTwoActive }) {
             "/api/participant/board-invite",
             {
                email: value.email,
-               link: "192.168.1.210:3002/signIn/",
+               link: "192.168.218.96:3000/signIn/",
                role: value.role,
                workspacOrBoardId: boardId,
             }
