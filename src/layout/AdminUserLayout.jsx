@@ -15,6 +15,15 @@ import { axiosInstance } from "../api/axiosInstance"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
+   const [notification, setNotification] = useState([])
+   const getNotificationHandler = async () => {
+      try {
+         const { data } = await axiosInstance.get("/api/notifications")
+         return setNotification(data)
+      } catch (error) {
+         return console.log(error)
+      }
+   }
    const [profileData, setProfileData] = useState({})
    const dispatch = useDispatch()
    const { pathname } = useLocation()
@@ -39,7 +48,12 @@ const AdminUserLayout = () => {
 
    return (
       <Container>
-         <Header profileData={profileData} role={role} />
+         <Header
+            notification={notification}
+            getNotificationHandler={getNotificationHandler}
+            profileData={profileData}
+            role={role}
+         />
          <Routes>
             <Route path="" element={<Workspaces role={role} />} />
             <Route
@@ -47,7 +61,14 @@ const AdminUserLayout = () => {
                element={<AllBoards role={role} />}
             >
                <Route path="boards" element={<Boards role={role} />} />
-               <Route path="boards/:boardId" element={<InnerBoard />} />
+               <Route
+                  path="boards/:boardId"
+                  element={
+                     <InnerBoard
+                        getNotificationHandler={getNotificationHandler}
+                     />
+                  }
+               />
                <Route
                   path="allissues"
                   element={

@@ -38,12 +38,13 @@ export default Workspaces
 
 const BlockWorkspaces = styled.div`
    width: 85vw;
+   min-height: 43vw;
    border-radius: 10px;
-   padding-bottom: 20px;
+   padding: 20px 0 20px 0;
    background-color: white;
-   -webkit-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
-   -moz-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
-   box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   -webkit-box-shadow: 0px 6px 8px 1px rgba(34, 60, 80, 0.19);
+   -moz-box-shadow: 0px 6px 8px 1px rgba(34, 60, 80, 0.19);
+   box-shadow: 0px 6px 8px 1px rgba(34, 60, 80, 0.19);
 `
 const Block = styled.div`
    display: flex;
