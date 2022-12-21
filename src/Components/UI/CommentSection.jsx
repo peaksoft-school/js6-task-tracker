@@ -16,8 +16,10 @@ import { axiosInstance } from "../../api/axiosInstance"
 import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
 import {
+   loadingToastifyAction,
    errorToastifyAction,
    warningToastifyAction,
+   successToastifyAction,
 } from "../../store/toastifySlice"
 
 const CommentSection = ({
@@ -189,7 +191,7 @@ const StyledCommentSection = styled.div`
    width: 33vw;
    position: relative;
    background: #f4f5f7;
-   padding: 1rem;
+   padding: 1rem 1rem;
    border-radius: 8px;
    h3 {
       font-size: 0.9rem;
@@ -202,6 +204,7 @@ const ContainerComment = styled.div`
    overflow: scroll;
    max-height: ${(props) => (props.sizeComment ? "51vh" : "62.6vh")};
    min-height: ${(props) => (props.sizeComment ? "34.3vh" : "45.8vh")};
+   padding-bottom: 30px;
 `
 const Comment = styled.div`
    display: flex;
