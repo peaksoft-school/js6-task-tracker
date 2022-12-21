@@ -107,12 +107,12 @@ const InnerTaskCard = ({
       dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.put(
-            `/api/estimation/${dataCardById.id}`,
+            `/api/estimation/${dataCardById.estimationResponse.id}`,
             data
          )
-         getCardById(firstActive)
          setTwoActive(firstActive, "nothing")
-         return dispatch(successToastifyAction("Updated estimation"))
+         dispatch(successToastifyAction("Updated estimation"))
+         return getCardById(firstActive)
       } catch (error) {
          return dispatch(errorToastifyAction("Error, something went wrong"))
       }
