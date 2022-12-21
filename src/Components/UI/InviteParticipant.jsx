@@ -114,7 +114,7 @@ const ListInvite = styled.div`
    overflow: auto;
    margin-top: 8px;
    width: 100%;
-   height: 142px;
+   max-height: 142px;
    list-style: none;
    display: flex;
    flex-direction: column;
