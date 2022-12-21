@@ -57,7 +57,12 @@ function InviteParticipant({ data, setTwoActive, secondActive, firstActive }) {
                width="425px"
                height="202px"
             >
-               <Invite setTwoActive={setTwoActive} label="Email@gmail.com" />
+               <Invite
+                  closeInvite="nothing"
+                  setTwoActive={setTwoActive}
+                  label="Email@gmail.com"
+                  backForList="nothing"
+               />
             </Modal>
          </InviteBlock>
       </div>

@@ -15,7 +15,7 @@ import {
 } from "../../store/toastifySlice"
 import ContainerButtons from "./ContainerButtons"
 
-function Invite() {
+function Invite({ backForList, closeInvite }) {
    const { firstActive, setTwoActive } = useTwoActive()
    const [value, setValue] = useState({})
    const dispatch = useDispatch()
@@ -42,10 +42,14 @@ function Invite() {
    return (
       <Container>
          <TitleDrop>
-            <img onClick={() => setTwoActive("nothing")} src={backSvg} alt="" />
+            <img
+               onClick={() => setTwoActive({ backForList })}
+               src={backSvg}
+               alt=""
+            />
             <p>Invite a new participant</p>
             <img
-               onClick={() => setTwoActive("nothing")}
+               onClick={() => setTwoActive({ closeInvite })}
                src={closeDrop}
                alt=""
             />
@@ -60,7 +64,7 @@ function Invite() {
                name="role"
             />
             <ContainerButtons
-               clickGrayButton={() => setTwoActive("nothing")}
+               clickGrayButton={() => setTwoActive("git")}
                paddingBlueButton="5px 30px 5px 30px"
                titleGrayButton="Cancel"
                clickBlueButton={() => postData()}

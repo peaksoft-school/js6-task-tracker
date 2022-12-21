@@ -50,8 +50,9 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
    }
 
    return (
-      <DisplayFlex JK="space-between" width="50%" gap="8px" margin="0 30px 0 0">
+      <DisplayFlex JK="space-between" width="40%" gap="8px" margin="0 30px 0 0">
          <UserCount />
+         <img src={star} alt="" />
          <FilterButton>
             <img src={filterSvg} alt="filter " /> Filter ( 3 )
          </FilterButton>
