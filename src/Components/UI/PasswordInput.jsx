@@ -1,11 +1,6 @@
 import React, { useState } from "react"
 
-import {
-   IconButton,
-   FormControl,
-   OutlinedInput,
-   InputLabel,
-} from "@mui/material"
+import { FormControl, OutlinedInput, InputLabel } from "@mui/material"
 import styled from "styled-components"
 import { HidePassword, ShowPassword } from "../../assets/icons/index"
 
@@ -28,12 +23,14 @@ function PasswordInput({ id, label, error, value, onChange, onBlur }) {
             error={error}
             label={label}
             type={inputViewOnOff ? "text" : "password"}
-            endAdornment={
-               <IconButton onClick={() => handleViewOnOff()}>
-                  {inputViewOnOff ? <ShowPassword /> : <HidePassword />}
-               </IconButton>
-            }
          />
+         <Icons>
+            {inputViewOnOff ? (
+               <ShowPassword onClick={() => handleViewOnOff()} />
+            ) : (
+               <HidePassword onClick={() => handleViewOnOff()} />
+            )}
+         </Icons>
       </FormControl1>
    )
 }
@@ -41,6 +38,12 @@ function PasswordInput({ id, label, error, value, onChange, onBlur }) {
 const OutlinedInput1 = styled(OutlinedInput)`
    color: #111 !important;
 `
+const Icons = styled.span`
+   position: absolute;
+   top: 28%;
+   right: 4%;
+`
+
 const FormControl1 = styled(FormControl)({
    "& label.Mui-focused": {
       color: "#919191",
@@ -57,6 +60,9 @@ const FormControl1 = styled(FormControl)({
       },
       "&.Mui-focused fieldset": {
          borderColor: "#919191",
+      },
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+         background: "none",
       },
    },
 })

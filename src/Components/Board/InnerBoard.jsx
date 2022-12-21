@@ -166,9 +166,12 @@ const LeftBlock = styled.div`
 `
 const ContainerColumns = styled.div`
    width: 100%;
-   overflow: scroll;
+   overflow: auto;
    display: flex;
    align-items: flex-start;
    gap: 10px;
    height: 76vh;
+   &::-webkit-scrollbar {
+      display: none;
+   }
 `
