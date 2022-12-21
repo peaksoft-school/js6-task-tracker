@@ -53,12 +53,20 @@ export default Notification
 
 const NotificationContainer = styled.div`
    display: flex;
-   overflow: scroll;
+   overflow-y: scroll;
    flex-direction: column;
    width: 350px;
    max-height: 80vh;
    align-items: center;
    padding-bottom: 20px;
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+   ::-webkit-scrollbar-thumb {
+      border-radius: 16px;
+      background-color: #d9d9d9;
+      border: 6px solid white;
+   }
 `
 const TitleBlock = styled.div`
    display: flex;
@@ -86,7 +94,7 @@ const StyledNotificationItem = styled.div`
    width: 330px;
    border-bottom: 1px solid #e3e3e3;
    font-family: "Nunito", sans-serif;
-   margin: 5px 0 15px 0;
+   margin: 5px 10px 15px 10px;
 
    div {
       display: flex;

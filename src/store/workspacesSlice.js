@@ -24,9 +24,11 @@ export const createWorkspaces = createAsyncThunk(
    "worskpaces",
    async (value) => {
       const { readyData, dispatch } = value
+      console.log(readyData, "ready data")
       try {
          dispatch(loadingToastifyAction())
          const { data } = await createWorkspacesQuery(readyData)
+         console.log(data, "data")
          dispatch(getAllWorkspaces())
          if (data) {
             dispatch(successToastifyAction(`Created workspace ${data.name}`))

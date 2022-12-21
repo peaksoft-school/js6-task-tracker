@@ -99,6 +99,9 @@ const Container = styled.div`
       color: #000000;
       text-align: center;
    }
+   ::-webkit-scrollbar {
+      display: none;
+   }
 `
 const Card = styled.div`
    display: flex;

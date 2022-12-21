@@ -1,5 +1,3 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
@@ -13,25 +11,14 @@ import DisplayFlex from "../../layout/DisplayFlex"
 import arrowDownComment from "../../assets/svg/ArrowComment.svg"
 import Input from "./Input"
 import { axiosInstance } from "../../api/axiosInstance"
-import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
-import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
 import {
    loadingToastifyAction,
    errorToastifyAction,
-   warningToastifyAction,
    successToastifyAction,
+   warningToastifyAction,
 } from "../../store/toastifySlice"
 
-const CommentSection = ({
-   comment,
-   dateAdded,
-   userAvatar,
-   editHandle,
-   deleteHandle,
-   showComment,
-   setShowComment,
-   dataCardById,
-}) => {
+const CommentSection = ({ showComment, setShowComment, dataCardById }) => {
    const [commentValue, setCommentValue] = useState("")
    const [comments, setComments] = useState([])
    const textAreaRef = useRef([])
@@ -204,6 +191,14 @@ const ContainerComment = styled.div`
    overflow: scroll;
    max-height: ${(props) => (props.sizeComment ? "51vh" : "62.6vh")};
    min-height: ${(props) => (props.sizeComment ? "34.3vh" : "45.8vh")};
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+   ::-webkit-scrollbar-thumb {
+      border-radius: 16px;
+      background-color: #d9d9d9;
+      border: 6px solid white;
+   }
    padding-bottom: 30px;
 `
 const Comment = styled.div`

@@ -66,12 +66,7 @@ function Participants() {
    }, [filteredUsers, user])
 
    return (
-      <DisplayFlex
-         width="100%"
-         JK="flex-end"
-         padding="12px 16px 0 0"
-         margin="80px 24px 0 24px"
-      >
+      <DisplayFlex width="100%" JK="flex-end" margin="88px 0 0 0 ">
          <Parents showSideBar={showSideBar}>
             <Button>
                <Title>
@@ -164,10 +159,9 @@ function Participants() {
 export default Participants
 
 const Parents = styled.div`
-   width: ${(props) => (props.showSideBar ? "84vw" : "91vw")}!important;
-   margin: ${(props) =>
-      props.showSideBar ? "0 16px 0 250px" : "0 16px 0 100px"}!important;
+   width: ${(props) => (props.showSideBar ? "79vw" : "89vw")}!important;
    transition: all 0.35s ease-out;
+   padding: 0 10px 0 0;
 `
 const Title = styled.div`
    width: 289px;
