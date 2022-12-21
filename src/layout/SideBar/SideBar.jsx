@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useParams, useLocation, useNavigate, Link } from "react-router-dom"
+import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
 import { SideBarItems } from "../../utilits/constants/Constants"
@@ -55,11 +55,12 @@ const SideBar = () => {
    // NAVIGATE FUNCTIONS
    const navigateParticipants = (id) => {
       dispatch(getWorkspacesId({ id, navigate, where: "participants" }))
-      setActiveSideBar("participants")
+      setShowSubMenu({})
    }
-   const navigateBoardsWorkspaces = (id) => {
-      dispatch(getWorkspacesId({ id, navigate, where: "boards" }))
-      setActiveSideBar("boards")
+   const navigateBoardsWorkspaces = (id, path) => {
+      setActiveSideBar(path)
+      dispatch(getWorkspacesId({ id, navigate, path }))
+      setShowSubMenu({})
    }
    // SETTINGS FUNCTIONS
    const changeNameWorkspacesHandler = async () => {
@@ -114,10 +115,6 @@ const SideBar = () => {
          navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
    }
    // CLICK SIDE BAR ITEMS
-   const onClickSideBarItem = (path) => {
-      setActiveSideBar(path)
-      setShowSubMenu({})
-   }
    const showSideBarHandler = () => {
       dispatch(showSideBarAction())
    }
@@ -183,11 +180,25 @@ const SideBar = () => {
             id={showSubMenuBoards[1] ? "arrowUp" : "arrowDown"}
          />
       )
+   const renderTitleWorkspaces = () => {
+      const spliceTitle = workspaceById?.name?.slice(0, 24)
+      return (
+         <p>
+            {showSideBar && workspaceById?.name?.length < 24
+               ? workspaceById?.name
+               : ""}
+            {showSideBar && workspaceById?.name?.length > 24
+               ? `${spliceTitle}...`
+               : ""}
+         </p>
+      )
+   }
+
    return (
       <StyledContainerSideBar stateSideBar={showSideBar}>
          <HeaderSideBar>
             {renderHeaderSideBar()}
-            <p>{showSideBar && workspaceById?.name}</p>
+            {renderTitleWorkspaces()}
             <ShowSideBarButton
                showSideBar={showSideBar}
                onClick={showSideBarHandler}
@@ -204,14 +215,18 @@ const SideBar = () => {
                         <Line stateSideBar={showSideBar} />
                      ) : null}
                      <SideBarTitleBlock
-                        onClick={() => onClickSideBarItem(item.path)}
                         active={activeSideBar === item.path ? "true" : "false"}
                      >
                         <ContainerNavItem
                            active={
                               activeSideBar === item.path ? "true" : "false"
                            }
-                           to={item.path}
+                           onClick={() =>
+                              navigateBoardsWorkspaces(
+                                 workspaceById?.id,
+                                 item.path
+                              )
+                           }
                         >
                            <SvgGenerator
                               id={item.id}
@@ -262,7 +277,7 @@ const SideBar = () => {
                />
             </Modal>
             <Line stateSideBar={showSideBar} marginLeft />
-            <ContainerNavItem to="/allWorkspaces">
+            <ContainerNavItem onClick={() => navigate("/allWorkspaces")}>
                <SvgGenerator id={6} />
                {showSideBar && <span>Workspaces</span>}
             </ContainerNavItem>
@@ -287,7 +302,17 @@ const SideBar = () => {
                            >
                               <ContainerNavItem>
                                  <p>{item.name.toUpperCase().charAt(0)}</p>
-                                 {showSideBar ? <span>{item.name}</span> : null}
+                                 {showSideBar ? (
+                                    <span>
+                                       {" "}
+                                       {item?.name?.length < 15
+                                          ? item?.name
+                                          : ""}
+                                       {item?.name?.length > 15
+                                          ? `${item?.name?.slice(0, 15)}...`
+                                          : ""}
+                                    </span>
+                                 ) : null}
                               </ContainerNavItem>
 
                               {showSideBar ? (
@@ -303,10 +328,13 @@ const SideBar = () => {
                            {showSideBar && showSubMenu[item.id] && (
                               <SubMenu
                                  clickBoards={() =>
-                                    navigateBoardsWorkspaces(item.id)
+                                    navigateBoardsWorkspaces(item?.id, "boards")
                                  }
                                  clickParticipants={() =>
-                                    navigateParticipants(item.id)
+                                    navigateBoardsWorkspaces(
+                                       item?.id,
+                                       "participants"
+                                    )
                                  }
                                  clickSettings={() =>
                                     setNameAndOpenModalSettings(item)
@@ -350,7 +378,7 @@ const StyledContainerSideBar = styled.aside`
       height: 25px;
    }
 `
-const ContainerNavItem = styled(Link)`
+const ContainerNavItem = styled.p`
    display: flex;
    width: 100%;
    height: 40px;
@@ -358,6 +386,7 @@ const ContainerNavItem = styled(Link)`
    padding: 0 0 0 40px;
    text-decoration: none;
    color: ${(props) => (props.active === "true" ? "white" : "black")};
+   cursor: pointer;
    span {
       text-align: start;
       margin: 0 0 0 0.6rem;
@@ -384,9 +413,8 @@ const HeaderSideBar = styled.div`
    p {
       position: absolute;
       left: 50px;
-      width: 160px;
+      width: 150px;
       font-size: 1.3rem;
-      overflow: scroll;
       &::-webkit-scrollbar {
          display: none;
       }
@@ -478,8 +506,10 @@ const Line = styled.hr`
    margin-left: ${(props) => (props.marginLeft ? "28px" : "")};
    margin-right: ${(props) =>
       !props.marginLeft && props.stateSideBar ? "27px" : "10px"};
+
    transition: all 0.35s ease-out;
    &:first-child {
+      margin-top: 10px;
       margin-bottom: 10px;
    }
    &:last-child {

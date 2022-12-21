@@ -5,12 +5,12 @@ import UserAvatar from "./UI/UserAvatar"
 import arrowRight from "../assets/icons/arrowRight.svg"
 import DateAdded from "./UI/DateAdded"
 
-function Notification({ notification }) {
+function Notification({ notification, markAsReadNotificaiton }) {
    return (
       <NotificationContainer>
          <TitleBlock>
             <h3>Notification</h3>
-            <span>Mark as read</span>
+            <span onClick={markAsReadNotificaiton}>Mark as read</span>
          </TitleBlock>
 
          {notification.map((item) => {
@@ -56,7 +56,7 @@ const NotificationContainer = styled.div`
    display: flex;
    overflow: scroll;
    flex-direction: column;
-   width: 380px;
+   width: 350px;
    max-height: 80vh;
    align-items: center;
    padding-bottom: 20px;
@@ -72,8 +72,9 @@ const TitleBlock = styled.div`
    }
    span {
       text-decoration: underline;
-      margin: 0 0 0 35px;
+      margin: 0 0 0 15px;
       color: gray;
+      cursor: pointer;
    }
 `
 const StyledNotificationItem = styled.div`
@@ -83,10 +84,10 @@ const StyledNotificationItem = styled.div`
    align-items: flex-start;
    justify-content: space-evenly;
    height: 120px;
-   width: 350px;
+   width: 330px;
    border-bottom: 1px solid #e3e3e3;
    font-family: "Nunito", sans-serif;
-   margin: 5px 10px 15px 0;
+   margin: 5px 0 15px 0;
 
    div {
       display: flex;
@@ -98,7 +99,7 @@ const NotificationBoard = styled.div`
    background-color: gray;
    background-repeat: no-repeat;
    background-size: cover;
-   width: 360px;
+   width: 330px;
    height: 160px;
    border-radius: 18px;
    font-family: "Nunito", sans-serif;
@@ -119,7 +120,7 @@ const NotificationBoard = styled.div`
       font-size: 20px;
    }
    img {
-      width: 360px;
+      width: 330px;
       border-radius: 18px;
       height: 160px;
    }

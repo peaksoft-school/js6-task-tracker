@@ -1,17 +1,24 @@
 import styled from "styled-components"
 import icon from "../../assets/icons/CheckBox.svg"
 
-function CheckBox({ checked, onChange, ...other }) {
+function CheckBox({ checked, onChange, margin, ...other }) {
    return (
-      <Input {...other} type="Checkbox" onChange={onChange} checked={checked} />
+      <Input
+         margin={margin}
+         {...other}
+         type="Checkbox"
+         onChange={onChange}
+         checked={checked}
+      />
    )
 }
 
 export default CheckBox
 const Input = styled.input`
+   margin: ${(props) => props.margin};
    appearance: none;
-   height: 17.5px;
-   width: 17.5px;
+   height: 20px;
+   width: 20px;
    border: 1px solid #87898e;
    border-radius: 5px;
    cursor: pointer;

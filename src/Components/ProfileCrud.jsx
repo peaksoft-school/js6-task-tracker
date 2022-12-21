@@ -67,7 +67,6 @@ function ProfileCrud({ profileData, setProfileData }) {
                data: formData,
                headers: { "Content-Type": "multipart/form-data" },
             })
-            console.log(response)
 
             // const { data } = await axiosInstance.put("/api/profile", {
             //    firstName: profileData.firstName,
@@ -90,7 +89,7 @@ function ProfileCrud({ profileData, setProfileData }) {
          <Block>
             <HeaderPhoto src={WallpaperTop} alt="" />
             <AvatarBlock>
-               <StyledAvatar src={imgCrop} />
+               <StyledAvatar src={profileData.image} />
 
                <img
                   onClick={() =>

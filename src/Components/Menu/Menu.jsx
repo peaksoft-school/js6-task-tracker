@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { useParams, useNavigate } from "react-router-dom"
 import openMenu from "../../assets/icons/openMenu.svg"
 import star from "../../assets/icons/star.svg"
 import { useToggle } from "../../utilits/hooks/useToggle"
-import ReusableDropDown from "../UI/ReusableDropDown"
 import CloseButton from "../UI/CloseButton"
 import image from "../../assets/images/variant.svg"
 import colorsVariant from "../../assets/images/rightImage.jpg"
@@ -18,8 +17,8 @@ import { axiosInstance } from "../../api/axiosInstance"
 import ColorsOrImagesDropDown from "./ColorsOrImagesDropDown"
 import HeaderDropDown from "./HeaderDropDown"
 import Cards from "../Column/Card"
-import GrayButton from "../UI/GrayButtons"
 import filterSvg from "../../assets/icons/filter.svg"
+import DropDownForMenu from "../UI/DropDownForMenu"
 
 const Menu = ({ getCardById, cardById, archiveData }) => {
    const navigate = useNavigate()
@@ -61,7 +60,7 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
             src={openMenu}
             alt="open menu"
          />
-         <ReusableDropDown
+         <DropDownForMenu
             width="350px"
             padding="18px 0 17px 0"
             showState={isActive === "menu"}
@@ -85,8 +84,8 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
                </li>
                <li onClick={deleteBoardHandler}>Delete this board</li>
             </Block>
-         </ReusableDropDown>
-         <ReusableDropDown
+         </DropDownForMenu>
+         <DropDownForMenu
             width="350px"
             padding="8px 14px 15px 14px"
             right="15px"
@@ -99,8 +98,8 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
                getCardById={getCardById}
                cards={archiveData.archivedCards}
             />
-         </ReusableDropDown>
-         <ReusableDropDown
+         </DropDownForMenu>
+         <DropDownForMenu
             width="350px"
             padding="9px 7px 15px 3px"
             showState={isActive === "colorsOrImage"}
@@ -120,7 +119,7 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
                src={colorsVariant}
                alt="images"
             />
-         </ReusableDropDown>
+         </DropDownForMenu>
          {isActive === "images" ? (
             <ColorsOrImagesDropDown
                changeBackgroundBoard={changeBackgroundBoard}

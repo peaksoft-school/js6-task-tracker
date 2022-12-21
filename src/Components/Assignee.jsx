@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import ReusableDropDown from "./UI/ReusableDropDown"
-import CustomIcons from "./UI/TaskCard/CustomIcons"
+import CustomIcons from "./Column/CustomIcons"
 import searchIcon from "../assets/svg/SearchIcon.svg"
 import MemberItem from "./UI/MemberItem"
 import photoAvatar from "../assets/images/avatarPhotoo.jpg"
