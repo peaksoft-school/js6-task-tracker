@@ -18,6 +18,7 @@ import ColorsOrImagesDropDown from "./ColorsOrImagesDropDown"
 import HeaderDropDown from "./HeaderDropDown"
 import Cards from "../Column/Card"
 import filterSvg from "../../assets/icons/filter.svg"
+import UserCount from "../UI/UsersCount"
 import DropDownForMenu from "../UI/DropDownForMenu"
 
 const Menu = ({ getCardById, cardById, archiveData }) => {
@@ -49,8 +50,9 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
    }
 
    return (
-      <DisplayFlex width="40%" JK="space-between" margin="0 30px 0 0">
-         <img src={star} alt="star" />
+      <DisplayFlex JK="space-between" width="40%" gap="8px" margin="0 30px 0 0">
+         <UserCount />
+         <img src={star} alt="" />
          <FilterButton>
             <img src={filterSvg} alt="filter " /> Filter ( 3 )
          </FilterButton>

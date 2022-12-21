@@ -18,7 +18,11 @@ const AppRoutes = () => {
             <Route path="/login/:id" element={<ForgotPassword />} />
          </Route>
          <Route
-            path="signIn/:role/:where/:workspaceId"
+            path="signIn/:role/workspaceId/:workspaceId/boardId/:boardId"
+            element={<InvitedUser />}
+         />
+         <Route
+            path="signIn/:role/workspaceId/:workspaceId"
             element={<InvitedUser />}
          />
          <Route

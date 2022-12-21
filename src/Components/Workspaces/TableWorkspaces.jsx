@@ -91,7 +91,7 @@ const Table = styled.table`
    div {
       p {
          :nth-child(1) {
-            padding-left: 3px;
+            padding-left: 15px;
          }
          :nth-child(2) {
             width: 52vw;
@@ -126,6 +126,9 @@ const Table = styled.table`
          height: 23px;
          cursor: pointer;
       }
+   }
+   td:nth-child(1) {
+      margin-left: 10px;
    }
    td:nth-child(2) {
       width: 60vw;

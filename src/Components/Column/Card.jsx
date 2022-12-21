@@ -131,6 +131,9 @@ const StyledCard = styled.div`
 const ContainerCard = styled.div`
    max-height: ${(props) => (props.activeAddCardButton ? "50vh" : "58vh")};
    overflow: scroll;
+   ::-webkit-scrollbar {
+      display: none;
+   }
 `
 const Label = styled.label`
    width: ${(props) => !props.showLabel && "65px"};

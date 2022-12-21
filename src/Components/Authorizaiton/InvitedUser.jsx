@@ -10,14 +10,19 @@ import imageLogin from "../../assets/images/ImageLogin.png"
 import DisplayFlex from "../../layout/DisplayFlex"
 
 const InvitedUser = () => {
-   const { loading } = useSelector((state) => state.auth)
-   const { role, workspaceId } = useParams()
+   const { boardId, workspaceId, role } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
    const authWithGoogleHandler = () => {
       dispatch(
-         authWithGoogleInvitedUser({ role, workspaceId, navigate, dispatch })
+         authWithGoogleInvitedUser({
+            role,
+            workspaceId,
+            navigate,
+            dispatch,
+            boardId,
+         })
       )
    }
 
@@ -25,7 +30,7 @@ const InvitedUser = () => {
       <DisplayFlex JK="space-evenly">
          <LogoTaskTracker src={logoTaskTracker} alt="Task Tracker" />
          <DisplayFlex AI="center" gap="20px" JK="center" FD="column">
-            <h2>Join our workspaces faster</h2>
+            <h2>Join our {boardId ? "board" : "workspace"} faster</h2>
             <GoogleButton onClick={authWithGoogleHandler}>
                Sign up with google
             </GoogleButton>
