@@ -15,7 +15,7 @@ import { axiosInstance } from "../../api/axiosInstance"
 import { useToggle } from "../../utilits/hooks/useToggle"
 import ChangeBoard from "./ChangeBoard"
 
-const InnerBoard = () => {
+const InnerBoard = ({ getNotificationHandler }) => {
    const [cardById, setCardById] = useState()
    const [archiveData, setArchiveData] = useState([])
    const dispatch = useDispatch()
@@ -100,6 +100,7 @@ const InnerBoard = () => {
             </DisplayFlex>
             <ContainerColumns>
                <Columns
+                  getNotificationHandler={getNotificationHandler}
                   getDataInArchive={getDataInArchive}
                   getColumnsInDataBase={getColumnsInDataBase}
                   cardById={cardById}

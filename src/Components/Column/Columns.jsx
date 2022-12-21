@@ -36,6 +36,7 @@ const Columns = ({
    getColumnsInDataBase,
    getCardById,
    cardById,
+   getNotificationHandler,
 }) => {
    const { inputValue, setInputValueHandler } = useGetInputValue()
    const dispatch = useDispatch()
@@ -164,11 +165,11 @@ const Columns = ({
    }
    const dropCardHandler = async (e, id) => {
       try {
-         const response = await axiosInstance(
+         const response = await axiosInstance.put(
             `/api/cards/move-card/${boardIdSelet}/${id}`
          )
          getColumnsInDataBase(boardId)
-         return console.log(response)
+         return getNotificationHandler()
       } catch (error) {
          return console.log(error.message)
       }
