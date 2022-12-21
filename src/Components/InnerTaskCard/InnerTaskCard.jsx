@@ -240,6 +240,7 @@ const InnerTaskCard = ({
                      setTwoActive={setTwoActive}
                      setCardById={setCardById}
                      dataCardById={dataCardById}
+                     autoFocus
                   />
                ) : (
                   <DescriptionText>{dataCardById.description}</DescriptionText>

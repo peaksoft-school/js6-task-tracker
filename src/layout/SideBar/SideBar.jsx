@@ -23,7 +23,7 @@ import {
    getWorkspacesId,
 } from "../../store/workspacesSlice"
 
-const SideBar = () => {
+const SideBar = ({ countParticipants }) => {
    const { workspaceId, boardId } = useParams()
    const { pathname } = useLocation()
    const dispatch = useDispatch()
@@ -237,7 +237,13 @@ const SideBar = () => {
                            {showSideBar ? (
                               <ContainerSideBarItem>
                                  <span>{item.title}</span>
-                                 {item.amount && <span>{item.amount})</span>}
+                                 {item.amount && (
+                                    <span>
+                                       (
+                                       {item.id === 3 ? countParticipants : 350}
+                                       )
+                                    </span>
+                                 )}
                               </ContainerSideBarItem>
                            ) : null}
                         </ContainerNavItem>

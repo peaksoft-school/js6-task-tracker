@@ -16,6 +16,7 @@ import { axiosInstance } from "../api/axiosInstance"
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
    const [notification, setNotification] = useState([])
+   const [countParticipants, setCountParticipants] = useState(0)
    const getNotificationHandler = async () => {
       try {
          const { data } = await axiosInstance.get("/api/notifications")
@@ -36,7 +37,6 @@ const AdminUserLayout = () => {
          return console.log(error.message)
       }
    }
-
    useEffect(() => {
       dispatch(getAllWorkspaces())
       getProfileData()
@@ -53,12 +53,18 @@ const AdminUserLayout = () => {
             getNotificationHandler={getNotificationHandler}
             profileData={profileData}
             role={role}
+            getProfileData={getProfileData}
          />
          <Routes>
             <Route path="" element={<Workspaces role={role} />} />
             <Route
                path="/workspaces/:workspaceId/*"
-               element={<AllBoards role={role} />}
+               element={
+                  <AllBoards
+                     countParticipants={countParticipants}
+                     role={role}
+                  />
+               }
             >
                <Route path="boards" element={<Boards role={role} />} />
                <Route
@@ -75,7 +81,16 @@ const AdminUserLayout = () => {
                      <h1 style={{ margin: "150px 0 0 300px" }}>All Issues</h1>
                   }
                />
-               <Route path="participants" element={<Participants />} />
+               <Route
+                  path="participants"
+                  element={
+                     <Participants
+                        getCountParticipants={(count) =>
+                           setCountParticipants(count)
+                        }
+                     />
+                  }
+               />
             </Route>
             <Route
                path="profile"
