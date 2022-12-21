@@ -115,6 +115,7 @@ const AddedToCard = ({
       }
    }
    const setEstimation = async (data) => {
+      console.log("done set estimation")
       dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.post(
@@ -203,7 +204,7 @@ const AddedToCard = ({
                      <DropDown
                         width="310px"
                         showState={secondActive === "Estimation"}
-                        top="-5"
+                        top="-50px"
                         left="95px"
                         padding="5px 3px 20px 10px"
                      >

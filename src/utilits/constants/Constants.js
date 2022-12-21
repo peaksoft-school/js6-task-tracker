@@ -9,9 +9,7 @@ import emptyStar from "../../assets/svg/empty.svg"
 
 export const GLOBAL_URL =
    "http://ec2-3-123-0-248.eu-central-1.compute.amazonaws.com"
-
 export const USER_KEY = "TASK-TRACKER-USER-KEY"
-
 export const Labels = [
    {
       id: 0,
@@ -25,7 +23,7 @@ export const Labels = [
    },
    {
       id: 2,
-      color: "#b323e3",
+      color: "#B323E3",
       text: "Движение кылыш керек",
    },
    {
@@ -48,7 +46,7 @@ export const Columns = [
 export const COLORS = [
    "#67e7a3",
    "#B04632",
-   "#385f38",
+   "#385F38",
    "#D29034",
    "#89609E",
    "#005C92",
