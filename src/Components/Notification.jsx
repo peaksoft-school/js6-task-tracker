@@ -55,7 +55,7 @@ const NotificationContainer = styled.div`
    display: flex;
    overflow-y: scroll;
    flex-direction: column;
-   width: 350px;
+   width: 370px;
    max-height: 80vh;
    align-items: center;
    padding-bottom: 20px;
@@ -79,7 +79,7 @@ const TitleBlock = styled.div`
    }
    span {
       text-decoration: underline;
-      margin: 0 0 0 15px;
+      margin: 0 7px 0 15px;
       color: gray;
       cursor: pointer;
    }
