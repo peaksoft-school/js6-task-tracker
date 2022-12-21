@@ -50,11 +50,8 @@ const Menu = ({ getCardById, cardById, archiveData }) => {
    }
 
    return (
-      <DisplayFlex width="50%" gap="8px" margin="0 30px 0 0">
-         <BlockUserCount>
-            <UserCount left="620px" />
-         </BlockUserCount>
-         <img src={star} alt="star" />
+      <DisplayFlex JK="space-between" width="50%" gap="8px" margin="0 30px 0 0">
+         <UserCount />
          <FilterButton>
             <img src={filterSvg} alt="filter " /> Filter ( 3 )
          </FilterButton>
@@ -180,4 +177,3 @@ const FilterButton = styled.button`
    font-size: 0.9rem;
    font-weight: 600;
 `
-const BlockUserCount = styled.span``

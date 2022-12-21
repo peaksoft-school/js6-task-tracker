@@ -11,7 +11,7 @@ import invitePlus from "../../assets/svg/InvitePlus.svg"
 import Modal from "./Modal"
 import Invite from "./Invite"
 
-function UserCount({ width, height, top, left }) {
+function UserCount() {
    const [state, setState] = useState([])
    const { boardId } = useParams()
    const [membersData, setMembersData] = useState([])
@@ -37,7 +37,7 @@ function UserCount({ width, height, top, left }) {
       setState(users)
    }
    return (
-      <Container top={top} left={left} width={width} height={height}>
+      <Container>
          <UserBox>
             {membersData.map((item) => (
                <img
@@ -66,13 +66,7 @@ function UserCount({ width, height, top, left }) {
             width="425px"
             height="202px"
          >
-            <Invite
-               closeState="nothing"
-               backState="nothing"
-               canselInvite="nothing"
-               setTwoActive={setTwoActive}
-               label="Email@gmail.com"
-            />
+            <Invite label="Email@gmail.com" />
          </Modal>
          <ReusableDropDown showState={firstActive === "openListUser"}>
             <InviteParticipant
@@ -115,11 +109,6 @@ function UserCount({ width, height, top, left }) {
 
 export default UserCount
 const Container = styled.div`
-   position: absolute;
-   top: ${(props) => props.top};
-   left: ${(props) => props.left};
-   width: ${(props) => props.width};
-   max-height: ${(props) => props.height};
    list-style: none;
    h2 {
       font-weight: 400;
@@ -144,6 +133,7 @@ const UserBox = styled.div`
       font-weight: 900;
       font-size: 14px;
       line-height: 18px;
+      cursor: pointer;
       img {
          width: 16px;
          height: 16px;
