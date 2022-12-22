@@ -1,13 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../store/AuthSlice"
 import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
 import searchIcon from "../assets/svg/SearchIcon.svg"
-import UserAvatar from "./UI/UserAvatar"
-import avatarPhoto from "../assets/svg/userAvatar.svg"
 import Notification from "./Notification"
 import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
@@ -18,26 +17,25 @@ import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 import DisplayFlex from "../layout/DisplayFlex"
 import { clearWorkspaces } from "../store/workspacesSlice"
+import initialAvatar from "../assets/images/initialAvatar.jpeg"
+import UserAvatar from "./UI/UserAvatar"
 
-function Header() {
+function Header({ profileData, getNotificationHandler, notification }) {
    const { favourites, workspaces } = useSelector((state) => state)
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const { isActive, setActive } = useToggle()
-   const [notification, setNotification] = useState([])
    const [searchResponse, setSearchResponse] = useState([])
    const { pathname } = useLocation()
-   const getNotificationHandler = async () => {
-      try {
-         const { data } = await axiosInstance.get("/api/notifications")
-         return setNotification(data)
-      } catch (error) {
-         return console.log(error)
-      }
-   }
 
-   const markAsReadNotificaiton = () => {
-      setNotification([])
-      setActive("nothing")
+   const markAsReadNotificaiton = async () => {
+      try {
+         const { data } = await axiosInstance.put(`/api/notifications`)
+         getNotificationHandler()
+         return setActive("nothing")
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
 
    // ЗАПРОСЫ НА ПОИСКОВИК
@@ -61,15 +59,21 @@ function Header() {
       getNotificationHandler()
    }, [])
 
-   const openDropDownFavouritesHandler = () => {
-      setActive(isActive !== "favourites" ? "favourites" : "nothing")
-   }
-
    return (
       <ParentDiv>
          <DisplayFlex JK="space-between" width="33vw" height="68px" AI="center">
-            <Logo src={TaskTracker} alt="" />
-            <OpenMenu onClick={openDropDownFavouritesHandler}>
+            <Logo
+               onClick={() => navigate("/allWorkspaces")}
+               src={TaskTracker}
+               alt=""
+            />
+            <OpenMenu
+               onClick={() =>
+                  setActive(
+                     isActive !== "favourites" ? "favourites" : "nothing"
+                  )
+               }
+            >
                Favourites
                <span>
                   <span>(</span>
@@ -155,7 +159,7 @@ function Header() {
             </DropDown>
 
             <UserAvatar
-               src={avatarPhoto}
+               src={profileData.image || initialAvatar}
                click={() =>
                   setActive(isActive !== "profile" ? "profile" : "nothing")
                }
@@ -211,6 +215,7 @@ const SearchIcon = styled.img`
    left: 19px;
 `
 const Logo = styled.img`
+   cursor: pointer;
    padding: 1rem 2.1rem 1rem;
 `
 const NotificationIconContainer = styled.div`

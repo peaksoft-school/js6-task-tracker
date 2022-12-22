@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import deleteSVG from "../assets/svg/Delete.svg"
 import Modal from "./UI/Modal"
@@ -8,16 +9,27 @@ import { axiosInstance } from "../api/axiosInstance"
 import DisplayFlex from "../layout/DisplayFlex"
 import { useToggle } from "../utilits/hooks/useToggle"
 import ContainerButtons from "./UI/ContainerButtons"
+import Input from "./UI/Input"
+import RadioButton from "./UI/RadioButton"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   successToastifyAction,
+   warningToastifyAction,
+} from "../store/toastifySlice"
 
-function Participants() {
-   const { isActive, setActive } = useToggle()
+function Participants({ getCountParticipants }) {
    const [user, setUser] = useState([])
-   const { showSideBar } = useSelector((state) => state.showSideBar)
+   getCountParticipants(user.length)
    const [filteredUsers, setFilteredUsers] = useState(null)
    const [deleteId, setDeleteId] = useState()
+   const [value, setValue] = useState({})
+   const { isActive, setActive } = useToggle()
+   const { showSideBar } = useSelector((state) => state.showSideBar)
+   const dispatch = useDispatch()
    const { workspaceId } = useParams()
-   // Post
-   const getUserHandler = async () => {
+
+   const getParticipantsWorkspace = async () => {
       try {
          const { data } = await axiosInstance.get(
             `/api/participant/workspace-participants/${workspaceId}`
@@ -27,21 +39,21 @@ function Participants() {
          return console.log(error)
       }
    }
-
    // Delete
    const deleteParticipants = async (userId) => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          await axiosInstance.delete(
             `/api/participant/workspace/${userId}/${workspaceId}`
          )
-         getUserHandler()
+         getParticipantsWorkspace()
          setActive("nothing")
+         dispatch(warningToastifyAction("Participants deleted"))
          return setUser(user)
       } catch (error) {
-         return console.log(error)
+         return dispatch(errorToastifyAction("Error,something went wrong"))
       }
    }
-
    // FilteredUsert
    const handleFilterUsers = (req) => {
       if (req === "ALL") {
@@ -56,9 +68,27 @@ function Participants() {
          )
       }
    }
+   const inviteNewParticipants = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.post(
+            "/api/participant/invite-workspace",
+            {
+               email: value.email,
+               role: value.role,
+               link: "192.168.1.210:3000/signIn",
+               workspaceOrBoardId: workspaceId,
+            }
+         )
+         setActive("nothing")
+         return dispatch(successToastifyAction("Invitation sent by mail"))
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error,something went wrong"))
+      }
+   }
    // UseEffect
    useEffect(() => {
-      getUserHandler()
+      getParticipantsWorkspace()
    }, [])
 
    const userList = React.useMemo(() => {
@@ -68,7 +98,7 @@ function Participants() {
    return (
       <DisplayFlex width="100%" JK="flex-end" margin="88px 0 0 0 ">
          <Parents showSideBar={showSideBar}>
-            <Button>
+            <Block>
                <Title>
                   <h1>View all issues</h1>
                   <select onChange={(e) => handleFilterUsers(e.target.value)}>
@@ -82,15 +112,38 @@ function Participants() {
                   type="button"
                   onClick={() => setActive("openCreatModal")}
                >
-                  Create
+                  Invite
                </button>
                <Modal
                   isOpen={isActive === "openCreatModal"}
                   onClose={() => setActive("nothing")}
                >
-                  <h1>MNADNODOAD</h1>
+                  <h3 style={{ textAlign: "center" }}>
+                     Invite a new participants
+                  </h3>
+
+                  <Input
+                     label="example@gmail.com"
+                     style={{ margin: "20px 0 0 0" }}
+                     onChange={(e) =>
+                        setValue({ ...value, email: e.target.value })
+                     }
+                     autoFocus
+                  />
+                  <RadioButton
+                     onChange={(e) =>
+                        setValue({ ...value, role: e.target.value })
+                     }
+                     name="role"
+                  />
+                  <ContainerButtons
+                     clickGrayButton={() => setActive("nothing")}
+                     clickBlueButton={() => inviteNewParticipants()}
+                     titleBlueButton="Invite"
+                     titleGrayButton="Cancel"
+                  />
                </Modal>
-            </Button>
+            </Block>
             <Total>
                <p>Total: {user.length > 0 && <span>{user.length}</span>}</p>
             </Total>
@@ -218,21 +271,21 @@ const Total = styled.div`
       color: white;
    }
 `
-const Button = styled.div`
+const Block = styled.div`
    width: 100%;
    position: relative;
    display: flex;
    justify-content: space-between;
    align-items: center;
    button {
-      width: 77px;
-      height: 34px;
+      width: 130px;
+      height: 40px;
       position: absolute;
       top: 16px;
       right: 16px;
       background: #0079bf;
       border-radius: 24px;
-      font-size: 14px;
+      font-size: 1.1rem;
       line-height: 18px;
       letter-spacing: 0.02em;
       color: #ffffff;

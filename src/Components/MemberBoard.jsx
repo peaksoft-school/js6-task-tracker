@@ -1,89 +1,33 @@
 import styled from "styled-components"
+import DisplayFlex from "../layout/DisplayFlex"
 
-function MemberBoard({ memberedItems, titleBoard, discription, boardIcon }) {
+function MemberBoard({ listProject }) {
    return (
-      <>
-         <Container>
-            <h1>Involved in project</h1>
-            <div>
-               <span>{memberedItems}8</span>
-            </div>
-         </Container>
-         <BoardContainer>
-            <Board>
-               <img src={boardIcon} alt="" />
-               <p>{titleBoard}</p>
-               <span>{discription}</span>
-            </Board>
-         </BoardContainer>
-      </>
+      <DisplayFlex padding="20px 0 0 50px" FW="wrap" width="70vw" gap="17px">
+         {listProject?.length > 0 &&
+            listProject.map((item) => {
+               return (
+                  <DisplayFlex width="30vw">
+                     <BlueBlock>{item.name.toUpperCase().charAt(0)}</BlueBlock>
+
+                     <h3 style={{ margin: "20px 0 0 6px" }}>{item.name}</h3>
+                  </DisplayFlex>
+               )
+            })}
+      </DisplayFlex>
    )
 }
-
 export default MemberBoard
-const Container = styled.div`
-   width: 147px;
-   height: 20px;
+
+const BlueBlock = styled.div`
+   background: #0079bf;
    display: flex;
-   flex-wrap: wrap;
-   flex-direction: column;
+   align-items: center;
    justify-content: center;
-   h1 {
-      font-size: 16px;
-   }
-   span {
-      font-size: 14px;
-      color: white;
-   }
-   div {
-      margin-left: 6px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-bottom: 1px;
-      width: 19px;
-      background: #b2b2b2;
-      border-radius: 16px;
-   }
-`
-const Board = styled.div`
-   width: 146px;
-   height: 66px;
-   display: flex;
-   position: relative;
-   top: 16px;
-   padding-bottom: 16px;
-   p {
-      font-size: 18px;
-      color: black;
-      position: absolute;
-      left: 80px;
-      bottom: 30px;
-      font-weight: 500;
-   }
-   span {
-      font-size: 16px;
-      color: gray;
-      position: absolute;
-      left: 80px;
-      top: 35px;
-   }
-   img {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 68px;
-      height: 66px;
-      background: #0079bf;
-      border-radius: 10px;
-   }
-`
-const BoardContainer = styled.div`
-   height: 330px;
-   display: flex;
-   flex-direction: column;
-   flex-wrap: wrap;
-   padding-right: 249px;
+   width: 70px;
+   height: 70px;
+   border-radius: 8px;
+   font-size: 2.3rem;
+   font-weight: 700;
+   color: white;
 `

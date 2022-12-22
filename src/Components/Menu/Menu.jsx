@@ -169,12 +169,11 @@ const Block = styled.ul`
 `
 const FilterButton = styled.button`
    display: flex;
+   padding: 0 10px 0 10px;
    align-items: center;
-   gap: 5px;
-   padding: 0 15px 0 15px;
    border-radius: 20px;
    border: none;
    color: #438ab4;
-   font-size: 0.9rem;
+   font-size: 0.8rem;
    font-weight: 600;
 `

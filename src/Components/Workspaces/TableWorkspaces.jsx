@@ -5,7 +5,6 @@ import styled from "styled-components"
 import actionTrueSvg from "../../assets/icons/actionTrue.svg"
 import actionFalseSvg from "../../assets/icons/actionFalse.svg"
 import UserAvatar from "../UI/UserAvatar"
-import avatar from "../../assets/svg/userAvatar.svg"
 import {
    addWorkspacesToFavourites,
    getWorkspacesId,
@@ -59,7 +58,7 @@ const TableWorkspaces = () => {
                         <span>{item.name}</span>
                      </td>
                      <td>
-                        <UserAvatar src={avatar} />
+                        <UserAvatar src={item.lead.image} />
                         <span> {item.lead.firstName}</span>
                         <span> {item.lead.lastName}</span>
                      </td>
@@ -87,11 +86,12 @@ export default TableWorkspaces
 const Table = styled.table`
    border-collapse: collapse;
    width: 100%;
+   min-height: 70px;
    margin-top: 10px;
    div {
       p {
          :nth-child(1) {
-            padding-left: 15px;
+            padding-left: 12px;
          }
          :nth-child(2) {
             width: 52vw;
@@ -100,7 +100,7 @@ const Table = styled.table`
             width: 25vw;
          }
          :nth-child(4) {
-            margin-right: 5px;
+            margin-right: 15px;
          }
       }
    }
@@ -144,6 +144,7 @@ const Table = styled.table`
       align-items: center;
       height: 45px;
       width: 30vw;
+
       img {
          width: 35px;
          height: 35px;
@@ -162,6 +163,7 @@ const WorkspacesItem = styled.tr`
    align-items: center;
    height: 50px;
    background-color: ${({ itemIndex }) => itemIndex && "#F3F3F3;"};
+   padding: 0 13px 0 0;
 `
 const EmptyBox = styled.img`
    position: absolute;

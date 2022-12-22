@@ -170,6 +170,7 @@ const AddedToCard = ({
                                  searchMembersQuery(e.target.value)
                               }
                               placeholder="Search"
+                              autoFocus
                            />
                            <CustomIcons
                               src={searchIcon}
@@ -203,7 +204,7 @@ const AddedToCard = ({
                      <DropDown
                         width="310px"
                         showState={secondActive === "Estimation"}
-                        top="-5"
+                        top="-50px"
                         left="95px"
                         padding="5px 3px 20px 10px"
                      >

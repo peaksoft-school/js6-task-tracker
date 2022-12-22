@@ -3,10 +3,10 @@ import { Outlet } from "react-router-dom"
 import SideBar from "../../layout/SideBar/SideBar"
 import DisplayFlex from "../../layout/DisplayFlex"
 
-const AllBoards = () => {
+const AllBoards = ({ countParticipants }) => {
    return (
       <DisplayFlex width="100%" JK="space-between">
-         <SideBar />
+         <SideBar countParticipants={countParticipants} />
          <Outlet />
       </DisplayFlex>
    )

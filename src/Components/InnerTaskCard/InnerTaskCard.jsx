@@ -107,12 +107,12 @@ const InnerTaskCard = ({
       dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.put(
-            `/api/estimation/${dataCardById.id}`,
+            `/api/estimation/${dataCardById.estimationResponse.id}`,
             data
          )
-         getCardById(firstActive)
          setTwoActive(firstActive, "nothing")
-         return dispatch(successToastifyAction("Updated estimation"))
+         dispatch(successToastifyAction("Updated estimation"))
+         return getCardById(firstActive)
       } catch (error) {
          return dispatch(errorToastifyAction("Error, something went wrong"))
       }
@@ -201,7 +201,12 @@ const InnerTaskCard = ({
                      <Text>Members</Text>
                      <BlockMembers>
                         {firstEightMembers.map((item) => {
-                           return <UserAvatar key={item.id} src={avatar} />
+                           return (
+                              <UserAvatar
+                                 key={item.id}
+                                 src={item.image ? item.image : avatar}
+                              />
+                           )
                         })}
                         {dataCardById.memberResponses.length > 8 ? (
                            <div>
@@ -235,6 +240,7 @@ const InnerTaskCard = ({
                      setTwoActive={setTwoActive}
                      setCardById={setCardById}
                      dataCardById={dataCardById}
+                     autoFocus
                   />
                ) : (
                   <DescriptionText>{dataCardById.description}</DescriptionText>
@@ -279,8 +285,9 @@ const InputTitle = styled.input`
 `
 const FirstBlock = styled.div`
    width: 130vw;
-   overflow-y: scroll;
    height: 73vh;
+   padding: 0;
+   overflow: auto;
    ::-webkit-scrollbar {
       width: 20px;
    }

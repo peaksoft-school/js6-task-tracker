@@ -108,7 +108,7 @@ const CommentSection = ({ showComment, setShowComment, dataCardById }) => {
                comments?.map((item, index) => {
                   return (
                      <Comment key={item.id}>
-                        <UserAvatar src={item.image} />
+                        <UserAvatar src={item.commentedUserResponse.image} />
                         <div>
                            <p>
                               {item.commentedUserResponse.firstName}
@@ -164,6 +164,7 @@ const CommentSection = ({ showComment, setShowComment, dataCardById }) => {
                      value={commentValue}
                      onChange={(e) => setCommentValue(e.target.value)}
                      placeholder="Write a comment"
+                     autoFocus
                   />
                </form>
             </ContainerInput>
