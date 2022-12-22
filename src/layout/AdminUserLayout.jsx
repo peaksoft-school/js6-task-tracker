@@ -12,6 +12,7 @@ import { clearBoards } from "../store/boardSlice"
 import Header from "../Components/Header"
 import ProfileCrud from "../Components/ProfileCrud"
 import { axiosInstance } from "../api/axiosInstance"
+import ViewAll from "../Components/ViewAllIssues/ViewAll"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
@@ -67,30 +68,9 @@ const AdminUserLayout = () => {
                }
             >
                <Route path="boards" element={<Boards role={role} />} />
-               <Route
-                  path="boards/:boardId"
-                  element={
-                     <InnerBoard
-                        getNotificationHandler={getNotificationHandler}
-                     />
-                  }
-               />
-               <Route
-                  path="allissues"
-                  element={
-                     <h1 style={{ margin: "150px 0 0 300px" }}>All Issues</h1>
-                  }
-               />
-               <Route
-                  path="participants"
-                  element={
-                     <Participants
-                        getCountParticipants={(count) =>
-                           setCountParticipants(count)
-                        }
-                     />
-                  }
-               />
+               <Route path="boards/:boardId" element={<InnerBoard />} />
+               <Route path="allissues" element={<ViewAll />} />
+               <Route path="participants" element={<Participants />} />
             </Route>
             <Route
                path="profile"
