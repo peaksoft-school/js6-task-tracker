@@ -53,15 +53,16 @@ function InviteParticipant({ data, setTwoActive, secondActive, firstActive }) {
             </ContainerInput>
             <Modal
                isOpen={secondActive === "addNewParticipants"}
-               onClose={() => setTwoActive("openListUser", "nothing")}
+               onClose={() => setTwoActive("openListUser")}
                width="425px"
                height="202px"
             >
                <Invite
-                  closeInvite="nothing"
+                  backState="openListUser"
                   setTwoActive={setTwoActive}
+                  closeState="openListUser"
                   label="Email@gmail.com"
-                  backForList="nothing"
+                  canselInvite="openListUser"
                />
             </Modal>
          </InviteBlock>

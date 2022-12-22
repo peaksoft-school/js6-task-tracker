@@ -21,7 +21,7 @@ function UserCount() {
    const getUserByIdQuery = async () => {
       try {
          const { data } = await axiosInstance.get(
-            `/api/participant/board-participants/${boardId}`
+            `/api/participant/board-participants/${boardId}/`
          )
          return setMembersData(data)
       } catch (error) {
@@ -62,11 +62,16 @@ function UserCount() {
          </UserBox>
          <Modal
             isOpen={isActive === "openInviteUser"}
-            onClose={() => setTwoActive("openListUser", "nothing")}
+            onClose={() => setTwoActive("nothing")}
             width="425px"
             height="202px"
          >
-            <Invite label="Email@gmail.com" />
+            <Invite
+               backState="nothing"
+               closeState="nothing"
+               label="Email@gmail.com"
+               canselInvite="nothing"
+            />
          </Modal>
          <ReusableDropDown showState={firstActive === "openListUser"}>
             <InviteParticipant

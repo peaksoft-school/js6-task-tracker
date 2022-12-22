@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import { axiosInstance } from "../../api/axiosInstance"
+import Button from "./Button"
 import Input from "./Input"
 import backSvg from "../../assets/svg/backSvg.svg"
 import closeDrop from "../../assets/icons/close.svg"
@@ -13,9 +14,8 @@ import {
    loadingToastifyAction,
    successToastifyAction,
 } from "../../store/toastifySlice"
-import ContainerButtons from "./ContainerButtons"
 
-function Invite({ backForList, closeInvite }) {
+function Invite({ backState, closeState, canselInvite }) {
    const { firstActive, setTwoActive } = useTwoActive()
    const [value, setValue] = useState({})
    const dispatch = useDispatch()
@@ -23,18 +23,14 @@ function Invite({ backForList, closeInvite }) {
    const postData = async () => {
       dispatch(loadingToastifyAction("...Loading"))
       try {
-         const response = await axiosInstance.post(
-            "/api/participant/board-invite",
-            {
-               email: value.email,
-               link: "192.168.218.96:3000/signIn/",
-               role: value.role,
-               workspacOrBoardId: boardId,
-            }
-         )
-         console.log(response)
+         await axiosInstance.post("/api/participant/board-invite", {
+            email: value.email,
+            link: "192.168.1.40:3000/signIn",
+            role: value.role,
+            workspaceOrBoardId: boardId,
+         })
          setTwoActive(firstActive, "nothing")
-         return dispatch(successToastifyAction("Invited user"))
+         return dispatch(successToastifyAction("Accept"))
       } catch (error) {
          return dispatch(errorToastifyAction("Error"))
       }
@@ -42,14 +38,10 @@ function Invite({ backForList, closeInvite }) {
    return (
       <Container>
          <TitleDrop>
-            <img
-               onClick={() => setTwoActive({ backForList })}
-               src={backSvg}
-               alt=""
-            />
+            <img onClick={() => setTwoActive(backState)} src={backSvg} alt="" />
             <p>Invite a new participant</p>
             <img
-               onClick={() => setTwoActive({ closeInvite })}
+               onClick={() => setTwoActive(closeState)}
                src={closeDrop}
                alt=""
             />
@@ -63,13 +55,27 @@ function Invite({ backForList, closeInvite }) {
                onChange={(e) => setValue({ ...value, role: e.target.value })}
                name="role"
             />
-            <ContainerButtons
-               clickGrayButton={() => setTwoActive("git")}
-               paddingBlueButton="5px 30px 5px 30px"
-               titleGrayButton="Cancel"
-               clickBlueButton={() => postData()}
-               titleBlueButton="Invite"
-            />
+            <ButtonBox>
+               <Button
+                  hover="white"
+                  textColor="#919191"
+                  fullHeight="34px"
+                  fullWidth="77px"
+                  color="#F0F0F0"
+                  padding="0"
+                  onClick={() => setTwoActive(canselInvite)}
+               >
+                  Cansel
+               </Button>
+               <Button
+                  onClick={() => postData()}
+                  fullHeight="34px"
+                  fullWidth="77px"
+                  padding="0"
+               >
+                  Create
+               </Button>
+            </ButtonBox>
          </Box>
       </Container>
    )
@@ -91,6 +97,14 @@ const Box = styled.div`
    align-items: flex-end;
    display: flex;
    margin-top: 18px;
+`
+
+const ButtonBox = styled.div`
+   display: flex;
+   gap: 18px;
+   width: 171px;
+   height: 34px;
+   margin: 16px 0;
 `
 
 const TitleDrop = styled.div`
