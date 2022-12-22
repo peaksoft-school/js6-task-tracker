@@ -1,46 +1,14 @@
 import React from "react"
 import styled from "styled-components"
+import DisplayFlex from "../../layout/DisplayFlex"
 
-const testData = [
-   {
-      id: 1,
-      created: "12.09.22",
-      period: "6 days",
-      creator: "Kamchy Kuzobaev",
-      column: "In progress this task",
-      assignee: "avatar",
-      labels: "line",
-      checklist: "0/0",
-      description:
-         "Each programme is dedicated to one country. I am fond of foreign languages, English and German, so I watch the programmes about English and German speaking countries with special interest. It is a good chance for me to learn something new about these countries and their citizens. I may see places of historical interest, which I have only read about. I listen to legends, connected with famous people and see the places they were born in.",
-   },
-   {
-      id: 2,
-      created: "12.09.22",
-      period: "5 days",
-      creator: "Almaz Almazov",
-      column: "In progress this task",
-      assignee: "avatar",
-      labels: "line",
-      checklist: "0/0",
-      description:
-         "Each programme is dedicated to one country. I am fond of foreign languages, English and German, so I watch the programmes about English and German speaking countries with special interest. It is a good chance for me to learn something new about these countries and their citizens. I may see places of historical interest, which I have only read about. I listen to legends, connected with famous people and see the places they were born in.",
-   },
-   {
-      id: 3,
-      created: "12.09.22",
-      period: "3 days",
-      creator: "Ali Atahanov",
-      column: "In progress this task",
-      assignee: "avatar",
-      labels: "line",
-      checklist: "0/0",
-      description:
-         "Each programme is dedicated to one country. I am fond of foreign languages, English and German, so I watch the programmes about English and German speaking countries with special interest. It is a good chance for me to learn something new about these countries and their citizens. I may see places of historical interest, which I have only read about. I listen to legends, connected with famous people and see the places they were born in.",
-   },
-]
+const TableBlock = ({ cards }) => {
+   console.log(cards, "cards in table")
 
-const TableBlock = () => {
+   const convertDate = (stringDate) => {
+      const converted = new Date(stringDate)
+      return converted.toLocaleDateString()
+   }
    return (
       <TableBlockStylded>
          <TableStyled>
@@ -55,16 +23,38 @@ const TableBlock = () => {
                <th>Description</th>
             </tr>
             <Line />
-            {testData.map((el) => {
+            {cards.map((el) => {
                return (
                   <tr key={el.id}>
-                     <td>{el.created}</td>
+                     <td>{convertDate(el.createdAt)}</td>
                      <td>{el.period}</td>
-                     <td>{el.creator}</td>
+                     <td>
+                        {el.creatorFirstName} {el.creatorLastName}
+                     </td>
                      <td>{el.column}</td>
-                     <td>{el.assignee}</td>
-                     <td>{el.labels}</td>
-                     <td>{el.checklist}</td>
+                     <td>
+                        <DisplayFlex>
+                           {el.assignee.slice(0, 2).map((el) => {
+                              return (
+                                 <Avatar src={el.image} alt="assignee avatar" />
+                              )
+                           })}
+
+                           {el.assignee.length > 0 ? (
+                              <AvatarPlus>
+                                 +{Number(el.assignee?.length) - 2}
+                              </AvatarPlus>
+                           ) : null}
+                        </DisplayFlex>
+                     </td>
+                     <td>
+                        <DisplayFlex width="110px" FW="wrap" gap="5px">
+                           {el.labels.map((el) => {
+                              return <LabelLine color={el.color} />
+                           })}
+                        </DisplayFlex>
+                     </td>
+                     <CheckList>{el.checklist}</CheckList>
                      <DescriptionStyeld>{el.description}</DescriptionStyeld>
                   </tr>
                )
@@ -75,6 +65,35 @@ const TableBlock = () => {
 }
 
 export default TableBlock
+
+const CheckList = styled.td`
+   text-align: center;
+`
+
+const AvatarPlus = styled.div`
+   width: 34px;
+   height: 34px;
+   border-radius: 50%;
+   margin-right: -10px;
+   background-color: gray;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+`
+
+const Avatar = styled.img`
+   width: 34px;
+   height: 34px;
+   border-radius: 50%;
+   margin-right: -10px;
+`
+
+const LabelLine = styled.div`
+   width: 45px;
+   height: 8px;
+   border-radius: 8px;
+   background-color: ${(props) => (props.color ? props.color : "none")};
+`
 
 const TableBlockStylded = styled.div`
    width: 100%;

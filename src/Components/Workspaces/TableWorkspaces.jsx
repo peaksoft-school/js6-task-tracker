@@ -5,7 +5,6 @@ import styled from "styled-components"
 import actionTrueSvg from "../../assets/icons/actionTrue.svg"
 import actionFalseSvg from "../../assets/icons/actionFalse.svg"
 import UserAvatar from "../UI/UserAvatar"
-import avatar from "../../assets/svg/userAvatar.svg"
 import {
    addWorkspacesToFavourites,
    getWorkspacesId,
@@ -13,6 +12,7 @@ import {
 import LoadingSpinner from "../UI/LoadingSpinner"
 import TextForEmpty from "../UI/TextForEmpty"
 import empty from "../../assets/images/emptyBox.webp"
+import DisplayFlex from "../../layout/DisplayFlex"
 
 const TableWorkspaces = () => {
    const dispatch = useDispatch()
@@ -23,19 +23,17 @@ const TableWorkspaces = () => {
    }
 
    const getWorkspaceByIdPlusNavigate = (id) => {
-      dispatch(getWorkspacesId({ id, navigate, where: "boards" }))
+      dispatch(getWorkspacesId({ id, navigate, path: "boards" }))
    }
 
    return (
       <Table>
-         <thead>
-            <tr>
-               <th>№</th>
-               <th>Name</th>
-               <th>Lead</th>
-               <th>Action</th>
-            </tr>
-         </thead>
+         <DisplayFlex JK="space-between">
+            <p>№</p>
+            <p>Name</p>
+            <p>Lead</p>
+            <p>Action</p>
+         </DisplayFlex>
 
          {workspaces.loading && workspaces.workspaces.length === 0 ? (
             <LoadingSpinner top="28%" left="46%" />
@@ -49,17 +47,18 @@ const TableWorkspaces = () => {
                <EmptyBox src={empty} alt="empty box" />
             </>
          ) : null}
-
-         {workspaces.workspaces.map((item, index) => {
-            return (
-               <tbody key={item.id}>
+         <ol>
+            {workspaces.workspaces.map((item, index) => {
+               return (
                   <WorkspacesItem itemIndex={index % 2 !== 0}>
-                     <td>{index}</td>
+                     <td>
+                        <li> </li>
+                     </td>
                      <td onClick={() => getWorkspaceByIdPlusNavigate(item.id)}>
                         <span>{item.name}</span>
                      </td>
                      <td>
-                        <UserAvatar src={avatar} />
+                        <UserAvatar src={item.lead.image} />
                         <span> {item.lead.firstName}</span>
                         <span> {item.lead.lastName}</span>
                      </td>
@@ -75,9 +74,9 @@ const TableWorkspaces = () => {
                         />
                      </td>
                   </WorkspacesItem>
-               </tbody>
-            )
-         })}
+               )
+            })}
+         </ol>
       </Table>
    )
 }
@@ -87,7 +86,24 @@ export default TableWorkspaces
 const Table = styled.table`
    border-collapse: collapse;
    width: 100%;
+   min-height: 70px;
    margin-top: 10px;
+   div {
+      p {
+         :nth-child(1) {
+            padding-left: 15px;
+         }
+         :nth-child(2) {
+            width: 52vw;
+         }
+         :nth-child(3) {
+            width: 25vw;
+         }
+         :nth-child(4) {
+            margin-right: 5px;
+         }
+      }
+   }
    th {
       text-align: start;
       height: 30px;
@@ -103,15 +119,19 @@ const Table = styled.table`
    th:last-child,
    td:last-child {
       text-align: end;
-      padding-right: 30px;
+      padding-right: 15px;
       img {
          width: 23px;
          height: 23px;
+         cursor: pointer;
       }
+   }
+   td:nth-child(1) {
+      margin-left: 10px;
    }
    td:nth-child(2) {
       width: 60vw;
-      padding-left: 12px;
+      padding: 0 0 0 12px;
       span {
          color: #0073de;
          cursor: pointer;
@@ -136,6 +156,9 @@ const Table = styled.table`
    }
 `
 const WorkspacesItem = styled.tr`
+   display: flex;
+   width: 85vw;
+   align-items: center;
    height: 50px;
    background-color: ${({ itemIndex }) => itemIndex && "#F3F3F3;"};
 `

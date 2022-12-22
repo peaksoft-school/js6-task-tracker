@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import { useParams } from "react-router-dom"
@@ -29,17 +29,21 @@ import {
    successToastifyAction,
    warningToastifyAction,
 } from "../../store/toastifySlice"
-import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
 import { useData } from "../../utilits/hooks/useData"
 
-const SecondBlock = ({
+const AddedToCard = ({
    dataCardById,
    getCardById,
    updateColumnAndCloseModal,
    getDataInArchive,
+   addCheckList,
+   newCheckListTitle,
+   setNewCheckListTitle,
+   updateEstimation,
 }) => {
    const { secondActive, setTwoActive, firstActive } = useTwoActive()
    const [showComment, setShowComment] = useState(false)
+   const [readyLabels, setReadyLabels] = useState([])
    const dispatch = useDispatch()
    const { workspaceId } = useParams()
    const { data, setData } = useData()
@@ -101,10 +105,33 @@ const SecondBlock = ({
          return dispatch(errorToastifyAction(error.message))
       }
    }
-
-   const getDateTimeValue = (data) => {
-      console.log(data)
+   const getReadyLabelsQuery = async () => {
+      try {
+         const { data } = await axiosInstance.get("/api/labels")
+         data?.sort((a, b) => b.id - a.id)
+         return setReadyLabels(data)
+      } catch (error) {
+         return console.log(error.message)
+      }
    }
+   const setEstimation = async (data) => {
+      console.log("done set estimation")
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.post(
+            `/api/estimation/${dataCardById.id}`,
+            data
+         )
+         dispatch(successToastifyAction("Added estimation"))
+         getCardById(firstActive)
+         return setTwoActive(firstActive, "nothing")
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error"))
+      }
+   }
+   useEffect(() => {
+      getReadyLabelsQuery()
+   }, [])
 
    return (
       <StyledSecondBlock>
@@ -177,7 +204,7 @@ const SecondBlock = ({
                      <DropDown
                         width="310px"
                         showState={secondActive === "Estimation"}
-                        top="0px"
+                        top="-50px"
                         left="95px"
                         padding="5px 3px 20px 10px"
                      >
@@ -192,7 +219,13 @@ const SecondBlock = ({
                            />
                         </ContainerText>
 
-                        <DateTimePicker getDateTimeValue={getDateTimeValue} />
+                        <DateTimePicker
+                           getDateTimeValue={
+                              dataCardById.estimationResponse.id
+                                 ? updateEstimation
+                                 : setEstimation
+                           }
+                        />
                      </DropDown>
 
                      <DropDown
@@ -212,10 +245,13 @@ const SecondBlock = ({
                            />
                         </ContainerText>
                         <AddLabel
-                           getCardById={getCardById}
+                           readyLabels={readyLabels}
+                           getReadyLabelsQuery={getReadyLabelsQuery}
                            firstActive={firstActive}
                            setTwoActive={setTwoActive}
                            dataCardById={dataCardById}
+                           getCardById={getCardById}
+                           setReadyLabels={setReadyLabels}
                         />
                      </DropDown>
 
@@ -238,10 +274,18 @@ const SecondBlock = ({
                            />
                         </ContainerText>
                         <Input
+                           value={newCheckListTitle}
+                           onChange={(e) =>
+                              setNewCheckListTitle(e.target.value)
+                           }
                            style={{ marginBottom: "10px" }}
                            placeholder="Title"
                         />
-                        <Button fullWidth="250px" fullHeight="33px">
+                        <Button
+                           onClick={() => addCheckList()}
+                           fullWidth="250px"
+                           fullHeight="33px"
+                        >
                            Add checklist
                         </Button>
                      </DropDown>
@@ -290,7 +334,7 @@ const SecondBlock = ({
    )
 }
 
-export default SecondBlock
+export default AddedToCard
 
 const StyledSecondBlock = styled.div`
    width: 76vw;

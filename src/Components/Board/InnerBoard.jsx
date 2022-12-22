@@ -21,7 +21,7 @@ const InnerBoard = () => {
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { showSideBar, boards } = useSelector((state) => state)
-   const { setTwoActive, firstActive } = useTwoActive()
+   const { setTwoActive, firstActive, secondActive } = useTwoActive()
    const { setActive, isActive } = useToggle()
    const [columns, setColumns] = useState([])
    const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ const InnerBoard = () => {
    const getCardById = async (id) => {
       try {
          const { data } = await axiosInstance.get(`/api/cards/${id}`)
-         setTwoActive(`${data.id}`)
+         setTwoActive(`${data.id}`, secondActive)
          return setCardById(data)
       } catch (error) {
          return console.log(error.message)
@@ -58,13 +58,9 @@ const InnerBoard = () => {
       getColumnsInDataBase()
       setTwoActive("nothing")
    }
-
-   useEffect(() => {
-      getColumnsInDataBase()
-   }, [boardId])
-
    useEffect(() => {
       dispatch(getBoardByIdQuery(boardId))
+      getColumnsInDataBase()
    }, [boardId])
 
    return (
@@ -115,12 +111,13 @@ const InnerBoard = () => {
             </ContainerColumns>
          </ContainerInfoBoardColumn>
          <Modal
-            onClose={() => setTwoActive("nothing")}
+            onClose={updateColumnAndCloseModal}
             fullWidth="95vw"
             isOpen={firstActive === `${cardById?.id}`}
          >
             {firstActive === `${cardById?.id}`}
             <InnerTaskCard
+               setCardById={setCardById}
                firstActive={firstActive}
                updateColumnAndCloseModal={updateColumnAndCloseModal}
                getDataInArchive={getDataInArchive}
@@ -169,9 +166,12 @@ const LeftBlock = styled.div`
 `
 const ContainerColumns = styled.div`
    width: 100%;
-   overflow: scroll;
+   overflow: auto;
    display: flex;
    align-items: flex-start;
    gap: 10px;
    height: 76vh;
+   &::-webkit-scrollbar {
+      display: none;
+   }
 `

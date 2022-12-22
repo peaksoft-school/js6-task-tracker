@@ -16,6 +16,7 @@ const Arrow = ({ rotate, onClick, margin }) => {
 export default Arrow
 
 const StyledArrow = styled.img`
+   cursor: pointer;
    width: 22px;
    height: 22px;
    margin: ${(props) => props.margin};

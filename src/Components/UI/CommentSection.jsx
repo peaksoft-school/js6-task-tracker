@@ -1,8 +1,7 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import TimeAgo from "react-timeago"
 import TextareaAutosize from "react-textarea-autosize"
 import UserAvatar from "./UserAvatar"
@@ -12,29 +11,25 @@ import DisplayFlex from "../../layout/DisplayFlex"
 import arrowDownComment from "../../assets/svg/ArrowComment.svg"
 import Input from "./Input"
 import { axiosInstance } from "../../api/axiosInstance"
-import { useGetInputValue } from "../../utilits/hooks/useGetInputValue"
-import { useTemporaryToggle } from "../../utilits/hooks/useTemporaryToggle"
+import {
+   loadingToastifyAction,
+   errorToastifyAction,
+   successToastifyAction,
+   warningToastifyAction,
+} from "../../store/toastifySlice"
 
-const CommentSection = ({
-   comment,
-   dateAdded,
-   userAvatar,
-   editHandle,
-   deleteHandle,
-   showComment,
-   setShowComment,
-   dataCardById,
-}) => {
+const CommentSection = ({ showComment, setShowComment, dataCardById }) => {
    const [commentValue, setCommentValue] = useState("")
    const [comments, setComments] = useState([])
    const textAreaRef = useRef([])
    const [activeInput, setActiveInput] = useState(null)
+   const dispatch = useDispatch()
 
    // ПОЛУЧИТЬ КОМЕНТАРИИ КАРТОЧКИ
    const getAllComments = async () => {
       try {
          const { data } = await axiosInstance(
-            `/api/comments/card/${dataCardById.id}`
+            `/api/comments/${dataCardById.id}`
          )
          data?.sort((a, b) => b.id - a.id)
          return setComments(data)
@@ -45,29 +40,34 @@ const CommentSection = ({
    // ДОБАВИТЬ НОВЫЙ КОМЕНТАРИЙ
    const addedComment = async (e) => {
       e.preventDefault()
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const { data } = await axiosInstance.post(
-            `/api/comments/card/${dataCardById.id}`,
+            `/api/comments/${dataCardById.id}`,
             {
                text: commentValue,
+               createdAt: new Date(),
             }
          )
          getAllComments()
+         dispatch(successToastifyAction("Added comment"))
          return setCommentValue("")
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    // УДАЛИТЬ КОМЕНТАРИЙ
    const deleteComment = async (commentId) => {
+      dispatch(loadingToastifyAction("...Loading"))
       try {
          const response = await axiosInstance.delete(
             `/api/comments/${commentId}`
          )
          getAllComments()
+         dispatch(warningToastifyAction("Deleted comment"))
          return null
       } catch (error) {
-         return console.log(error.message)
+         return dispatch(errorToastifyAction("Error something went wrong"))
       }
    }
    // ИЗМЕНИТЬ КОМЕНТАРИЙ
@@ -76,12 +76,12 @@ const CommentSection = ({
       newComments[e.target.name].text = e.target.value
       return setComments(newComments)
    }
-
    const changeComment = async (e, id) => {
       e.preventDefault()
       try {
-         const response = await axiosInstance.put(`/api/comments/${id}`, {
-            text: e.target.value,
+         const response = await axiosInstance.put(`/api/comments/`, {
+            id,
+            newTitle: e.target.value,
          })
          setActiveInput(0)
          return getAllComments()
@@ -135,7 +135,7 @@ const CommentSection = ({
                               margin="9px 0 0 0"
                               JK="space-between"
                            >
-                              <TimeAgo date={new Date()} />
+                              <TimeAgo date={item.createdAt} />
                               <BlockEditDeleteButton>
                                  <p
                                     onClick={() =>
@@ -178,7 +178,7 @@ const StyledCommentSection = styled.div`
    width: 33vw;
    position: relative;
    background: #f4f5f7;
-   padding: 1rem;
+   padding: 1rem 1rem;
    border-radius: 8px;
    h3 {
       font-size: 0.9rem;
@@ -191,6 +191,15 @@ const ContainerComment = styled.div`
    overflow: scroll;
    max-height: ${(props) => (props.sizeComment ? "51vh" : "62.6vh")};
    min-height: ${(props) => (props.sizeComment ? "34.3vh" : "45.8vh")};
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+   ::-webkit-scrollbar-thumb {
+      border-radius: 16px;
+      background-color: #d9d9d9;
+      border: 6px solid white;
+   }
+   padding-bottom: 30px;
 `
 const Comment = styled.div`
    display: flex;

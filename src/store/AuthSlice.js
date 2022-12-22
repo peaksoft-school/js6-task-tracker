@@ -1,5 +1,4 @@
 /* eslint-disable import/extensions */
-/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
@@ -13,12 +12,17 @@ import {
    forgotPasswordQuery,
    resetPasswordQuery,
 } from "../api/auth.js"
-// import { PATH_IN_ROLES } from "../utilits/constants/general"
 import { auth, provider } from "../firebase/firebase"
+import { axiosInstance } from "../api/axiosInstance"
 import {
    successToastify,
    errorToastify,
 } from "../utilits/helpers/reactToastifyHelpers"
+import {
+   errorToastifyAction,
+   loadingToastifyAction,
+   successToastifyAction,
+} from "./toastifySlice"
 
 // РЕГИСТРАЦИЯ
 export const signUp = createAsyncThunk(
@@ -94,10 +98,48 @@ export const forgotPassword = createAsyncThunk(
       }
    }
 )
+// SIGN UP WITH GOOGLE INVITED USER
+export const authWithGoogleInvitedUser = createAsyncThunk(
+   "singinWithGoogle/InvitedUser",
+   async ({ role, workspaceId, navigate, dispatch, boardId }) => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const { user } = await signInWithPopup(auth, provider)
+         const isAdmin = role === "ADMIN"
+         const { data } = await axiosInstance.post(
+            `/api/public/authenticate/google/invite-member`,
+            {
+               token: user.accessToken,
+               isAdmin,
+               isBoard: false,
+               workspaceOrBoardId: boardId || workspaceId,
+            }
+         )
+         if (data.jwt) localStorageHelpers.saveData(USER_KEY, data)
+         if (boardId) {
+            navigate(
+               `/allWorkspaces/workspaces/${workspaceId}/boards/${boardId}`
+            )
+         } else {
+            navigate(`/allWorkspaces/workspaces/${workspaceId}/boards`)
+         }
+         dispatch(successToastifyAction(`Welcome ${data.firstName}`))
+         return data
+      } catch (error) {
+         return dispatch(
+            errorToastifyAction("You have forbidden to open popup")
+         )
+      }
+   }
+)
 // ВЫЙТИ
-export const logout = createAsyncThunk("logout", async () => {
-   localStorageHelpers.removeData(USER_KEY)
-})
+export const logout = createAsyncThunk(
+   "logout",
+   async ({ dispatch, clearWorkspaces }) => {
+      localStorageHelpers.removeData(USER_KEY)
+      dispatch(clearWorkspaces())
+   }
+)
 
 const UserInfoInLocalStorage = localStorageHelpers.getData(USER_KEY)
 
@@ -108,6 +150,7 @@ const initState = {
       email: null,
       idToast: null,
    },
+   loading: false,
 }
 
 export const AuthSlice = createSlice({
@@ -172,6 +215,18 @@ export const AuthSlice = createSlice({
       },
       [logout.fulfilled]: (state) => {
          state.userInfo = initState
+      },
+      [authWithGoogleInvitedUser.pending]: (state) => {
+         state.loading = true
+      },
+      [authWithGoogleInvitedUser.fulfilled]: (state, actions) => {
+         const responseUserData = actions.payload
+         state.userInfo = responseUserData
+         successToastify(state.idToast, `Welcome}`)
+         state.loading = false
+      },
+      [authWithGoogleInvitedUser.rejected]: (state) => {
+         state.loading = false
       },
    },
 })

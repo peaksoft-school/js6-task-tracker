@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react"
-import { Link, useLocation, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../store/AuthSlice"
@@ -8,7 +7,6 @@ import TaskTracker from "../assets/svg/TaskTracker.svg"
 import Input from "./UI/Input"
 import searchIcon from "../assets/svg/SearchIcon.svg"
 import UserAvatar from "./UI/UserAvatar"
-import avatarPhoto from "../assets/svg/userAvatar.svg"
 import Notification from "./Notification"
 import Favorite from "./UI/FavouritesWallpaper"
 import DropDown from "./UI/ReusableDropDown"
@@ -18,16 +16,17 @@ import { useToggle } from "../utilits/hooks/useToggle"
 import Arrow from "./UI/Arrow"
 import { getFavourites } from "../store/FavouritesSlice"
 import DisplayFlex from "../layout/DisplayFlex"
+import { clearWorkspaces } from "../store/workspacesSlice"
+import initialAvatar from "../assets/svg/userAvatar.svg"
 
-function Header() {
+function Header({ profileData }) {
    const { favourites, workspaces } = useSelector((state) => state)
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const { isActive, setActive } = useToggle()
    const [notification, setNotification] = useState([])
    const [searchResponse, setSearchResponse] = useState([])
-   const [inputValue, setInputValue] = useState("")
    const { pathname } = useLocation()
-   const { workspaceId } = useParams()
 
    const getNotificationHandler = async () => {
       try {
@@ -38,25 +37,24 @@ function Header() {
       }
    }
 
+   const markAsReadNotificaiton = () => {
+      setNotification([])
+      setActive("nothing")
+   }
+
    // ЗАПРОСЫ НА ПОИСКОВИК
 
-   const searchGlobalHandler = async () => {
+   const searchGlobalHandler = async (e) => {
       try {
          setActive("searchDropDown")
          const { data } = await axiosInstance.get(
-            `/api/public/global-search/${workspaceId}?email=${inputValue}`
+            `/api/public/global-search/${workspaces.workspaceById.id}?email=${e.target.value}`
          )
          return setSearchResponse(data)
       } catch (error) {
          return console.log(error.message)
       }
    }
-
-   const changeInputQuery = (searchValue) => {
-      setInputValue(searchValue)
-      searchGlobalHandler()
-   }
-
    useEffect(() => {
       dispatch(getFavourites())
    }, [workspaces])
@@ -65,39 +63,21 @@ function Header() {
       getNotificationHandler()
    }, [])
 
-   const openDropDownFavouritesHandler = () => {
-      setActive(isActive !== "favourites" ? "favourites" : "nothing")
-   }
-
-   const renderResponsesSearch = () => {
-      return (
-         <ResponsesSearchBlock>
-            {inputValue.length > 0 && searchResponse.length > 0 ? (
-               searchResponse.map((item) => {
-                  const foundUser = item.firstName
-                     .split("")
-                     .filter((item) => console.log(item))
-
-                  return (
-                     <li key={item.id}>
-                        <UserAvatar src={avatarPhoto} />
-                        <span>{item.firstName}</span>
-                        <span>{item.lastName}</span>
-                     </li>
-                  )
-               })
-            ) : (
-               <p>Nothing found</p>
-            )}
-         </ResponsesSearchBlock>
-      )
-   }
-
    return (
       <ParentDiv>
          <DisplayFlex JK="space-between" width="33vw" height="68px" AI="center">
-            <Logo src={TaskTracker} alt="" />
-            <OpenMenu onClick={openDropDownFavouritesHandler}>
+            <Logo
+               onClick={() => navigate("/allWorkspaces")}
+               src={TaskTracker}
+               alt=""
+            />
+            <OpenMenu
+               onClick={() =>
+                  setActive(
+                     isActive !== "favourites" ? "favourites" : "nothing"
+                  )
+               }
+            >
                Favourites
                <span>
                   <span>(</span>
@@ -128,9 +108,8 @@ function Header() {
             {pathname !== "/allWorkspaces" ? (
                <ContainerInput>
                   <Input
-                     value={inputValue}
                      onBlur={() => setActive("nothing")}
-                     onChange={(e) => changeInputQuery(e.target.value)}
+                     onChange={(e) => searchGlobalHandler(e)}
                      placeholder="Search"
                   />
                   <SearchIcon src={searchIcon} />
@@ -142,7 +121,21 @@ function Header() {
                right="11.5%"
                top="79%"
             >
-               {renderResponsesSearch()}
+               <ResponsesSearchBlock>
+                  {searchResponse.length > 0 ? (
+                     searchResponse.map((item) => {
+                        return (
+                           <li key={item.id}>
+                              <UserAvatar src={item.image} />
+                              <span>{item.firstName}</span>
+                              <span>{item.lastName}</span>
+                           </li>
+                        )
+                     })
+                  ) : (
+                     <p>Nothing found</p>
+                  )}
+               </ResponsesSearchBlock>
             </DropDown>
 
             <NotificationIconContainer
@@ -157,16 +150,20 @@ function Header() {
             </NotificationIconContainer>
             <DropDown
                showState={isActive === "notification"}
-               width="390px"
+               width="380px"
                height="90vh"
                top="60px"
                right="80px"
+               padding="10px 10px 0 10px"
             >
-               <Notification notification={notification} />
+               <Notification
+                  markAsReadNotificaiton={markAsReadNotificaiton}
+                  notification={notification}
+               />
             </DropDown>
 
             <UserAvatar
-               src={avatarPhoto}
+               src={profileData.image ? profileData.image : initialAvatar}
                click={() =>
                   setActive(isActive !== "profile" ? "profile" : "nothing")
                }
@@ -181,7 +178,13 @@ function Header() {
                   <Link to="profile">
                      <p>Profile</p>
                   </Link>
-                  <p onClick={() => dispatch(logout())}>Logout</p>
+                  <p
+                     onClick={() =>
+                        dispatch(logout({ dispatch, clearWorkspaces }))
+                     }
+                  >
+                     Logout
+                  </p>
                </ProfileLogout>
             </DropDown>
          </DisplayFlex>
@@ -216,6 +219,7 @@ const SearchIcon = styled.img`
    left: 19px;
 `
 const Logo = styled.img`
+   cursor: pointer;
    padding: 1rem 2.1rem 1rem;
 `
 const NotificationIconContainer = styled.div`

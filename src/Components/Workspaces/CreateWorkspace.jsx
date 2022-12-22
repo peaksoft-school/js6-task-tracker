@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import LabelTag from "../UI/LabelTag"
@@ -8,6 +9,7 @@ import ContainerButtons from "../UI/ContainerButtons"
 
 const CreateWorkspaces = ({ toggle }) => {
    const dispatch = useDispatch()
+   const { workspaceId } = useParams()
    const [emails, setEmails] = useState([])
    const [data, setData] = useState({
       email: "",
@@ -28,7 +30,8 @@ const CreateWorkspaces = ({ toggle }) => {
       const readyData = {
          emails: emails.length !== 0 ? emails : [data.email],
          name: data.name,
-         link: "192.168.0.152:3000",
+         link: "192.168.1.210:3000/signIn",
+         workspaceOrBoardId: workspaceId,
       }
       dispatch(createWorkspaces({ readyData, dispatch }))
       toggle("false")
@@ -37,7 +40,6 @@ const CreateWorkspaces = ({ toggle }) => {
    const getInputWorkspaceTitle = (e) => {
       setData({ ...data, name: e.target.value })
    }
-
    return (
       <>
          <Title>Create a new workspaces</Title>

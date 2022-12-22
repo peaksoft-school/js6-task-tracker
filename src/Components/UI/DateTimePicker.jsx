@@ -13,24 +13,27 @@ import Button from "./Button"
 dayjs.extend(isBetweenPlugin)
 export default function DateTimePicker({ getDateTimeValue }) {
    const [value, setValue] = React.useState(dayjs(new Date()))
-   const [timeValue, setTimeValue] = React.useState("")
+   const [dueTimeValue, setDueTimeValue] = React.useState("")
+   const [startTimeValue, setStartTimeValue] = React.useState("")
    const [dueDate, setDueDate] = React.useState(dayjs(new Date()))
    const [startDate, setStartDate] = React.useState(dayjs(new Date()))
    const [reminder, setRemainder] = React.useState("None")
    const [highlightedDays, setHighlightedDays] = React.useState([])
    const startDateRef = React.useRef()
    const dueDateRef = React.useRef()
-   const timeValueRef = React.useRef()
+   const dueTimeRef = React.useRef()
+   const startTimeRef = React.useRef()
 
    const reminderChangeHandler = (event) => {
       setRemainder(event.target.value)
    }
    const creteTemplateHandler = () => {
       const dateData = {
-         startDate: startDate.$d.toLocaleDateString(),
-         dueDate: dueDate.$d.toLocaleDateString(),
-         time: timeValue.target.value,
-         reminder,
+         startDate: startDate?.$d?.toLocaleDateString() || "",
+         dueDate: dueDate?.$d?.toLocaleDateString() || "",
+         dueTime: dueTimeValue?.target?.value || "",
+         startTime: startTimeValue?.target?.value || "",
+         reminder: reminder || "",
       }
       getDateTimeValue(dateData)
    }
@@ -43,7 +46,8 @@ export default function DateTimePicker({ getDateTimeValue }) {
          setValue(newValue)
          setDueDate(newValue)
          setHighlightedDays((state) => [...state, newValue.$D])
-         timeValueRef.current.focus()
+         dueTimeRef.current.focus()
+         startTimeRef.current.focus()
       } else {
          setValue(newValue)
          setStartDate(newValue)
@@ -81,13 +85,23 @@ export default function DateTimePicker({ getDateTimeValue }) {
             />
          </LocalizationProvider>
          <label htmlFor="startDate">Start date</label>
-         <input
-            ref={startDateRef}
-            type="text"
-            name="startDate"
-            value={startDate.$d.toLocaleDateString()}
-            readOnly
-         />
+
+         <DueDateBlock>
+            <input
+               ref={startDateRef}
+               type="text"
+               name="startDate"
+               value={startDate.$d.toLocaleDateString()}
+               readOnly
+            />
+            <Time
+               ref={startTimeRef}
+               type="time"
+               onChange={(newValue) => {
+                  setStartTimeValue(newValue)
+               }}
+            />
+         </DueDateBlock>
          <label htmlFor="dueDate">Due date</label>
          <DueDateBlock>
             <input
@@ -98,10 +112,10 @@ export default function DateTimePicker({ getDateTimeValue }) {
                readOnly
             />
             <Time
-               ref={timeValueRef}
+               ref={dueTimeRef}
                type="time"
                onChange={(newValue) => {
-                  setTimeValue(newValue)
+                  setDueTimeValue(newValue)
                }}
             />
          </DueDateBlock>
@@ -112,7 +126,7 @@ export default function DateTimePicker({ getDateTimeValue }) {
             <Select value={reminder} onChange={reminderChangeHandler}>
                <option value="None">None</option>
                <option value="5">5 min. before</option>
-               <option value="15">15 min. before</option>
+               <option value="30">15 min. before</option>
                <option value="60">1 hour before</option>
             </Select>
          </FormControl>

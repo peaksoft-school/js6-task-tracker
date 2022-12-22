@@ -3,22 +3,22 @@ import styled from "styled-components"
 import dayjs from "dayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import TextField from "@mui/material/TextField"
-import FormControl from "@mui/material/FormControl"
-import Box from "@mui/material/Box"
-import InputLabel from "@mui/material/InputLabel"
-import Select from "@mui/material/Select"
-import MenuItem from "@mui/material/MenuItem"
 import { Checkbox } from "@mui/material"
+import FormControlLabel from "@mui/material/FormControlLabel"
 
-const FilterBlock = () => {
-   const [value, setValue] = React.useState(dayjs("2022-12-07"))
-   const [labels, setLabels] = React.useState("")
+const today = new Date()
+const startDate = dayjs(`${today.getFullYear()}-01-01`)
+const endDate = dayjs(`${today.getFullYear()}-12-31`)
 
-   const handleChangeLabels = (event) => {
-      setLabels(event.target.value)
+const FilterBlock = ({ filterChangeHandler }) => {
+   const [fromDate, setFromDate] = React.useState(startDate)
+   const [toDate, setToDate] = React.useState(endDate)
+
+   const dateFromChangeHandler = (newValue) => {
+      setFromDate(newValue)
+      filterChangeHandler(newValue)
    }
    return (
       <FilterBlockStyled>
@@ -26,54 +26,22 @@ const FilterBlock = () => {
          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StyledDatePickerFrom
                views={["year", "month", "day"]}
-               value={value}
+               value={fromDate}
                onChange={(newValue) => {
-                  setValue(newValue)
+                  dateFromChangeHandler(newValue)
                }}
                renderInput={(params) => <TextField {...params} />}
             />
             <StyledDatePickerTo
                views={["year", "month", "day"]}
-               value={value}
+               value={toDate}
                onChange={(newValue) => {
-                  setValue(newValue)
+                  setToDate(newValue)
                }}
                renderInput={(params) => <TextField {...params} />}
             />
          </LocalizationProvider>
-         <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-               <InputLabel id="demo-simple-select-label">All labels</InputLabel>
-               <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={labels}
-                  label="All labels"
-                  onChange={handleChangeLabels}
-               >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-               </Select>
-            </FormControl>
-         </Box>
-         <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-               <InputLabel id="demo-simple-select-label">All labels</InputLabel>
-               <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={labels}
-                  label="All labels"
-                  onChange={handleChangeLabels}
-               >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-               </Select>
-            </FormControl>
-         </Box>
-         <Checkbox />
+         <FormControlLabel control={<Checkbox />} label="Checklist" />
       </FilterBlockStyled>
    )
 }
@@ -87,11 +55,11 @@ const FilterBlockStyled = styled.div`
 `
 const StyledDatePickerFrom = styled(DatePicker)`
    .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-      width: 85px;
+      width: 90px;
    }
 `
 const StyledDatePickerTo = styled(DatePicker)`
    .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-      width: 85px;
+      width: 90px;
    }
 `

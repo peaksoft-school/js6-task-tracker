@@ -9,15 +9,15 @@ import TableBlock from "./TableBlock"
 
 const ViewAll = () => {
    const { showSideBar } = useSelector((state) => state.showSideBar)
-
    const { workspaceId } = useParams()
    const [cards, setCards] = useState([])
+   const [filteredCards, setFilteredCards] = useState([])
+
    const getCardsInDataBaseQuery = async () => {
       try {
          const response = await axiosInstance.get(
             `/api/issues/cards/${workspaceId}`
          )
-         console.log(response)
          return setCards(response.data)
       } catch (error) {
          return console.log(error.message)
@@ -27,11 +27,23 @@ const ViewAll = () => {
    useEffect(() => {
       getCardsInDataBaseQuery()
    }, [])
+
+   const filterChangeHandler = (date) => {
+      const convertDate = date.$d
+      const convertLocal = convertDate.toISOString()
+      const convertToSlice = convertLocal.slice(0, 10)
+      const convertToString = convertToSlice.toString()
+      console.log(convertToString)
+      const filtered = cards.filter((el) => convertLocal.includes(el.createdAt))
+      console.log(convertToString instanceof String)
+      setFilteredCards(filtered)
+   }
+   console.log(filteredCards, "filteredCards")
    return (
       <Container>
          <ViewAllStyled showSideBar={showSideBar}>
-            <FilterBlock />
-            <TableBlock />
+            <FilterBlock filterChangeHandler={filterChangeHandler} />
+            <TableBlock cards={cards} />
          </ViewAllStyled>
       </Container>
    )

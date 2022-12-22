@@ -38,16 +38,19 @@ export default Workspaces
 
 const BlockWorkspaces = styled.div`
    width: 85vw;
-   border-radius: 15px;
+   border-radius: 10px;
    padding-bottom: 20px;
    background-color: white;
+   -webkit-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   -moz-box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
+   box-shadow: 9px 6px 8px 0px rgba(34, 60, 80, 0.17);
 `
 const Block = styled.div`
    display: flex;
    justify-content: space-between;
    height: 50px;
+   padding: 10px 15px 0 15px;
    align-items: center;
-   padding: 20px 20px 0 20px;
    h2 {
       font-weight: 500;
    }
@@ -56,5 +59,5 @@ const ContainerWorkspaces = styled.div`
    display: flex;
    justify-content: center;
    margin-top: 20px;
-   margin-top: 100px;
+   padding-top: 85px;
 `

@@ -6,6 +6,7 @@ import SignUp from "../Components/Authorizaiton/SignUp"
 import AdminUserLayout from "../layout/AdminUserLayout"
 import Login from "../Components/Authorizaiton/Login"
 import ForgotPassword from "../Components/Authorizaiton/ForgotPassword"
+import InvitedUser from "../Components/Authorizaiton/InvitedUser"
 
 const AppRoutes = () => {
    return (
@@ -15,11 +16,15 @@ const AppRoutes = () => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login/:id" element={<ForgotPassword />} />
-            <Route
-               path="/192.168.0.152:3000/:role/:where/:whereId"
-               element={<AuthorizationPages />}
-            />
          </Route>
+         <Route
+            path="signIn/:role/workspaceId/:workspaceId/boardId/:boardId"
+            element={<InvitedUser />}
+         />
+         <Route
+            path="signIn/:role/workspaceId/:workspaceId"
+            element={<InvitedUser />}
+         />
          <Route
             path="allWorkspaces/*"
             element={<PrivateRoute COMPONENT={<AdminUserLayout />} />}
