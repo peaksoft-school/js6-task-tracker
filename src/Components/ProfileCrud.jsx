@@ -2,43 +2,36 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
-import { Form, useFormik } from "formik"
-import Avatar from "react-avatar-edit"
+import { useDropzone } from "react-dropzone"
+import { useFormik } from "formik"
 import { useDispatch } from "react-redux"
 import WallpaperTop from "../assets/svg/WallpaperTopBanner.svg"
 import Input from "./UI/Input"
 import PasswordInput from "./UI/PasswordInput"
 import Button from "./UI/Button"
-import { validationConfirmPassword } from "./Authorizaiton/Validation"
 import MemberBoard from "./MemberBoard"
 import DisplayFlex from "../layout/DisplayFlex"
-import initialAvatar from "../assets/images/initialAvatar.jpeg"
 import editIcon from "../assets/svg/avatarEdit.svg"
-import { axiosInstance } from "../api/axiosInstance"
 import {
    errorToastifyAction,
    loadingToastifyAction,
    successToastifyAction,
 } from "../store/toastifySlice"
-import Modal from "./UI/Modal"
-import useTwoActive from "../utilits/hooks/useTwoActive"
 import ReusableDropDown from "./UI/ReusableDropDown"
 import { GLOBAL_URL } from "../utilits/constants/Constants"
+import { axiosInstance } from "../api/axiosInstance"
+import Modal from "./UI/Modal"
+import { useToggle } from "../utilits/hooks/useToggle"
+import ContainerButtons from "./UI/ContainerButtons"
+import initialAvatar from "../assets/images/initialAvatar.jpeg"
+import CustomIcons from "./Column/CustomIcons"
+import { validationConfirmPassword } from "./Authorizaiton/Validation"
 
 function ProfileCrud({ profileData, setProfileData }) {
    const dispatch = useDispatch()
-   const { firstActive, setTwoActive } = useTwoActive()
-   const [dialogs, setDialogs] = useState(false)
-   const [imgCrop, setImgCrop] = useState(null)
-   const onCrop = (view) => {
-      setImgCrop(view)
-   }
-   const onClose = () => {
-      setImgCrop(null)
-   }
-   const saveAvatar = () => {
-      setDialogs(false)
-   }
+   const { isActive, setActive } = useToggle()
+   const [uploadPhoto, setUploadPhoto] = useState(false)
+
    const changeName = (e) => {
       setProfileData({ ...profileData, firstName: e.target.value })
    }
@@ -48,32 +41,63 @@ function ProfileCrud({ profileData, setProfileData }) {
    const changeEmail = (e) => {
       setProfileData({ ...profileData, email: e.target.value })
    }
-
+   const getLinkHandler = async (file) => {
+      setActive("setAvatar")
+      const bodyFormData = new FormData()
+      bodyFormData.append("file", file[0])
+      dispatch(loadingToastifyAction("Photo upload..."))
+      axios({
+         method: "POST",
+         url: `${GLOBAL_URL}/api/file`,
+         data: bodyFormData,
+         headers: { "Content-Type": "multipart/form-data" },
+      })
+         .then((response) => {
+            setProfileData({ ...profileData, image: response.data.link })
+            setUploadPhoto(true)
+            dispatch(successToastifyAction("Photo uploaded"))
+         })
+         .catch((response) => {
+            dispatch(errorToastifyAction("error"))
+         })
+   }
+   const setAvatarQuery = async () => {
+      dispatch(loadingToastifyAction("...Loading"))
+      try {
+         const response = await axiosInstance.put("/api/profile/avatar", {
+            image: profileData.image,
+         })
+         dispatch(successToastifyAction("Avatar updated"))
+         setUploadPhoto(false)
+         return setActive("nothing")
+      } catch (error) {
+         return dispatch(errorToastifyAction("Error,something went wrong"))
+      }
+   }
+   const onDrop = (file) => {
+      getLinkHandler(file)
+   }
+   const { open, getInputProps, getRootProps } = useDropzone({
+      accept: "image/jpeg,image/png,image/gif/svg",
+      maxFiles: 1,
+      onDrop,
+   })
    const formik = useFormik({
       initialValues: {
          password: "",
          confirmPassword: "",
       },
+      validationSchema: validationConfirmPassword,
       onSubmit: async (userInfo) => {
          dispatch(loadingToastifyAction("...Loading"))
          try {
-            const formData = new FormData()
-            formData.append("file", imgCrop)
-
-            const response = await axios({
-               method: "POST",
-               url: `${GLOBAL_URL}/api/file`,
-               data: formData,
-               headers: { "Content-Type": "multipart/form-data" },
+            const { data } = await axiosInstance.put("/api/profile", {
+               firstName: profileData.firstName,
+               lastName: profileData.lastName,
+               password: userInfo.password,
+               image: profileData.image,
             })
-            console.log(response, "resposne")
-            // const { data } = await axiosInstance.put("/api/profile", {
-            //    firstName: profileData.firstName,
-            //    lastName: profileData.lastName,
-            //    password: userInfo.password,
-            //    image: "",
-            // })
-            // dispatch(successToastifyAction("Updated profiile"))
+            dispatch(successToastifyAction("Updated profiile"))
             return null
          } catch (error) {
             return dispatch(errorToastifyAction("Error something went wrong"))
@@ -88,12 +112,11 @@ function ProfileCrud({ profileData, setProfileData }) {
          <Block>
             <HeaderPhoto src={WallpaperTop} alt="" />
             <AvatarBlock>
-               <StyledAvatar src={profileData.image} />
-
+               <StyledAvatar src={profileData.image || initialAvatar} />
                <img
                   onClick={() =>
-                     setTwoActive(
-                        firstActive !== "changeProfile"
+                     setActive(
+                        isActive !== "changeProfile"
                            ? "changeProfile"
                            : "nothing"
                      )
@@ -101,38 +124,48 @@ function ProfileCrud({ profileData, setProfileData }) {
                   src={editIcon}
                   alt="pencil"
                />
+               <Modal
+                  onClose={() => setActive("nothing")}
+                  isOpen={isActive === "setAvatar"}
+               >
+                  <div>
+                     {uploadPhoto ? (
+                        <UploadPhoto
+                           src={profileData.image ? profileData.image : null}
+                           alt="not found"
+                        />
+                     ) : (
+                        <DropContainer {...getRootProps()}>
+                           <p>Upload a photo +</p>
+                           <input {...getInputProps()} />
+                        </DropContainer>
+                     )}
+
+                     <ContainerButtons
+                        width="332px"
+                        clickGrayButton={() => setActive("nothing")}
+                        titleGrayButton="Cancel"
+                        titleBlueButton="Save"
+                        clickBlueButton={() => setAvatarQuery()}
+                        paddingBlueButton="0 40px 0 40px"
+                     />
+                  </div>
+               </Modal>
             </AvatarBlock>
             <ReusableDropDown
                top="180px"
                left="220px"
                padding="15px 15px 12px 15px"
-               showState={firstActive === "changeProfile"}
+               showState={isActive === "changeProfile"}
             >
                <p
+                  onClick={() => setActive("setAvatar")}
                   style={{ margin: "0 0 6px 0", cursor: "pointer" }}
-                  onClick={() => setDialogs(true)}
                >
                   Change profile photo
                </p>
                <p style={{ cursor: "pointer" }}>Remove</p>
             </ReusableDropDown>
-            <Modal onClose={() => setDialogs(false)} isOpen={dialogs}>
-               <Avatar
-                  width={400}
-                  height={300}
-                  onClose={onClose}
-                  onCrop={onCrop}
-               />
-               <DisplayFlex JK="flex-end" margin="10px 0 0 0">
-                  <Button
-                     fullWidth="180px"
-                     padding="6px 10px"
-                     onClick={saveAvatar}
-                  >
-                     Save
-                  </Button>
-               </DisplayFlex>
-            </Modal>
 
             <form onSubmit={formik.handleSubmit}>
                <DisplayFlex margin="90px 0 0 50px" width="80vw" gap="45px">
@@ -162,6 +195,7 @@ function ProfileCrud({ profileData, setProfileData }) {
                   <DisplayFlex FD="column" AI="flex-end">
                      <ContainerInputErrorText>
                         <PasswordInput
+                           right="13%"
                            id="password"
                            type="text"
                            label="Password"
@@ -170,12 +204,17 @@ function ProfileCrud({ profileData, setProfileData }) {
                            onBlur={formik.handleBlur}
                         />
                         {formik.touched.password && formik.errors.password && (
-                           <ErrorText>{formik.errors.password}</ErrorText>
+                           <ErrorText>
+                              {formik.values.password.length > 0
+                                 ? formik.errors.password
+                                 : null}
+                           </ErrorText>
                         )}
                      </ContainerInputErrorText>
 
                      <ContainerInputErrorText>
                         <PasswordInput
+                           right="13%"
                            id="confirmPassword"
                            type="text"
                            label="Repeat password"
@@ -186,12 +225,19 @@ function ProfileCrud({ profileData, setProfileData }) {
                         {formik.touched.confirmPassword &&
                            formik.errors.confirmPassword && (
                               <ErrorText>
-                                 {formik.errors.confirmPassword}
+                                 {formik.values.confirmPassword.length > 0
+                                    ? formik.errors.confirmPassword
+                                    : null}
                               </ErrorText>
                            )}
                      </ContainerInputErrorText>
                      <DisplayFlex width="150px">
                         <Button
+                           disabled={
+                              !isValid &&
+                              formik.values.password.length > 0 &&
+                              formik.values.confirmPassword.length > 0
+                           }
                            fullWidth="120px"
                            padding="6px 10px"
                            type="submit"
@@ -214,6 +260,22 @@ function ProfileCrud({ profileData, setProfileData }) {
 }
 export default ProfileCrud
 
+const DropContainer = styled.div`
+   width: 230px;
+   height: 230px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 50%;
+   background: #f6f6f9;
+   margin: 20px 10px 20px 85px;
+`
+const UploadPhoto = styled.img`
+   width: 230px;
+   height: 230px;
+   border-radius: 50%;
+   margin: 20px 10px 20px 85px;
+`
 const Container = styled.div`
    background-color: #f8f8f8;
    padding: 90px 0 30px 0;
@@ -263,10 +325,12 @@ const AvatarBlock = styled.div`
    left: 100px;
    border-radius: 50%;
    img {
-      :last-child {
-         position: absolute;
-         top: 85px;
-         left: 85px;
+      :nth-child(2) {
+         width: 43px;
+         height: 43px;
+         position: relative;
+         right: 50px;
+         top: -3px;
       }
    }
 `

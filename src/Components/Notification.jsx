@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import UserAvatar from "./UI/UserAvatar"
-import arrowRight from "../assets/icons/arrowRight.svg"
 import DateAdded from "./UI/DateAdded"
 
 function Notification({ notification, markAsReadNotificaiton }) {
@@ -11,37 +10,31 @@ function Notification({ notification, markAsReadNotificaiton }) {
             <h3>Notification</h3>
             <span onClick={markAsReadNotificaiton}>Mark as read</span>
          </TitleBlock>
-
-         {notification?.map((item) => {
-            return (
-               <>
-                  <NotificationBoard key={item.id}>
-                     <BlueIcon />
-                     <img src={item.background} alt="boardPhoto" />
-                     <h3>{item.boardTitle}</h3>
-                     <p>Name of the column</p>
-                  </NotificationBoard>
-                  <StyledNotificationItem>
-                     <div>
-                        <UserAvatar src={item.image} />
-                        <StyledUserName>
-                           <span> {item.firstName}</span>
-                           <span> {item.lastName}</span>
-                        </StyledUserName>
-                     </div>
-
-                     <NotificationText>{item.message}</NotificationText>
-                     <DateAdded date={item.createdAt} />
-
-                     <StyledArrowIcon
-                        rotate="180deg"
-                        src={arrowRight}
-                        onClick={() => console.log("hello")}
-                     />
-                  </StyledNotificationItem>
-               </>
-            )
-         })}
+         <NotificationScroll>
+            {notification?.map((item) => {
+               return (
+                  <>
+                     <NotificationBoard key={item.id}>
+                        <BlueIcon />
+                        <img src={item.background} alt="boardPhoto" />
+                        <h3>{item.boardTitle}</h3>
+                        <p>{item.nameOfColumn}</p>
+                     </NotificationBoard>
+                     <StyledNotificationItem>
+                        <div>
+                           <UserAvatar src={item.image} />
+                           <StyledUserName>
+                              <span> {item.firstName}</span>
+                              <span> {item.lastName}</span>
+                           </StyledUserName>
+                        </div>
+                        <NotificationText>{item.message}</NotificationText>
+                        <DateAdded date={item.createdAt} />
+                     </StyledNotificationItem>
+                  </>
+               )
+            })}
+         </NotificationScroll>
       </NotificationContainer>
    )
 }
@@ -50,12 +43,10 @@ export default Notification
 
 const NotificationContainer = styled.div`
    display: flex;
-   overflow-y: scroll;
    flex-direction: column;
    width: 350px;
    max-height: 80vh;
    align-items: center;
-   padding-bottom: 20px;
    ::-webkit-scrollbar {
       width: 20px;
    }
@@ -65,12 +56,16 @@ const NotificationContainer = styled.div`
       border: 6px solid white;
    }
 `
+const NotificationScroll = styled.div`
+   overflow: scroll;
+`
 const TitleBlock = styled.div`
    display: flex;
    justify-content: flex-end;
    height: 45px;
    align-items: center;
    width: 350px;
+
    h3 {
       font-weight: 500;
    }
@@ -87,12 +82,10 @@ const StyledNotificationItem = styled.div`
    flex-direction: column;
    align-items: flex-start;
    justify-content: space-evenly;
-   height: 120px;
    width: 330px;
    border-bottom: 1px solid #e3e3e3;
    font-family: "Nunito", sans-serif;
    margin: 5px 10px 15px 10px;
-
    div {
       display: flex;
       align-items: center;
@@ -104,7 +97,6 @@ const NotificationBoard = styled.div`
    background-repeat: no-repeat;
    background-size: cover;
    width: 330px;
-   height: 160px;
    border-radius: 18px;
    font-family: "Nunito", sans-serif;
    text-align: left;
@@ -114,11 +106,11 @@ const NotificationBoard = styled.div`
    position: relative;
    h3 {
       position: absolute;
-      top: 2px;
+      top: 10px;
       left: 15px;
    }
    p {
-      top: 25px;
+      top: 33px;
       left: 15px;
       position: absolute;
       font-size: 20px;
@@ -131,16 +123,9 @@ const NotificationBoard = styled.div`
 `
 const NotificationText = styled.span`
    font-weight: 500;
+   word-wrap: break-word;
    font-size: 1.1rem;
    color: #111111;
-`
-const StyledArrowIcon = styled.img`
-   position: absolute;
-   width: 25px;
-   height: 25px;
-   right: 5px;
-   top: 50px;
-   transform: ${(props) => `rotate(${props.rotate})`};
 `
 const BlueIcon = styled.span`
    width: 9px;

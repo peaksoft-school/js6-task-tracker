@@ -16,6 +16,16 @@ import ViewAll from "../Components/ViewAllIssues/ViewAll"
 
 const AdminUserLayout = () => {
    const { role } = useSelector((state) => state.auth.userInfo)
+   const [notification, setNotification] = useState([])
+   const [countParticipants, setCountParticipants] = useState(0)
+   const getNotificationHandler = async () => {
+      try {
+         const { data } = await axiosInstance.get("/api/notifications")
+         return setNotification(data)
+      } catch (error) {
+         return console.log(error)
+      }
+   }
    const [profileData, setProfileData] = useState({})
    const dispatch = useDispatch()
    const { pathname } = useLocation()
@@ -28,7 +38,6 @@ const AdminUserLayout = () => {
          return console.log(error.message)
       }
    }
-
    useEffect(() => {
       dispatch(getAllWorkspaces())
       getProfileData()
@@ -40,12 +49,23 @@ const AdminUserLayout = () => {
 
    return (
       <Container>
-         <Header profileData={profileData} role={role} />
+         <Header
+            notification={notification}
+            getNotificationHandler={getNotificationHandler}
+            profileData={profileData}
+            role={role}
+            getProfileData={getProfileData}
+         />
          <Routes>
             <Route path="" element={<Workspaces role={role} />} />
             <Route
                path="/workspaces/:workspaceId/*"
-               element={<AllBoards role={role} />}
+               element={
+                  <AllBoards
+                     countParticipants={countParticipants}
+                     role={role}
+                  />
+               }
             >
                <Route path="boards" element={<Boards role={role} />} />
                <Route path="boards/:boardId" element={<InnerBoard />} />
